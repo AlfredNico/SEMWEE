@@ -1,0 +1,25 @@
+{
+    "editor.wordWrap": "on",
+    "files.autoSave": "afterDelay",
+    "diffEditor.wordWrap": "inherit",
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.autoClosingBrackets": "languageDefined",
+    "editor.autoClosingOvertype": "auto",
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true
+      },
+      "[markdown]": {
+        "editor.formatOnSave": true,
+        "editor.wordWrap": "on",
+        "editor.renderWhitespace": "all",
+        "editor.acceptSuggestionOnEnter": "off"
+      },
+      // TypeScript
+      "javascript.format.insertSpaceAfterConstructor": false,
+      "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+      "javascript.preferences.importModuleSpecifierEnding": "auto",
+      "javascript.preferences.quoteStyle": "auto",
+      "typescript.format.enable": true,
+      "typescript.suggest.enabled": true,
+}
