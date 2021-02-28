@@ -1,12 +1,13 @@
-export class Users {
-    id: number;
-    firstName: string;
-    lastName: string;
+import { Users } from "../models/users";
 
-    constructor(id: number, firstName: string, lastName: string) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+
+export class User {
+    id?: number;
+    firstName!: string;
+    lastName!: string;
+
+    constructor(user?: Users) {
+        Object.assign(this, user);
     }
 
     get fullName() {

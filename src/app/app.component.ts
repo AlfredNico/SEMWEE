@@ -8,7 +8,10 @@ import { Component } from '@angular/core';
       <h1>
         Welcome to {{title}}!
       </h1>
-      
+
+      <span>SEMWEE app is running!</span>
+    </div>
+
     <router-outlet></router-outlet>
   `,
   styleUrls: ['./app.component.scss']
