@@ -17,14 +17,16 @@ import { AuthService } from '../../services/auth.service';
           <form [formGroup]="loginForm" #form="ngForm" (ngSubmit)="form.valid && onSubmit()" class="login-form">
             <mat-card-content>
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Mot de passe</mat-label>
-                <input matInput formControlName="username">
+                <mat-label>Adresse e-mail</mat-label>
+                <input matInput type="email" formControlName="username">
                 <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+                <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Mot de passe</mat-label>
-                <input matInput formControlName="password">
+                <input matInput type="password" formControlName="password" autocomplete="off">
+                <mat-icon matSuffix>visibility_off</mat-icon>
                 <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
               </mat-form-field>
             </mat-card-content>
@@ -42,7 +44,7 @@ import { AuthService } from '../../services/auth.service';
 export class SignInComponent implements OnInit {
 
   public loginForm = this.fb.group({
-    username: ['', Validators.required],
+    username: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
 

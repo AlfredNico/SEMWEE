@@ -61,3 +61,8 @@
     font-size: 30px;
     padding: 40px 70px 50px;
 }
+
+.mat-card>:first-child,
+.mat-card-content>:first-child {
+    margin-top: 1.5em;
+}
