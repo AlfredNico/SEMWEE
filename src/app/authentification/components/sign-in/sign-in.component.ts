@@ -63,7 +63,7 @@ export class SignInComponent implements OnInit {
     try {
       const user = await this.authService.login(this.loginForm.value);
       if (user) {
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/espace-user');
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {

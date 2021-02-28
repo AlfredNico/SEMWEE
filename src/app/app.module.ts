@@ -14,7 +14,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './error.interceptor';
 import { TokenInterceptor } from './token.interceptor';
 import { MockInterceptor } from './mock.interceptor';
-import { NotificationService } from './services/notification.service';
 
 
 @NgModule({
@@ -31,6 +30,10 @@ import { NotificationService } from './services/notification.service';
     RouterModule.forRoot([
       {
         path: 'accueil',
+        loadChildren: () => import('./public-sapces/public-spaces.module').then(m => m.PublicSpacesModule),
+      },
+      {
+        path: 'espace-user',
         loadChildren: () => import('./user-spaces/user-space.module').then(m => m.UserSpaceModule),
         canActivate: [AuthGuard]
       },
