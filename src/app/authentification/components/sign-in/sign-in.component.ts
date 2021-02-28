@@ -1,5 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NotificationService } from '@app/services/notification.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -43,7 +46,8 @@ export class SignInComponent implements OnInit {
     password: ['', Validators.required]
   });
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private fb: FormBuilder,
+    private notifs: NotificationService, private router: Router) { }
 
   get getusername() { return this.loginForm.controls.username; }
   get getpassword() { return this.loginForm.controls.password; }
@@ -53,8 +57,17 @@ export class SignInComponent implements OnInit {
     this.authService.getAllUsers();
   }
 
-  public onSubmit() {
-    this.authService.login(this.loginForm.value);
+  public async onSubmit() {
+    try {
+      const user = await this.authService.login(this.loginForm.value);
+      if (user) {
+        this.router.navigateByUrl('/');
+      }
+    } catch (error) {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+      }
+    }
   }
 
 }

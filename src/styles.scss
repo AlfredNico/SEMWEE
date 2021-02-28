@@ -35,3 +35,21 @@ body {
     // min-height: 100vh;
     background: #e2e2e2;
 }
+
+.mat-snack-bar-container.snack-bar-error {
+    background-color: #ff8800;
+    color: #fff;
+    text-transform: uppercase;
+    .mat-simple-snackbar .mat-simple-snackbar-action button {
+        color: #fff;
+    }
+}
+
+.mat-snack-bar-container.snack-bar-success {
+    background-color: #1bb943;
+    color: #fff;
+    text-transform: uppercase;
+    .mat-simple-snackbar .mat-simple-snackbar-action button {
+        color: #fff;
+    }
+}

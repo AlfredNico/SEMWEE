@@ -9,15 +9,18 @@ import {
 import { AuthService } from './authentification/services/auth.service';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { NotificationService } from './services/notification.service';
 
 @Injectable()
+
 export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    console.log('Error Interceptor');
-
+    
     return next.handle(request).pipe(catchError(err => {
+      const error = err.error.message || err.statusText;
+
       if (err instanceof HttpErrorResponse) {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
@@ -26,12 +29,15 @@ export class ErrorInterceptor implements HttpInterceptor {
           window.location.reload();
           return EMPTY;
         }
+      }else{
+        this.notifs.warn(error);
+        return throwError(error);
       }
-      const error = err.error.message || err.statusText;
       return throwError(error);
 
     }))
   }
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private notifs: NotificationService) { }
+
 }

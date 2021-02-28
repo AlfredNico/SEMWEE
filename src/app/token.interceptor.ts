@@ -7,14 +7,15 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './authentification/services/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private cookieService: CookieService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log('Token Interceptor');
+ 
     const user = this.authService.currentUserSubject.value;
     if (user && user.token) {
       request = request.clone({

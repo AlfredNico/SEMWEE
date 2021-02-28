@@ -14,6 +14,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './error.interceptor';
 import { TokenInterceptor } from './token.interceptor';
 import { MockInterceptor } from './mock.interceptor';
+import { NotificationService } from './services/notification.service';
+
 
 @NgModule({
   declarations: [

@@ -10,7 +10,6 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
-import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 export const usersData: Users[] = [
   {
@@ -51,7 +50,6 @@ export class MockInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
-    console.log('Mock Interceptor', body);
 
 
     // return of(null)
@@ -66,7 +64,7 @@ export class MockInterceptor implements HttpInterceptor {
           const { username, password } = body;
 
           const user = usersData.find(x => x.username === username && x.password === password);
-          if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe is incorrecte' } });
+          if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe incorrecte' } });
           return of(new HttpResponse({ status: 200, body: user as Users }));
 
         case url.endsWith('/users') && method === 'GET':

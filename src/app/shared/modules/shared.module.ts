@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 
 
@@ -16,7 +18,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSnackBarModule
   ]
 })
 export class SharedModule { }
