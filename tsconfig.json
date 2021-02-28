@@ -21,6 +21,12 @@
       "dom"
     ],
     // "strictPropertyInitialization": false
+    "resolveJsonModule": true, //Configuring TypeScript to Import Local JSON files
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@environments/*": ["src/environments/*"]
+  }
+
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

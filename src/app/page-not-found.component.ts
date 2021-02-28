@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home-page',
   template: `
     <p>
-      home-page works!
+      page-not-found works!
     </p>
   `,
-  styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class PageNotFoundComponent implements OnInit {
 
   constructor() { }
 

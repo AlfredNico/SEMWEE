@@ -5,6 +5,9 @@ export class User {
     id?: number;
     firstName!: string;
     lastName!: string;
+    username!: string;
+    password!: string;
+    token?: string;
 
     constructor(user?: Users) {
         Object.assign(this, user);
