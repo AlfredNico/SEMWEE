@@ -1,6 +1,6 @@
 # SEMWEE
 
-Projet SEMEWEE - Site commerce en ligne
+frontend SEMEWEE - Site e-commerce en ligne
 
 Ce projet a été généré par Angular cli.
 
