@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Users } from 'src/app/models/users';
 import { Router } from '@angular/router';
 import { User } from 'src/app/classes/users';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
 
   users: any[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private cookie: CookieService) {
     console.log('user', this.currentUserSubject.value);
   }
 
@@ -30,6 +31,8 @@ export class AuthService {
   }
 
   public login(value: { username: string, password: string }) {
+    console.log('value', value);
+    
     return this.http.post<Users>(`${environment.BASE_URL}/authenticate`, value)
       .pipe(
         map(user => {
@@ -43,8 +46,9 @@ export class AuthService {
 
   public logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+    // localStorage.removeItem('currentUser');
     this.isAuthenticatedSubject.next(false);
+    this.cookie.deleteAll();
     this.currentUserSubject.next(new User(undefined));
     this.router.navigate(['/connexion']);
   }

@@ -4,5 +4,5 @@ export interface Users {
     lastName: string;
     username: string;
     password: string;
-    token?: string;
+    token: string;
 }

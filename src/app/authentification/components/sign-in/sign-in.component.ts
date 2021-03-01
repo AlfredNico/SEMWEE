@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
+import { ReCapchaService } from '@app/services/re-capcha.service';
+import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -29,6 +31,22 @@ import { AuthService } from '../../services/auth.service';
                 <mat-icon matSuffix>visibility_off</mat-icon>
                 <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
               </mat-form-field>
+
+              <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <mat-checkbox>Rester connecter</mat-checkbox>
+                <div>
+                  <a [routerLink]="['/']"> Mot de passe oublié</a>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <ngx-recaptcha2 #captchaElem 
+                  [siteKey]="recaptcha.siteKey"
+                  [size]="recaptcha.size"
+                  formControlName="recaptcha">
+                </ngx-recaptcha2>
+              </div>
+
             </mat-card-content>
 
             <mat-card-actions fxLayout="row" fxLayoutAlign="center center">
@@ -45,11 +63,12 @@ export class SignInComponent implements OnInit {
 
   public loginForm = this.fb.group({
     username: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
+    recaptcha: ['', Validators.required]
   });
 
   constructor(private authService: AuthService, private fb: FormBuilder,
-    private notifs: NotificationService, private router: Router) { }
+    private cookie: CookieService,private router: Router, public recaptcha: ReCapchaService) { }
 
   get getusername() { return this.loginForm.controls.username; }
   get getpassword() { return this.loginForm.controls.password; }
@@ -60,9 +79,18 @@ export class SignInComponent implements OnInit {
   }
 
   public async onSubmit() {
+    const { username, password }: { [key: string]: any } = this.loginForm.controls;
+    
     try {
-      const user = await this.authService.login(this.loginForm.value);
+      const user = await this.authService.login({ username: username.value, password: password.value});
       if (user) {
+        this.cookie.set('id', JSON.stringify(user.id), 0.2, '/', 'semewee', true, 'Strict');
+        this.cookie.set('semewee', user.token, 0.2, '/', 'semewee', true, 'Strict');
+        this.cookie.set('firstName', user.firstName, 0.2, '/', 'semewee', true, 'Strict');
+        this.cookie.set('lastName', user.lastName, 0.2, '/', 'semewee', true, 'Strict');
+        this.cookie.set('password', user.password, 0.2, '/', 'semewee', true, 'Strict');
+        this.cookie.set('password', user.username, 0.2, '/', 'semewee', true, 'Strict');
+
         this.router.navigateByUrl('/espace-user');
       }
     } catch (error) {

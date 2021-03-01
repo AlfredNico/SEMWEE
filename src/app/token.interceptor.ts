@@ -16,11 +16,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
  
-    const user = this.authService.currentUserSubject.value;
-    if (user && user.token) {
+    if (this.cookieService.check('semewee')) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${user.token}`
+          Authorization: `Bearer ${this.cookieService.get('semewee')}`
         }
       });
     }

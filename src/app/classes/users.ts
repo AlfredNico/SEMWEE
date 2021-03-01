@@ -7,7 +7,7 @@ export class User {
     lastName!: string;
     username!: string;
     password!: string;
-    token?: string;
+    token!: string;
 
     constructor(user?: Users) {
         Object.assign(this, user);
