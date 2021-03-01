@@ -33,6 +33,7 @@ export class HomePageComponent implements OnInit {
   constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
+    console.log(this.auth.currentUserSubject.value);
   }
 
 }

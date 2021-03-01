@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { AuthService } from '@app/authentification/services/auth.service';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { AuthService } from '../authentification/services/auth.service';
-import { User } from '../classes/users';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class IsLoggedInGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      
+
+
     return this.authService.currentUserSubject.pipe(
       mergeMap(user => {
         if (user) {
           return of(true);
-        } else if (localStorage.getItem('currentUser')){
+        } else if (localStorage.getItem('currentUser')) {
+          console.log(localStorage.getItem('currentUser'));
           this.authService.currentUserSubject.next(localStorage.getItem('currentUser'));
           return of(true);
         }
-        else{
-          return of(this.router.parseUrl("/connexion"));
+        else {
+          return of(true);
         }
       })
     )
   }
+
+  constructor(private authService: AuthService) { }
   
-  constructor(private authService: AuthService, private router: Router) {}
 }

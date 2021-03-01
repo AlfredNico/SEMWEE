@@ -20,6 +20,7 @@ export class AuthService {
   users: any[] = [];
 
   constructor(private http: HttpClient, private router: Router) {
+    console.log('user', this.currentUserSubject.value);
   }
 
   public getAllUsers() {

@@ -6,7 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 
 @NgModule({
@@ -19,7 +19,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxCaptchaModule
   ]
 })
 export class SharedModule { }

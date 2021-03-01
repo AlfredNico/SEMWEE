@@ -14,6 +14,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './error.interceptor';
 import { TokenInterceptor } from './token.interceptor';
 import { MockInterceptor } from './mock.interceptor';
+import { IsLoggedInGuard } from './guards/is-logged-in.guard';
 
 
 @NgModule({
@@ -31,11 +32,12 @@ import { MockInterceptor } from './mock.interceptor';
       {
         path: 'accueil',
         loadChildren: () => import('./public-sapces/public-spaces.module').then(m => m.PublicSpacesModule),
+        canActivate: [IsLoggedInGuard]
       },
       {
         path: 'espace-user',
         loadChildren: () => import('./user-spaces/user-space.module').then(m => m.UserSpaceModule),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, IsLoggedInGuard]
       },
       {
         path: 'connexion',

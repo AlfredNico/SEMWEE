@@ -10,8 +10,6 @@ import { AuthService } from '@app/authentification/services/auth.service';
       </button>
       <span>Accueil</span>
       <div class="spacer"></div>
-      <!--<button mat-stroked-button [routerLink]="['/connexion']" class="mx-3">Connecter</button>
-      <button mat-stroked-button (click)="auth.logout()" class="mx-3">Déconnecter</button> -->
       <ng-template #loginTemplete>
          <button mat-stroked-button [routerLink]="['/connexion']" class="mx-3">Connecter</button>
       </ng-template>
@@ -30,6 +28,7 @@ export class PublicLayoutComponent implements OnInit {
   constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
+    console.log(this.auth.currentUserSubject.value);
   }
 
 }
