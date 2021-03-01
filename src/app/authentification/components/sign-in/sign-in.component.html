@@ -1,50 +1,47 @@
-<div class="login-content">
-    <mat-card class="w-75 p-0" fxLayout="row" fxLayoutAlign="center center">
-        <!-- <div class="w-100 h-100 m-0 p-0">-->
-        <img class="h-100 w-100" [src]="'./assets/images/bg_image.jpeg'" alt="images layout" />
-        <!-- <div class="left-layout h-100 w-100"></div> -->
-        <!--  </div>-->
-        <div class="w-100 p-5">
-            <mat-card-header class="w-100" fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row" fxLayoutGap="10" class="h-100">
+    <div fxFlex="50%" class="login-left">
+        <div></div>
+    </div>
+    <div fxFlex="50%" [style.background]="'white'" class="login-content" fxLayout="column">
+        <div class="w-75 p-0 m-auto" fxLayout="column" fxLayoutAlign="space-between center">
+            <div class="w-100" fxLayout="row" fxLayoutAlign="center center">
                 <mat-card-title class="py-2">Se connecter</mat-card-title>
-            </mat-card-header>
+            </div>
 
-            <form [formGroup]="loginForm" class="login-form">
-                <mat-card-content>
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Adresse e-mail</mat-label>
-                        <input matInput type="email" formControlName="username">
-                        <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
-                        <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
-                    </mat-form-field>
+            <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && onSubmit()" class="login-form">
+                <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Adresse e-mail</mat-label>
+                    <input matInput type="email" formControlName="username">
+                    <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+                    <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
+                </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Mot de passe</mat-label>
-                        <input matInput type="password" formControlName="password" autocomplete="off">
-                        <mat-icon matSuffix>visibility_off</mat-icon>
-                        <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
-                    </mat-form-field>
+                <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput type="password" formControlName="password" autocomplete="off">
+                    <mat-icon matSuffix>visibility_off</mat-icon>
+                    <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
+                </mat-form-field>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <mat-checkbox>Rester connecter</mat-checkbox>
-                        <div>
-                            <a [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
-                        </div>
+                <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-slide-toggle id="stayOn" [formControl]="stayOn">Réstez connecté</mat-slide-toggle>
+                    <div>
+                        <a [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
                     </div>
+                </div>
 
-                    <div fxLayout="row" fxLayoutAlign="center center">
-                        <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.siteKey" [size]="recaptcha.size" formControlName="recaptcha">
-                        </ngx-recaptcha2>
-                    </div>
+                <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
+                    <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.siteKey" [size]="recaptcha.size" formControlName="recaptcha">
+                    </ngx-recaptcha2>
+                </div>
 
-                </mat-card-content>
-
-                <mat-card-actions fxLayout="row" fxLayoutAlign="center center" class="m-0 p-0">
-                    <button mat-stroked-button (click)="onSubmit()" color="accent">Se connecter</button>
-                    <a [routerLink]="['/inscription']"> S'inscrire</a>
-                    <!-- <button mat-stroked-button [routerLink]="['/inscription']" color="accent">S'inscrire</button> -->
-                </mat-card-actions>
+                <div fxLayout="row" fxLayoutAlign="space-around center" class="py-2">
+                    <button mat-stroked-button type="submit" class="m-2" color="primary">Se connecter</button>
+                    <!-- <a [routerLink]="['/inscription']"> S'inscrire</a> -->
+                    <button mat-stroked-button type="button" class="m-2" [routerLink]="['/inscription']">S'inscrire</button>
+                </div>
             </form>
         </div>
-    </mat-card>
+        <div style="margin-top: auto;">Semewee.com</div>
+    </div>
 </div>

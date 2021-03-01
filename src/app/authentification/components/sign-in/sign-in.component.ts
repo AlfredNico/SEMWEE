@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
+  // template: ``,
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit {
@@ -18,6 +19,8 @@ export class SignInComponent implements OnInit {
     password: ['', Validators.required],
     recaptcha: ['', Validators.required]
   });
+  public readonly stayOn = this.fb.control(false);
+
 
   constructor(private authService: AuthService, private fb: FormBuilder,
     private cookie: CookieService,private router: Router, public recaptcha: ReCapchaService) { }
@@ -36,12 +39,14 @@ export class SignInComponent implements OnInit {
     try {
       const user = await this.authService.login({ username: username.value, password: password.value});
       if (user) {
-        this.cookie.set('id', JSON.stringify(user.id), 0.2, '/', 'semewee', true, 'Strict');
-        this.cookie.set('semewee', user.token, 0.2, '/', 'semewee', true, 'Strict');
-        this.cookie.set('firstName', user.firstName, 0.2, '/', 'semewee', true, 'Strict');
-        this.cookie.set('lastName', user.lastName, 0.2, '/', 'semewee', true, 'Strict');
-        this.cookie.set('password', user.password, 0.2, '/', 'semewee', true, 'Strict');
-        this.cookie.set('password', user.username, 0.2, '/', 'semewee', true, 'Strict');
+        if (this.stayOn.value === true) {
+          this.cookie.set('id', JSON.stringify(user.id), 0.2, '/', 'semewee', true, 'Strict');
+          this.cookie.set('semewee', user.token, 0.2, '/', 'semewee', true, 'Strict');
+          this.cookie.set('firstName', user.firstName, 0.2, '/', 'semewee', true, 'Strict');
+          this.cookie.set('lastName', user.lastName, 0.2, '/', 'semewee', true, 'Strict');
+          this.cookie.set('password', user.password, 0.2, '/', 'semewee', true, 'Strict');
+          this.cookie.set('password', user.username, 0.2, '/', 'semewee', true, 'Strict');
+        }
 
         this.router.navigateByUrl('/espace-user');
       }
