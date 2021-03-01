@@ -18,7 +18,7 @@ export class IsLoggedInGuard implements CanActivate {
         if (user) {
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
-          console.log(localStorage.getItem('currentUser'));
+          console.log('currentUser', localStorage.getItem('currentUser'));
           this.authService.currentUserSubject.next(localStorage.getItem('currentUser'));
           return of(true);
         }

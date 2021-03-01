@@ -46,7 +46,7 @@ export class AuthService {
 
   public logout() {
     // remove user from local storage to log user out
-    // localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser');
     this.isAuthenticatedSubject.next(false);
     this.cookie.deleteAll();
     this.currentUserSubject.next(new User(undefined));
