@@ -50,6 +50,7 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
     this.cookie.deleteAll();
     this.currentUserSubject.next(new User(undefined));
-    this.router.navigate(['/connexion']);
+    // location.reload();
+    this.router.navigateByUrl('/connexion');
   }
 }

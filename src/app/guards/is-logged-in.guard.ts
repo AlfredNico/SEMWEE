@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
+import { User } from '@app/classes/users';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -14,15 +15,14 @@ export class IsLoggedInGuard implements CanActivate {
 
 
     return this.authService.currentUserSubject.pipe(
-      mergeMap(user => {
-        if (user) {
+      mergeMap((user: User) => {
+        if (user && user.token) {
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
-          console.log('currentUser', localStorage.getItem('currentUser'));
-          this.authService.currentUserSubject.next(localStorage.getItem('currentUser'));
+          console.log('currentUser', JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
           return of(true);
-        }
-        else {
+        } else {
           return of(true);
         }
       })

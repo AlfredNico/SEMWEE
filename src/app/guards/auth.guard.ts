@@ -15,11 +15,12 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       
     return this.authService.currentUserSubject.pipe(
-      mergeMap(user => {
-        if (user) {
+      mergeMap((user: User) => {
+        if (user && user.token) {
+          console.log('user', user);
           return of(true);
-        } else if (localStorage.getItem('currentUser')){
-          this.authService.currentUserSubject.next(localStorage.getItem('currentUser'));
+        } else if (localStorage.getItem('currentUser')) {
+          this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
           return of(true);
         } else if (this.cookie.get('semewee')){
           this.authService.currentUserSubject.next(new User({
