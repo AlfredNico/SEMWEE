@@ -1,0 +1,63 @@
+<mat-drawer-container class="h-100" autosize>
+    <mat-drawer #drawer class="sidenav-drawer" mode="side" opened>
+        <p>Auto-resizing sidenav</p>
+        Toggle extra text
+    </mat-drawer>
+
+    <mat-drawer-content class="sidenav-content h-100">
+        <mat-toolbar class="app-header px-4" [style.background]="'white'">
+            <button (click)="drawer.toggle()" mat-icon-button aria-label="menu icon">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <form style="min-width: 150px;max-width: 500px;">
+                <mat-form-field>
+                    <input type="search" matInput placeholder="recherche">
+                </mat-form-field>
+            </form>
+            <div class="spacer"></div>
+            <ng-template #loginTemplete>
+                <button mat-button [routerLink]="['/connexion']" class="mx-3">
+                    <mat-icon>login</mat-icon>Connecter
+                </button>
+            </ng-template>
+            <ng-template #logoutTemplete>
+                <button mat-button>
+                    <mat-icon >insert_emoticon</mat-icon>John Doe  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <button mat-button>
+                    <mat-icon >reorder</mat-icon>Sample menu <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <button mat-button>
+                    <mat-icon  matBadge="3" matBadgeColor="warn">notification_important</mat-icon>Update
+                </button>
+                <button mat-button (click)="auth.logout()">
+                    <mat-icon>logout</mat-icon>Déconnecter
+                </button>
+            </ng-template>
+
+            <ng-container *ngTemplateOutlet="!auth.currentUserSubject?.value ? loginTemplete : logoutTemplete">
+            </ng-container>
+        </mat-toolbar>
+        <div class="p-3 w-100" fxLayout="column" fxLayoutAlign="space-between center">
+            <div class="w-100 p-3" fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                    <h2 class="m-0">Validator v6</h2>
+                    <p class="m-0">Excel version 6</p>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary">Dasbord</button>
+                </div>
+            </div>
+            <section class="w-100 pt-4">
+                <nav mat-tab-nav-bar class="tab-group">
+                    <a mat-tab-link [routerLink]="['file']" routerLinkActive #file="routerLinkActive" [active]="file.isActive"> Files </a>
+                    <a mat-tab-link [routerLink]="['input']" routerLinkActive #input="routerLinkActive" [active]="input.isActive"> Input </a>
+                    <a mat-tab-link [routerLink]="['check']" routerLinkActive #check="routerLinkActive" [active]="check.isActive"> Check </a>
+                    <a mat-tab-link [routerLink]="['output']" routerLinkActive #output="routerLinkActive" [active]="output.isActive"> OutPut </a>
+                </nav>
+                <router-outlet></router-outlet>
+            </section>
+        </div>
+    </mat-drawer-content>
+
+</mat-drawer-container>
