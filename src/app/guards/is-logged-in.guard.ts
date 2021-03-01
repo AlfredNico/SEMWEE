@@ -30,5 +30,5 @@ export class IsLoggedInGuard implements CanActivate {
   }
 
   constructor(private authService: AuthService) { }
-  
+
 }
