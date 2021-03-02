@@ -15,7 +15,6 @@ import { ErrorInterceptor } from './error.interceptor';
 import { TokenInterceptor } from './token.interceptor';
 import { MockInterceptor } from './mock.interceptor';
 import { IsLoggedInGuard } from './guards/is-logged-in.guard';
-import { LandingModule } from './shared/modules/landing.module';
 
 
 @NgModule({
