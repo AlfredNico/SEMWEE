@@ -11,6 +11,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { MatSortModule } from '@angular/material/sort';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
+
 @NgModule({
   declarations: [],
   imports: [
@@ -23,7 +26,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatBadgeModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    DragDropModule
   ]
 })
 export class LandingModule { }

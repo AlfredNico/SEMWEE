@@ -8,7 +8,7 @@ import { AuthService } from '@app/authentification/services/auth.service';
       <button mat-icon-button aria-label="icon-button with menu icon">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>Accueil</span>
+      <a mat-button [routerLink]="['/espace-user']">Accueil</a>
       <div class="spacer"></div>
       <ng-template #loginTemplete>
          <button mat-stroked-button [routerLink]="['/connexion']" class="mx-3">Connecter</button>
