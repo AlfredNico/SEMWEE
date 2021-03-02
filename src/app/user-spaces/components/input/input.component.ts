@@ -30,6 +30,7 @@ export class InputComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
   dataSource: MatTableDataSource<PeriodicElement> = new MatTableDataSource(ELEMENT_DATA);
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 

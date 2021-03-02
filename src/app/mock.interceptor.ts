@@ -37,7 +37,7 @@ export const usersData: Users[] = [
     "id": 4,
     "firstName": "Licensed",
     "lastName": " Frozen Hat",
-    "username": "nyhavana@iokaii.mg",
+    "username": "zaho@gmail.mg",
     "password": "1234",
     "token": "fesfefefieh283hcecugeé33",
   }
@@ -51,14 +51,6 @@ export class MockInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
 
-
-    // return of(null)
-    //   .pipe(mergeMap(handleRoute))
-    //   .pipe(materialize()) // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
-    //   .pipe(delay(500))
-    //   .pipe(dematerialize());
-
-    // function handleRoute() {
       switch (true) {
         case url.endsWith('authenticate') && method === 'POST':
           const { username, password } = body;
