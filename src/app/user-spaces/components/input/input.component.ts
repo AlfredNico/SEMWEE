@@ -6,17 +6,18 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  id: number;
+  fistName: string;
+  lastName: string;
+  phone: number;
+  adresse: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  { id: 1,lastName: 'Zaho1', fistName: 'ZAHO 1', phone: 12345678, adresse: 'Tana' },
+  { id: 2,lastName: 'Zaho2', fistName: 'zaho 2', phone: 12345678, adresse: 'Fianara' },
+  { id: 3,lastName: 'Zaho3', fistName: 'zaho 3', phone: 12345678, adresse: 'Ambositra' },
+  { id: 4,lastName: 'Zaho4', fistName: 'zaho 4', phone: 12345678, adresse: 'Ambalavao' },
 ];
 
 
@@ -32,7 +33,7 @@ export class InputComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   dataSource: MatTableDataSource<PeriodicElement> = new MatTableDataSource(ELEMENT_DATA);
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['id', 'lastName', 'fistName', 'phone', 'adresse'];
 
   constructor() { }
 

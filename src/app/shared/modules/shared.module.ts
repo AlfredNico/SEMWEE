@@ -8,6 +8,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { NgxCaptchaModule } from 'ngx-captcha';
 
+import { NgxSpinnerModule } from "ngx-spinner";
+
 
 @NgModule({
   declarations: [],
@@ -20,7 +22,8 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatSnackBarModule,
-    NgxCaptchaModule
+    NgxCaptchaModule,
+    NgxSpinnerModule
   ]
 })
 export class SharedModule { }

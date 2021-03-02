@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
+import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { CommonService } from './shared/services/common.service';
 
 @Component({
   selector: 'app-root',
   template: `
-    <!--The content below is only a placeholder and can be replaced.
-    <div style="text-align:center" class="content">
-      <h1>
-        Welcome to {{title}}!
-      </h1>
-
-      <span>SEMWEE app is running!</span>
-    </div> -->
-
+    <ngx-spinner name="root">
+      <p [style.color]="'white'">loading</p>
+    </ngx-spinner>
     <router-outlet></router-outlet>
   `,
   styles: [`
@@ -22,4 +18,24 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'SEMWEE';
+
+  constructor(private router: Router, private common: CommonService){
+    this.router.events.subscribe((event: Event) => {
+      switch (true) {
+        case event instanceof NavigationStart: {
+          this.common.showSpinner();
+          break;
+        }
+        case event instanceof NavigationEnd:
+        case event instanceof NavigationError:
+        case event instanceof NavigationCancel: {
+          this.common.hideSpinner();
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
 }
