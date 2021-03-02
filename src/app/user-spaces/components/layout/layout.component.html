@@ -9,8 +9,8 @@
             <button (click)="drawer.toggle()" mat-icon-button aria-label="menu icon">
                 <mat-icon>menu</mat-icon>
             </button>
-            <form style="min-width: 150px;max-width: 500px;">
-                <mat-form-field>
+            <form>
+                <mat-form-field [style.marginBottom]="'-1.25em'" [style.marginTop]="'-1em'">
                     <input type="search" matInput placeholder="recherche">
                 </mat-form-field>
             </form>
@@ -28,7 +28,7 @@
                     <mat-icon >reorder</mat-icon>Sample menu <mat-icon>keyboard_arrow_down</mat-icon>
                 </button>
                 <button mat-button>
-                    <mat-icon  matBadge="3" matBadgeColor="warn">notification_important</mat-icon>Update
+                    <mat-icon  matBadge="3" matBadgePosition="before" matBadgeColor="warn">notification_important</mat-icon>Update
                 </button>
                 <button mat-button (click)="auth.logout()">
                     <mat-icon>logout</mat-icon>Déconnecter
@@ -55,7 +55,9 @@
                     <a mat-tab-link [routerLink]="['check']" routerLinkActive #check="routerLinkActive" [active]="check.isActive"> Check </a>
                     <a mat-tab-link [routerLink]="['output']" routerLinkActive #output="routerLinkActive" [active]="output.isActive"> OutPut </a>
                 </nav>
-                <router-outlet></router-outlet>
+                <div class="py-4">
+                    <router-outlet></router-outlet>
+                </div>
             </section>
         </div>
     </mat-drawer-content>

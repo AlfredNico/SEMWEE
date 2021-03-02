@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LandingModule } from '@app/shared/modules/landing.module';
+import { SharedModule } from '@app/shared/modules/shared.module';
 import { LandingPageModule } from '../shared/modules/landing-page.module';
-import { SharedModule } from '../shared/modules/shared.module';
 import { CheckComponent } from './components/check/check.component';
 import { FilesComponent } from './components/files/files.component';
 import { InputComponent } from './components/input/input.component';
@@ -12,11 +12,11 @@ import { OutputComponent } from './components/output/output.component';
 
 
 @NgModule({
-  declarations: [FilesComponent, LayoutComponent],
+  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent],
   imports: [
-    SharedModule,
     LandingPageModule,
     LandingModule,
+    SharedModule,
     RouterModule.forChild([
       { path: '', component: LayoutComponent, children: [
         { path: 'file', component: FilesComponent },
