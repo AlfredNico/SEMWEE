@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { CdkDragStart, CdkDragDrop,  CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragStart, CdkDragEnd, CdkDragDrop,  CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 
 
@@ -46,6 +46,7 @@ export class InputComponent implements OnInit, AfterViewInit {
 
   // drag and frop datadables
   public previousIndex!: number;
+  public selectedRowIndex = -1;
 
   constructor() { }
 
@@ -59,16 +60,16 @@ export class InputComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  dragStarted(index: number) {
-    this.previousIndex = index;
-    console.log('idex' , index);
-    
+
+  public drop(event: CdkDragDrop<any>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+    this.columns.forEach((column, index) => {
+      this.displayedColumns[index] = column;
+    });
   }
 
-  drop(event: CdkDragDrop<any>, index: number) {
-    console.log(event.previousIndex, event.currentIndex, index);
-    
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-    console.log('columns ', this.columns);
+  public getRow(row: any){
+    this.selectedRowIndex = row.id;
+    console.log('ros', row);
   }
 }

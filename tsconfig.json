@@ -20,7 +20,7 @@
       "es2018",
       "dom"
     ],
-    // "strictPropertyInitialization": false
+    // "strictPropertyInitialization": false,
     "resolveJsonModule": true, //Configuring TypeScript to Import Local JSON files
     "paths": {
       "@app/*": ["src/app/*"],

@@ -11,6 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
+import { MatListModule } from '@angular/material/list';
+
+import { MatDividerModule } from '@angular/material/divider';
+
 
 @NgModule({
   declarations: [],
@@ -25,7 +29,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatListModule,
+    MatDividerModule
   ]
 })
 export class LandingPageModule { }

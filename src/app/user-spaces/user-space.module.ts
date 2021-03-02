@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SideMenuComponent } from '@app/shared/components/side-menu/side-menu.component';
 import { LandingModule } from '@app/shared/modules/landing.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { LandingPageModule } from '../shared/modules/landing-page.module';
@@ -12,7 +13,7 @@ import { OutputComponent } from './components/output/output.component';
 
 
 @NgModule({
-  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent],
+  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent, SideMenuComponent],
   imports: [
     LandingPageModule,
     LandingModule,

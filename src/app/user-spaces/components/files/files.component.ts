@@ -23,6 +23,7 @@ export class FilesComponent implements OnInit {
   ];
 
   drop(event: CdkDragDrop<string[]>) {
+    console.log(event.previousIndex, event.currentIndex);
     moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
     console.log('timePeriods ', this.timePeriods);
   }
