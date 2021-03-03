@@ -15,11 +15,11 @@
                             {{ column }}
                         </div>
                         <mat-form-field appearance="outline" id="filters">
-                            <input matInput type="search" [formControlName]="column">
+                            <input matInput type="search" [formControlName]="column" autocomplete="off">
                         </mat-form-field>
                     </div>
                 </th>
-                <td mat-cell *matCellDef="let row " (click)="getRow(row) " [ngClass]="{ 'highlight': selectedRowIndex == row.id} "> {{ row[column] }} </td>
+                <td mat-cell *matCellDef="let row" (click)="getRow(row)" [ngClass]="{ 'highlight': selectedRowIndex == row.id} "> {{ row[column] }} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>

@@ -25,7 +25,8 @@
       "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
       "javascript.preferences.importModuleSpecifierEnding": "auto",
       "javascript.preferences.quoteStyle": "auto",
-      "typescript.format.enable": true,
+      // Enable/disable default TypeScript formatter.
+      "typescript.format.enable": true, 
       "typescript.suggest.enabled": true,
         // Wrap attributes.
         //  - auto: Wrap attributes only when line length is exceeded.
