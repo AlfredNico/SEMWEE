@@ -1,10 +1,15 @@
 {
-    "editor.wordWrap": "on",
+    // "editor.wordWrap": "on",
+    "editor.wordWrap": "wordWrapColumn",
     "files.autoSave": "afterDelay",
     "diffEditor.wordWrap": "inherit",
     "editor.acceptSuggestionOnEnter": "on",
     "editor.autoClosingBrackets": "languageDefined",
     "editor.autoClosingOvertype": "auto",
+    "html.format.wrapAttributes": "auto",
+    
+    "html.format.wrapLineLength": 100,
+    "editor.wordWrapColumn": 100,
     "[typescript]": {
         "editor.formatOnSave": true,
         "editor.formatOnPaste": true
@@ -22,4 +27,12 @@
       "javascript.preferences.quoteStyle": "auto",
       "typescript.format.enable": true,
       "typescript.suggest.enabled": true,
+        // Wrap attributes.
+        //  - auto: Wrap attributes only when line length is exceeded.
+        //  - force: Wrap each attribute except first.
+        //  - force-aligned: Wrap each attribute except first and keep aligned.
+        //  - force-expand-multiline: Wrap each attribute.
+        //  - aligned-multiple: Wrap when line length is exceeded, align attributes vertically.
+        //  - preserve: Preserve wrapping of attributes.
+        //  - preserve-aligned: Preserve wrapping of attributes but align.
 }

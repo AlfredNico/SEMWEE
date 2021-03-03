@@ -92,11 +92,13 @@
         //     }
         //     // }
         // }
-        // search input
+        // search input 
         #search,
+        #filters,
         #sortbbyType {
             .mat-form-field-flex>.mat-form-field-infix {
                 padding: 0.4em 0px !important;
+                width: auto !important;
             }
             .mat-form-field-label-wrapper {
                 top: -1.5em;
@@ -105,4 +107,14 @@
                 transform: translateY(-1.1em) scale(0.75);
                 width: 133.33333%;
             }
+            .mat-form-field-wrapper {
+                padding-bottom: 0;
+            }
+        }
+        
+        .custom-placeholder-drag-drop {
+            background: #ccc;
+            border: dotted 3px #999;
+            min-height: 60px;
+            transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
         }

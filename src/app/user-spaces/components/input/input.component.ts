@@ -1,10 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { CdkDragStart, CdkDragEnd, CdkDragDrop,  CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 
@@ -30,7 +32,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./input.component.scss']
 })
 
-export class InputComponent implements OnInit, AfterViewInit {
+export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -38,28 +40,54 @@ export class InputComponent implements OnInit, AfterViewInit {
 
   public displayedColumns: string[] = [];
   public columns: string[] = ['id', 'lastName', 'fistName', 'phone', 'adresse'];
+  
 
-  //filters row on tables
-  public filters = new FormGroup({
-    filter: new FormControl(''),
-  });
+  // Generate form builder rows
+  public filters = this.fb.group([]);
+  // public filters: FormGroup = new FormGroup({});
+  public triggers!: BehaviorSubject<FormControl>;
 
   // drag and frop datadables
   public previousIndex!: number;
   public selectedRowIndex = -1;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { 
+    this.columns.forEach(column => {
+      this.filters.addControl(column, new FormControl());
+      // this.form.addControl(column, new FormControl(''));
+      // this.filters.addControl(column, this.fb.group({column: ''}));
+    });
+  }
 
   ngOnInit(): void {
     this.columns.forEach((column, index) => {
       this.displayedColumns[index] = column;
     });
+
+    console.log(this.filters.controls);
+
   }
+
+  ngOnChanges() {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.filters.valueChanges.pipe(
+      map(query => {
+        // this.dataSource.data.filter((item: any) => {
+        //   return Object.keys(query).every(property => item[property] === query[property])
+        // })
+        console.log('data', this.dataSource.data);
+      })
+    ).subscribe();
   }
+
+  changeInput(event: any){
+    console.log(this.filters.get('lastName')?.value);
+  }
+
 
   public drop(event: CdkDragDrop<any>) {
     moveItemInArray(this.columns, event.previousIndex, event.currentIndex);

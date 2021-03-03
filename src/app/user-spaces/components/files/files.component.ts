@@ -1,6 +1,7 @@
 
 import { CdkDragDrop,moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-files',
@@ -9,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilesComponent implements OnInit {
 
+  firstName = new FormControl('');
+  triggers = new FormGroup({
+    filters: new FormControl(''),
+  });
+  
   constructor() { }
 
   ngOnInit() {
+    this.triggers.valueChanges.subscribe(filter => {
+      console.log(filter);
+    })
+
+    console.log(this.triggers.controls);
+    
   }
 
   timePeriods = [

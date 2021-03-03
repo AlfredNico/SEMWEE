@@ -1,3 +1,9 @@
 <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>{{timePeriod}}</div>
+    <div class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag>
+        <div class="custom-placeholder-drag-drop" *cdkDragPlaceholder></div>
+        {{timePeriod}}</div>
 </div>
+
+<mat-form-field appearance="outline" id="filters" [formGroup]="triggers">
+    <input matInput id="column" formControlName="filters">
+</mat-form-field>
