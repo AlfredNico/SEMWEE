@@ -44,8 +44,6 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
   // Generate form builder rows
   public filters = this.fb.group([]);
-  // public filters: FormGroup = new FormGroup({});
-  public triggers!: BehaviorSubject<FormControl>;
 
   // drag and frop datadables
   public previousIndex!: number;
@@ -62,10 +60,7 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.columns.forEach((column, index) => {
       this.displayedColumns[index] = column;
-    });
-
-    console.log(this.filters.controls);
-
+    })
   }
 
   ngOnChanges() {}
@@ -76,6 +71,8 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.filters.valueChanges.pipe(
       map(query => {
+        const data = this.dataSource.data;
+
         // this.dataSource.data.filter((item: any) => {
         //   return Object.keys(query).every(property => item[property] === query[property])
         // })
