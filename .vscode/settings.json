@@ -1,7 +1,7 @@
 {
     // "editor.wordWrap": "on",
     "editor.wordWrap": "wordWrapColumn",
-    // "files.autoSave": "afterDelay",
+    "files.autoSave": "afterDelay",
     "diffEditor.wordWrap": "inherit",
     "editor.acceptSuggestionOnEnter": "on",
     "editor.autoClosingBrackets": "languageDefined",
