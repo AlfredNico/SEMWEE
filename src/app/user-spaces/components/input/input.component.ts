@@ -9,7 +9,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingTableComponent } from '../setting-table/setting-table.component';
-import { SettingTable } from '@app/models/setting-table';
+import { SettingRowsTable, SettingTable } from '@app/models/setting-table';
 
 
 
@@ -51,6 +51,8 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     { name: 'phone', ishidden: false },
   ];
 
+  public settingDisplayRows!: SettingRowsTable;
+
   // Generate form builder rows
   public filters = this.fb.group([]);
 
@@ -73,8 +75,10 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
       hide = (column != 'id') ?  true : false;
       this.settingDisplayColumns.dispayColumns[index] = { column, 'hidden': hide};
     });
-
-
+    this.settingDisplayRows = {
+      hiddenRows: ['id'],
+      noHiddenRows: ['lastName', 'fistName', 'phone', 'adresse']
+    }
   }
 
   ngOnInit(): void {
@@ -115,7 +119,7 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
   openSettingTable(): void{
     const dialogRef = this.dialog.open(SettingTableComponent, {
-      data: this.settingDisplayColumns 
+      data: this.settingDisplayRows
     });
   }
 

@@ -1,20 +1,21 @@
 <div fxLayout="column">
     <h1 mat-dialog-title>Drap and drop content</h1>
     <div mat-dialog-content>
-        <div cdkDropListGroupd>
-            <div class="example-container" fxLayout="row" fxLayoutAlign="space-around center">
-                <h2>To do</h2>
+        <div cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-evenly start">
 
-                <div cdkDropList [cdkDropListData]="hidden " class="example-list " (cdkDropListDropped)="drop($event) ">
-                    <div class="example-box " *ngFor="let item of hidden" cdkDrag>{{item}}</div>
+            <div class="example-container ">
+                <h2>Colonne Affichés</h2>
+
+                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of noHidden" cdkDrag>{{item}}</div>
                 </div>
             </div>
 
-            <div class="example-container ">
-                <h2>Done</h2>
+            <div class="example-container">
+                <h2>Colonne masque</h2>
 
-                <div cdkDropList [cdkDropListData]="noHidden" class="example-list " (cdkDropListDropped)="drop($event) ">
-                    <div class="example-box " *ngFor="let item of noHidden " cdkDrag>{{item}}</div>
+                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box " *ngFor="let item of hidden" cdkDrag>{{item}}</div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SettingTable } from '@app/models/setting-table';
+import { SettingRowsTable, SettingTable } from '@app/models/setting-table';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -10,20 +10,22 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 })
 export class SettingTableComponent implements OnInit {
 
-  public hidden: string[] = [];
-  public noHidden: string[] = [];
+  public hidden: any[] = [];
+  public noHidden: any[] = [];
+  public displayRows: SettingRowsTable = {hiddenRows: [], noHiddenRows: []};
+  constructor(@Inject(MAT_DIALOG_DATA) private data: SettingRowsTable) {
+    this.displayRows = data;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: SettingTable) {
     this.hidden = this.data.hiddenRows;
     this.noHidden = this.data.noHiddenRows;
     console.log(this.data);
-    
-   }
+
+  }
 
   ngOnInit(): void {
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -32,6 +34,14 @@ export class SettingTableComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
+    this.displayRows = {
+      hiddenRows: event.container.data,
+      noHiddenRows: event.previousContainer.data
+    }
+    // console.log('data', event.previousContainer.data, event.container.data);
+
+    console.log(this.displayRows);
+    
   }
 
 }
