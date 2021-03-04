@@ -1,42 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700");
 // Global vendors
 @import "~bootstrap/dist/css/bootstrap.css";
 // => Material
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-
 @import "~highlight.js/styles/googlecode.css";
 @import "~perfect-scrollbar/css/perfect-scrollbar.css";
-
 // Global fonts
 @import "~socicon/css/socicon.css";
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
 @import "./assets/plugins/flaticon/flaticon.css";
 @import "./assets/plugins/flaticon2/flaticon.css";
 @import "./assets/plugins/keenthemes-icons/font/ki.css";
-
 // Metronic styles (replace these path when using RTL css below)
 @import "./assets/sass/style.angular.scss";
-
 // For RTL, check this documentation https://keenthemes.com/metronic/?page=docs&section=angular-rtl
 // @import "./assets/sass/style.angular.rtl.css";
-
 // Default Layout themes
 @import "./assets/sass/themes/layout/header/base/light.scss";
 @import "./assets/sass/themes/layout/header/menu/light.scss";
 @import "./assets/sass/themes/layout/brand/dark.scss";
 @import "./assets/sass/themes/layout/aside/dark.scss";
-
 // Header themes
 // .header-base-light {
 //     @import "./assets/sass/themes/layout/header/base/light.scss";
 // }
-
 // .header-base-dark {
 //     @import "./assets/sass/themes/layout/header/base/dark.scss";
 // }
-
 // Header Menu themes
 // .header-menu-light {
 //     @import "./assets/sass/themes/layout/header/menu/light.scss";
@@ -44,292 +37,359 @@
 // .header-menu-dark {
 //     @import "./assets/sass/themes/layout/header/menu/dark.scss";
 // }
-
 // Brand themes
 .brand-dark {
-  @import "./assets/sass/themes/layout/brand/dark.scss";
+    @import "./assets/sass/themes/layout/brand/dark.scss";
 }
 
 .brand-light {
-  @import "./assets/sass/themes/layout/brand/light.scss";
+    @import "./assets/sass/themes/layout/brand/light.scss";
 }
 
 // Aside themes
 // .aside-dark {
 //   @import "./assets/sass/themes/layout/aside/dark.scss";
 // }
-
 // .aside-light {
 //   @import "./assets/sass/themes/layout/aside/light.scss";
 // }
-
 // hide bootstrap dropdown arrow globally
 .dropdown-toggle::after {
-  display: none !important;
+    display: none !important;
 }
 
 .angular-bootstrap-table {
-  overflow-x: auto;
+    overflow-x: auto;
 }
+
 .angular-bootstrap-table {
-  th {
-    outline: none;
-
-    &.sortable {
-      .svg-icon-sort {
-        opacity: 0;
-      }
-
-      &:hover {
-        cursor: pointer;
-
-        .svg-icon-sort {
-          opacity: 1;
+    th {
+        outline: none;
+        &.sortable {
+            .svg-icon-sort {
+                opacity: 0;
+            }
+            &:hover {
+                cursor: pointer;
+                .svg-icon-sort {
+                    opacity: 1;
+                }
+            }
         }
-      }
     }
-  }
-
-  .table.table-head-custom thead th.sortable-active {
-    color: $primary !important;
-  }
+    .table.table-head-custom thead th.sortable-active {
+        color: $primary !important;
+    }
 }
 
 .cursor-default {
-  cursor: default !important;
+    cursor: default !important;
 }
 
 .progress-modal {
-  height: 3px;
-  width: 100%;
+    height: 3px;
+    width: 100%;
 }
-        
-        // // Custom Theming for Angular Material
-        // // For more information: https://material.angular.io/guide/theming
-        // @import '~@angular/material/theming';
-        // @import './styles/utils';
-        // // Plus imports for other components in your app.
-        // // Include the common styles for Angular Material. We include this here so that you only
-        // // have to load a single css file for Angular Material in your app.
-        // // Be sure that you only ever include this mixin once!
-        // @include mat-core();
-        // // Define the palettes for your theme using the Material Design palettes available in palette.scss
-        // // (imported above). For each palette, you can optionally specify a default, lighter, and darker
-        // // hue. Available color palettes: https://material.io/design/color/
-        // $SEMWEE-primary: mat-palette($mat-indigo, 900);
-        // $SEMWEE-accent: mat-palette($mat-pink, A200, A100, A400);
-        // // The warn palette is optional (defaults to red).
-        // $SEMWEE-warn: mat-palette($mat-red);
-        // // Create the theme object. A theme consists of configurations for individual
-        // // theming systems such as "color" or "typography".
-        // $SEMWEE-theme: mat-light-theme(( color: ( primary: $SEMWEE-primary, accent: $SEMWEE-accent, warn: $SEMWEE-warn, )));
-        // // Include theme styles for core and each component used in your app.
-        // // Alternatively, you can import and @include the theme mixins for each component
-        // // that you are using.
-        // @include angular-material-theme($SEMWEE-theme);
-        // /* You can add global styles to this file, and also import other style files */
-        
-        // html,
-        // body {
-        //     height: 100%;
-        // }
-        
-        // body {
-        //     margin: 0;
-        //     font-family: Roboto, "Helvetica Neue", sans-serif;
-        //     // min-height: 100vh;
-        //     background: #e2e2e2;
-        // }
-        
-        // .mat-snack-bar-container.snack-bar-error {
-        //     background-color: #FF8A80;
-        //     color: #fff;
-        //     text-transform: uppercase;
-        //     .mat-simple-snackbar .mat-simple-snackbar-action button {
-        //         color: #fff;
-        //     }
-        // }
-        
-        // .mat-snack-bar-container.snack-bar-success {
-        //     background-color: #17426d;
-        //     color: #fff;
-        //     text-transform: uppercase;
-        //     .mat-simple-snackbar .mat-simple-snackbar-action button {
-        //         color: #fff;
-        //     }
-        // }
-        
-        // a {
-        //     text-decoration: none !important;
-        //     color: #2464a4 !important;
-        // }
-        
-        // .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-        //     background-color: #9bbee1 !important;
-        // }
-        
-        // .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-        //     background-color: #1063b5 !important;
-        // }
-        
-        // //  :host ::ng-deep {
-        // .nav-link {
-        //     text-decoration: none !important;
-        //     color: #2464a4 !important;
-        // }
-        
-        // .my-custom-component-small {
-        //     // add my-custom-component-small class to your mat-form-field element
-        //     .mat-form-field-flex>.mat-form-field-infix {
-        //         padding: 0.4em 0 !important;
-        //     }
-        //     .mat-form-field-label-wrapper {
-        //         top: -1.5em !important;
-        //     }
-        //     &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-        //         transform: translateY(-1.1em) scale(.75) !important;
-        //         width: 133.33333% !important;
-        //     }
-        //     .mat-form-field-wrapper {
-        //         margin-bottom: -1.25em !important;
-        //     }
-        //     .mat-form-field-appearance-standard .mat-form-field-flex {
-        //         padding-top: 0em !important;
-        //     }
-        //     // }
-        // }
 
+// // Custom Theming for Angular Material
+// // For more information: https://material.angular.io/guide/theming
+// @import '~@angular/material/theming';
+// @import './styles/utils';
+// // Plus imports for other components in your app.
+// // Include the common styles for Angular Material. We include this here so that you only
+// // have to load a single css file for Angular Material in your app.
+// // Be sure that you only ever include this mixin once!
+// @include mat-core();
+// // Define the palettes for your theme using the Material Design palettes available in palette.scss
+// // (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// // hue. Available color palettes: https://material.io/design/color/
+// $SEMWEE-primary: mat-palette($mat-indigo, 900);
+// $SEMWEE-accent: mat-palette($mat-pink, A200, A100, A400);
+// // The warn palette is optional (defaults to red).
+// $SEMWEE-warn: mat-palette($mat-red);
+// // Create the theme object. A theme consists of configurations for individual
+// // theming systems such as "color" or "typography".
+// $SEMWEE-theme: mat-light-theme(( color: ( primary: $SEMWEE-primary, accent: $SEMWEE-accent, warn: $SEMWEE-warn, )));
+// // Include theme styles for core and each component used in your app.
+// // Alternatively, you can import and @include the theme mixins for each component
+// // that you are using.
+// @include angular-material-theme($SEMWEE-theme);
+// /* You can add global styles to this file, and also import other style files */
+// html,
+// body {
+//     height: 100%;
+// }
+// body {
+//     margin: 0;
+//     font-family: Roboto, "Helvetica Neue", sans-serif;
+//     // min-height: 100vh;
+//     background: #e2e2e2;
+// }
+// .mat-snack-bar-container.snack-bar-error {
+//     background-color: #FF8A80;
+//     color: #fff;
+//     text-transform: uppercase;
+//     .mat-simple-snackbar .mat-simple-snackbar-action button {
+//         color: #fff;
+//     }
+// }
+// .mat-snack-bar-container.snack-bar-success {
+//     background-color: #17426d;
+//     color: #fff;
+//     text-transform: uppercase;
+//     .mat-simple-snackbar .mat-simple-snackbar-action button {
+//         color: #fff;
+//     }
+// }
+// a {
+//     text-decoration: none !important;
+//     color: #2464a4 !important;
+// }
+// .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+//     background-color: #9bbee1 !important;
+// }
+// .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+//     background-color: #1063b5 !important;
+// }
+// //  :host ::ng-deep {
+// .nav-link {
+//     text-decoration: none !important;
+//     color: #2464a4 !important;
+// }
+// .my-custom-component-small {
+//     // add my-custom-component-small class to your mat-form-field element
+//     .mat-form-field-flex>.mat-form-field-infix {
+//         padding: 0.4em 0 !important;
+//     }
+//     .mat-form-field-label-wrapper {
+//         top: -1.5em !important;
+//     }
+//     &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+//         transform: translateY(-1.1em) scale(.75) !important;
+//         width: 133.33333% !important;
+//     }
+//     .mat-form-field-wrapper {
+//         margin-bottom: -1.25em !important;
+//     }
+//     .mat-form-field-appearance-standard .mat-form-field-flex {
+//         padding-top: 0em !important;
+//     }
+//     // }
+// }
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+// @import '~@angular/material/theming';
+@import './styles/utils';
+// Plus imports for other components in your app.
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+// Create nested scss map
+$dark-primary-map: ( 50: #e7ebf0,
+100: #c3ced9,
+200: #9badbf,
+300: #738ca5,
+400: #557392,
+500: #40425d, // original primary color you built this map around
+600: #315277,
+700: #2a486c,
+800: #233f62,
+900: #162e4f,
+A100: #8bb8ff,
+A200: #5898ff,
+A400: #2579ff,
+A700: #0c69ff,
+contrast: ( 50: #000000,
+100: #000000,
+200: #000000,
+300: #000000,
+400: #ffffff,
+500: #ffffff,
+600: #ffffff,
+700: #ffffff,
+800: #ffffff,
+900: #ffffff,
+A100: #000000,
+A200: #000000,
+A400: #ffffff,
+A700: #ffffff));
+$dark-accent-map: ( 50: #e9e9e9,
+100: #c7c7c7,
+200: #a2a2a2,
+300: #7c7c7c,
+400: #606060,
+500: #444444, // original accent color you built this map around
+600: #3e3e3e,
+700: #353535,
+800: #2d2d2d,
+900: #1f1f1f,
+A100: #f07a7a,
+A200: #eb4c4c,
+A400: #ff0505,
+A700: #eb0000,
+contrast: ( 50: #000000,
+100: #000000,
+200: #000000,
+300: #ffffff,
+400: #ffffff,
+500: #ffffff,
+600: #ffffff,
+700: #ffffff,
+800: #ffffff,
+900: #ffffff,
+A100: #000000,
+A200: #ffffff,
+A400: #ffffff,
+A700: #ffffff));
+$dark-warn-map: ( 50: #fde0e0,
+100: #f9b3b3,
+200: #f58080,
+300: #f14d4d,
+400: #ee2626,
+500: #eb0000, // original warn color you built this map around
+600: #e90000,
+700: #e50000,
+800: #e20000,
+900: #dd0000,
+A100: #ffffff,
+A200: #ffd1d1,
+A400: #ff9e9e,
+A700: #ff8585,
+contrast: ( 50: #000000,
+100: #000000,
+200: #000000,
+300: #ffffff,
+400: #ffffff,
+500: #ffffff,
+600: #ffffff,
+700: #ffffff,
+800: #ffffff,
+900: #ffffff,
+A100: #000000,
+A200: #000000,
+A400: #000000,
+A700: #000000));
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$SEMWEE-primary: mat-palette($dark-primary-map,
+500);
+$SEMWEE-accent: mat-palette($mat-pink,
+A200,
+A100,
+A400);
+// The warn palette is optional (defaults to red).
+$SEMWEE-warn: mat-palette($mat-red);
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$SEMWEE-theme: mat-light-theme(( color: ( primary: $SEMWEE-primary, accent: $SEMWEE-accent, warn: $SEMWEE-warn, )));
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($SEMWEE-theme);
 
-        // Custom Theming for Angular Material
-        // For more information: https://material.angular.io/guide/theming
-        // @import '~@angular/material/theming';
-        @import './styles/utils';
-        // Plus imports for other components in your app.
-        // Include the common styles for Angular Material. We include this here so that you only
-        // have to load a single css file for Angular Material in your app.
-        // Be sure that you only ever include this mixin once!
-        @include mat-core();
-        // Define the palettes for your theme using the Material Design palettes available in palette.scss
-        // (imported above). For each palette, you can optionally specify a default, lighter, and darker
-        // hue. Available color palettes: https://material.io/design/color/
+/* You can add global styles to this file, and also import other style files */
 
-          // Create nested scss map
-        $dark-primary-map: ( 50: #e7ebf0, 100: #c3ced9, 200: #9badbf, 300: #738ca5, 400: #557392, 500: #40425d, // original primary color you built this map around
-        600: #315277, 700: #2a486c, 800: #233f62, 900: #162e4f, A100: #8bb8ff, A200: #5898ff, A400: #2579ff, A700: #0c69ff, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #000000, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #000000, A400: #ffffff, A700: #ffffff));
-        $dark-accent-map: ( 50: #e9e9e9, 100: #c7c7c7, 200: #a2a2a2, 300: #7c7c7c, 400: #606060, 500: #444444, // original accent color you built this map around
-        600: #3e3e3e, 700: #353535, 800: #2d2d2d, 900: #1f1f1f, A100: #f07a7a, A200: #eb4c4c, A400: #ff0505, A700: #eb0000, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #ffffff, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #ffffff, A400: #ffffff, A700: #ffffff));
-        $dark-warn-map: ( 50: #fde0e0, 100: #f9b3b3, 200: #f58080, 300: #f14d4d, 400: #ee2626, 500: #eb0000, // original warn color you built this map around
-        600: #e90000, 700: #e50000, 800: #e20000, 900: #dd0000, A100: #ffffff, A200: #ffd1d1, A400: #ff9e9e, A700: #ff8585, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #ffffff, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #000000, A400: #000000, A700: #000000));
-        // Define the palettes for your theme using the Material Design palettes available in palette.scss
-        // (imported above). For each palette, you can optionally specify a default, lighter, and darker
-        // hue. Available color palettes: https://material.io/design/color/
+html,
+body {
+    height: 100%;
+}
 
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    // min-height: 100vh;
+    background: #e2e2e2;
+}
 
-        $SEMWEE-primary: mat-palette($dark-primary-map, 500);
-        $SEMWEE-accent: mat-palette($mat-pink, A200, A100, A400);
-        // The warn palette is optional (defaults to red).
-        $SEMWEE-warn: mat-palette($mat-red);
-        // Create the theme object. A theme consists of configurations for individual
-        // theming systems such as "color" or "typography".
-        $SEMWEE-theme: mat-light-theme(( color: ( primary: $SEMWEE-primary, accent: $SEMWEE-accent, warn: $SEMWEE-warn, )));
-        // Include theme styles for core and each component used in your app.
-        // Alternatively, you can import and @include the theme mixins for each component
-        // that you are using.
-        @include angular-material-theme($SEMWEE-theme);
-        /* You can add global styles to this file, and also import other style files */
-        
-        html,
-        body {
-            height: 100%;
-        }
-        
-        body {
-            margin: 0;
-            font-family: Roboto, "Helvetica Neue", sans-serif;
-            // min-height: 100vh;
-            background: #e2e2e2;
-        }
-        
-        .mat-snack-bar-container.snack-bar-error {
-            background-color: #FF8A80;
-            color: #fff;
-            text-transform: uppercase;
-            .mat-simple-snackbar .mat-simple-snackbar-action button {
-                color: #fff;
-            }
-        }
-        
-        .mat-snack-bar-container.snack-bar-success {
-            background-color: #17426d;
-            color: #fff;
-            text-transform: uppercase;
-            .mat-simple-snackbar .mat-simple-snackbar-action button {
-                color: #fff;
-            }
-        }
-        
-        a {
-            text-decoration: none !important;
-            color: #2464a4 !important;
-        }
-        
-        .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-            background-color: #9bbee1 !important;
-        }
-        
-        .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-            background-color: #1063b5 !important;
-        }
-        
-        //  :host ::ng-deep {
-        .nav-link {
-            text-decoration: none !important;
-            color: #2464a4 !important;
-        }
-        
-        // .my-custom-component-small {
-        //     // add my-custom-component-small class to your mat-form-field element
-        //     .mat-form-field-flex>.mat-form-field-infix {
-        //         padding: 0.4em 0 !important;
-        //     }
-        //     .mat-form-field-label-wrapper {
-        //         top: -1.5em !important;
-        //     }
-        //     &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-        //         transform: translateY(-1.1em) scale(.75) !important;
-        //         width: 133.33333% !important;
-        //     }
-        //     .mat-form-field-wrapper {
-        //         margin-bottom: -1.25em !important;
-        //     }
-        //     .mat-form-field-appearance-standard .mat-form-field-flex {
-        //         padding-top: 0em !important;
-        //     }
-        //     // }
-        // }
-        // search input 
-        #search,
-        #filters,
-        #sortbbyType {
-            .mat-form-field-flex>.mat-form-field-infix {
-                padding: 0.4em 0px !important;
-                width: auto !important;
-            }
-            .mat-form-field-label-wrapper {
-                top: -1.5em;
-            }
-            &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-                transform: translateY(-1.1em) scale(0.75);
-                width: 133.33333%;
-            }
-            .mat-form-field-wrapper {
-                padding-bottom: 0;
-            }
-        }
-        
-        .custom-placeholder-drag-drop {
-            background: #ccc;
-            border: dotted 3px #999;
-            min-height: 60px;
-            transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-        }
+app-root {
+    height: 100%;
+}
+
+.mat-snack-bar-container.snack-bar-error {
+    background-color: #FF8A80;
+    color: #fff;
+    text-transform: uppercase;
+    .mat-simple-snackbar .mat-simple-snackbar-action button {
+        color: #fff;
+    }
+}
+
+.mat-snack-bar-container.snack-bar-success {
+    background-color: #17426d;
+    color: #fff;
+    text-transform: uppercase;
+    .mat-simple-snackbar .mat-simple-snackbar-action button {
+        color: #fff;
+    }
+}
+
+a {
+    text-decoration: none !important;
+    color: #2464a4 !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #9bbee1 !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #1063b5 !important;
+}
+
+//  :host ::ng-deep {
+.nav-link {
+    text-decoration: none !important;
+    color: #2464a4 !important;
+}
+
+// .my-custom-component-small {
+//     // add my-custom-component-small class to your mat-form-field element
+//     .mat-form-field-flex>.mat-form-field-infix {
+//         padding: 0.4em 0 !important;
+//     }
+//     .mat-form-field-label-wrapper {
+//         top: -1.5em !important;
+//     }
+//     &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+//         transform: translateY(-1.1em) scale(.75) !important;
+//         width: 133.33333% !important;
+//     }
+//     .mat-form-field-wrapper {
+//         margin-bottom: -1.25em !important;
+//     }
+//     .mat-form-field-appearance-standard .mat-form-field-flex {
+//         padding-top: 0em !important;
+//     }
+//     // }
+// }
+// search input 
+#search,
+#filters,
+#sortbbyType {
+    .mat-form-field-flex>.mat-form-field-infix {
+        padding: 0.4em 0px !important;
+        width: auto !important;
+    }
+    .mat-form-field-label-wrapper {
+        top: -1.5em;
+    }
+    &.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(0.75);
+        width: 133.33333%;
+    }
+    .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+}
+
+.custom-placeholder-drag-drop {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 60px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
