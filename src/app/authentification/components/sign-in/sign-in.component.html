@@ -17,7 +17,7 @@
                                     <img mat-card-image src="/assets/images/logo.png" alt="Logo">
                                 </div>
                                 <div class="w-100 mt-3" fxLayoutAlign="center center">
-                                    <mat-card-title class="py-2 signin-text">Bon retour parmi nous! Veuillez-vous connecter à votre compte</mat-card-title>
+                                    <mat-card-title class="py-2 signin-text">Welcome back! Please login to your account.</mat-card-title>
                                 </div>
                             </div>
                             <!--end::Title-->
@@ -25,26 +25,31 @@
                             <!--begin::Form group-->
 
                             <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Adresse e-mail</mat-label>
+                                <mat-label>Email</mat-label>
                                 <input matInput type="email" formControlName="username">
-                                <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
-                                <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
+                                <mat-error *ngIf="getusername.errors && getusername.errors.required">Email required
+                                </mat-error>
+                                <mat-error *ngIf="getusername.errors && getusername.errors.email">
+                                    Invalid email</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Mot de passe</mat-label>
+                                <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 
 
-                                <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
+                                <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Password required
+                                </mat-error>
                             </mat-form-field>
                             <!--end::Form group-->
 
                             <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
-                                <mat-checkbox id="stayOn" [formControl]="stayOn" color="primary">Rester connecté</mat-checkbox>
+                                <mat-checkbox id="stayOn" [formControl]="stayOn" color="primary">
+                                    Remember me</mat-checkbox>
                                 <div>
-                                    <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
+                                    <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Forgot
+                                      password</a>
                                 </div>
                             </div>
                             <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
@@ -56,9 +61,8 @@
                             <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
 
-                                    <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Se
-            connecter</button>
-                                    <button class="btn-signup" type="button" [routerLink]="['/inscription']">S'inscrire</button>
+                                    <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Login</button>
+                                    <button class="btn-signup" type="button" [routerLink]="['/inscription']">Sign up</button>
                                 </div>
 
 
@@ -75,7 +79,7 @@
                 <!--end::Content body-->
 
                 <!--begin::Content footer-->
-                <p class="term">Conditions d'utilisation. Politique de confidentialité</p>
+                <p class="term">Terms of use. Privacy policy</p>
                 <!--end::Content footer-->
 
             </div>
@@ -83,3 +87,4 @@
         </div>
         <!--end::Login-->
     </div>
+</div>
