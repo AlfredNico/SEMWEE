@@ -7,10 +7,18 @@
         // have to load a single css file for Angular Material in your app.
         // Be sure that you only ever include this mixin once!
         @include mat-core();
+        // Create nested scss map
+        $dark-primary-map: ( 50: #e7ebf0, 100: #c3ced9, 200: #9badbf, 300: #738ca5, 400: #557392, 500: #40425d, // original primary color you built this map around
+        600: #315277, 700: #2a486c, 800: #233f62, 900: #162e4f, A100: #8bb8ff, A200: #5898ff, A400: #2579ff, A700: #0c69ff, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #000000, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #000000, A400: #ffffff, A700: #ffffff));
+        $dark-accent-map: ( 50: #e9e9e9, 100: #c7c7c7, 200: #a2a2a2, 300: #7c7c7c, 400: #606060, 500: #444444, // original accent color you built this map around
+        600: #3e3e3e, 700: #353535, 800: #2d2d2d, 900: #1f1f1f, A100: #f07a7a, A200: #eb4c4c, A400: #ff0505, A700: #eb0000, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #ffffff, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #ffffff, A400: #ffffff, A700: #ffffff));
+        $dark-warn-map: ( 50: #fde0e0, 100: #f9b3b3, 200: #f58080, 300: #f14d4d, 400: #ee2626, 500: #eb0000, // original warn color you built this map around
+        600: #e90000, 700: #e50000, 800: #e20000, 900: #dd0000, A100: #ffffff, A200: #ffd1d1, A400: #ff9e9e, A700: #ff8585, contrast: ( 50: #000000, 100: #000000, 200: #000000, 300: #ffffff, 400: #ffffff, 500: #ffffff, 600: #ffffff, 700: #ffffff, 800: #ffffff, 900: #ffffff, A100: #000000, A200: #000000, A400: #000000, A700: #000000));
         // Define the palettes for your theme using the Material Design palettes available in palette.scss
         // (imported above). For each palette, you can optionally specify a default, lighter, and darker
         // hue. Available color palettes: https://material.io/design/color/
-        $SEMWEE-primary: mat-palette($mat-indigo, 900);
+        $SEMWEE-primary: mat-palette($dark-primary-map, 500);
+        // $SEMWEE-primary: mat-palette($mat-indigo, 500);
         $SEMWEE-accent: mat-palette($mat-pink, A200, A100, A400);
         // The warn palette is optional (defaults to red).
         $SEMWEE-warn: mat-palette($mat-red);
