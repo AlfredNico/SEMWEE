@@ -10,7 +10,7 @@
       <div fxLayout="column"
         class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
         <!--begin::Content body-->
-        <div class="d-flex flex-column-fluid flex-center">
+        <div class="d-flex flex-column-fluid flex-center my-10">
           
             
             <!--begin::Signin-->
@@ -61,11 +61,12 @@ class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
   </div>
   
       <!--begin::Action-->
-      <div class="pb-lg-0 pb-5" fxLayout="row" fxLayoutAlign="space-around center">
-        <div class="py-2">
-            <button mat-raised-button type="submit" class="m-2" color="primary">Se connecter</button>
-            <!-- <a [routerLink]="['/inscription']"> S'inscrire</a> -->
-            <button class="btn-signup" type="button" [routerLink]="['/inscription']">S'inscrire</button>
+      <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+        <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Se connecter</button>
+        <button class="btn-signup" type="button" [routerLink]="['/inscription']">S'inscrire</button>
+
         </div>
 
 
@@ -80,10 +81,11 @@ class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
 
         </div>
         <!--end::Content body-->
-  
-        <!--begin::Content footer-->
-          <p class="term py-2">Term of use. Privacy policy</p>
-        <!--end::Content footer-->
+        
+    <!--begin::Content footer-->
+    <p class="term">Conditions d'utilisation. Politique de confidentialité</p>
+    <!--end::Content footer-->
+        
       </div>
       <!--end::Content-->
     </div>

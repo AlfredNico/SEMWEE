@@ -51,12 +51,15 @@
 .signin-text {
     color: #C3C2C6;
     font-size: 13px;
+    font-weight: 400;
 }
 
 .term {
     color: #40425D;
     size: 3px;
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 .btn-signup {
@@ -77,10 +80,36 @@
     vertical-align: baseline;
     text-align: center;
     margin: 0;
-    min-width: 100px;
-    line-height: 36px;
+    min-width: 175px;
+    line-height: 34px;
     border-radius: 4px;
     overflow: visible;
     transform: translate3d(0, 0, 0);
     transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1),box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.btn-signin {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    min-width: 175px;
+    line-height: 38px;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #40425D !important;
+   }
+  
+::ng-deep.mat-form-field-underline {
+/*change color of underline*/
+background-color: #EDEDED !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+background-color: #40425D !important;;
 }
