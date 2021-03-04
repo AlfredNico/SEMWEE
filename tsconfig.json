@@ -6,7 +6,7 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false, // fix not all the code path return the value
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,

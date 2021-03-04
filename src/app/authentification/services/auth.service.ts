@@ -57,6 +57,6 @@ export class AuthService {
     this.cookieService.deleteAll();
     this.currentUserSubject.next(new User(undefined));
     // location.reload();
-    this.router.navigateByUrl('/connexion');
+    this.router.navigateByUrl('/sign-in');
   }
 }

@@ -9,10 +9,10 @@
                     <button mat-icon-button aria-label="menu icon" (click)="leftSidenav.toggle();">
                                 <mat-icon>menu</mat-icon>
                             </button>
-                    <a mat-button [routerLink]="['/espace-user']">Accueil</a>
+                    <a mat-button [routerLink]="['/user-space']">Accueil</a>
                     <div class="spacer"></div>
                     <ng-template #loginTemplete>
-                        <button mat-stroked-button [routerLink]="['/connexion']" class="mx-3">Connecter</button>
+                        <button mat-stroked-button [routerLink]="['/sign-in']" class="mx-3">Connecter</button>
                     </ng-template>
                     <ng-template #logoutTemplete>
                         <button mat-stroked-button (click)="auth.logout()" class="mx-3">Déconnecter</button>
