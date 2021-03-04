@@ -7,6 +7,7 @@
             <div fxLayout="column" class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
                 <!--begin::Content body-->
                 <div class="d-flex flex-column-fluid flex-center" style="height: 100%;">
+
                     <!--begin::Signin-->
                     <div fxLayout="column" fxLayoutAlign="space-between center" class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
                         <!--begin::Form-->
@@ -23,7 +24,6 @@
                             <!--end::Title-->
 
                             <!--begin::Form group-->
-
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
                                 <input matInput type="email" formControlName="username">
@@ -37,8 +37,6 @@
                                 <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-
-
                                 <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Password required
                                 </mat-error>
                             </mat-form-field>
@@ -48,12 +46,12 @@
                                 <mat-checkbox id="stayOn" [formControl]="stayOn" color="primary">
                                     Remember me</mat-checkbox>
                                 <div>
-                                    <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Forgot
+                                    <a class="nav-link" [routerLink]="['/forgot-password']"> Forgot
                                       password</a>
                                 </div>
                             </div>
                             <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
-                                <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.siteKey" [size]="recaptcha.size" formControlName="recaptcha">
+                                <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.options.siteKey" [hl]="recaptcha.options.language" [size]="'normal'" formControlName="recaptcha">
                                 </ngx-recaptcha2>
                             </div>
 
@@ -62,18 +60,14 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
 
                                     <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Login</button>
-                                    <button class="btn-signup" type="button" [routerLink]="['/inscription']">Sign up</button>
+                                    <button class="btn-signup" type="button" [routerLink]="['/sign-up']">Sign up</button>
                                 </div>
-
-
                             </div>
                             <!--end::Action-->
                         </form>
                         <!--end::Form-->
                     </div>
                     <!--end::Signin-->
-
-
 
                 </div>
                 <!--end::Content body-->

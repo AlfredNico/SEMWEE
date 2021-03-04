@@ -64,8 +64,6 @@
                                 <mat-label>Confirm Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirm_password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-
-
                                 <!-- <mat-error *ngIf="getpassword.errors && getpassword.errors.required ">Mot de passe requis</mat-error> -->
                             </mat-form-field>
                             <!--end::Form group-->
@@ -85,24 +83,18 @@
                                     <a class="nav-link" [routerLink]="['/connexion']">Already have
                                       an account? Sign in</a>
                                 </div>
-
-
                             </div>
                             <!--end::Action-->
                         </form>
                         <!--end::Form-->
                     </div>
                     <!--end::Signin-->
-
-
-
                 </div>
                 <!--end::Content body-->
 
                 <!--begin::Content footer-->
                 <p class="term">Terms of use. Privacy policy</p>
                 <!--end::Content footer-->
-
             </div>
             <!--end::Content-->
         </div>

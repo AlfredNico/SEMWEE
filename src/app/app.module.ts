@@ -44,11 +44,11 @@ import { IsLoggedInGuard } from './guards/is-logged-in.guard';
         loadChildren: () => import('./authentification/components/sign-in/auth.module').then(m => m.AuthModule)
       },
       {
-        path: 'inscription',
+        path: 'sign-up',
         loadChildren: () => import('./authentification/components/sign-up/sign-up.module').then(m => m.SignUpModule)
       },
       {
-        path: 'mot-passe-oublie',
+        path: 'forgot-password',
         loadChildren: () => import('./authentification/components/forget-password/forget-password.module').then(m => m.ForgetPasswordModule)
       },
       { path: '', pathMatch: 'full', redirectTo: 'accueil' },
