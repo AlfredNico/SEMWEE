@@ -19,7 +19,7 @@
                                     <img mat-card-image fxLayoutAlign="center center" src="/assets/images/logo.png" alt="Logo">
                                 </div>
                                 <div class="w-100 mt-3" fxLayoutAlign="center center">
-                                    <mat-card-title class="py-2 signin-text">Veuillez completer la formulaire pour la création de votre compte</mat-card-title>
+                                    <mat-card-title class="py-2 signin-text">Please complete to create your account</mat-card-title>
                                 </div>
                             </div>
                             <!--end::Title-->
@@ -29,7 +29,7 @@
                                 <tr>
                                     <td>
                                         <mat-form-field appearance="standard">
-                                            <mat-label>Prénom</mat-label>
+                                            <mat-label>First name</mat-label>
                                             <input matInput type="text" formControlName="firstname">
                                             <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
           <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
@@ -37,7 +37,7 @@
                                     </td>
                                     <td>
                                         <mat-form-field appearance="standard">
-                                            <mat-label>Nom</mat-label>
+                                            <mat-label>Last name</mat-label>
                                             <input matInput type="text" formControlName="lastname">
                                             <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
           <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
@@ -53,21 +53,21 @@
 
 
                             <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Nom d'utilisateur</mat-label>
+                                <mat-label>Username</mat-label>
                                 <input matInput type="text" formControlName="username">
                                 <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
   <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Adresse e-mail</mat-label>
+                                <mat-label>Email</mat-label>
                                 <input matInput type="email" formControlName="email">
                                 <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
       <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Mot de passe</mat-label>
+                                <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 
@@ -76,7 +76,7 @@
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
-                                <mat-label>Confirmation du mot de passe</mat-label>
+                                <mat-label>Confirm Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirm_password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 
@@ -86,7 +86,8 @@
                             <!--end::Form group-->
 
                             <div class="py-2 text-condition" fxLayout="row" fxLayoutAlign="space-between center">
-                                <mat-checkbox color="primary">J'accepte tous les termes et les conditions</mat-checkbox>
+                                <mat-checkbox color="primary">I agree with terms and conditions
+                                </mat-checkbox>
                             </div>
 
                             <!-- <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
@@ -98,11 +99,12 @@
                             <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
                                 <div fxLayout="row" fxLayoutAlign="space-between center">
 
-                                    <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">S'inscrire</button>
+                                    <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Sign up</button>
                                 </div>
 
                                 <div class="my-2">
-                                    <a class="nav-link" [routerLink]="['/connexion']">Déjà une compte? Se connecter</a>
+                                    <a class="nav-link" [routerLink]="['/connexion']">Already have
+                                      an account? Sign in</a>
                                 </div>
 
 
@@ -119,7 +121,7 @@
                 <!--end::Content body-->
 
                 <!--begin::Content footer-->
-                <p class="term">Conditions d'utilisation. Politique de confidentialité</p>
+                <!-- <p class="term">Terms of use. Privacy policy</p> -->
                 <!--end::Content footer-->
 
             </div>
@@ -127,3 +129,4 @@
         </div>
         <!--end::Login-->
     </div>
+</div>
