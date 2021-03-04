@@ -26,7 +26,7 @@
                 <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
                     <mat-slide-toggle id="stayOn" [formControl]="stayOn">Réstez connecté</mat-slide-toggle>
                     <div>
-                        <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
+                        <a class="nav-link" [routerLink]="['/forgot-password']"> Mot de passe oublié</a>
                     </div>
                 </div>
 
@@ -38,7 +38,7 @@
                 <div fxLayout="row" fxLayoutAlign="space-around center" class="py-2">
                     <button mat-raised-button type="submit" class="m-2" color="primary">Se connecter</button>
                     <!-- <a [routerLink]="['/inscription']"> S'inscrire</a> -->
-                    <button mat-stroked-button type="button" class="m-2" [routerLink]="['/inscription']">S'inscrire</button>
+                    <button mat-stroked-button type="button" class="m-2" [routerLink]="['/sign-up']">S'inscrire</button>
                 </div>
             </form>
         </div>
