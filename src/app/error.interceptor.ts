@@ -20,24 +20,25 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     console.log('request', request.url);
-        
+
     return next.handle(request).pipe(catchError(err => {
       const error = err.error.message || err.statusText;
 
       if (err instanceof HttpErrorResponse) {
-        if (err.status === 401 && !this.cookieService.check('semewee')) {
+        if (err.status === 401 && !this.cookieService.check('SEMEWEE')) {
           // auto logout if 401 response returned from api
           // this.authService.logout();
           // location.reload(true);
+          this.notifs.warn(error);
           console.log('error', error);
           window.location.reload();
           return EMPTY;
         }
-        else if (err.status === 401 && this.cookieService.check('semewee')){
-          this.notifs.warn(error);
+        else if (err.status === 401 && this.cookieService.check('SEMEWEE')) {
+          this.notifs.warn('Session expiré');
           this.router.navigateByUrl('/connexion')
         }
-      }else{
+      } else {
         this.notifs.warn(error);
         return throwError(error);
       }
