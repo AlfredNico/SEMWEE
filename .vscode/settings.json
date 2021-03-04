@@ -1,7 +1,12 @@
 {
     // "editor.wordWrap": "on",
     "editor.wordWrap": "wordWrapColumn",
+<<<<<<< HEAD
     // "files.autoSave": "afterDelay",
+=======
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+>>>>>>> database
     "diffEditor.wordWrap": "inherit",
     "editor.acceptSuggestionOnEnter": "on",
     "editor.autoClosingBrackets": "languageDefined",

@@ -32,17 +32,17 @@ export class AuthService {
 
   public login(value: { username: string, password: string }) {
     console.log('value', value);
-    
+
     return this.http.post<Users>(`${environment.BASE_URL}/authenticate`, value)
       .pipe(
         map(user => {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          this.cookieService.set('SEMEWEE', user.token, 0.2, '/', 'semewee', true, 'Strict');
-          this.cookieService.set('id', JSON.stringify(user.id), 0.2, '/', 'semewee', true, 'Strict');
-          this.cookieService.set('firstName', user.firstName, 0.2, '/', 'semewee', true, 'Strict');
-          this.cookieService.set('lastName', user.lastName, 0.2, '/', 'semewee', true, 'Strict');
-          this.cookieService.set('password', user.password, 0.2, '/', 'semewee', true, 'Strict');
-          this.cookieService.set('username', user.username, 0.2, '/', 'semewee', true, 'Strict');
+          this.cookieService.set('SEMEWEE', user.token, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('id', JSON.stringify(user.id), 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('firstName', user.firstName, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('lastName', user.lastName, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('password', user.password, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('username', user.username, 0.2, '/', undefined, false, 'Strict');
 
           this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);

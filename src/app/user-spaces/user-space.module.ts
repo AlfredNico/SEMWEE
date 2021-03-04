@@ -9,23 +9,26 @@ import { FilesComponent } from './components/files/files.component';
 import { InputComponent } from './components/input/input.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { OutputComponent } from './components/output/output.component';
+import { SettingTableComponent } from './components/setting-table/setting-table.component';
 
 
 
 @NgModule({
-  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent, SideMenuComponent],
+  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent, SideMenuComponent, SettingTableComponent],
   imports: [
     LandingPageModule,
     LandingModule,
     SharedModule,
     RouterModule.forChild([
-      { path: '', component: LayoutComponent, children: [
-        { path: 'file', component: FilesComponent },
-        { path: 'input', component: InputComponent },
-        { path: 'check', component: CheckComponent },
-        { path: 'output', component: OutputComponent },
-        { path: '', redirectTo: 'file', pathMatch: 'full' }
-      ] },
+      {
+        path: '', component: LayoutComponent, children: [
+          { path: 'file', component: FilesComponent },
+          { path: 'input', component: InputComponent },
+          { path: 'check', component: CheckComponent },
+          { path: 'output', component: OutputComponent },
+          { path: '', redirectTo: 'file', pathMatch: 'full' }
+        ]
+      },
     ]),
   ],
   exports: [RouterModule]

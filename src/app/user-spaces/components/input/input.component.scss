@@ -11,7 +11,7 @@
 //     // width: 24px;
 //     // height: 24px;
 // }
-highlight {
+.high-light {
     background: #42A948;
     /* green */
 }
@@ -22,4 +22,8 @@ highlight {
 
 .mat-form-field-infix {
     width: auto !important;
+}
+
+.hide-row {
+    display: none;
 }

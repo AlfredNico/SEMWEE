@@ -23,30 +23,18 @@ export class AuthGuard implements CanActivate {
         } else if (localStorage.getItem('currentUser')) {
           console.log('localStorage', localStorage.getItem('currentUser'));
           this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          this.router.navigateByUrl('/espace-user');
           return of(true);
         } else if (this.cookieService.check('SEMEWEE')){
-          const user = new User({
-            id: +this.cookieService.get('id'),
-            firstName: this.cookieService.get('firstName'),
-            lastName: this.cookieService.get('lastName'),
-            password: this.cookieService.get('password'),
-            token: this.cookieService.get('SEMEWEE'),
-            username: this.cookieService.get('username'),
-          });
-          console.log('cookie', this.cookieService.check('SEMEWEE'));
-
-          console.log(user);
-          
-          // this.authService.currentUserSubject.next(new User({
+          // const user = new User({
           //   id: +this.cookieService.get('id'),
           //   firstName: this.cookieService.get('firstName'),
           //   lastName: this.cookieService.get('lastName'),
           //   password: this.cookieService.get('password'),
-          //   token: this.cookieService.get('token'),
+          //   token: this.cookieService.get('SEMEWEE'),
           //   username: this.cookieService.get('username'),
-          // }));
-
-          // this.router.navigateByUrl('/espace-user');
+          // });
+          this.router.navigateByUrl('/espace-user');
           return of(true);
         }
         else{
