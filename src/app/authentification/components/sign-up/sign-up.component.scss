@@ -1,0 +1,60 @@
+@import "../../../../assets/sass/pages/login/login-1.scss";
+
+@media (min-width: 992px) {
+        .login-form {
+        width: 100%;
+        max-width: 450px;
+
+        .mat-form-field {
+            width: 100%;
+        }
+        }
+}
+
+// .login-content {
+//     display: flex;
+//     align-items: center !important;
+//     justify-content: center !important;
+// }
+
+// .login-content mat-card {
+//     // padding: 40px 70px 50px;
+//     // padding: 60px 50px 40px 50px;
+//     // border-radius: 10px;
+//     transform: scale(1);
+//     -webkit-transform: scale(1);
+//     -ms-transform: scale(1);
+//     z-index: 5;
+//     border: 55px solid rgb(255, 255, 255);
+// }
+
+// .login-wrapper mat-card-header mat-card-title {
+//     font-size: 30px;
+//     padding: 40px 70px 50px;
+// }
+
+// .mat-card>:first-child,
+// .mat-card-content>:first-child {
+//     margin-top: 0;
+// }
+
+// .login-left {
+//     background: url('/assets/images/bg_image.jpeg');
+//     /* Full height */
+//     height: 100%;
+//     /* Center and scale the image nicely */
+//     background-position: center;
+//     background-repeat: no-repeat;
+//     background-size: cover;
+// }
+
+.signin-text {
+    color: #C3C2C6;
+    font-size: 13px;
+}
+
+.term {
+    color: #40425D;
+    size: 3px;
+    text-align: center;
+}

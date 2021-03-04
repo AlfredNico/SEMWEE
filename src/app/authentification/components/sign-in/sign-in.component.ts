@@ -13,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit {
+  hide = true;
 
   public loginForm = this.fb.group({
     username: ['', [Validators.required, Validators.email]],

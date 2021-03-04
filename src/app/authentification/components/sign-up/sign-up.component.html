@@ -1,1 +1,112 @@
-<p>sign-up works!</p>
+<div fxLayout="row" fxLayoutGap="10" class="d-flex flex-column flex-root h-100">
+    <!--begin::Login-->
+    <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white">
+      <!--begin::Aside-->
+      <div class="login-aside aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-center bgi-position-x-center" style="background-image: url('../../../assets/images/bg_sign.png');">
+      </div>
+      <!--begin::Aside-->
+  
+      <!--begin::Content-->
+      <div fxLayout="column"
+        class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+        <!--begin::Content body-->
+        <div class="d-flex flex-column-fluid flex-center">
+          
+            
+            <!--begin::Signin-->
+<div  fxLayout="column" fxLayoutAlign="space-between center" 
+class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
+    <!--begin::Form-->
+    
+      <!--begin::Title-->
+      <div class="pb-13 pt-lg-0 pt-5" fxLayout="column" fxLayoutAlign="center center">
+        <div class="w-100" fxLayoutAlign="center center">
+            <img mat-card-image src="/assets/images/logo.png" alt="Logo">
+        </div>
+        <div class="w-100 mt-3" fxLayoutAlign="center center">
+            <mat-card-title class="py-2 signin-text">S'il vous plaît, completez la formulaire pour votre compte</mat-card-title>
+        </div>
+      </div>
+      <!--end::Title-->
+  
+      <!--begin::Form group-->
+      <form class="form">
+
+      <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Prénom</mat-label>
+        <input matInput type="text" formControlName="firstname">
+        <!-- <mat-error *ngIf="getfirstname.errors && getfirstname.errors.required">Prénom est requis</mat-error>
+        <mat-error *ngIf="getfirstname.errors && getfirstname.errors.firstname">Prénom invalid</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Nom</mat-label>
+        <input matInput type="text" formControlName="lastname">
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Nom d'utilisateur</mat-label>
+        <input matInput type="text" formControlName="username">
+        <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Nom d'utilisateur est requis</mat-error>
+        <mat-error *ngIf="getusername.errors && getusername.errors.firstname">Nom d'utilisateur invalid</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Adresse e-mail</mat-label>
+        <input matInput type="email" formControlName="username">
+        <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+        <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
+        <!-- <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Confirmation mot de passe</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
+        <!-- <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error> -->
+    </mat-form-field>
+      <!--end::Form group-->
+
+      <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-slide-toggle id="stayOn">J'accepte tous les termes et les conditions</mat-slide-toggle>
+    </div>
+  
+      <!--begin::Action-->
+      <div class="pb-lg-0 pb-5" fxLayout="row" fxLayoutAlign="space-around center">
+        <div class="py-2">
+            <button mat-raised-button type="submit" class="m-2" color="primary">S'inscrire</button>
+            <!-- <a [routerLink]="['/inscription']"> S'inscrire</a> -->
+        </div>
+
+
+      </div>
+
+      
+      <div class="mt-1">
+        <a class="nav-link" [routerLink]="['/connexion']">Déjà une compte? Se connecter</a>
+    </div>
+      <!--end::Action-->
+    </form>
+    <!--end::Form-->
+  </div>
+  <!--end::Signin-->
+
+
+
+        </div>
+        <!--end::Content body-->
+  
+        <!--begin::Content footer-->
+          <p class="term py-2">Term of use. Privacy policy</p>
+        <!--end::Content footer-->
+      </div>
+      <!--end::Content-->
+    </div>
+    <!--end::Login-->
+  </div>

@@ -1,47 +1,91 @@
-<div fxLayout="row" fxLayoutGap="10" class="h-100">
-    <div fxFlex="50%" class="login-left">
-        <div></div>
-    </div>
-    <div fxFlex="50%" [style.background]="'white'" class="login-content" fxLayout="column">
-        <div class="w-75 p-0 m-auto" fxLayout="column" fxLayoutAlign="space-between center">
-            <div class="w-100" fxLayout="row" fxLayoutAlign="center center">
-                <mat-card-title class="py-2">Se connecter</mat-card-title>
-            </div>
-
-            <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && onSubmit()" class="login-form">
-                <mat-form-field appearance="standard" class="w-100">
-                    <mat-label>Adresse e-mail</mat-label>
-                    <input matInput type="email" formControlName="username">
-                    <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
-                    <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="standard" class="w-100">
-                    <mat-label>Mot de passe</mat-label>
-                    <input matInput type="password" formControlName="password" autocomplete="off">
-                    <mat-icon matSuffix>visibility_off</mat-icon>
-                    <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
-                </mat-form-field>
-
-                <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
-                    <mat-slide-toggle id="stayOn" [formControl]="stayOn">Réstez connecté</mat-slide-toggle>
-                    <div>
-                        <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
-                    </div>
-                </div>
-
-                <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
-                    <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.siteKey" [size]="recaptcha.size" formControlName="recaptcha">
-                    </ngx-recaptcha2>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="space-around center" class="py-2">
-                    <button mat-raised-button type="submit" class="m-2" color="primary">Se connecter</button>
-                    <!-- <a [routerLink]="['/inscription']"> S'inscrire</a> -->
-                    <button mat-stroked-button type="button" class="m-2" [routerLink]="['/inscription']">S'inscrire</button>
-                </div>
-            </form>
+<div fxLayout="row" fxLayoutGap="10" class="d-flex flex-column flex-root">
+    <!--begin::Login-->
+    <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white">
+      <!--begin::Aside-->
+      <div class="login-aside aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-center bgi-position-x-center" style="background-image: url('../../../assets/images/bg_sign.png');">
+      </div>
+      <!--begin::Aside-->
+  
+      <!--begin::Content-->
+      <div fxLayout="column"
+        class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+        <!--begin::Content body-->
+        <div class="d-flex flex-column-fluid flex-center">
+          
+            
+            <!--begin::Signin-->
+<div  fxLayout="column" fxLayoutAlign="space-between center" 
+class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
+    <!--begin::Form-->
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="loginForm.valid && onSubmit()">
+      <!--begin::Title-->
+      <div class="pb-13 pt-lg-0 pt-5" fxLayout="column" fxLayoutAlign="center center">
+        <div class="w-100" fxLayoutAlign="center center">
+            <img mat-card-image src="/assets/images/logo.png" alt="Logo">
         </div>
-        <div style="margin-top: auto;">Semewee.com</div>
+        <div class="w-100 mt-3" fxLayoutAlign="center center">
+            <mat-card-title class="py-2 signin-text">Bon retour parmi nous! Veuillez-vous connecter à votre compte</mat-card-title>
+        </div>
+      </div>
+      <!--end::Title-->
+  
+      <!--begin::Form group-->
+
+      <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Adresse e-mail</mat-label>
+        <input matInput type="email" formControlName="username">
+        <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+        <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+
+        <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
+    </mat-form-field>
+      <!--end::Form group-->
+
+      <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-checkbox id="stayOn" [formControl]="stayOn" color="primary">Rester connecté</mat-checkbox>
+        <div>
+            <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
+        </div>
     </div>
-</div>
+
+    <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
+      <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.siteKey" [size]="recaptcha.size" formControlName="recaptcha">
+      </ngx-recaptcha2>
+  </div>
+  
+      <!--begin::Action-->
+      <div class="pb-lg-0 pb-5" fxLayout="row" fxLayoutAlign="space-around center">
+        <div class="py-2">
+            <button mat-raised-button type="submit" class="m-2" color="primary">Se connecter</button>
+            <!-- <a [routerLink]="['/inscription']"> S'inscrire</a> -->
+            <button class="btn-signup" type="button" [routerLink]="['/inscription']">S'inscrire</button>
+        </div>
+
+
+      </div>
+      <!--end::Action-->
+    </form>
+    <!--end::Form-->
+  </div>
+  <!--end::Signin-->
+
+
+
+        </div>
+        <!--end::Content body-->
+  
+        <!--begin::Content footer-->
+          <p class="term py-2">Term of use. Privacy policy</p>
+        <!--end::Content footer-->
+      </div>
+      <!--end::Content-->
+    </div>
+    <!--end::Login-->
+  </div>
