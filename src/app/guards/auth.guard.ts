@@ -16,22 +16,24 @@ export class AuthGuard implements CanActivate {
       
     return this.authService.currentUserSubject.pipe(
       mergeMap((user: User) => {
+        
         if (user && user.token) {
           console.log('user', user);
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
+          console.log('localStorage', localStorage.getItem('currentUser'));
           this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          this.router.navigateByUrl('/espace-user');
           return of(true);
-        } else if (this.cookie.get('semewee')){
-          this.authService.currentUserSubject.next(new User({
-            id: +this.cookie.get('id'),
-            firstName: this.cookie.get('firstName'),
-            lastName: this.cookie.get('lastName'),
-            password: this.cookie.get('password'),
-            token: this.cookie.get('token'),
-            username: this.cookie.get('username'),
-          }));
-
+        } else if (this.cookieService.check('SEMEWEE')){
+          // const user = new User({
+          //   id: +this.cookieService.get('id'),
+          //   firstName: this.cookieService.get('firstName'),
+          //   lastName: this.cookieService.get('lastName'),
+          //   password: this.cookieService.get('password'),
+          //   token: this.cookieService.get('SEMEWEE'),
+          //   username: this.cookieService.get('username'),
+          // });
           this.router.navigateByUrl('/espace-user');
           return of(true);
         }
@@ -42,5 +44,5 @@ export class AuthGuard implements CanActivate {
     )
   }
   
-  constructor(private authService: AuthService, private router: Router, private cookie: CookieService) {}
+  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) {}
 }
