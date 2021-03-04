@@ -13,19 +13,18 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      
+
     return this.authService.currentUserSubject.pipe(
       mergeMap((user: User) => {
-        
+
         if (user && user.token) {
-          console.log('user', user);
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
           console.log('localStorage', localStorage.getItem('currentUser'));
           this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
-          this.router.navigateByUrl('/espace-user');
+          this.router.navigateByUrl('/user-space');
           return of(true);
-        } else if (this.cookieService.check('SEMEWEE')){
+        } else if (this.cookieService.check('SEMEWEE')) {
           // const user = new User({
           //   id: +this.cookieService.get('id'),
           //   firstName: this.cookieService.get('firstName'),
@@ -34,15 +33,15 @@ export class AuthGuard implements CanActivate {
           //   token: this.cookieService.get('SEMEWEE'),
           //   username: this.cookieService.get('username'),
           // });
-          this.router.navigateByUrl('/espace-user');
+          this.router.navigateByUrl('/user-space');
           return of(true);
         }
-        else{
-          return of(this.router.parseUrl("/connexion"));
+        else {
+          return of(this.router.parseUrl("/sign-in"));
         }
       })
     )
   }
-  
-  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) {}
+
+  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) { }
 }

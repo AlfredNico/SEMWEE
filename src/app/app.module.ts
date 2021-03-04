@@ -30,28 +30,24 @@ import { IsLoggedInGuard } from './guards/is-logged-in.guard';
     SharedModule,
     RouterModule.forRoot([
       {
-        path: 'accueil',
+        path: 'home',
         loadChildren: () => import('./public-sapces/public-spaces.module').then(m => m.PublicSpacesModule),
         canActivate: [IsLoggedInGuard]
-      },
-      {
-        path: 'espace-user',
+      }, {
+        path: 'user-space',
         loadChildren: () => import('./user-spaces/user-space.module').then(m => m.UserSpaceModule),
         canActivate: [AuthGuard, IsLoggedInGuard]
-      },
-      {
-        path: 'connexion',
+      }, {
+        path: 'sign-in',
         loadChildren: () => import('./authentification/components/sign-in/auth.module').then(m => m.AuthModule)
-      },
-      {
+      }, {
         path: 'sign-up',
         loadChildren: () => import('./authentification/components/sign-up/sign-up.module').then(m => m.SignUpModule)
-      },
-      {
+      }, {
         path: 'forgot-password',
         loadChildren: () => import('./authentification/components/forget-password/forget-password.module').then(m => m.ForgetPasswordModule)
       },
-      { path: '', pathMatch: 'full', redirectTo: 'accueil' },
+      { path: '', pathMatch: 'full', redirectTo: 'home' },
       { path: '**', component: PageNotFoundComponent },
     ])
   ],

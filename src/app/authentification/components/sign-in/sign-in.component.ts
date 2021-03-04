@@ -44,7 +44,7 @@ export class SignInComponent implements OnInit {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
 
-        this.router.navigateByUrl('/espace-user');
+        this.router.navigateByUrl('/user-space');
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {

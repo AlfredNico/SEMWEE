@@ -36,7 +36,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
         else if (err.status === 401 && this.cookieService.check('SEMEWEE')) {
           this.notifs.warn('Session expiré');
-          this.router.navigateByUrl('/connexion')
+          this.router.navigateByUrl('/sign-in')
         }
       } else {
         this.notifs.warn(error);
