@@ -1,133 +1,129 @@
-<div fxLayout="row" fxLayoutGap="10" class="d-flex flex-column flex-root">
-  <!--begin::Login-->
-  <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white">
-    <!--begin::Aside-->
-    <div class="login-aside aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-center bgi-position-x-center" style="background-image: url('../../../assets/images/bg_sign.png');">
-    </div>
-    <!--begin::Aside-->
+<div fxLayout="row" class="d-flex flex-column flex-root" style="height: 100%;">
+    <div class="row" style="height: 100%; width:100%;background-color: white;">
+        <div class="col-md-5" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; height: 100%;background-size: auto 100%;">
 
-    <!--begin::Content-->
-    <div fxLayout="column"
-      class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
-      <!--begin::Content body-->
-      <div class="d-flex flex-column-fluid flex-center centre">
-        
-          
-          <!--begin::Signin-->
-<div  fxLayout="column" fxLayoutAlign="space-between center" 
-class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
-  <!--begin::Form-->
-  <form class="form">
-    <!--begin::Title-->
-    <div class="pb-13 pt-lg-0 pt-5" fxLayout="column" fxLayoutAlign="center center">
-      <div class="w-100" fxLayoutAlign="center center">
-          <img mat-card-image fxLayoutAlign="center center" src="/assets/images/logo.png" alt="Logo">
-      </div>
-      <div class="w-100 mt-3" fxLayoutAlign="center center">
-          <mat-card-title class="py-2 signin-text">Veuillez completer la formulaire pour la création de votre compte</mat-card-title>
-      </div>
-    </div>
-    <!--end::Title-->
+        </div>
+        <div class="col-md-7" style="margin:auto;">
+            <div fxLayout="column" class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+                <!--begin::Content body-->
+                <div class="d-flex flex-column-fluid flex-center centre">
 
-    <!--begin::Form group-->
-    <table class="example-full-width" cellspacing="0"><tr>
-      <td>
-        <mat-form-field appearance="standard">
-          <mat-label>Prénom</mat-label>
-          <input matInput type="text" formControlName="firstname">
-          <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+
+                    <!--begin::Signin-->
+                    <div fxLayout="column" fxLayoutAlign="space-between center" class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
+                        <!--begin::Form-->
+                        <form class="form">
+                            <!--begin::Title-->
+                            <div class="pb-13 pt-lg-0 pt-5" fxLayout="column" fxLayoutAlign="center center">
+                                <div class="w-100" fxLayoutAlign="center center">
+                                    <img mat-card-image fxLayoutAlign="center center" src="/assets/images/logo.png" alt="Logo">
+                                </div>
+                                <div class="w-100 mt-3" fxLayoutAlign="center center">
+                                    <mat-card-title class="py-2 signin-text">Veuillez completer la formulaire pour la création de votre compte</mat-card-title>
+                                </div>
+                            </div>
+                            <!--end::Title-->
+
+                            <!--begin::Form group-->
+                            <table class="example-full-width" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <mat-form-field appearance="standard">
+                                            <mat-label>Prénom</mat-label>
+                                            <input matInput type="text" formControlName="firstname">
+                                            <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
           <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
-      </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field appearance="standard">
-          <mat-label>Nom</mat-label>
-          <input matInput type="text" formControlName="lastname">
-          <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="standard">
+                                            <mat-label>Nom</mat-label>
+                                            <input matInput type="text" formControlName="lastname">
+                                            <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
           <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
-      </mat-form-field>
-      </td>
-    </tr>
-    </table>
-        
-    
-    
-    
-    
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                            </table>
 
 
-<mat-form-field appearance="standard" class="w-100">
-  <mat-label>Nom d'utilisateur</mat-label>
-  <input matInput type="text" formControlName="username">
-  <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+
+
+
+
+
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Nom d'utilisateur</mat-label>
+                                <input matInput type="text" formControlName="username">
+                                <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
   <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
-</mat-form-field>
+                            </mat-form-field>
 
-    <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Adresse e-mail</mat-label>
-      <input matInput type="email" formControlName="email">
-      <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Adresse e-mail</mat-label>
+                                <input matInput type="email" formControlName="email">
+                                <!-- <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
       <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error> -->
-  </mat-form-field>
+                            </mat-form-field>
 
-  <mat-form-field appearance="standard" class="w-100">
-      <mat-label>Mot de passe</mat-label>
-      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
-      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-
-
-      <!-- <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error> -->
-  </mat-form-field>
-
-  <mat-form-field appearance="standard" class="w-100">
-    <mat-label>Confirmation du mot de passe</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirm_password" autocomplete="off">
-    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Mot de passe</mat-label>
+                                <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 
 
-    <!-- <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error> -->
-</mat-form-field>
-    <!--end::Form group-->
+                                <!-- <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error> -->
+                            </mat-form-field>
 
-    <div class="py-2 text-condition" fxLayout="row" fxLayoutAlign="space-between center">
-      <mat-checkbox color="primary">J'accepte tous les termes et les conditions</mat-checkbox>
-  </div>
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Confirmation du mot de passe</mat-label>
+                                <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirm_password" autocomplete="off">
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 
-  <!-- <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
+
+                                <!-- <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error> -->
+                            </mat-form-field>
+                            <!--end::Form group-->
+
+                            <div class="py-2 text-condition" fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-checkbox color="primary">J'accepte tous les termes et les conditions</mat-checkbox>
+                            </div>
+
+                            <!-- <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
     <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.siteKey" [size]="recaptcha.size" formControlName="recaptcha">
     </ngx-recaptcha2>
 </div> -->
 
-    <!--begin::Action-->
-    <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
-      <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <!--begin::Action-->
+                            <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
+                                <div fxLayout="row" fxLayoutAlign="space-between center">
 
-      <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">S'inscrire</button>
-      </div>
+                                    <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">S'inscrire</button>
+                                </div>
 
-      <div class="my-2">
-        <a class="nav-link" [routerLink]="['/connexion']">Déjà une compte? Se connecter</a>
-      </div>
+                                <div class="my-2">
+                                    <a class="nav-link" [routerLink]="['/connexion']">Déjà une compte? Se connecter</a>
+                                </div>
 
 
+                            </div>
+                            <!--end::Action-->
+                        </form>
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Signin-->
+
+
+
+                </div>
+                <!--end::Content body-->
+
+                <!--begin::Content footer-->
+                <p class="term">Conditions d'utilisation. Politique de confidentialité</p>
+                <!--end::Content footer-->
+
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Login-->
     </div>
-    <!--end::Action-->
-  </form>
-  <!--end::Form-->
-</div>
-<!--end::Signin-->
-
-
-
-      </div>
-      <!--end::Content body-->
-      
-  <!--begin::Content footer-->
-  <p class="term">Conditions d'utilisation. Politique de confidentialité</p>
-  <!--end::Content footer-->
-      
-    </div>
-    <!--end::Content-->
-  </div>
-  <!--end::Login-->
-</div>
