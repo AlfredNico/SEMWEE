@@ -1,5 +1,64 @@
+<<<<<<< HEAD
+<div fxLayout="row" fxLayoutGap="10" class="d-flex flex-column flex-root">
+    <!--begin::Login-->
+    <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white">
+      <!--begin::Aside-->
+      <div class="login-aside aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-center bgi-position-x-center" style="background-image: url('../../../assets/images/bg_sign.png');">
+      </div>
+      <!--begin::Aside-->
+  
+      <!--begin::Content-->
+      <div fxLayout="column"
+        class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+        <!--begin::Content body-->
+        <div class="d-flex flex-column-fluid flex-center my-5">
+          
+            
+            <!--begin::Signin-->
+<div  fxLayout="column" fxLayoutAlign="space-between center" 
+class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
+    <!--begin::Form-->
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="loginForm.valid && onSubmit()">
+      <!--begin::Title-->
+      <div class="pb-13 pt-lg-0 pt-5" fxLayout="column" fxLayoutAlign="center center">
+        <div class="w-100" fxLayoutAlign="center center">
+            <img mat-card-image src="/assets/images/logo.png" alt="Logo">
+        </div>
+        <div class="w-100 mt-3" fxLayoutAlign="center center">
+            <mat-card-title class="py-2 signin-text">Bon retour parmi nous! Veuillez-vous connecter à votre compte</mat-card-title>
+        </div>
+      </div>
+      <!--end::Title-->
+  
+      <!--begin::Form group-->
+
+      <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Adresse e-mail</mat-label>
+        <input matInput type="email" formControlName="username">
+        <mat-error *ngIf="getusername.errors && getusername.errors.required">Adresse e-amil est requise</mat-error>
+        <mat-error *ngIf="getusername.errors && getusername.errors.email">Adresse e-amil invalide</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard" class="w-100">
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+
+        <mat-error *ngIf="getpassword.errors && getpassword.errors.required">Mot de passe requis</mat-error>
+    </mat-form-field>
+      <!--end::Form group-->
+
+      <div class="py-2" fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-checkbox id="stayOn" [formControl]="stayOn" color="primary">Rester connecté</mat-checkbox>
+        <div>
+            <a class="nav-link" [routerLink]="['/mot-passe-oublie']"> Mot de passe oublié</a>
+        </div>
+    </div>
+=======
 <div fxLayout="row" class="d-flex flex-column flex-root" style="height: 100%;">
 
+>>>>>>> d865879409b6c39103ba14c60dce8916b0326cf2
 
 
 
