@@ -30,6 +30,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatPaginatorModule,
     MatSortModule,
     DragDropModule,
+    MatDialogModule,
     MatDialogModule
   ]
 })

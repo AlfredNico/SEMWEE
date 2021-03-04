@@ -7,6 +7,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CdkDragStart, CdkDragEnd, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { SettingTableComponent } from '../setting-table/setting-table.component';
+import { SettingTable } from '@app/models/setting-table';
 
 
 
@@ -45,27 +48,43 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     { name: 'id', ishidden: true },
     { name: 'lastName', ishidden: true },
     { name: 'fistName', ishidden: true },
-    { name: 'phone', ishidden: true },
+    { name: 'phone', ishidden: false },
   ];
-
 
   // Generate form builder rows
   public filters = this.fb.group([]);
 
-  // drag and frop datadables
+  // drag and frop datadables indexes
   public previousIndex!: number;
   public selectedRowIndex = -1;
 
-  constructor(private fb: FormBuilder) {
-    this.columns.forEach(column => {
+  public settingDisplayColumns: SettingTable = { dispayColumns: [], hiddenRows: [], noHiddenRows: []};
+
+
+  constructor(private fb: FormBuilder, public dialog: MatDialog) {
+
+    this.columns.forEach((column, index) => {
+      //création formControl Dynamics
       this.filters.addControl(column, new FormControl(''));
+      //creation dispaly columns
+      this.displayedColumns[index] = column;
+      //creation parametre column
+      let hide: boolean;
+      hide = (column != 'id') ?  true : false;
+      this.settingDisplayColumns.dispayColumns[index] = { column, 'hidden': hide};
     });
+
+
   }
 
   ngOnInit(): void {
-    this.columns.forEach((column, index) => {
-      this.displayedColumns[index] = column;
-    })
+    //generate hidden and no hidden rows
+    this.settingDisplayColumns.hiddenRows = this.settingDisplayColumns.dispayColumns.filter(item =>
+       Object.values(item).some(value => value == false )
+    );
+    this.settingDisplayColumns.noHiddenRows = this.settingDisplayColumns.dispayColumns.filter(item =>
+      Object.values(item).some(value => value == true)
+    );
   }
 
   ngOnChanges() { }
@@ -94,9 +113,12 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     ).subscribe();
   }
 
-  changeInput(event: any) {
-    console.log(this.filters.get('lastName')?.value);
+  openSettingTable(): void{
+    const dialogRef = this.dialog.open(SettingTableComponent, {
+      data: this.settingDisplayColumns 
+    });
   }
+
 
 
   public drop(event: CdkDragDrop<any>) {

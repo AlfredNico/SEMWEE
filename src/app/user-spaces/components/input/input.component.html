@@ -1,6 +1,6 @@
 <div fxLayout="column">
     <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
-        <button mat-mini-fab color="primary" aria-label="setting icon">
+        <button mat-mini-fab color="primary" aria-label="setting icon" (click)="openSettingTable()">
             <mat-icon>settings</mat-icon>
         </button>
     </div>
@@ -11,7 +11,7 @@
                 <!-- // -->
                 <th mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                     <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                        <div mat-sort-header>
+                        <div mat-sort-header class="text-uppercase">
                             {{ column }}
                         </div>
                         <mat-form-field appearance="outline" id="filters">

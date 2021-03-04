@@ -33,7 +33,7 @@ export class IsLoggedInGuard implements CanActivate {
             username: this.cookieService.get('username'),
           }));
           return of(true);
-        }else {
+        } else {
           return of(true);
         }
       })

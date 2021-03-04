@@ -1,0 +1,25 @@
+<div fxLayout="column">
+    <h1 mat-dialog-title>Drap and drop content</h1>
+    <div mat-dialog-content>
+        <div cdkDropListGroupd>
+            <div class="example-container" fxLayout="row" fxLayoutAlign="space-around center">
+                <h2>To do</h2>
+
+                <div cdkDropList [cdkDropListData]="hidden " class="example-list " (cdkDropListDropped)="drop($event) ">
+                    <div class="example-box " *ngFor="let item of hidden" cdkDrag>{{item}}</div>
+                </div>
+            </div>
+
+            <div class="example-container ">
+                <h2>Done</h2>
+
+                <div cdkDropList [cdkDropListData]="noHidden" class="example-list " (cdkDropListDropped)="drop($event) ">
+                    <div class="example-box " *ngFor="let item of noHidden " cdkDrag>{{item}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions align='center'>
+        <button mat-button [mat-dialog-close]="true " cdkFocusInitial>FERMER</button>
+    </div>
+</div>
