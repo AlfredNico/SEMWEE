@@ -21,20 +21,26 @@ export class SignUpComponent implements OnInit {
   // }, {
   //   validator: this.custumValidator.MatchPassword('password', 'confirm_password')
   // });
-  public registrationForm = new FormGroup({
-    'lastname': new FormControl('', [Validators.required]),
-    'firstname': new FormControl('', [Validators.required]),
-    'email': new FormControl('', [Validators.required]),
-    'password': new FormControl('', [Validators.required]),
-    'confirm_password': new FormControl('', [Validators.required]),
-  });
+  // public registrationForm = new FormGroup({
+  //   'lastname': new FormControl('', [Validators.required]),
+  //   'firstname': new FormControl('', [Validators.required]),
+  //   'email': new FormControl('', [Validators.required]),
+  //   'password': new FormControl('', [Validators.required]),
+  //   'confirm_password': new FormControl('', [Validators.required]),
+  // });
 
-  // registrationForm = this.fb.group({
-  //   lastname: ['', [Validators.required]],
-  // })
+  registrationForm = this.fb.group({
+    lastname: ['', [Validators.required]],
+    firstname: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.compose([Validators.required, this.custumValidator.patternValidator()])],
+    confirm_password: ['', Validators.required],
+  }, {
+    validator: this.custumValidator.MatchPassword('password', 'confirm_password')
+  })
 
-  public acceptedTerme = false;
-  public readonly stayOn = this.fb.control(false);
+  // public acceptedTerme = false;
+  public readonly acceptedTerme = this.fb.control(false, [Validators.required]);
 
 
   constructor(private fb: FormBuilder, private router: Router, private custumValidator: CustomValidationService) { }

@@ -30,14 +30,14 @@
                                         <mat-form-field appearance="standard">
                                             <mat-label>First name</mat-label>
                                             <input matInput type="text" formControlName="lastname">
-                                            <mat-error *ngIf="registrationForm.get('lastname')?.dirty && registrationForm.get('lastname')?.errors.required">First Name required</mat-error>
+                                            <mat-error *ngIf="registrationForm.get('lastname')?.invalid && registrationForm.get('lastname')?.errors?.required">First Name required</mat-error>
                                         </mat-form-field>
                                     </td>
                                     <td>
                                         <mat-form-field appearance="standard">
                                             <mat-label>Last name</mat-label>
                                             <input matInput type="text" formControlName="firstname">
-                                            <!-- <mat-error *ngIf="registrationForm.get('firstname').dirty && registrationForm.get('firstname').errors.required">Last name required</mat-error> -->
+                                            <mat-error *ngIf="registrationForm.get('firstname')?.touched && registrationForm.get('firstname')?.errors?.required">Last name required</mat-error>
                                         </mat-form-field>
                                     </td>
                                 </tr>
@@ -46,26 +46,27 @@
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
                                 <input matInput type="email" formControlName="email">
-                                <!-- <mat-error *ngIf="registrationForm.get('email').dirty && registrationForm.get('email').errors.required">Addres e-amil est required</mat-error> -->
+                                <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.errors?.required">Addres e-amil required</mat-error>
+                                <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.errors?.email">Addres e-amil ivalid</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide=! hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                <!-- <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors.required">Mot de passe requis</mat-error> -->
+                                <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.required">Mot de passe requis</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Confirm Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirm_password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                <!-- <mat-error *ngIf="getpassword.errors && getpassword.errors.required ">Mot de passe requis</mat-error> -->
+                                <mat-error *ngIf="registrationForm.get('confirm_password')?.touched && registrationForm.get('confirm_password')?.errors?.required">Mot de passe requis</mat-error>
                             </mat-form-field>
 
                             <!--end::Form group-->
                             <div class="py-2 text-condition" fxLayout="row" fxLayoutAlign="space-between center">
-                                <mat-checkbox #checkbox (click)="acceptedTerme = !acceptedTerme" color="primary">I agree with terms and conditions
+                                <mat-checkbox #checkbox color="primary">I agree with terms and conditions
                                 </mat-checkbox>
                             </div>
 
