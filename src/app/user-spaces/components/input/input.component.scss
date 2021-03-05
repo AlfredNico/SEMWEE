@@ -27,3 +27,7 @@
 .hide-row {
     display: none;
 }
+
+.datatable:not(.table) {
+    display: inline-table;
+}

@@ -4,14 +4,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { CdkDragStart, CdkDragEnd, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingTableComponent } from '../setting-table/setting-table.component';
-import { SettingRowsTable, SettingTable } from '@app/models/setting-table';
+import { SettingRowsTable } from '@app/models/setting-table';
 
-
+// import * as fs from "fs";
 
 export interface PeriodicElement {
   id: string;
@@ -52,9 +51,9 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
   ];
 
   public settingDisplayRows: SettingRowsTable = {
-    hiddenRows: ['id'],
-    noHiddenRows: ['lastName', 'fistName', 'phone', 'adresse']
-  }
+    noHiddenRows: ['lastName'],
+    hiddenRows: ['id', 'fistName', 'phone', 'adresse']
+  };
 
   // Generate form builder rows
   public filters = this.fb.group([]);
@@ -74,9 +73,10 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('Propertyv ', Object.keys(ELEMENT_DATA[0]));
   }
 
-  ngOnChanges() { }
+  ngOnChanges(): void { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -84,43 +84,47 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.filters.valueChanges.pipe(
       map(query => {
-        console.log('query', query);
-        
-        // let data = ELEMENT_DATA.filter((item: any) => {
-        //   if (Object.values(query).every(x => (x === null || x === ''))) {
-        //     return ELEMENT_DATA;
-        //   } else {
-        //     return Object.keys(item).some(property => {
-        //       if (query[property] != "") {
-        //         return item[property].toLowerCase().includes(query[property].toLowerCase())
-        //       }
-        //     }
-        //     )
-        //   }
-        // }
-        // );
-        // this.dataSource.data = data;
+        let data = ELEMENT_DATA.filter((item: any) => {
+          if (Object.values(query).every(x => (x === null || x === ''))) {
+            return ELEMENT_DATA;
+          } else {
+            return Object.keys(item).some(property => {
+              if (query[property] != "" && (query[property] !== undefined && item[property] !== undefined )) {
+                return item[property].toLowerCase().includes(query[property].toLowerCase())
+              }
+            }
+            )
+          }
+        }
+        );
+        this.dataSource.data = data;
       })
     ).subscribe();
   }
 
-  openSettingTable(): void{
-    const dialogRef = this.dialog.open(SettingTableComponent, {
+  async openSettingTable(): Promise<void>{
+    this.dialog.open(SettingTableComponent, {
       data: this.settingDisplayRows
+    }).afterClosed().subscribe(async (result: SettingRowsTable) => {
+      this.settingDisplayRows.noHiddenRows.forEach((column, index) => {
+        this.filters.addControl(column, new FormControl(''));
+      });
+      this.displayedColumns = result.noHiddenRows;
+      this.settingDisplayRows = result;
+      
     });
+
   }
-
-
 
   public drop(event: CdkDragDrop<any>) {
     moveItemInArray(this.settingDisplayRows.noHiddenRows, event.previousIndex, event.currentIndex);
     this.settingDisplayRows.noHiddenRows.forEach((column, index) => {
       this.displayedColumns[index] = column;
     });
+    
   }
 
   public getRow(row: any) {
     this.selectedRowIndex = row.id;
-    console.log('ros', row);
   }
 }
