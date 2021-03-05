@@ -7,7 +7,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class CustomValidationService {
 
-  patternValidator(): ValidatorFn {
+  constructor() { }
+
+  public patternValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
       if (!control.value) {
         return null as any;
@@ -39,5 +41,4 @@ export class CustomValidationService {
     }
   }
 
-  constructor() { }
 }
