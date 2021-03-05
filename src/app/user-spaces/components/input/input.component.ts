@@ -51,7 +51,10 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     { name: 'phone', ishidden: false },
   ];
 
-  public settingDisplayRows!: SettingRowsTable;
+  public settingDisplayRows: SettingRowsTable = {
+    hiddenRows: ['id'],
+    noHiddenRows: ['lastName', 'fistName', 'phone', 'adresse']
+  }
 
   // Generate form builder rows
   public filters = this.fb.group([]);
@@ -60,35 +63,17 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
   public previousIndex!: number;
   public selectedRowIndex = -1;
 
-  public settingDisplayColumns: SettingTable = { dispayColumns: [], hiddenRows: [], noHiddenRows: []};
-
 
   constructor(private fb: FormBuilder, public dialog: MatDialog) {
-
-    this.columns.forEach((column, index) => {
+    this.settingDisplayRows.noHiddenRows.forEach((column, index) => {
       //création formControl Dynamics
       this.filters.addControl(column, new FormControl(''));
       //creation dispaly columns
       this.displayedColumns[index] = column;
-      //creation parametre column
-      let hide: boolean;
-      hide = (column != 'id') ?  true : false;
-      this.settingDisplayColumns.dispayColumns[index] = { column, 'hidden': hide};
     });
-    this.settingDisplayRows = {
-      hiddenRows: ['id'],
-      noHiddenRows: ['lastName', 'fistName', 'phone', 'adresse']
-    }
   }
 
   ngOnInit(): void {
-    //generate hidden and no hidden rows
-    this.settingDisplayColumns.hiddenRows = this.settingDisplayColumns.dispayColumns.filter(item =>
-       Object.values(item).some(value => value == false )
-    );
-    this.settingDisplayColumns.noHiddenRows = this.settingDisplayColumns.dispayColumns.filter(item =>
-      Object.values(item).some(value => value == true)
-    );
   }
 
   ngOnChanges() { }
@@ -99,20 +84,22 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.filters.valueChanges.pipe(
       map(query => {
-        let data = ELEMENT_DATA.filter((item: any) => {
-          if (Object.values(query).every(x => (x === null || x === ''))) {
-            return ELEMENT_DATA;
-          } else {
-            return Object.keys(item).some(property => {
-              if (query[property] != "") {
-                return item[property].toLowerCase().includes(query[property].toLowerCase())
-              }
-            }
-            )
-          }
-        }
-        );
-        this.dataSource.data = data;
+        console.log('query', query);
+        
+        // let data = ELEMENT_DATA.filter((item: any) => {
+        //   if (Object.values(query).every(x => (x === null || x === ''))) {
+        //     return ELEMENT_DATA;
+        //   } else {
+        //     return Object.keys(item).some(property => {
+        //       if (query[property] != "") {
+        //         return item[property].toLowerCase().includes(query[property].toLowerCase())
+        //       }
+        //     }
+        //     )
+        //   }
+        // }
+        // );
+        // this.dataSource.data = data;
       })
     ).subscribe();
   }
@@ -126,8 +113,8 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   public drop(event: CdkDragDrop<any>) {
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-    this.columns.forEach((column, index) => {
+    moveItemInArray(this.settingDisplayRows.noHiddenRows, event.previousIndex, event.currentIndex);
+    this.settingDisplayRows.noHiddenRows.forEach((column, index) => {
       this.displayedColumns[index] = column;
     });
   }

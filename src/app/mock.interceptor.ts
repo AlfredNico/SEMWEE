@@ -13,32 +13,32 @@ import { of } from 'rxjs/internal/observable/of';
 
 export const usersData: Users[] = [
   {
-    "id": 1,
-    "firstName": "Licensed",
-    "lastName": " Frozen Hat",
-    "username": "licensed@gmail.com",
-    "password": "1234",
+    "_id": 1,
+    "firstname": "Licensed",
+    "lastname": " Frozen Hat",
+    "email": 'zaho@gmail.com',
+    'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
   }, {
-    "id": 2,
-    "firstName": "Licensed",
-    "lastName": " Frozen Hat",
-    "username": "licensed2@gmail.com",
-    "password": "1234",
+    "_id": 2,
+    "firstname": "Licensed",
+    "lastname": " Frozen Hat",
+    "email": 'zaho@gmail.com',
+    'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
   }, {
-    "id": 3,
-    "firstName": "Licensed",
-    "lastName": " Frozen Hat",
-    "username": "licensed3@gmail.com",
-    "password": "1234",
+    "_id": 3,
+    "firstname": "Licensed",
+    "lastname": " Frozen Hat",
+    "email": 'zaho@gmail.com',
+    'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
   }, {
-    "id": 4,
-    "firstName": "Licensed",
-    "lastName": " Frozen Hat",
-    "username": "zaho@gmail.mg",
-    "password": "1234",
+    "_id": 4,
+    "firstname": "Licensed",
+    "lastname": " Frozen Hat",
+    "email": 'zaho@gmail.com',
+    'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
   }
 ]
@@ -53,9 +53,8 @@ export class MockInterceptor implements HttpInterceptor {
 
       switch (true) {
         case url.endsWith('authenticate') && method === 'POST':
-          const { username, password } = body;
-
-          const user = usersData.find(x => x.username === username && x.password === password);
+          const { email, lastname } = body;
+          const user = usersData.find(x => x.email === email && x.lastname === lastname);
           if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe incorrecte' } });
           return of(new HttpResponse({ status: 200, body: user as Users }));
 

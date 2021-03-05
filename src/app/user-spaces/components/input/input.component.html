@@ -5,9 +5,9 @@
         </button>
     </div>
     <div class="px-2 m-3">
-        <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable" cdkDropList [cdkDropListData]="columns" (cdkDropListDropped)=" drop($event)" cdkDropListOrientation="horizontal" cdkDragHandle>
+        <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable" cdkDropList [cdkDropListData]="settingDisplayRows.noHiddenRows" (cdkDropListDropped)=" drop($event)" cdkDropListOrientation="horizontal" cdkDragHandle>
 
-            <ng-container *ngFor="let column of columns; let i = index" [matColumnDef]="column">
+            <ng-container *ngFor="let column of settingDisplayRows.noHiddenRows; let i = index" [matColumnDef]="column">
                 <!-- // -->
                 <th mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                     <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">

@@ -17,7 +17,7 @@ export class SignInComponent implements OnInit {
   hide = true;
 
   public loginForm = this.fb.group({
-    username: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
     recaptcha: ['', Validators.required]
   });
@@ -27,7 +27,7 @@ export class SignInComponent implements OnInit {
   constructor(private authService: AuthService, private fb: FormBuilder,
     private cookie: CookieService, private router: Router, public recaptcha: ReCapchaService) { }
 
-  get getusername() { return this.loginForm.controls.username; }
+  get getemail() { return this.loginForm.controls.email; }
   get getpassword() { return this.loginForm.controls.password; }
 
 
@@ -36,17 +36,20 @@ export class SignInComponent implements OnInit {
   }
 
   public async onSubmit() {
-    const { username, password }: { [key: string]: any } = this.loginForm.controls;
+    const { email, password }: { [key: string]: any } = this.loginForm.controls;
 
     try {
-      const user = await this.authService.login({ username: username.value, password: password.value });
+      const user = await this.authService.login({ email: email.value, password: password.value });
       if (user) {
+        console.log('user' + user);
+        
         if (this.stayOn.value === true) {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
-
         this.router.navigateByUrl('/user-space');
       }
+      console.log('user', user);
+      
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         console.log(error);

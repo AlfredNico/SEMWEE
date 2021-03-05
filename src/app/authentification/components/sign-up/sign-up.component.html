@@ -11,7 +11,7 @@
                     <!--begin::Signin-->
                     <div fxLayout="column" fxLayoutAlign="space-between center" class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
                         <!--begin::Form-->
-                        <form class="form" [formGroup]="registrationForm" (ngSubmit)="registrationForm.valid && onSubmit()">
+                        <form class="form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
                             <!--begin::Title-->
                             <div class="pb-13 pt-lg-0 pt-5" fxLayout="column" fxLayoutAlign="center center">
                                 <div class="w-100" fxLayoutAlign="center center">
@@ -22,7 +22,6 @@
                                 </div>
                             </div>
                             <!--end::Title-->
-
                             <!--begin::Form group-->
                             <table class="example-full-width" cellspacing="0">
                                 <tr>
@@ -55,31 +54,35 @@
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide=! hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                 <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.required">Mot de passe requis</mat-error>
+                                <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.invalidPassword">Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Confirm Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirm_password" autocomplete="off">
-                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                <mat-error *ngIf="registrationForm.get('confirm_password')?.touched && registrationForm.get('confirm_password')?.errors?.required">Mot de passe requis</mat-error>
+                                <mat-icon matSuffix (click)="hide =! hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <mat-error *ngIf="registrationForm.get( 'confirm_password')?.touched && registrationForm.get( 'confirm_password')?.errors?.required ">Confirm Password is required</mat-error>
+                                <mat-error *ngIf="registrationForm.get( 'confirm_password')?.touched && registrationForm.get('confirm_password')?.errors?.passwordMismatch">Passwords does not match</mat-error>
                             </mat-form-field>
 
                             <!--end::Form group-->
-                            <div class="py-2 text-condition" fxLayout="row" fxLayoutAlign="space-between center">
-                                <mat-checkbox #checkbox color="primary">I agree with terms and conditions
+                            <div class="py-2 text-condition" fxLayout="column" fxLayoutAlign="space-between start">
+                                <mat-checkbox #checkbox formControlName="acceptTerms" color="primary">I agree with terms and conditions
                                 </mat-checkbox>
-                            </div>
-
-                            <!--begin::Action-->
-                            <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
-                                <div fxLayout="row " fxLayoutAlign="space-between center">
-
-                                    <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Sign up</button>
+                                <div [style.color]="'#f44336'" *ngIf="submitted === true && registrationForm.get('acceptTerms')?.errors">Accept Terms is requird
                                 </div>
 
-                                <div class="my-2">
-                                    <a class="nav-link" [routerLink]="['/sign-in']">Already have
+                                <!--begin::Action-->
+                                <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
+                                    <div fxLayout="row " fxLayoutAlign="space-between center">
+
+                                        <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Sign up</button>
+                                    </div>
+
+                                    <div class="my-2">
+                                        <a class="nav-link" [routerLink]="['/sign-in']">Already have
                                       an account? Sign in</a>
+                                    </div>
                                 </div>
                             </div>
                             <!--end::Action-->
@@ -89,7 +92,6 @@
                     <!--end::Signin-->
                 </div>
                 <!--end::Content body-->
-
                 <!--begin::Content footer-->
                 <p class="term">Terms of use. Privacy policy</p>
                 <!--end::Content footer-->

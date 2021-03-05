@@ -26,10 +26,10 @@
                             <!--begin::Form group-->
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
-                                <input matInput type="email" formControlName="username">
-                                <mat-error *ngIf="getusername.errors && getusername.errors.required">Email required
+                                <input matInput type="email" formControlName="email">
+                                <mat-error *ngIf="getemail.errors && getemail.errors.required">Email required
                                 </mat-error>
-                                <mat-error *ngIf="getusername.errors && getusername.errors.email">
+                                <mat-error *ngIf="getemail.errors && getemail.errors.email">
                                     Invalid email</mat-error>
                             </mat-form-field>
 

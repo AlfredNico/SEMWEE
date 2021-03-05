@@ -25,25 +25,24 @@ export class AuthService {
   }
 
   public getAllUsers() {
-    return this.http.get(`${environment.BASE_URL}/users`).subscribe(
+    return this.http.get(`${environment.URL_API}/user/allUser`).subscribe(
       (user: any) => this.users = user
     )
   }
 
-  public login(value: { username: string, password: string }) {
-    console.log('value', value);
+  public login(value: { email: string, password: string }) {
 
-    return this.http.post<Users>(`${environment.BASE_URL}/authenticate`, value)
+    return this.http.post<any>(`${environment.URL_API}/auth/login`, value).pipe()
       .pipe(
-        map(user => {
+        map((user: Users) => {
+          console.log('user', user);
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           this.cookieService.set('SEMEWEE', user.token, 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('id', JSON.stringify(user.id), 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('firstName', user.firstName, 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('lastName', user.lastName, 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('password', user.password, 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('username', user.username, 0.2, '/', undefined, false, 'Strict');
-
+          this.cookieService.set('_id', JSON.stringify(user._id), 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('firstname', user.firstname, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('lastname', user.lastname, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('email', user.email, 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('image', JSON.stringify(user.image), 0.2, '/', undefined, false, 'Strict');
           this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);
           return user;

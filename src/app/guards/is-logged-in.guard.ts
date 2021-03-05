@@ -25,12 +25,12 @@ export class IsLoggedInGuard implements CanActivate {
           return of(true);
         } else if (this.cookieService.get('SEMEWEE')) {
           this.authService.currentUserSubject.next(new User({
-            id: +this.cookieService.get('id'),
-            firstName: this.cookieService.get('firstName'),
-            lastName: this.cookieService.get('lastName'),
-            password: this.cookieService.get('password'),
+            _id: +this.cookieService.get('_id'),
+            firstname: this.cookieService.get('firstname'),
+            lastname: this.cookieService.get('lastname'),
+            email: this.cookieService.get('email'),
             token: this.cookieService.get('SEMEWEE'),
-            username: this.cookieService.get('username'),
+            image: this.cookieService.get('image'),
           }));
           return of(true);
         } else {

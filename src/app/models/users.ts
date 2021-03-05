@@ -1,8 +1,10 @@
 export interface Users {
-    id: number;
-    firstName: string;
-    lastName: string;
-    username: string;
-    password: string;
+    _id?: number;
+    image?: string;
+    lastname: string;
+    firstname: string;
+    email: string;
     token: string;
 }
+
+export type getRoles = 'FREEMIUM' | 'PREMIUM' | 'ADMIN' | 'USER';

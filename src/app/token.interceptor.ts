@@ -12,14 +12,14 @@ import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService, private cookieService: CookieService) {}
+  constructor(private authService: AuthService, private cookieService: CookieService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
- 
-    if (this.cookieService.check('semewee')) {
+
+    if (this.cookieService.check('SEMEWEE')) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.cookieService.get('semewee')}`
+          Authorization: `Bearer ${this.cookieService.get('SEMEWEE')}`
         }
       });
     }

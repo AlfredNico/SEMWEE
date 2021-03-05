@@ -1,23 +1,24 @@
-import { Users } from "../models/users";
+import { getRoles, Users } from "../models/users";
 
 
 export class User {
-    id?: number;
-    firstName!: string;
-    lastName!: string;
-    username!: string;
-    password!: string;
+    _id?: number;
+    image?: string;
+    lastname!: string;
+    firstname!: string;
+    email!: string;
     token!: string;
+    role?: getRoles[];
 
     constructor(user?: Users) {
         Object.assign(this, user);
     }
 
     get fullName() {
-        if (this.lastName != null) {
-            return `${this.firstName} ${this.lastName}`;
+        if (this.lastname != null) {
+            return `${this.firstname} ${this.firstname}`;
         } else {
-            return this.lastName;
+            return this.lastname;
         }
     }
 }
