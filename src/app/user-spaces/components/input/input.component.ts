@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,7 +31,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  styleUrls: ['./input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [FormBuilder] // <-- THIS PART
 })
 
 export class InputComponent implements OnInit, AfterViewInit, OnChanges {
@@ -72,9 +74,7 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  ngOnInit(): void {
-    console.log('Propertyv ', Object.keys(ELEMENT_DATA[0]));
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(): void { }
 
@@ -102,18 +102,20 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     ).subscribe();
   }
 
-  async openSettingTable(): Promise<void>{
+  openSettingTable() {
     this.dialog.open(SettingTableComponent, {
       data: this.settingDisplayRows
-    }).afterClosed().subscribe(async (result: SettingRowsTable) => {
-      this.settingDisplayRows.noHiddenRows.forEach((column, index) => {
-        this.filters.addControl(column, new FormControl(''));
-      });
-      this.displayedColumns = result.noHiddenRows;
-      this.settingDisplayRows = result;
-      
-    });
+    }).afterClosed().pipe(
+      map((result: SettingRowsTable) => {
+        this.displayedColumns = result.noHiddenRows;
+        this.settingDisplayRows = result;
 
+        result.noHiddenRows.map(result => {
+          this.filters.addControl(result, new FormControl(''));
+        });
+
+      })
+    ).subscribe();
   }
 
   public drop(event: CdkDragDrop<any>) {
@@ -121,7 +123,6 @@ export class InputComponent implements OnInit, AfterViewInit, OnChanges {
     this.settingDisplayRows.noHiddenRows.forEach((column, index) => {
       this.displayedColumns[index] = column;
     });
-    
   }
 
   public getRow(row: any) {

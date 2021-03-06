@@ -36,7 +36,7 @@ export const usersData: Users[] = [
   }, {
     "_id": 4,
     "firstname": "Licensed",
-    "lastname": " Frozen Hat",
+    "lastname": "Frozen Hat",
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
@@ -52,9 +52,9 @@ export class MockInterceptor implements HttpInterceptor {
     const { url, method, headers, body } = request;
 
       switch (true) {
-        case url.endsWith('authenticate') && method === 'POST':
-          const { email, lastname } = body;
-          const user = usersData.find(x => x.email === email && x.lastname === lastname);
+        case url.endsWith('auth/login') && method === 'POST':
+          const { email, password } = body;
+          const user = usersData.find(x => x.email === email && x.firstname === password);
           if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe incorrecte' } });
           return of(new HttpResponse({ status: 200, body: user as Users }));
 

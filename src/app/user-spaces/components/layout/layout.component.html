@@ -8,9 +8,9 @@
         <div class="main_content" class="h-100">
             <mat-toolbar class="app-header px-4" [style.background]="'white'">
                 <button (click)="onSinenavToggle()" mat-icon-button aria-label="menu icon">
-                    <mat-icon *ngIf="!sideNavState">menu</mat-icon>
-                    <mat-icon *ngIf="sideNavState">menu_open</mat-icon>
-                </button>
+                        <mat-icon *ngIf="!sideNavState">menu</mat-icon>
+                        <mat-icon *ngIf="sideNavState">menu_open</mat-icon>
+                    </button>
                 <div class="m-auto">
                     <input type="search" autocomplete="off" placeholder="search ..." />
                 </div>
@@ -18,25 +18,24 @@
                 <div class="spacer"></div>
                 <ng-template #loginTemplete>
                     <button mat-button [routerLink]="['/connexion']" class="mx-3">
-                        <mat-icon>login</mat-icon>Connecter
-                    </button>
+                            <mat-icon>login</mat-icon>Connecter
+                        </button>
                 </ng-template>
                 <ng-template #logoutTemplete>
                     <button mat-button>
-                        <!-- <mat-icon >insert_emoticon</mat-icon> -->
-                            <img class="jim" src="https://a57.foxnews.com/media2.foxnews.com/BrightCove/694940094001/2018/06/21/931/524/694940094001_5800293009001_5800284148001-vs.jpg?ve=1&tl=1" alt="">
-                        John Doe
-                        <mat-icon>keyboard_arrow_down</mat-icon>
-                    </button>
+                                <img class="jim" src="https://a57.foxnews.com/media2.foxnews.com/BrightCove/694940094001/2018/06/21/931/524/694940094001_5800293009001_5800284148001-vs.jpg?ve=1&tl=1" alt="">
+                            John Doe
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
                     <button mat-button>
-                        <mat-icon >reorder</mat-icon>Sample menu <mat-icon>keyboard_arrow_down</mat-icon>
-                    </button>
+                            <mat-icon >reorder</mat-icon>Sample menu <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
                     <button mat-button>
-                        <mat-icon  matBadge="3" matBadgePosition="before" matBadgeColor="warn">notification_important</mat-icon>Update
-                    </button>
+                            <mat-icon  matBadge="3" matBadgePosition="before" matBadgeColor="warn">notification_important</mat-icon>Update
+                        </button>
                     <button mat-button (click)="auth.logout()">
-                        <mat-icon>logout</mat-icon>Déconnecter
-                    </button>
+                            <mat-icon>logout</mat-icon>Déconnecter
+                        </button>
                 </ng-template>
 
                 <ng-container *ngTemplateOutlet="!auth.currentUserSubject?.value ? loginTemplete : logoutTemplete">
@@ -59,6 +58,8 @@
                         <a mat-tab-link [routerLink]="['check']" routerLinkActive #check="routerLinkActive" [active]="check.isActive"> Check </a>
                         <a mat-tab-link [routerLink]="['output']" routerLinkActive #output="routerLinkActive" [active]="output.isActive"> OutPut </a>
                     </nav>
+                    <div (click)="scrollToTop()" class="scroll-to-top" *ngIf="pageYoffset > 0"> scrollToTop
+                    </div>
                     <div class="py-4">
                         <router-outlet></router-outlet>
                     </div>

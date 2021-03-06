@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { Component, HostListener, OnInit, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-output',
