@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SettingRowsTable } from '@app/models/setting-table';
 import * as Products from 'src/app/shared/fake-data/Products.json';
+import * as Users from 'src/app/shared/fake-data/users.json';
+
 
 @Injectable({
   providedIn: 'root'

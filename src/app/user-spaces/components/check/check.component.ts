@@ -48,13 +48,13 @@ export class CheckComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.displayColumns();
-    
     this.dataSource.data = this.fakedata.views.data;
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+
     this.filters.valueChanges.pipe(
       map(query => {
         let data = this.fakedata.views.data.filter((item: any) => {
