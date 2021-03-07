@@ -34,9 +34,9 @@ export class CustomValidationService {
       }
 
       if (passwordControl.value !== confirmPasswordControl.value) {
-        confirmPasswordControl.setErrors({ passwordMismatch: true });
+        return confirmPasswordControl.setErrors({ passwordMismatch: true });
       } else {
-        confirmPasswordControl.setErrors(null);
+        return confirmPasswordControl.setErrors(null);
       }
     }
   }
