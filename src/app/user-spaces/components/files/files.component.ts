@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ViewportScroller } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,7 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SettingRowsTable } from '@app/models/setting-table';
 import { CommonService } from '@app/shared/services/common.service';
-import { FakeDataService } from '@app/shared/services/fake-data.service';
+import { UserFakeService } from '@app/shared/services/user-fake.service';
 import { Observable, of } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 import { SettingTableComponent } from '../setting-table/setting-table.component';
@@ -44,16 +44,28 @@ export class FilesComponent implements OnInit, AfterViewInit {
   public cells: Observable<any> = new Observable<any>();
   hiddenRows: Observable<any> = new Observable<any>();
 
+  // read excel file:
+  isExcelFile: boolean = false;
+  fileName = '';
+  @ViewChild('inputFile') inputFile!: ElementRef;
+ 
+  constructor(private userFake: UserFakeService, private fb: FormBuilder, public dialog: MatDialog, private common: CommonService) {
+    this.settingDisplayRows.noHiddenRows = this.userFake.views.columnes.noHiddenRows;
+    this.settingDisplayRows.hiddenRows = this.userFake.views.columnes.hiddenRows;
+    this.showRows = of(this.userFake.views.columnes.noHiddenRows)
+  }
 
-  constructor(private fakedata: FakeDataService, private fb: FormBuilder, public dialog: MatDialog, private common: CommonService) {
-    this.settingDisplayRows.noHiddenRows = this.fakedata.views.columnes.noHiddenRows;
-    this.settingDisplayRows.hiddenRows = this.fakedata.views.columnes.hiddenRows;
-    this.showRows = of(this.fakedata.views.columnes.noHiddenRows)
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll($event: any) {
+  //   console.log("scrolling...", $event);
+  // }
+  @HostListener('window:scroll', ['$event']) onWindowScroll(e: any) {
+    console.log(e.target['scrollingElement'].scrollTop)
   }
 
   ngOnInit(): void {
     this.displayColumns();   
-    this.dataSource.data = this.fakedata.views.data;
+    this.dataSource.data = this.userFake.views.data;
   }
 
   ngAfterViewInit() {
@@ -62,9 +74,9 @@ export class FilesComponent implements OnInit, AfterViewInit {
 
     this.filters.valueChanges.pipe(
       map(query => {
-        let data = this.fakedata.views.data.filter((item: any) => {
+        let data = this.userFake.views.data.filter((item: any) => {
           if (Object.values(query).every(x => (x === null || x === ''))) {
-            return this.fakedata.views.data;
+            return this.userFake.views.data;
           } else {
             return Object.keys(item).some(property => {
               if (query[property] != "" && typeof item[property] === 'string' && (query[property] !== undefined && item[property] !== undefined)) {
@@ -98,7 +110,7 @@ export class FilesComponent implements OnInit, AfterViewInit {
       map((result: SettingRowsTable) => {
         if (result) {
           this.displayedColumns = result.noHiddenRows;
-          this.showRows = of(this.fakedata.views.columnes.noHiddenRows);
+          this.showRows = of(this.userFake.views.columnes.noHiddenRows);
 
           result.noHiddenRows?.map(async item => {
             await this.filters.addControl(item, new FormControl(''));
@@ -110,7 +122,8 @@ export class FilesComponent implements OnInit, AfterViewInit {
   }
 
   public getRow(row: any) {
-    this.selectedRowIndex = row._id;
+    console.log(row);
+    this.selectedRowIndex = row.age;
   }
 
   displayColumns(){
@@ -122,5 +135,14 @@ export class FilesComponent implements OnInit, AfterViewInit {
       this.displayedColumns[index] = column;
     });
     this.common.hideSpinner();
+  }
+
+  onFileInput(event: any) {
+    console.log(event.target);
+    const target: DataTransfer = <DataTransfer>(event.target);
+    this.isExcelFile = !!target.files[0]?.name.match(/(.xls|.xlsx)/);
+    if (event.target.files.length > 0) {
+      this.fileName = event.target.files[0].name;
+    }
   }
 }

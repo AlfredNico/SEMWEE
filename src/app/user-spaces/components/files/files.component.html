@@ -1,17 +1,24 @@
 <div fxLayout="column">
     <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
+        <div *ngIf="isExcelFile === false && fileName.length > 0" [style.color]="'red'">
+            This is not an Excel file
+        </div>
+        <div *ngIf="isExcelFile === true" style.color="red">
+            {{ fileName }}
+        </div>
+        <button mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
+            Upload excel
+        </button>
+        <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
         <button mat-mini-fab color="primary" aria-label="setting icon" (click)="openSettingTable()">
             <mat-icon>settings</mat-icon>
-        </button>
-        <button color="primary" aria-label="setting icon" (click)="displayColumns()">
-            Refraichier
         </button>
     </div>
     <div class="px-2 m-3 table-container">
         <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable" cdkDropList [cdkDropListData]="showRows | async" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <ng-container *ngFor="let column of showRows | async; let i = index" [matColumnDef]="column">
-                <!-- // -->
+
                 <th mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                     <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
                         <div mat-sort-header class="text-uppercase">
@@ -22,13 +29,13 @@
                         </mat-form-field>
                     </div>
                 </th>
-                <td mat-cell *matCellDef="let row" (click)="getRow(row)" [ngClass]="{'high-light': selectedRowIndex == row._id}"> {{ row[column] }} </td>
+                <td mat-cell *matCellDef="let row" (click)="getRow(row)" [ngClass]="{'high-light': selectedRowIndex == row.age}"> {{ row[column] }} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef=" showRows | async "></tr>
             <tr mat-row *matRowDef="let row; columns: showRows | async; "></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000] " showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
     </div>
 
 </div>

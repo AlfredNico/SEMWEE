@@ -13,7 +13,7 @@ import { SettingRowsTable } from '@app/models/setting-table';
 // import * as fs from "fs";
 
 export interface PeriodicElement {
-  id: string;
+  id: number;
   fistName: string;
   lastName: string;
   phone: string;
@@ -21,10 +21,10 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  { id: '2', lastName: 'Zaho2', fistName: 'zaho 2', phone: '12345678', adresse: 'Fianara' },
-  { id: '3', lastName: 'Zaho3', fistName: 'zaho 3', phone: '12345678', adresse: 'Ambositra' },
-  { id: '1', lastName: 'Zaho1', fistName: 'ZAHO 1', phone: '12345678', adresse: 'Tana' },
-  { id: '4', lastName: 'Zaho4', fistName: 'zaho 4', phone: '12345678', adresse: 'Ambalavao' },
+  { id: 3, lastName: 'Zaho3', fistName: 'zaho 3', phone: '12345678', adresse: 'Ambositra' },
+  { id: 1, lastName: 'Zaho1', fistName: 'ZAHO 1', phone: '12345678', adresse: 'Tana' },
+  { id: 2, lastName: 'Zaho2', fistName: 'zaho 2', phone: '12345678', adresse: 'Fianara' },
+  { id: 4, lastName: 'Zaho4', fistName: 'zaho 4', phone: '12345678', adresse: 'Ambalavao' },
 ];
 
 

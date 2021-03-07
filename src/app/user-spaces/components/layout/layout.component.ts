@@ -20,16 +20,36 @@ export class LayoutComponent implements OnInit {
 
   // Scroll button
   pageYoffset = 0;
-  @HostListener('window:scroll', ['$event']) onScroll() {
-    this.pageYoffset = window.pageYOffset;
-    console.log(window.pageYOffset);
-  }
+  // @HostListener('window:scroll', ['$event']) onScroll() {
+  //   this.pageYoffset = window.pageYOffset;
+  //   console.log(window.pageYOffset);
+  // }
+  // @HostListener('window:scroll', ['$event'])
+  // onWindowScroll($event: any) {
+  //   console.log("scrolling...", $event);
+  // }
 
   constructor(public auth: AuthService, private _sidenavService: SidenavService, private scroll: ViewportScroller, @Inject(DOCUMENT) private document: Document) {
     this._sidenavService.sideNavState$.subscribe(res => {
       this.onSideNavChange = res;
     })
   }
+
+  // @HostListener('scroll', ['$event']) public scrolled($event: Event) {
+  //   console.log("scrolling...", $event);
+  // }
+//   @HostListener('mousewheel', ['$event']) onMousewheel(event: any) {
+//     console.log("scrolling...", event);
+// // (mousewheel) = "mousewheel($event)"
+//  }
+  @HostListener('window:scroll', ['$event']) onScroll(event: any) {
+    this.pageYoffset = window.pageYOffset;
+    console.log("scrolling...", event);
+  }
+
+  // mousewheel(event: any) {
+  //   console.log(event)
+  // }
 
   ngOnInit(): void {
   }
