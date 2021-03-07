@@ -55,14 +55,6 @@ export class FilesComponent implements OnInit, AfterViewInit {
     this.showRows = of(this.userFake.views.columnes.noHiddenRows)
   }
 
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll($event: any) {
-  //   console.log("scrolling...", $event);
-  // }
-  @HostListener('window:scroll', ['$event']) onWindowScroll(e: any) {
-    console.log(e.target['scrollingElement'].scrollTop)
-  }
-
   ngOnInit(): void {
     this.displayColumns();   
     this.dataSource.data = this.userFake.views.data;

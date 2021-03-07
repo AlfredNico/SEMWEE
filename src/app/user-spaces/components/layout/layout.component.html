@@ -58,8 +58,9 @@
                         <a mat-tab-link [routerLink]="['check']" routerLinkActive #check="routerLinkActive" [active]="check.isActive"> Check </a>
                         <a mat-tab-link [routerLink]="['output']" routerLinkActive #output="routerLinkActive" [active]="output.isActive"> OutPut </a>
                     </nav>
-                    <div (click)="scrollToTop()" class="scroll-to-top" *ngIf="pageYoffset > 0"> scrollToTop
-                    </div>
+
+                    <button *ngIf="isShow" (click)="gotoTop()" class="scroll-to-top ">👆</button>
+
                     <div class="py-4">
                         <router-outlet></router-outlet>
                     </div>
