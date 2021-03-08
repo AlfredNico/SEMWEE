@@ -17,28 +17,48 @@
     <div class="px-2 m-3 table-container">
         <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable" cdkDropList [cdkDropListData]="showRows | async" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
-            <ng-container>
-                <th mat-header-cell> No. </th>
+            <!-- Checkbox Column -->
+            <!-- <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
                 <td mat-cell> element </td>
-            </ng-container>
+            </ng-container> -->
 
+            <!-- Dynamics tables -->
             <ng-container *ngFor="let column of showRows | async; let i = index" [matColumnDef]="column">
 
                 <th mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                    <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                        <div mat-sort-header class="text-uppercase">
-                            {{ column }}
-                        </div>
-                        <mat-form-field appearance="outline" id="filters">
-                            <input matInput type="search" [formControlName]="column" autocomplete="off">
-                        </mat-form-field>
+                    <div *ngIf="column == 'select'; then content_header else other_content_header">
                     </div>
+                    <ng-template #content_header>
+                        <mat-checkbox color="primary" (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </ng-template>
+                    <ng-template #other_content_header>
+                        <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
+                            <div mat-sort-header class="text-uppercase">
+                                {{ column }}
+                            </div>
+                            <mat-form-field appearance="outline" id="filters">
+                                <input matInput type="search" [formControlName]="column" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                    </ng-template>
                 </th>
-                <td mat-cell *matCellDef="let row" (click)="getRow(row)" [ngClass]="{'high-light': selectedRowIndex == row.age}"> {{ row[column] }} </td>
+                <td mat-cell *matCellDef="let row" (click)="getRow(row)" [ngClass]="{'high-light': selectedRowIndex == row.age }">
+                    <div *ngIf="column == 'select' ; then content else other_content">
+                    </div>
+                    <ng-template #content>
+                        <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </ng-template>
+                    <ng-template #other_content> {{ row[column]}} </ng-template>
+                </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef=" showRows | async "></tr>
-            <tr mat-row *matRowDef="let row; columns: showRows | async; "></tr>
+            <tr mat-header-row *matHeaderRowDef="showRows | async"></tr>
+            <tr mat-row *matRowDef="let row; columns: showRows | async;" (click)="selection.toggle(row)"></tr>
+            <!-- <tr mat-row *matRowDef="let row; columns: showRows | async; "></tr> -->
+
         </table>
         <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
     </div>

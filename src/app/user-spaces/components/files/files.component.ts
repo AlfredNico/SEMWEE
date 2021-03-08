@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ViewportScroller } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
@@ -27,6 +28,9 @@ export class FilesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
+  //slect in table
+  selection = new SelectionModel<any>(true, []);
+
   //generate form controle dynamics
   public filters = this.fb.group([]);
 
@@ -52,12 +56,17 @@ export class FilesComponent implements OnInit, AfterViewInit {
   constructor(private userFake: UserFakeService, private fb: FormBuilder, public dialog: MatDialog, private common: CommonService) {
     this.settingDisplayRows.noHiddenRows = this.userFake.views.columnes.noHiddenRows;
     this.settingDisplayRows.hiddenRows = this.userFake.views.columnes.hiddenRows;
-    this.showRows = of(this.userFake.views.columnes.noHiddenRows)
+    this.showRows = of(['select', ...this.userFake.views.columnes.noHiddenRows])
   }
 
   ngOnInit(): void {
     this.displayColumns();   
     this.dataSource.data = this.userFake.views.data;
+
+    this.showRows.subscribe(val => {
+      console.log(val);
+    });
+    
   }
 
   ngAfterViewInit() {
@@ -102,7 +111,7 @@ export class FilesComponent implements OnInit, AfterViewInit {
       map((result: SettingRowsTable) => {
         if (result) {
           this.displayedColumns = result.noHiddenRows;
-          this.showRows = of(this.userFake.views.columnes.noHiddenRows);
+          this.showRows = of('select', [...this.userFake.views.columnes.noHiddenRows]);
 
           result.noHiddenRows?.map(async item => {
             await this.filters.addControl(item, new FormControl(''));
@@ -138,5 +147,23 @@ export class FilesComponent implements OnInit, AfterViewInit {
       this.fileName = event.target.files[0].name;
     }
     console.log(target.files[0]?.name);
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  logSelection() {
+    this.selection.selected.forEach(s => console.log(s.name));
   }
 }

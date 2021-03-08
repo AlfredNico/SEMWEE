@@ -8,7 +8,7 @@ import * as Users from 'src/app/shared/fake-data/users.json';
 })
 export class UserFakeService {
 
-  private countryList = Users as any;
+  private countryList = this.changeDate(Users);
   public views: { columnes: SettingRowsTable, data: any[] } = {
     data: [],
     columnes: {
@@ -29,5 +29,11 @@ export class UserFakeService {
       this.views.data = this.countryList['default'];
       this.views.columnes.noHiddenRows = this.difference;
     });
+  }
+
+  public changeDate(data: any[]) {
+    console.log(data);
+    
+    return data as any;
   }
 }
