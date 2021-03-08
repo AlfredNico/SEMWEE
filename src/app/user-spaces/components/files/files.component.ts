@@ -130,11 +130,13 @@ export class FilesComponent implements OnInit, AfterViewInit {
   }
 
   onFileInput(event: any) {
-    console.log(event.target);
     const target: DataTransfer = <DataTransfer>(event.target);
-    this.isExcelFile = !!target.files[0]?.name.match(/(.xls|.xlsx)/);
+    this.isExcelFile = !!target.files[0]?.name.match(/(.csv)/);
+    // this.isExcelFile = !!target.files[0]?.name.match(/(.xls|.xlsx)/);
+
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name;
     }
+    console.log(target.files[0]?.name);
   }
 }

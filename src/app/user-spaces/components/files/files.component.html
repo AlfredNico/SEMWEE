@@ -6,7 +6,7 @@
         <div *ngIf="isExcelFile === true" style.color="red">
             {{ fileName }}
         </div>
-        <button mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
+        <button mat-raised-button color="primary" class="m-3" (click)="fileInput.click()" accept=".csv">
             Upload excel
         </button>
         <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
@@ -16,6 +16,11 @@
     </div>
     <div class="px-2 m-3 table-container">
         <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable" cdkDropList [cdkDropListData]="showRows | async" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
+
+            <ng-container>
+                <th mat-header-cell> No. </th>
+                <td mat-cell> element </td>
+            </ng-container>
 
             <ng-container *ngFor="let column of showRows | async; let i = index" [matColumnDef]="column">
 
