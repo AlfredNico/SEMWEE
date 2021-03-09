@@ -30,7 +30,7 @@
                                         <mat-icon>{{item.iconName}}</mat-icon>
                                         <div [@animateText]="linkText ? 'show' : 'hide'">{{item.displayName}}</div>
                                 </mat-expansion-panel-header>
-                                    <a mat-list-item routerLink="[child.route]" *ngFor="let child of item.children">
+                                    <a mat-list-item [routerLink]="[child.route]" *ngFor="let child of item.children">
                                         <!-- sub menu  -->
                                         <div fxLayout="row" fxLayoutAlign="space-between center">
                                             <mat-icon>{{child.iconName}}</mat-icon>
@@ -41,7 +41,7 @@
                 </mat-accordion>
                 </span>
                 <span *ngIf="!item.children || item.children.length === 0">
-                        <mat-list-item routerLink="[item.route]">
+                        <mat-list-item [routerLink]="[item.route]">
                             <!-- menu -->
                             <div fxLayout="row" fxLayoutAlign="space-between center">
                                 <mat-icon>{{item.iconName}}</mat-icon>

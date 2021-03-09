@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FileUploadComponent } from './file-upload.component';
+import { LpValidatorComponent } from './lp-validator.component';
 
-describe('FileUploadComponent', () => {
-  let component: FileUploadComponent;
-  let fixture: ComponentFixture<FileUploadComponent>;
+describe('LpValidatorComponent', () => {
+  let component: LpValidatorComponent;
+  let fixture: ComponentFixture<LpValidatorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FileUploadComponent ]
+      declarations: [ LpValidatorComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileUploadComponent);
+    fixture = TestBed.createComponent(LpValidatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

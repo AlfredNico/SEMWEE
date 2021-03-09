@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { StepperFileComponent } from './dashbord/components/stepper-file/stepper-file.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { LandingModule } from '@app/shared/modules/landing.module';
@@ -7,22 +6,25 @@ import { SharedModule } from '@app/shared/modules/shared.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
 import { SideMenuComponent } from '@app/shared/components/side-menu/side-menu.component';
-import { FileUploadComponent } from './dashbord/components/stepper-file/file-upload.component';
-import { FilterDataComponent } from './dashbord/components/stepper-file/filter-data.component';
 import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
-import { UploadFileService } from './dashbord/services/upload-file.service';
 import { ConvertUploadFileService } from './dashbord/services/convert-upload-file.service';
+import { LpValidatorComponent } from './dashbord/components/lp-validator/lp-validator.component';
+import { ImportItemComponent } from './dashbord/components/lp-validator/import-item.component';
+import { CheckRelevancyComponent } from './dashbord/components/lp-validator/check-relevancy.component';
+import { InferListComponent } from './dashbord/components/lp-validator/infer-list.component';
+import { LpValidatorService } from './dashbord/services/lp-validator.service';
 
 
 
 @NgModule({
   declarations: [
-    StepperFileComponent,
     DashbordComponent,
     SideMenuComponent,
-    FileUploadComponent,
-    FilterDataComponent,
-    SettingTableComponent
+    LpValidatorComponent,
+    ImportItemComponent,
+    CheckRelevancyComponent,
+    InferListComponent,
+    SettingTableComponent,
   ],
   imports: [
     LandingPageModule,
@@ -32,16 +34,23 @@ import { ConvertUploadFileService } from './dashbord/services/convert-upload-fil
     RouterModule.forChild([
       {
         path: '', component: DashbordComponent, children: [
-          { path: 'file-upload', component: StepperFileComponent },
-          { path: '', redirectTo: 'file-upload', pathMatch: 'full' }
+          { path: 'lp-validator', component: LpValidatorComponent },
+          { path: '', redirectTo: 'lp-validator', pathMatch: 'full' }
         ]
       },
     ]),
   ],
   exports: [RouterModule],
   providers: [
-    UploadFileService,
+    LpValidatorService,
     ConvertUploadFileService
+  ],
+  entryComponents: [
+    SettingTableComponent,
+    ImportItemComponent,
+    CheckRelevancyComponent,
+    InferListComponent
   ]
+
 })
 export class DashbordModule { }

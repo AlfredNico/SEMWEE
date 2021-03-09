@@ -10,8 +10,8 @@ export class NavItemService {
     {
       displayName: 'Home',
       iconName: 'home',
-      route: '/',
-    },  {
+      route: '/home',
+    }, {
       displayName: 'Help',
       iconName: 'ballot',
       route: 'entradasGADE',
@@ -22,7 +22,7 @@ export class NavItemService {
         {
           displayName: 'Validator 1',
           iconName: 'how_to_reg',
-          route: '/misexpedientes'
+          route: '/user-space'
         }, {
           displayName: 'Validator 2',
           iconName: 'waves',

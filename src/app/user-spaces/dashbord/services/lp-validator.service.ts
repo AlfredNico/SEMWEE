@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { mergeMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UploadFileService {
+export class LpValidatorService {
+
+  public dataView: { columns: string[], data: [] } = { columns: ['select'], data: []};
 
   constructor(private http: HttpClient) { }
 
@@ -16,9 +17,9 @@ export class UploadFileService {
 
     return this.http.post<{ message: string, nameFile: string }>(`${environment.URL_API}/validator/all-fast-csv`, formData).toPromise();
   }
-  public getUpload(nameFile: any){
+  public getUpload(nameFile: any) {
     const params = new HttpParams().set('nameFile', nameFile);
-    return this.http.get<any[]>(`${environment.URL_API}/validator/get-all-fast-csv`, { params: params}).toPromise();
+    return this.http.get<any[]>(`${environment.URL_API}/validator/get-all-fast-csv`, { params: params }).toPromise();
   }
   // public sendFile(files: File) {
   //   const formData: FormData = new FormData();
