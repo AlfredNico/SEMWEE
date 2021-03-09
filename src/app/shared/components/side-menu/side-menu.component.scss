@@ -11,6 +11,17 @@
     border-radius: 50%;
 }
 
-::ng-deep .mat-expansion-panel-body {
-    padding: 0 0 16px !important;
+// ::ng-deep .mat-expansion-panel-body {
+//     padding: 0 0 16px !important;
+// }
+.displayName {
+    padding: 0 16px !important;
+}
+
+.display-width {
+    width: 62px !important;
+}
+
+.mat-expansion-panel {
+    padding: 0 8px !important;
 }

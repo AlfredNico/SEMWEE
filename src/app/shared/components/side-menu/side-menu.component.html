@@ -19,13 +19,13 @@
                     <span [@animateText]="linkText ? 'show' : 'hide'">{{ page?.name }} </span>
                 </a>
             </mat-nav-list> -->
-        <div style="width: 62px">
+        <div [ngClass]="{'display-width': linkText === false}">
             <mat-nav-list>
                 <span *ngFor="let item of menu">
                     <span *ngIf="item.children && item.children.length > 0">
                         <mat-accordion>
                             <mat-expansion-panel>
-                                <mat-expansion-panel-header style="padding: 0 16px;">
+                                <mat-expansion-panel-header [ngClass]="{'displayName': linkText === false}">
                                         <!-- menu-->
                                         <mat-icon>{{item.iconName}}</mat-icon>
                                         <div [@animateText]="linkText ? 'show' : 'hide'">{{item.displayName}}</div>
