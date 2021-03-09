@@ -15,6 +15,8 @@ import { MatListModule } from '@angular/material/list';
 
 import { MatDividerModule } from '@angular/material/divider';
 
+import { MatExpansionModule } from '@angular/material/expansion';
+
 
 @NgModule({
   declarations: [],
@@ -31,7 +33,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatExpansionModule
   ]
 })
 export class LandingPageModule { }

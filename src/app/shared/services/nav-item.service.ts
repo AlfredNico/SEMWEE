@@ -8,33 +8,33 @@ export class NavItemService {
 
   menu: NavItem[] = [
     {
-      displayName: 'Escritorio',
-      iconName: 'desktop_windows',
-      route: 'escritorio',
+      displayName: 'Home',
+      iconName: 'home',
+      route: '/',
     },  {
-      displayName: 'Entradas GADE',
+      displayName: 'Help',
       iconName: 'ballot',
       route: 'entradasGADE',
     }, {
-      displayName: 'Expedientes',
+      displayName: 'LP Validator',
       iconName: 'description',
       children: [
         {
-          displayName: 'Mis Expedientes',
+          displayName: 'Validator 1',
           iconName: 'how_to_reg',
           route: '/misexpedientes'
         }, {
-          displayName: 'Todos',
+          displayName: 'Validator 2',
           iconName: 'waves',
           route: '/todos'
         }
       ]
     }, {
-      displayName: 'Perfiles',
+      displayName: 'Profils',
       iconName: 'group',
       children: [
         {
-          displayName: 'Búsqueda Perfil',
+          displayName: 'Settings',
           iconName: 'search',
           route: '/busquedaperfiles'
         }

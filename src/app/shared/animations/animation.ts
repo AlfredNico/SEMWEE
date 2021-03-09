@@ -21,6 +21,7 @@ export const onMainContentChange = trigger('onMainContentChange', [
     state('close',
         style({
             'margin-left': '62px'
+            // 'margin-left': '100px'
         })
     ),
     state('open',
