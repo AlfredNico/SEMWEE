@@ -12,7 +12,7 @@ import { CommonService } from '@app/shared/services/common.service';
 import { UserFakeService } from '@app/shared/services/user-fake.service';
 import { Observable, of } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
-import { SettingTableComponent } from '../setting-table/setting-table.component';
+import { SettingTableComponent } from '../../../shared/components/setting-table/setting-table.component';
 
 @Component({
   selector: 'app-files',

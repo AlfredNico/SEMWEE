@@ -9,7 +9,7 @@ import { SettingRowsTable } from '@app/models/setting-table';
 import { CommonService } from '@app/shared/services/common.service';
 import { ProductFakeService } from '@app/shared/services/product-fake.service';
 import { map, tap } from 'rxjs/operators';
-import { SettingTableComponent } from '../setting-table/setting-table.component';
+import { SettingTableComponent } from '../../../shared/components/setting-table/setting-table.component';
 
 @Component({
   selector: 'app-check',

@@ -9,14 +9,12 @@ import { FilesComponent } from './components/files/files.component';
 import { InputComponent } from './components/input/input.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { OutputComponent } from './components/output/output.component';
-import { SettingTableComponent } from './components/setting-table/setting-table.component';
+import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { FileUploadComponent } from './components/output/file-upload.component';
-import { FilterDataComponent } from './components/output/filter-data.component';
 
 
 @NgModule({
-  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent, SideMenuComponent, SettingTableComponent, FileUploadComponent, FilterDataComponent, FilterDataComponent],
+  declarations: [FilesComponent, LayoutComponent, InputComponent, CheckComponent, OutputComponent, SideMenuComponent, SettingTableComponent],
   imports: [
     LandingPageModule,
     LandingModule,

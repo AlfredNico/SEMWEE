@@ -1,0 +1,118 @@
+[{
+        "name": "hero Product",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "hero": "OMG This just came out today!",
+        "offset": [{
+                "product_id": "1",
+                "product_label": "white_shirt",
+                "product_url": "https://assets.abfrlcdn.com/img/app/product/1/172901-434647-large.jpg"
+            },
+            {
+                "product_id": "2",
+                "product_label": "top",
+                "product_url": "https://assets.myntassets.com/h_640,q_90,w_480/v1/assets/images/1719933/2017/2/22/11487765190073-Roadster-Women-Olive-Solid-Regular-Top-9441487765189834-1.jpg"
+            },
+            {
+                "product_id": "2",
+                "product_label": "top",
+                "product_url": "https://assets.myntassets.com/h_640,q_90,w_480/v1/assets/images/1719933/2017/2/22/11487765190073-Roadster-Women-Olive-Solid-Regular-Top-9441487765189834-1.jpg"
+            }
+        ]
+    }, {
+        "name": "Product 1",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "info": "This is the latest and greatest product from Derp corp.",
+        "offset": [{
+                "product_id": "1",
+                "product_label": "white_shirt",
+                "product_url": "https://assets.abfrlcdn.com/img/app/product/1/172901-434647-large.jpg"
+            },
+            {
+                "product_id": "2",
+                "product_label": "top",
+                "product_url": "https://assets.myntassets.com/h_640,q_90,w_480/v1/assets/images/1719933/2017/2/22/11487765190073-Roadster-Women-Olive-Solid-Regular-Top-9441487765189834-1.jpg"
+            }
+        ]
+    }, {
+        "name": "Product 2",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "offer": "BOGOF",
+        "offset": [{
+                "product_id": "1",
+                "product_label": "white_shirt",
+                "product_url": "https://assets.abfrlcdn.com/img/app/product/1/172901-434647-large.jpg"
+            },
+            {
+                "product_id": "2",
+                "product_label": "top",
+                "product_url": "https://assets.myntassets.com/h_640,q_90,w_480/v1/assets/images/1719933/2017/2/22/11487765190073-Roadster-Women-Olive-Solid-Regular-Top-9441487765189834-1.jpg"
+            },
+            {
+                "product_id": "1",
+                "product_label": "white_shirt",
+                "product_url": "https://assets.abfrlcdn.com/img/app/product/1/172901-434647-large.jpg"
+            },
+            {
+                "product_id": "2",
+                "product_label": "top",
+                "product_url": "https://assets.myntassets.com/h_640,q_90,w_480/v1/assets/images/1719933/2017/2/22/11487765190073-Roadster-Women-Olive-Solid-Regular-Top-9441487765189834-1.jpg"
+            }
+        ]
+    }, {
+        "name": "Product 3",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "offset": [{
+            "product_id": "6",
+            "product_label": "gown",
+            "product_url": "https://cdn.shopify.com/s/files/1/0185/1220/products/Navy_blue_gown_adorn_in_zari_and_sequin_in_floral_work_only_on_Kalki_-_Kalkifashion.jpg?v=1504617850"
+        }]
+    },
+    {
+        "name": "Product 4",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "offer": "No srsly GTFO",
+        "offset": [{
+            "product_id": "1",
+            "product_label": "white_shirt",
+            "product_url": "https://assets.abfrlcdn.com/img/app/product/1/172901-434647-large.jpg"
+        }]
+    },
+    {
+        "name": "Product 5",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "offset": [{
+                "product_id": "4",
+                "product_label": "shoe",
+                "product_url": "https://assets.myntassets.com/h_240,q_90,w_180/v1/assets/images/1465362/2016/8/18/11471499895066-Roadster-Men-Brown-Solid-Regular-Sneakers-3411471499894853-1_mini.jpg"
+            },
+            {
+                "product_id": "5",
+                "product_label": "gown",
+                "product_url": "https://www.wewillfashion.com/pub/media/catalog/product/cache/5ab063e30dbf74cb9bb799f550ede913/w/e/we15k27.jpg"
+            },
+            {
+                "product_id": "6",
+                "product_label": "gown",
+                "product_url": "https://cdn.shopify.com/s/files/1/0185/1220/products/Navy_blue_gown_adorn_in_zari_and_sequin_in_floral_work_only_on_Kalki_-_Kalkifashion.jpg?v=1504617850"
+            }
+        ]
+    },
+    {
+        "name": "Product 6",
+        "detail": "Lorem ipsum dolor sit amet",
+        "price": "99",
+        "info": "This is the latest and greatest product from Derp corp.",
+        "offer": "info with offer",
+        "offset": [{
+            "product_id": "1",
+            "product_label": "white_shirt",
+            "product_url": "https://assets.abfrlcdn.com/img/app/product/1/172901-434647-large.jpg"
+        }]
+    }
+]

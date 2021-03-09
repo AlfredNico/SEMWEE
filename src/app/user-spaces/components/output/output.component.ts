@@ -1,6 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
-import { FileUploadComponent } from './file-upload.component';
 
 @Component({
   selector: 'app-output',

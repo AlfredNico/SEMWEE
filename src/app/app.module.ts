@@ -35,7 +35,7 @@ import { IsLoggedInGuard } from './guards/is-logged-in.guard';
         canActivate: [IsLoggedInGuard]
       }, {
         path: 'user-space',
-        loadChildren: () => import('./user-spaces/user-space.module').then(m => m.UserSpaceModule),
+        loadChildren: () => import('./user-spaces/dashbord.module').then(m => m.DashbordModule),
         canActivate: [AuthGuard, IsLoggedInGuard]
       }, {
         path: 'sign-in',

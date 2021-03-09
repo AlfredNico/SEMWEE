@@ -8,8 +8,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SettingRowsTable } from '@app/models/setting-table';
 import { CommonService } from '@app/shared/services/common.service';
 import { ProductFakeService } from '@app/shared/services/product-fake.service';
+import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
 import { map, tap } from 'rxjs/operators';
-import { SettingTableComponent } from '../setting-table/setting-table.component';
 
 @Component({
   selector: 'app-filter-data',

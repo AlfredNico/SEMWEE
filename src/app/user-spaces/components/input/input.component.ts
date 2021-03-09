@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { SettingTableComponent } from '../setting-table/setting-table.component';
+import { SettingTableComponent } from '../../../shared/components/setting-table/setting-table.component';
 import { SettingRowsTable } from '@app/models/setting-table';
 
 // import * as fs from "fs";
