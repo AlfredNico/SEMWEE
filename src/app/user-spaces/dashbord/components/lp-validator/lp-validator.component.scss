@@ -1,0 +1,10 @@
+::ng-deep {
+    .mat-horizontal-content-container {
+        padding: 24px 24px 24px 24px !important;
+        background: white;
+    }
+    .mat-stepper-horizontal,
+    .mat-stepper-vertical {
+        background-color: #fafafa !important;
+    }
+}

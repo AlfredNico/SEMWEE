@@ -1,22 +1,35 @@
 import { Injectable } from '@angular/core';
-import * as fakeData from 'src/app/shared/fake-data/fakeData.json';
+import * as Users from 'src/app/shared/fake-data/users.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConvertUploadFileService {
 
-  public defaultData = fakeData as any;
-  private columns: string[] = [];
+  public defaultData = Users as any;
+  private displayColumns: string[] = ['select'];
+  private hideColumns: string[] = [];
   private data: any[] = [];
 
+  public dataView: { columns: string[], data: [] } = { columns: [], data: [] };
+
   constructor() { 
-    console.log('data' + this.defaultData['default']);
+    this.mapingData(this.defaultData['default']);
+
+    this.dataView = {
+      columns: this.hideColumns,
+      data: this.defaultData['default']
+    }
   }
 
   private mapingData(data: any[]){
-    data.map((value, index) => {
-      console.log(value), index;
+    data.map((value: any) => {
+      Object.keys(value).map((key: string, index: number) => {
+        // console.log(key, index);
+        if (!this.displayColumns.includes(key)) {
+          this.displayColumns.push(key)
+        }
+      })
     })
   }
 }

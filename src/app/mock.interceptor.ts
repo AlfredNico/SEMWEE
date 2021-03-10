@@ -10,6 +10,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
+import * as User from 'src/app/shared/fake-data/users.json';
 
 export const usersData: Users[] = [
   {
@@ -50,24 +51,23 @@ export class MockInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
+    // all-fast-csv
 
-      switch (true) {
-        case url.endsWith('auth/login') && method === 'POST':
-          const { email, password } = body;
-          const user = usersData.find(x => x.email === email && x.firstname === password);
-          if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe incorrecte' } });
-          return of(new HttpResponse({ status: 200, body: user as Users }));
+    switch (true) {
+      case url.endsWith('auth/login') && method === 'POST':
+        const { email, password } = body;
+        const user = usersData.find(x => x.email === email && x.firstname === password);
+        if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe incorrecte' } });
+        return of(new HttpResponse({ status: 200, body: user as Users }));
 
-        case url.endsWith('/users') && method === 'GET':
-          if (headers.get('Authorization')) {
-            return throwError({ status: 401, error: { message: 'Unauthorised' } });
-          }
-          return of(new HttpResponse({ status: 200, body: (usersData) as Users[] }));
+      case url.endsWith('validator/all-fast-csv') && method === 'GET':
+        console.log('/validator/all-fast-csv');
+        return of(new HttpResponse({ status: 200, body: User as any }));
 
-        default:
-          // pass through any requests not handled above
-          return next.handle(request);;
-      }
+      default:
+        // pass through any requests not handled above
+        return next.handle(request);
+    }
 
   }
 }
