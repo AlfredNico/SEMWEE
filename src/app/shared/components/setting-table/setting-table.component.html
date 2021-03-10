@@ -1,28 +1,11 @@
 <div fxLayout="column">
-    <h1 mat-dialog-title>Drap and drop content</h1>
+    <h1 mat-dialog-title>Settings tables</h1>
     <div mat-dialog-content>
-        <div cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-evenly start">
-
-            <div class="example-container ">
-                <h2>Colonne Affichés</h2>
-
-                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="example-list">
-                    <div *ngFor="let item of noHidden" cdkDrag>
-                        <span *ngIf="!item.includes('Value');" class="example-box"> {{item}} </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="example-container">
-                <h2>Colonne masque</h2>
-
-                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event)" class="example-list">
-                    <div class="example-box" *ngFor="let item of hidden" cdkDrag>
-                        <span *ngIf="!item.includes('Value');"> {{item}} </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <mat-selection-list #items>
+            <mat-list-option #item *ngFor="let facet of facetLists; let i = index" [disabled]="items.selectedOptions.selected.length > 2 && !item.selected" [selected]="facet && i < 2" (click)="onNgModelChange(facet)">
+                {{facet}}
+            </mat-list-option>
+        </mat-selection-list>
     </div>
     <div mat-dialog-actions align='center'>
         <button mat-button (click)="onClick()" tabindex="-1">FERMER</button>

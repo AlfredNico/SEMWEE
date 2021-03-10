@@ -7,4 +7,13 @@
     .mat-stepper-vertical {
         background-color: #fafafa !important;
     }
+    //align button mat-dialog-action
+    .mat-dialog-actions {
+        &[align='end'] {
+            justify-content: flex-end !important;
+        }
+        &[align='center'] {
+            justify-content: center !important;
+        }
+    }
 }

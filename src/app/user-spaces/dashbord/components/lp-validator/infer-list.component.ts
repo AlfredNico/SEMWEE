@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SettingRowsTable } from '@app/models/setting-table';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
+import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
 import { map } from 'rxjs/operators';
 
@@ -117,8 +118,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     });
   }
 
-  openSettingTable() {
-    this.dialog.open(SettingTableComponent, {
+  tableOpons() {
+    this.dialog.open(TableOptionsComponent, {
       data: {
         noHiddenRows: this.displayColumns,
         hiddenRows: this.dataView.hideColumns
@@ -143,6 +144,36 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     ).subscribe();
   }
 
+  openSettingTable() {
+    this.dialog.open(SettingTableComponent, {
+      data: {
+        facetLists: this.displayColumns,
+      },
+      width: '600px',
+    }).afterClosed().pipe(
+      map(result => {
+        console.log('result', result);
+
+      })
+      // tap(() => {
+      //   this.common.showSpinner('root');
+      // }),
+      // map((result: SettingRowsTable) => {
+      //   if (result) {
+      //     this.displayColumns = result.noHiddenRows;
+      //     this.dataView.displayColumns = result.noHiddenRows;
+
+      //     result.noHiddenRows?.map(async item => {
+      //       //création formControl Dynamics
+      //       if (item != 'select') {
+      //         this.filters.addControl(item, new FormControl(''));
+      //       }
+      //     });
+      //   }
+      // }),
+    ).subscribe();
+  }
+
   setAll(completed: boolean) {
     this.allSelect = completed;
     if (this.dataView.data == null) {
@@ -152,16 +183,14 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   }
 
   public selectRow(row: any) {
-    let indexData = 0, valueData = {};
-    let value = this.dataView.data.forEach((item, index) => {
-      return Object.keys(item).forEach(key => item[key] == row[key])
-    })
-    console.log(indexData, valueData, value);
+    // let data, indexData;
+    // this.allSelect = this.dataView.data.includes(t => t.select === false);
+    let index = this.dataView.data.findIndex((x: any) => x.ID === row.ID)
+    this.dataView.data[index] = { ...row, 'select': row['select'] === true ? false : true };
 
-    if (!row) {
-      return row.select = !row.select;
-    }
+    this.dataSource.data = this.dataView.data;
   }
+
   someComplete(): boolean {
     if (this.dataView.data == null) {
       return false;

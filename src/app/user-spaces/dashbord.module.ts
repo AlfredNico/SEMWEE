@@ -13,6 +13,7 @@ import { ImportItemComponent } from './dashbord/components/lp-validator/import-i
 import { CheckRelevancyComponent } from './dashbord/components/lp-validator/check-relevancy.component';
 import { InferListComponent } from './dashbord/components/lp-validator/infer-list.component';
 import { LpValidatorService } from './dashbord/services/lp-validator.service';
+import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 
 
 
@@ -25,6 +26,7 @@ import { LpValidatorService } from './dashbord/services/lp-validator.service';
     CheckRelevancyComponent,
     InferListComponent,
     SettingTableComponent,
+    TableOptionsComponent
   ],
   imports: [
     LandingPageModule,
@@ -46,6 +48,7 @@ import { LpValidatorService } from './dashbord/services/lp-validator.service';
     ConvertUploadFileService
   ],
   entryComponents: [
+    TableOptionsComponent,
     SettingTableComponent,
     ImportItemComponent,
     CheckRelevancyComponent,

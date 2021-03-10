@@ -22,8 +22,6 @@ export class LpValidatorService {
   }
 
   public getUpload(value: {file: string}) {
-    console.log(value);
-    
     // const params = new HttpParams().set('nameFile', file);
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.URL_API}/validator/post-one-fast-csv`, value).pipe(
       map((result: any) => {
@@ -31,7 +29,7 @@ export class LpValidatorService {
         
         let dataValue: any[] = [];
 
-        result.map((value: any) => {
+        result['default'].map((value: any) => {
           Object.keys(value).map((key: string, index: number) => {
             // console.log(key, index);
             if (!this.data.displayColumns.includes(key)) {

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CommonService } from '@app/shared/services/common.service';
 import { map, switchMap } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 
@@ -61,7 +62,7 @@ export class ImportItemComponent implements OnInit {
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() uploadFiles = new EventEmitter<any>();
 
-  constructor(private lpValidatorServices: LpValidatorService) { }
+  constructor(private lpValidatorServices: LpValidatorService, private common: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -84,6 +85,7 @@ export class ImportItemComponent implements OnInit {
 
   public async onSubmit() {
     if (this.form.valid) {
+      this.common.showSpinner();
 
       try {
         const formData = new FormData();
@@ -110,7 +112,7 @@ export class ImportItemComponent implements OnInit {
         //   const data = await this.lpValidatorServices.getUpload(result.nameFile);
         //   console.log('data', data);
         // }
-
+        this.common.hideSpinner();
       } catch (error) {
         console.log('error ', error);
 

@@ -60,8 +60,10 @@ export class MockInterceptor implements HttpInterceptor {
         if (!user) return throwError({ error: { message: 'Adresse e-mail ou mot de passe incorrecte' } });
         return of(new HttpResponse({ status: 200, body: user as Users }));
 
-      case url.endsWith('validator/all-fast-csv') && method === 'GET':
-        console.log('/validator/all-fast-csv');
+      case url.endsWith('/validator/all-fast-csv') && method === 'POST':
+        return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' }}));
+
+      case url.endsWith('/validator/post-one-fast-csv') && method === 'POST':
         return of(new HttpResponse({ status: 200, body: User as any }));
 
       default:

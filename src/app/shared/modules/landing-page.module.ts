@@ -34,7 +34,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSlideToggleModule,
     MatListModule,
     MatDividerModule,
-    MatExpansionModule
+    MatExpansionModule,
   ]
 })
 export class LandingPageModule { }

@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatListOption } from '@angular/material/list';
 import { SettingRowsTable } from '@app/models/setting-table';
-import { CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-setting-table',
@@ -11,56 +10,39 @@ import { FormBuilder, FormControl } from '@angular/forms';
 })
 export class SettingTableComponent implements OnInit {
 
-  public hidden = new Array<string>();
-  public noHidden: string[] = [];
-  // Generate form builder rows
-  public filters = this.fb.group([]);
+  selectedOptions: string[] = [];
+  facetLists: string[] = [];
 
-  public displayRows: SettingRowsTable = { hiddenRows: [], noHiddenRows: [] };
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, public dialogRef: MatDialogRef<SettingRowsTable>, private fb: FormBuilder) {
-    this.displayRows = this.data;
-    // console.log(data);
-    if (this.data.noHiddenRows.includes('select')) {
-      const value = this.data.noHiddenRows.shift();
-    }
-    
-    this.hidden = this.data.hiddenRows;
-    this.noHidden = this.data.noHiddenRows;
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any, public dialogRef: MatDialogRef<SettingRowsTable>) {
+    this.facetLists = this.data.facetLists;
   }
 
   ngOnInit(): void {
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
-    this.noHidden.forEach((column, index) => {
-      this.filters.addControl(column, new FormControl(''));
+    this.facetLists.forEach((item, index) => {
+      if (!this.selectedOptions.includes(item) && index < 2) {
+        this.selectedOptions.push(item);
+      }
     });
-    
-    this.displayRows = {
-      noHiddenRows: this.noHidden,
-      hiddenRows: this.hidden,
+    console.log(this.selectedOptions);
+
+  }
+
+  onNgModelChange(options: string) {
+    if (!this.selectedOptions.includes(options)) {
+      this.selectedOptions.push(options);
+    } else {
+      this.selectedOptions = this.selectedOptions.filter(s => s !== options);
     }
+    //console.log(options);
+    // this.selectedOptions = options.selectedOptions.selected.map((item: any) => item.value);
+    console.log(this.selectedOptions);
 
-  }
-
-  canDrop(){
-    // return this.data.length < 6;
-    return true;
-  }
+    // map these MatListOptions to their values
+    // options.map(o => o.value);
+  };
 
   onClick(): void {
-    if (!this.noHidden.includes('select')) {
-      const value = this.noHidden.unshift('select');
-    }
-    this.dialogRef.close(this.displayRows);
+    this.dialogRef.close(this.selectedOptions);
   }
 
 }
