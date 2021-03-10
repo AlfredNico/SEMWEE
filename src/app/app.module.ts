@@ -15,7 +15,7 @@ import { ErrorInterceptor } from './error.interceptor';
 import { TokenInterceptor } from './token.interceptor';
 import { MockInterceptor } from './mock.interceptor';
 import { IsLoggedInGuard } from './guards/is-logged-in.guard';
-
+import { InlineSVGModule } from 'ng-inline-svg';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { IsLoggedInGuard } from './guards/is-logged-in.guard';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-
+    InlineSVGModule.forRoot(),
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot([

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 import { LayoutService } from '../../../../../core';
-import { UserModel } from '../../../../../../modules/auth/_models/user.model';
-import { AuthService } from '../../../../../../modules/auth/_services/auth.service';
+// import { UserModel } from '../../../../../../modules/auth/_models/user.model';
+// import { AuthService } from '../../../../../../modules/auth/_services/auth.service';
 @Component({
   selector: 'app-user-dropdown-inner',
   templateUrl: './user-dropdown-inner.component.html',
@@ -10,19 +10,20 @@ import { AuthService } from '../../../../../../modules/auth/_services/auth.servi
 })
 export class UserDropdownInnerComponent implements OnInit {
   extrasUserDropdownStyle: 'light' | 'dark' = 'light';
-  user$: Observable<UserModel>;
+  // user$: Observable<UserModel>;
 
-  constructor(private layout: LayoutService, private auth: AuthService) {}
+  // , private auth: AuthService
+  constructor(private layout: LayoutService) {}
 
   ngOnInit(): void {
     this.extrasUserDropdownStyle = this.layout.getProp(
       'extras.user.dropdown.style'
     );
-    this.user$ = this.auth.currentUserSubject.asObservable();
+    // this.user$ = this.auth.currentUserSubject.asObservable();
   }
 
   logout() {
-    this.auth.logout();
+    // this.auth.logout();
     document.location.reload();
   }
 }
