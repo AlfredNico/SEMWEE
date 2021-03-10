@@ -13,7 +13,7 @@ import { ImportItemComponent } from './dashbord/components/lp-validator/import-i
 import { CheckRelevancyComponent } from './dashbord/components/lp-validator/check-relevancy.component';
 import { InferListComponent } from './dashbord/components/lp-validator/infer-list.component';
 import { LpValidatorService } from './dashbord/services/lp-validator.service';
-
+// import { LayoutComponent } from '../pages/_layout/layout.component';
 
 
 @NgModule({
