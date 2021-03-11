@@ -24,10 +24,20 @@ export class TokenInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${this.cookieService.get('SEMEWEE')}`
         }
       });
-    }else if(request.url.includes('user-space') && this.cookieService.check('SEMEWEE') === false){
+      // request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + this.cookieService.get('SEMEWEE')) });
+
+    } else if (request.url.includes('user-space') && this.cookieService.check('SEMEWEE') === false) {
       this.notifs.warn('Session expiré');
       this.router.navigateByUrl('/sign-in');
     }
+
+    // default --> json
+    if (!request.headers.has('Content-Type')) {
+      console.log('Content - Type');
+
+      request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
+    }
+
     return next.handle(request);
   }
 }

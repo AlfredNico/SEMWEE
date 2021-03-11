@@ -7,8 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SearchResultComponent implements OnInit {
   // Public properties
-  @Input() data: [];
-  constructor() {}
+  @Input() data!: [];
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

@@ -28,9 +28,9 @@ export class LpValidatorService {
       map((result: any) => {
         if (result) {
           console.log(result);
-          
+
           let dataValue: any[] = [];
-          result['default'].map((value: any) => {
+          result.map((value: any) => {
             Object.keys(value).map((key: string, index: number) => {
               // console.log(key, index);
               if (!this.data.displayColumns.includes(key)) {
@@ -62,10 +62,10 @@ export class LpValidatorService {
     return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.URL_API}/validator/get-infer-list`).pipe(
       map((result: any) => {
         if (result) {
-          console.log(result['default']);
-          
+          console.log(result);
+
           let dataValue: any[] = [];
-          result['default'].map((value: any) => {
+          result.map((value: any) => {
             Object.keys(value).map((key: string, index: number) => {
               // console.log(key, index);
               if (!this.data.displayColumns.includes(key)) {
