@@ -17,6 +17,7 @@ export class Subheader3Component implements OnInit {
   title$: Observable<string>;
   breadcrumbs$: Observable<BreadcrumbItemModel[]>;
   description$: Observable<string>;
+  todayDate : Date = new Date();
 
   constructor(
     private layout: LayoutService,

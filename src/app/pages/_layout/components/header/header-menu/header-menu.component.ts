@@ -17,6 +17,12 @@ export class HeaderMenuComponent implements OnInit {
   location: Location;
   headerMenuDesktopToggle: string;
 
+  projects = [
+    {value: 'project-1', viewValue: 'Project 1'},
+    {value: 'project-2', viewValue: 'Project 2'},
+    {value: 'project-3', viewValue: 'Project 3'}
+  ];
+
   constructor(private layout: LayoutService, private loc: Location) {
     this.location = this.loc;
   }
