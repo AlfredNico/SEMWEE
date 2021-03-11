@@ -1,0 +1,42 @@
+:host {
+  .aside {
+    height: 100%;
+
+    .aside-menu {
+      margin: 0;
+    }
+  }
+
+  // fixed text line break issue on minimized aside hover
+  .menu-text {
+    white-space: nowrap;
+  }
+}
+
+.sous-aside img {
+  width: 18px;
+  margin-right: 10px;
+  margin-top: 11px;
+}
+
+.menu-nav {
+  margin-top: -15px;
+}
+
+.menu-item a {
+  border-left: 4px solid transparent;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
+  border-left-color: #A3A0FB;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
+  border-left-color: #A3A0FB;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}

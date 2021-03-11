@@ -1,0 +1,650 @@
+<!--begin::Brand-->
+<div class="brand flex-column-auto" id="kt_brand" [ngClass]="brandClasses">
+  <!--begin::Logo-->
+  <a routerLink="/" class="brand-logo">
+      <img alt="Logo" [src]="'./assets/images/logo.png'" width="145px"/>
+  </a>
+  <!--end::Logo-->
+
+  <ng-container *ngIf="asideSelfMinimizeToggle">
+      <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
+    <span
+      [inlineSVG]="
+        './assets/media/svg/icons/Navigation/Angle-double-left.svg'
+      "
+      cacheSVG="true"
+      class="svg-icon svg-icon-xl"
+    ></span>
+  </button>
+  </ng-container>
+</div>
+<!--end::Brand-->
+
+<!--begin::Aside Menu-->
+<div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
+  <ng-container *ngIf="disableAsideSelfDisplay">
+      <!--begin::Header Logo-->
+      <a routerLink="/">
+          <img alt="Logo" [src]="'./assets/images/logo.png'" />
+      </a>
+      <!--end::Header Logo-->
+  </ng-container>
+  <!--begin::Menu Container-->
+  <div id="kt_aside_menu" class="aside-menu" [ngClass]="asideMenuCSSClasses" data-menu-vertical="1" [attr.data-menu-scroll]="asideMenuScroll" [attr.data-menu-dropdown]="asideMenuDropdown" data-menu-dropdown-timeout="500">
+      <!-- begin::Menu Nav -->
+      <ul class="menu-nav" [ngClass]="ulCSSClasses">
+
+          <!-- begin::1 Level -->
+    <li
+    class="menu-item"
+    aria-haspopup="true"
+    routerLinkActive="menu-item-active"
+  >
+    <a class="menu-link" routerLink="/home" routerLinkActive="active">
+      <span
+        cacheSVG="true"
+        class="svg-icon menu-icon"
+      >
+      <img [src]="'./assets/images/png/icons/aside/home-icon.png'" alt=". "/>
+    </span>
+      <span class="menu-text">Home</span>
+    </a>
+  </li>
+  <!-- end::1 Level -->
+
+         <!-- List Pages -->
+    <!-- begin::1 Level -->
+    <li
+    class="menu-item menu-item-submenu"
+    aria-haspopup="true"
+    data-menu-toggle="hover"
+    routerLinkActive="menu-item-open"
+  >
+    <a
+      class="menu-link menu-toggle"
+      href="/user-space/lp-validator"
+      routerLinkActive="active"
+    >
+      <span
+        cacheSVG="true"
+        class="svg-icon menu-icon"
+      >
+      <img [src]="'./assets/images/png/icons/aside/list-pages-icon.png'" alt=". "/>
+    </span>
+      <span class="menu-text">List Pages</span>
+      <i class="menu-arrow"></i>
+    </a>
+    <div class="menu-submenu">
+      <i class="menu-arrow"></i>
+      <ul class="menu-subnav">
+        <li class="menu-item menu-item-parent" aria-haspopup="true">
+          <span class="menu-link">
+            <span class="menu-text">List Pages</span>
+          </span>
+        </li>
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLinkActive="active"
+          >
+            <i class="sous-aside">
+              <span
+        cacheSVG="true"
+        class="svg-icon menu-icon"
+      >
+      <img [src]="'./assets/images/png/icons/aside/viewer-icon.png'" alt=". "/>
+    </span>
+            </i>
+            <span class="menu-text">Viewer</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/editor-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Editor</span>
+          </a>
+        </li>
+        <!-- end::2 Level --
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link"
+            routerLink="/user-space/lp-validator"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/validator-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Validator</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/carousel"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/explorer-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Explorer</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/collapse"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/discoverer-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Discoverer</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/datepicker"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/titler-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Titler</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+      </ul>
+    </div>
+  </li>
+  <!-- end::1 Level -->
+
+          <!-- Item Pages -->
+    <!-- begin::1 Level -->
+    <li
+    class="menu-item menu-item-submenu"
+    aria-haspopup="true"
+    data-menu-toggle="hover"
+    routerLinkActive="menu-item-open"
+  >
+    <a
+      class="menu-link menu-toggle"
+      href="/ngbootstrap"
+      routerLinkActive="active"
+    >
+    <span
+    cacheSVG="true"
+    class="svg-icon menu-icon"
+  >
+  <img [src]="'./assets/images/png/icons/aside/item-pages-icon.png'" alt=". "/>
+</span>
+      <span class="menu-text">Item Pages</span>
+      <i class="menu-arrow"></i>
+    </a>
+    <div class="menu-submenu">
+      <i class="menu-arrow"></i>
+      <ul class="menu-subnav">
+        <li class="menu-item menu-item-parent" aria-haspopup="true">
+          <span class="menu-link">
+            <span class="menu-text">Item Pages</span>
+          </span>
+        </li>
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/viewer-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Viewer</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/editor-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Editor</span>
+          </a>
+        </li>
+        <!-- end::2 Level --
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/collector-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Collector</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/titler-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Titler</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+      </ul>
+    </div>
+  </li>
+  <!-- end::1 Level -->
+
+          <!-- begin::1 Level -->
+    <li
+    class="menu-item"
+    aria-haspopup="true"
+    routerLinkActive="menu-item-active"
+  >
+    <a class="menu-link disabled" routerLink="/linker" routerLinkActive="active">
+      <span
+        cacheSVG="true"
+        class="svg-icon menu-icon linker-cls"
+      >
+        <img [src]="'./assets/images/png/icons/aside/linker-icon.png'" alt=". "/>
+    </span>
+      <span class="menu-text">Linker</span>
+    </a>
+  </li>
+  <!-- end::1 Level -->
+
+          <!-- begin::1 Level -->
+    <li
+    class="menu-item"
+    aria-haspopup="true"
+    routerLinkActive="menu-item-active"
+  >
+    <a class="menu-link disabled" routerLink="/builder" routerLinkActive="active">
+      <span
+        cacheSVG="true"
+        class="svg-icon menu-icon"
+      >
+      <img [src]="'./assets/images/png/icons/aside/index-checker-icon.png'" alt=". "/>
+    </span>
+      <span class="menu-text">Index Checker</span>
+    </a>
+  </li>
+  <!-- end::1 Level -->
+
+          <!-- begin::1 Level -->
+    <li
+    class="menu-item"
+    aria-haspopup="true"
+    routerLinkActive="menu-item-active"
+  >
+    <a class="menu-link disabled" routerLink="/builder" routerLinkActive="active">
+      <span
+        cacheSVG="true"
+        class="svg-icon menu-icon"
+      >
+      <img [src]="'./assets/images/png/icons/aside/analyzer-icon.png'" alt=". "/>
+    </span>
+      <span class="menu-text">Analyzer</span>
+    </a>
+  </li>
+  <!-- end::1 Level -->
+
+          <!-- Tuner -->
+    <!-- begin::1 Level -->
+    <li
+    class="menu-item menu-item-submenu"
+    aria-haspopup="true"
+    data-menu-toggle="hover"
+    routerLinkActive="menu-item-open"
+  >
+    <a
+      class="menu-link menu-toggle"
+      href="/ngbootstrap"
+      routerLinkActive="active"
+    >
+    <span
+    cacheSVG="true"
+    class="svg-icon menu-icon"
+  >
+  <img [src]="'./assets/images/png/icons/aside/tuner-icon.png'" alt=". "/>
+</span>
+      <span class="menu-text">Tuner</span>
+      <i class="menu-arrow"></i>
+    </a>
+    <div class="menu-submenu">
+      <i class="menu-arrow"></i>
+      <ul class="menu-subnav">
+        <li class="menu-item menu-item-parent" aria-haspopup="true">
+          <span class="menu-link">
+            <span class="menu-text">Tuner</span>
+          </span>
+        </li>
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/accordion"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/stop-words-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Stop Words</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/alert"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/synonyms-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Synonyms</span>
+          </a>
+        </li>
+        <!-- end::2 Level --
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/buttons"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/blacklist-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Blacklist</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/carousel"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/lexical-units-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">Lexical Units</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+      </ul>
+    </div>
+  </li>
+  <!-- end::1 Level -->
+
+          <!-- begin::1 Level -->
+    <li
+    class="menu-item"
+    aria-haspopup="true"
+    routerLinkActive="menu-item-active"
+  >
+    <a class="menu-link disabled" routerLink="/builder" routerLinkActive="active">
+      <span
+        cacheSVG="true"
+        class="svg-icon menu-icon"
+      >
+      <img [src]="'./assets/images/png/icons/aside/project-settings-icon.png'" alt=". "/>
+    </span>
+      <span class="menu-text">Project Settings</span>
+    </a>
+  </li>
+  <!-- end::1 Level -->
+
+           <!-- Projects -->
+    <!-- begin::1 Level -->
+    <li
+    class="menu-item menu-item-submenu"
+    aria-haspopup="true"
+    data-menu-toggle="hover"
+    routerLinkActive="menu-item-open"
+  >
+    <a
+      class="menu-link menu-toggle"
+      href="/ngbootstrap"
+      routerLinkActive="active"
+    >
+    <span
+    cacheSVG="true"
+    class="svg-icon menu-icon"
+  >
+  <img [src]="'./assets/images/png/icons/aside/projects-icon.png'" alt=". "/>
+</span>
+      <span class="menu-text">Projects</span>
+      <i class="menu-arrow"></i>
+    </a>
+    <div class="menu-submenu">
+      <i class="menu-arrow"></i>
+      <ul class="menu-subnav">
+        <li class="menu-item menu-item-parent" aria-haspopup="true">
+          <span class="menu-link">
+            <span class="menu-text">Projects</span>
+          </span>
+        </li>
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/accordion"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/all-projects-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">All Projects</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+        <!-- begin::2 Level -->
+        <li
+          class="menu-item"
+          routerLinkActive="menu-item-active"
+          aria-haspopup="true"
+          data-menu-toggle="hover"
+        >
+          <a
+            class="menu-link disabled"
+            routerLink="/ngbootstrap/alert"
+            routerLinkActive="active"
+          >
+          <i class="sous-aside">
+            <span
+      cacheSVG="true"
+      class="svg-icon menu-icon"
+    >
+    <img [src]="'./assets/images/png/icons/aside/new-project-icon.png'" alt=". "/>
+  </span>
+          </i>
+            <span class="menu-text">New Project</span>
+          </a>
+        </li>
+        <!-- end::2 Level -->
+      </ul>
+    </div>
+  </li>
+  <!-- end::1 Level -->
+
+      </ul>
+      <!-- end::Menu Nav -->
+  </div>
+  <!--end::Menu Container-->
+</div>
+<!--end::Aside Menu-->

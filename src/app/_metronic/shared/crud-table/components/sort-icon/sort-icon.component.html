@@ -1,0 +1,21 @@
+<ng-container *ngIf="isActive">
+  <ng-container *ngIf="activeDirection === 'asc'">
+    <span
+      cacheSVG="true"
+      class="svg-icon svg-icon-sm svg-icon-primary ml-1">
+    </span>
+  </ng-container>
+  <ng-container *ngIf="activeDirection === 'desc'">
+    <span
+      cacheSVG="true"
+      class="svg-icon svg-icon-sm svg-icon-primary ml-1">
+  </span>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!isActive">
+  <span
+    cacheSVG="true"
+    class="svg-icon svg-icon-sm svg-icon-primary ml-1 svg-icon-sort">
+  </span>
+</ng-container>

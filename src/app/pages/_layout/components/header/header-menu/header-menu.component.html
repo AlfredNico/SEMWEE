@@ -1,0 +1,29 @@
+<!-- begin::Header Nav -->
+<ul class="menu-nav" [ngClass]="ulCSSClasses">
+  <!-- begin::1 Level -->
+  <!-- <li class="menu-item menu-item-rel" routerLinkActive="menu-item-active">
+    <a class="menu-link" routerLink="/dashboard" routerLinkActive="active">
+      <span class="menu-text" translate="MENU.DASHBOARD"></span>
+      <ng-container *ngIf="rootArrowEnabled">
+        <i class="menu-arrow"></i>
+      </ng-container>
+    </a>
+  </li> -->
+  <!-- end::1 Level -->
+
+  <!-- begin::1 Level -->
+  <li class="menu-item menu-item-rel">
+    <div class="example-container">
+      <mat-form-field>
+        <mat-select placeholder="Project">
+          <mat-option *ngFor="let project of projects" [value]="project.value">
+            {{ project.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </li>
+  <!-- end::1 Level -->
+
+</ul>
+<!-- end::Header Nav -->

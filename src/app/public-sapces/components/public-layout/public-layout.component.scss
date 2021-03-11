@@ -9,7 +9,7 @@
 }
 
 p {
-    font-family: Lato;
+    font-family: "Open Sans", Raleway;
 }
 
 .main_content {
@@ -18,12 +18,43 @@ p {
     background: #efefef;
 }
 
-.button-scroll-top {
+// .button-scroll-top {
+//     position: fixed;
+//     bottom: 5px;
+//     right: 5px;
+//     font-size: 20px;
+//     text-align: center;
+//     border-radius: 5px;
+//     outline: none;
+// }
+
+.scroll-top {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
     position: fixed;
-    bottom: 5px;
-    right: 5px;
-    font-size: 20px;
-    text-align: center;
-    border-radius: 5px;
-    outline: none;
+    bottom: 40px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 100;
+    background-color: #3699ff;
+    box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0,0,0,.075);
+    opacity: .3;
+    -webkit-animation: animation-scrolltop .4s ease-out 1;
+    animation: animation-scrolltop .4s ease-out 1;
+    display: flex;
+    transition: color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease;
+    border-radius: .42rem!important;
+    color: #fff;
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+}
+
+.scroll-top:hover {
+    transition: color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease;
+    opacity: 1;
 }
