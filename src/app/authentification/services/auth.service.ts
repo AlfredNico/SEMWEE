@@ -26,7 +26,11 @@ export class AuthService {
 
   public getAllUsers() {
     return this.http.get(`${environment.URL_API}/user/allUser`).subscribe(
-      (user: any) => this.users = user
+      (user: any) => {
+        console.log(user);
+
+        this.users = user
+      }
     )
   }
 
