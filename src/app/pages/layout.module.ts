@@ -7,7 +7,7 @@ import {
   NgbProgressbarModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslationModule } from '../modules/i18n/translation.module';
-import { LayoutComponent } from './_layout/layout.component';
+// import { LayoutComponent } from './_layout/layout.component';
 import { ScriptsInitComponent } from './_layout/init/scipts-init/scripts-init.component';
 import { HeaderMobileComponent } from './_layout/components/header-mobile/header-mobile.component';
 import { AsideComponent } from './_layout/components/aside/aside.component';
@@ -24,7 +24,7 @@ import { HeaderMenuDynamicComponent } from './_layout/components/header/header-m
 
 @NgModule({
   declarations: [
-    LayoutComponent,
+    // LayoutComponent,
     ScriptsInitComponent,
     HeaderMobileComponent,
     AsideComponent,

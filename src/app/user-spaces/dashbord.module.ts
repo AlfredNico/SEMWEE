@@ -31,6 +31,29 @@ import { Subheader4Component } from '@app/_metronic/partials/layout/subheader/su
 import { Subheader3Component } from '@app/_metronic/partials/layout/subheader/subheader3/subheader3.component';
 import { Subheader2Component } from '@app/_metronic/partials/layout/subheader/subheader2/subheader2.component';
 import { Subheader1Component } from '@app/_metronic/partials/layout/subheader/subheader1/subheader1.component';
+import { DropdownMenu4Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu4/dropdown-menu4.component';
+import { DropdownMenu3Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu3/dropdown-menu3.component';
+import { DropdownMenu2Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu2/dropdown-menu2.component';
+import { DropdownMenu1Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu1/dropdown-menu1.component';
+// import { LayoutModule } from '@app/pages/layout.module';
+// import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
+import { AsideComponent } from '@app/pages/_layout/components/aside/aside.component';
+import { HeaderMobileComponent } from '@app/pages/_layout/components/header-mobile/header-mobile.component';
+import { FooterComponent } from '@app/pages/_layout/components/footer/footer.component';
+import { HeaderComponent } from '@app/pages/_layout/components/header/header.component';
+import { HeaderMenuComponent } from '@app/pages/_layout/components/header/header-menu/header-menu.component';
+import { TopbarComponent } from '@app/pages/_layout/components/topbar/topbar.component';
+import { SearchDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-dropdown-inner.component';
+import { NotificationsDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/notifications-dropdown-inner/notifications-dropdown-inner.component';
+import { QuickActionsDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/quick-actions-dropdown-inner/quick-actions-dropdown-inner.component';
+import { CartDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/cart-dropdown-inner/cart-dropdown-inner.component';
+import { LanguageSelectorComponent } from '@app/pages/_layout/components/topbar/language-selector/language-selector.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { GeneralModule } from '@app/_metronic/partials/content/general/general.module';
+import { HighlightModule } from 'ngx-highlightjs';
+import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 
 
 @NgModule({
@@ -60,12 +83,35 @@ import { Subheader1Component } from '@app/_metronic/partials/layout/subheader/su
     Subheader5Component,
     Subheader6Component,
     Subheader7Component,
+    DropdownMenu1Component,
+    DropdownMenu2Component,
+    DropdownMenu3Component,
+    DropdownMenu4Component,
+    AsideComponent,
+    HeaderMobileComponent,
+    FooterComponent,
+    HeaderComponent,
+    HeaderMenuComponent,
+    TopbarComponent,
+    SearchDropdownInnerComponent,
+    NotificationsDropdownInnerComponent,
+    QuickActionsDropdownInnerComponent,
+    CartDropdownInnerComponent,
+    LanguageSelectorComponent,
+    SearchResultComponent
   ],
   imports: [
     LandingPageModule,
     LandingModule,
     SharedModule,
     MatStepperModule, // stepper module
+    // LayoutModule,
+    CommonModule,
+    FormsModule,
+    GeneralModule,
+    HighlightModule,
+    NgbNavModule,
+    NgbTooltipModule,
     RouterModule.forChild([
       {
         path: '', component: LayoutComponent, children: [
