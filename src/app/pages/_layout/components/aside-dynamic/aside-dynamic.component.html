@@ -9,9 +9,6 @@
   <ng-container *ngIf="asideSelfMinimizeToggle">
     <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
       <span
-        [inlineSVG]="
-          './assets/media/svg/icons/Navigation/Angle-double-left.svg'
-        "
         cacheSVG="true"
         class="svg-icon svg-icon-xl"
       ></span>
@@ -77,7 +74,6 @@
     >
       <a class="menu-link" [routerLink]="item.page" routerLinkActive="active">
         <span
-          [inlineSVG]="item.svg"
           cacheSVG="true"
           class="svg-icon menu-icon"
         ></span>
@@ -105,7 +101,6 @@
         [ngClass]="{ 'active ': isMenuItemActive(item.page) }"
       >
         <span
-          [inlineSVG]="item.svg"
           cacheSVG="true"
           class="svg-icon menu-icon"
         ></span>
