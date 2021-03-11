@@ -15,7 +15,7 @@ import { CustomValidationService } from '@app/shared/services/custom-validation.
 export class SignUpComponent implements OnInit {
   hide = true;
   submitted = false;
-  
+
   registrationForm = this.fb.group({
     lastname: ['', [Validators.required]],
     firstname: ['', [Validators.required]],
@@ -36,7 +36,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
     this.image = ''
     // stop here if form is invalid
@@ -47,10 +47,12 @@ export class SignUpComponent implements OnInit {
     try {
       const value = this.registrationForm.value as Users;
       console.log('value', value);
-      
-      const message = this.signUp.sign_up(value);
-      console.log('message', message);
-      // this.notifs.sucess(message);
+
+      const result = await this.signUp.sign_up(value);
+      if (result && result.message) {
+        this.notifs.sucess(result.message);
+        this.router.navigateByUrl('sign-in');
+      }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         console.log('error', error);

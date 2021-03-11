@@ -57,17 +57,17 @@ export class MockInterceptor implements HttpInterceptor {
       // case url.endsWith('auth/login') && method === 'POST':
       //   const { email, password } = body;
       //   const user = usersData.find(x => x.email === email && x.firstname === password);
-      //   if (!user) return throwError({ error: {error : 'Incorrect email address or password'} });
+      //   if (!user) return throwError({ error: { error: 'Incorrect email address or password' } });
       //   return of(new HttpResponse({ status: 200, body: user as Users }));
 
       // case url.endsWith('/validator/all-fast-csv') && method === 'POST':
-      //   return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' }}));
+      //   return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' } }));
 
       // case url.endsWith('/validator/post-one-fast-csv') && method === 'POST':
-      //   return of(new HttpResponse({ status: 200, body: SEMEWEE as any } ));
+      //   return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
 
       // case url.endsWith('/validator/post-infer-list') && method === 'POST':
-      //   return of(new HttpResponse({ status: 200, body: { message: 'seccuss' }}));
+      //   return of(new HttpResponse({ status: 200, body: { message: 'seccuss' } }));
 
       // case url.endsWith('/validator/get-infer-list') && method === 'GET':
       //   return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
