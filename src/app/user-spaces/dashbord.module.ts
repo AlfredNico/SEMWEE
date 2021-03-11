@@ -54,7 +54,7 @@ import { GeneralModule } from '@app/_metronic/partials/content/general/general.m
 import { HighlightModule } from 'ngx-highlightjs';
 import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
-
+import { InlineSVGModule } from 'ng-inline-svg';
 
 @NgModule({
   declarations: [
@@ -112,6 +112,7 @@ import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dro
     HighlightModule,
     NgbNavModule,
     NgbTooltipModule,
+    InlineSVGModule,
     RouterModule.forChild([
       {
         path: '', component: LayoutComponent, children: [
