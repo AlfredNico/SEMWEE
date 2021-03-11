@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatHorizontalStepper } from '@angular/material/stepper';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
 import { ConvertUploadFileService } from '../../services/convert-upload-file.service';
+import { ImportItemComponent } from './import-item.component';
+import { InferListComponent } from './infer-list.component';
 
 @Component({
   selector: 'app-lp-validator',
@@ -10,19 +12,33 @@ import { ConvertUploadFileService } from '../../services/convert-upload-file.ser
 export class LpValidatorComponent implements OnInit {
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
+  // @ViewChild('stepper', { static: true }) private myStepper: MatStepper;
 
   //Access content on cheild
-  // @ViewChild(FileUploadComponent, { static: false }) fileUpload!: FileUploadComponent;
+  @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
   constructor(private uploadDataServices: ConvertUploadFileService) { }
+  public dataSources = [];
 
   ngOnInit(): void {
   }
 
   // Upload file ok
-  public UploadFileReady() {
-    // this.stepper.selected.editable = false;
+  public UploadFileReady(event: any) {
+    this.dataSources = event;
     this.stepper.selected.completed = true;
     this.stepper.next();
   }
+
+  public inferList() {
+    this.stepper.selected.completed = true;
+    this.stepper.next();
+  }
+
+  @HostListener('window:scroll') checkScroll() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+    console.log('[scroll]', scrollPosition);
+  }
+
 
 }

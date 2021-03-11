@@ -89,6 +89,7 @@ import { MatDividerModule } from '@angular/material/divider';
     // MatBottomSheetModule,
 
     
+    MatExpansionModule,
   ]
 })
 export class LandingPageModule { }

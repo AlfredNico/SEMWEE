@@ -1,14 +1,17 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CommonService } from '@app/shared/services/common.service';
+import { Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 
 @Component({
   selector: 'app-import-item',
   template: `
-    <div>
+    <div class="w-100">
       <form [formGroup]="form">
         <div fxLayout="column" fxLayoutAlign="space-around center">
-            <div fxLayout="row" fxLayoutAlign="space-around center">
+            <!-- <div fxLayout="row" fxLayoutAlign="space-around center">
               <mat-form-field appearance="outline">
                 <mat-label>File name</mat-label>
                 <input matInput formControlName="fileName" readonly="true">
@@ -19,9 +22,24 @@ import { LpValidatorService } from '../../services/lp-validator.service';
                   Upload excel
               </button>
               <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
+            </div> -->
+            <div *ngIf="fileName.length > 0 && isExcelFile === true" fxLayout="column">
+              <h1> {{ fileName }} </h1>
+               <h1> Is uploaded !</h1> 
             </div>
 
-            <button mat-raised-button [disabled]="!isExcelFile" (click)="form.valid && onSubmit()">Next</button>
+            <div *ngIf="fileName.length > 0 && isExcelFile === false">
+              <h1 [style.color]="'red'"> This is not an Excel file  </h1>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
+              <button type="button" mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
+                  Upload excel
+              </button>
+              <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
+
+              <button mat-raised-button [disabled]="!isExcelFile" (click)="form.valid && onSubmit()">Next</button>
+            </div>
         </div>
       </form>
     </div>
@@ -29,7 +47,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
   styles: [
   ]
 })
-export class ImportItemComponent implements OnInit {
+export class ImportItemComponent implements OnInit, OnDestroy {
 
   public form = new FormGroup({
     fileName: new FormControl('', [Validators.required, Validators.pattern(/(.csv)/)]),
@@ -42,10 +60,13 @@ export class ImportItemComponent implements OnInit {
   fileName = '';
 
   //shared data
+  // @Output() uploadFiles = new EventEmitter<any>();
   @Output() uploadFiles = new EventEmitter<any>();
-  public uploadFileData: any[] = [];
 
-  constructor(private lpValidatorServices: LpValidatorService) { }
+  //subscription
+  public subscription$ = new Subscription();
+
+  constructor(private lpValidatorServices: LpValidatorService, private common: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -55,37 +76,63 @@ export class ImportItemComponent implements OnInit {
     this.isExcelFile = !!target.files[0]?.name.match(/(.csv)/);
     // this.isExcelFile = !!target.files[0]?.name.match(/(.xls|.xlsx)/);
     const file = event.target.files[0];
+    this.fileName = file?.name;
 
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name;
       this.form.patchValue({
         fileSource: file,
-        fileName: file.name,
+        fileName: file?.name,
       })
     }
-    console.log(target.files[0]?.name);
   }
 
   public async onSubmit() {
     if (this.form.valid) {
-      this.uploadFiles.emit(this.form.value);
+      console.log(this.common.isLoading$.getValue());
+      this.common.showSpinner('root');
 
       try {
         const formData = new FormData();
         formData.append('file', this.form.get('files')?.value);
         const result = await this.lpValidatorServices.sendFile(this.form.get('fileSource')?.value as File);
-        console.log('result', result);
+        console.log(result);
+        
         if (result && result.message && result.nameFile) {
-          const data = await this.lpValidatorServices.getUpload(result.nameFile);
-          console.log('data', data);
-        }
+          // setTimeout(() => {
+          const dataUploaded = await this.lpValidatorServices.getUpload({ file: result.nameFile });
+          if (dataUploaded) {
+            this.uploadFiles.emit(dataUploaded);
+            console.log(dataUploaded);
+            
+            this.common.hideSpinner();
 
+          }
+          // this.subscription$  = this.lpValidatorServices.getUpload({ file: result.nameFile }).pipe(
+          //     map((result) => {
+          //       if (result) {
+          //         return result;
+          //       }
+          //       // this.viewData = result;
+          //       // this.uploadFiles.emit(result);
+          //     })
+          //   ).subscribe();
+          // }, 5000)
+
+          // console.log(this.subscription$);
+              
+
+        }
       } catch (error) {
         console.log('error ', error);
 
       }
     }
 
+  }
+
+  ngOnDestroy(){
+    this.subscription$.unsubscribe();
   }
 
 }

@@ -1,16 +1,19 @@
 <mat-horizontal-stepper labelPosition="bottom" linear #stepper>
     <mat-step label="Import Items" completed="false">
-        <ng-template matStepperIcon="home">
+        <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
-        </ng-template>
-        <app-import-item (uploadFiles)="UploadFileReady()"></app-import-item>
+        </ng-template> -->
+        <app-import-item #form (uploadFiles)="UploadFileReady($event)"></app-import-item>
     </mat-step>
     <mat-step label="Infer List Pages" state="text_snippet" completed="false">
-        <app-infer-list></app-infer-list>
+        <!-- <ng-template matStepperIcon="home">
+            <mat-icon>home</mat-icon>
+        </ng-template> -->
+        <app-infer-list [data]="dataSources"></app-infer-list>
         <!-- <app-files></app-files> -->
     </mat-step>
     <mat-step label="Check Relevancy" state="download_done" completed="false">
-        <ng-template matStepLabel>Done</ng-template>
+        <!-- <ng-template matStepLabel>Check Relevancy</ng-template> -->
         <app-check-relevancy></app-check-relevancy>
     </mat-step>
 </mat-horizontal-stepper>

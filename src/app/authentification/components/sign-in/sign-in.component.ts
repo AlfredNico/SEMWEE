@@ -32,7 +32,7 @@ export class SignInComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.authService.getAllUsers();
+    // this.authService.getAllUsers();
   }
 
   public async onSubmit() {

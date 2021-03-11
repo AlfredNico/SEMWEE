@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
-import { UploadFileService } from '../../services/upload-file.service';
+import { Subscription } from 'rxjs';
+import { LpValidatorService } from '../../services/lp-validator.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -30,7 +30,7 @@ import { UploadFileService } from '../../services/upload-file.service';
   styles: [
   ]
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements OnInit, OnDestroy {
 
   public form = new FormGroup({
     fileName: new FormControl('', [Validators.required, Validators.pattern(/(.csv)/)]),
@@ -45,8 +45,9 @@ export class FileUploadComponent implements OnInit {
   //shared data
   @Output() uploadFiles = new EventEmitter<any>();
   public uploadFileData: any[] = [];
+  public subscription = new Subscription();
 
-  constructor(private uploadFileService: UploadFileService) { }
+  constructor(private lpValidatorServices: LpValidatorService) { }
 
   ngOnInit(): void {
   }
@@ -74,19 +75,34 @@ export class FileUploadComponent implements OnInit {
       try {
         const formData = new FormData();
         formData.append('file', this.form.get('files')?.value);
-        const result = await this.uploadFileService.sendFile(this.form.get('fileSource')?.value as File);
-        console.log('result', result);
-        if (result && result.message && result.nameFile) {
-          const data = await this.uploadFileService.getUpload(result.nameFile);
-          console.log('data', data);
-        }
+        // this.subscription = this.lpValidatorServices.sendFile(this.form.get('fileSource')?.value as File).subscribe(
+        //   (value: any) => {
+        //     console.log('value', value);
+        //     this.uploadFileData = value;
+        //     // return value;
+        //   }
+        // );
+
+        console.log('sub', this.subscription);
+
+        // console.log('result', result);
+        // if (result && result.message && result.nameFile) {
+        //   const data = await this.lpValidatorServices.getUpload(result.nameFile);
+        //   console.log('data', data);
+        // }
 
       } catch (error) {
         console.log('error ', error);
 
       }
+    }else{
+      console.log('form not valid');
     }
 
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

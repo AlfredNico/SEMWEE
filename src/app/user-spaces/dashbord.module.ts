@@ -55,6 +55,9 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 import { InlineSVGModule } from 'ng-inline-svg';
+import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
+
+
 
 @NgModule({
   declarations: [
@@ -98,7 +101,8 @@ import { InlineSVGModule } from 'ng-inline-svg';
     QuickActionsDropdownInnerComponent,
     CartDropdownInnerComponent,
     LanguageSelectorComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    TableOptionsComponent
   ],
   imports: [
     LandingPageModule,
@@ -128,6 +132,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
     ConvertUploadFileService
   ],
   entryComponents: [
+    TableOptionsComponent,
     SettingTableComponent,
     ImportItemComponent,
     CheckRelevancyComponent,

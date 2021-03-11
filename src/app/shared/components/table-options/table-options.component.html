@@ -1,0 +1,30 @@
+<div fxLayout="column">
+    <h1 mat-dialog-title>Drap and drop content</h1>
+    <div mat-dialog-content>
+        <div cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-evenly start">
+
+            <div class="example-container ">
+                <h2>Colonne Affichés</h2>
+
+                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="example-list">
+                    <div *ngFor="let item of noHidden" cdkDrag>
+                        <span *ngIf="!item.includes('Value');" class="example-box"> {{item}} </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-container">
+                <h2>Colonne masque</h2>
+
+                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event)" class="example-list">
+                    <div class="example-box" *ngFor="let item of hidden" cdkDrag>
+                        <span *ngIf="!item.includes('Value');"> {{item}} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions align='center'>
+        <button mat-button (click)="onClick()" tabindex="-1">FERMER</button>
+    </div>
+</div>
