@@ -1,11 +1,14 @@
 <div fxLayout="column">
     <h1 mat-dialog-title>Settings tables</h1>
     <div mat-dialog-content>
-        <mat-selection-list #items>
-            <mat-list-option #item *ngFor="let facet of facetLists; let i = index" [disabled]="items.selectedOptions.selected.length > 2 && !item.selected" [selected]="facet && i < 2" (click)="onNgModelChange(facet)">
+        <!-- <div *ngFor="let facet of facetLists; let i = index"> -->
+        <mat-selection-list #items color="primary" *ngFor="let facet of facetLists; let i = index">
+            <mat-list-option #item [disabled]="selectedOptions.length > 5 && !item.selected" [selected]="facet && i < 15" (click)="onNgModelChange(facet)" *ngIf="!facet.includes('Value') && facet.includes('Facet');">
                 {{facet}}
             </mat-list-option>
         </mat-selection-list>
+        <!-- items.selectedOptions.selected.length > 6 && item.selected === false &&  -->
+        <!-- </div> -->
     </div>
     <div mat-dialog-actions align='center'>
         <button mat-button (click)="onClick()" tabindex="-1">FERMER</button>

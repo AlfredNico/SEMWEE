@@ -17,6 +17,8 @@ export class TableOptionsComponent implements OnInit {
   // Generate form builder rows
   public filters = this.fb.group([]);
 
+  private isDrop = false;
+
   public displayRows: SettingRowsTable = { hiddenRows: [], noHiddenRows: [] };
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, public dialogRef: MatDialogRef<SettingRowsTable>, private fb: FormBuilder) {
     this.displayRows = this.data;
@@ -33,30 +35,38 @@ export class TableOptionsComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    // const previousIndex = event.previousIndex;
+
+    const previousIndex = event.previousIndex;
+    const currentIndex = event.currentIndex % 2 == 0 ? event.currentIndex : event.currentIndex + 1;
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-
-      console.log(event.previousContainer.data);
+        moveItemInArray(event.container.data, previousIndex, currentIndex);
         
-      if (event.previousContainer.data[event.previousIndex].includes('Facet')) {
-        // console.log(this.noHidden);
-        console.log(event.previousContainer.data[event.previousIndex]);
-        console.log(event.currentIndex);
-
+        if (event.container.data[previousIndex]?.includes('Facet')) {
+          moveItemInArray(event.container.data,previousIndex + 1, currentIndex + 1);
+        }
+    } else {
+      console.log(event.previousContainer.data[previousIndex]);
+      if (!event.previousContainer.data[previousIndex].includes('Value')) {
         transferArrayItem(event.previousContainer.data,
           event.container.data,
-          event.previousIndex,
-          event.currentIndex);
+          previousIndex,
+          currentIndex
+        );
+  
+        const current = event.previousContainer.data[previousIndex];
+        const index = event.previousContainer.data.indexOf(`${current}`);
+  
+      if (event.previousContainer.data[previousIndex]?.includes('Facet')) {
+          transferArrayItem(event.previousContainer.data,
+            event.container.data,
+            index,
+            currentIndex + 1
+          );
+        }
       }
+
     }
-    // this.noHidden.forEach((column, index) => {
-    //   this.filters.addControl(column, new FormControl(''));
-    // });
 
     console.log(this.hidden);
     // console.log(event.previousContainer.data[event.previousIndex]);

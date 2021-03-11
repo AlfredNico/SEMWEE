@@ -6,9 +6,9 @@
             <div class="example-container ">
                 <h2>Colonne Affichés</h2>
 
-                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="example-list">
-                    <div *ngFor="let item of noHidden" cdkDrag>
-                        <span *ngIf="!item.includes('Value');" class="example-box"> {{item}} </span>
+                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
+                    <div *ngFor="let item of noHidden">
+                        <div *ngIf="!item.includes('Value');" class="example-box" cdkDrag> {{item}} </div>
                     </div>
                 </div>
             </div>
@@ -16,9 +16,9 @@
             <div class="example-container">
                 <h2>Colonne masque</h2>
 
-                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event)" class="example-list">
-                    <div class="example-box" *ngFor="let item of hidden" cdkDrag>
-                        <span *ngIf="!item.includes('Value');"> {{item}} </span>
+                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event)" class="containt-list">
+                    <div *ngFor="let item of hidden">
+                        <div *ngIf="!item.includes('Value');" class="example-box" cdkDrag> {{item}} </div>
                     </div>
                 </div>
             </div>

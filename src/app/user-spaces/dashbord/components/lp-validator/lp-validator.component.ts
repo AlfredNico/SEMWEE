@@ -19,6 +19,8 @@ export class LpValidatorComponent implements OnInit {
   constructor(private uploadDataServices: ConvertUploadFileService) { }
   public dataSources = [];
 
+  public dataInferList = [];
+
   ngOnInit(): void {
   }
 
@@ -29,7 +31,8 @@ export class LpValidatorComponent implements OnInit {
     this.stepper.next();
   }
 
-  public inferList() {
+  public inferListReady(event: any) {
+    this.dataInferList = event;
     this.stepper.selected.completed = true;
     this.stepper.next();
   }

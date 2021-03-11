@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { SettingTableComponent } from '@app/shared/components/setting-table/sett
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
 import { map } from 'rxjs/operators';
+import { LpValidatorService } from '../../services/lp-validator.service';
 
 @Component({
   selector: 'app-infer-list',
@@ -51,7 +52,13 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   // selection toggle
   allSelect: boolean = true;
 
-  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog) { }
+  //data after filter
+  filterData: any[] = [];
+  checklist: string[] = [];
+  // @Output() uploadFiles = new EventEmitter<any>();
+  @Output() dataInferListReady = new EventEmitter<any>();
+
+  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService) { }
 
   ngOnChanges() {
     this.commonServices.showSpinner();
@@ -69,6 +76,12 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       }
     })
     this.commonServices.hideSpinner();
+
+    this.dataView.displayColumns.forEach((item: string, index: number) => {
+      if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
+        this.filterData.push(item);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -153,28 +166,59 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       },
       width: '600px',
     }).afterClosed().pipe(
-      map(result => {
+      map((result: string[]) => {
         console.log('result', result);
-
+        this.checklist = result;
       })
-      // tap(() => {
-      //   this.common.showSpinner('root');
-      // }),
-      // map((result: SettingRowsTable) => {
-      //   if (result) {
-      //     this.displayColumns = result.noHiddenRows;
-      //     this.dataView.displayColumns = result.noHiddenRows;
-
-      //     result.noHiddenRows?.map(async item => {
-      //       //création formControl Dynamics
-      //       if (item != 'select') {
-      //         this.filters.addControl(item, new FormControl(''));
-      //       }
-      //     });
-      //   }
-      // }),
     ).subscribe();
   }
+
+  async tableReady() {
+    const fake_header = ["ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
+
+    const header = ["ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
+
+
+    console.log(this.checklist);
+
+    if (this.checklist.length > 0) {
+      this.dataView.data.forEach((value: any, currentIndex: number) => {
+
+        let i = 0;
+        let object: any = { 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' };
+        Object.keys(value).forEach((key: string, index: number) => {
+          if (!key.includes('Facet') && !key.includes('Value')) {
+            object[header[i]] = value[key];
+            this.filterData[currentIndex] = { ...object };
+            i++;
+          } else if (key.includes('Facet') && this.checklist.includes(key)) {
+            // i++;
+            // this.checklist.findIndex()
+            // const keyIndex = this.checklist.indexOf(key);
+            const keyIndex = fake_header.indexOf(key);
+
+            object[header[i]] = value[key];
+            i++;
+            object[header[i]] = value[fake_header[keyIndex + 1]];
+            this.filterData[currentIndex] = { ...object };
+            i++;
+          }
+        })
+      })
+    }
+
+    // this.dataFilterReady.emit(this.filterData);
+    const result = await this.lpValidatorServices.postInferList(this.filterData);
+    console.log(result.message);
+
+    if (result && result.message) {
+      const value = await this.lpValidatorServices.getInfterList();
+      console.log(value);
+      this.dataInferListReady.emit(value);
+    }
+    // console.log(this.filterData);
+  }
+
 
   setAll(completed: boolean) {
     this.allSelect = completed;
@@ -203,29 +247,6 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   updateAllComplete() {
     this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
   }
-
-  // //select table value
-  // /** Whether the number of selected elements matches the total number of rows. */
-  // isAllSelected() {
-  //   const numSelected = this.selection.selected.length;
-  //   const numRows = this.dataSource.data.length;
-  //   return numSelected === numRows;
-  // }
-
-  // /** Selects all rows if they are not all selected; otherwise clear selection. */
-  // masterToggle() {
-  //   this.isAllSelected() ?
-  //     this.selection.clear() :
-  //     this.dataSource.data.forEach(row => this.selection.select(row));
-  // }
-
-  // /** The label for the checkbox on the passed row */
-  // checkboxLabel(row?: any): string {
-  //   if (!row) {
-  //     return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-  //   }
-  //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  // }
 
 
 

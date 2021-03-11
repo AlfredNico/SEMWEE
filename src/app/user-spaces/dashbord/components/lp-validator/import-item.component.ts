@@ -97,30 +97,14 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         formData.append('file', this.form.get('files')?.value);
         const result = await this.lpValidatorServices.sendFile(this.form.get('fileSource')?.value as File);
         console.log(result);
-        
+
         if (result && result.message && result.nameFile) {
           // setTimeout(() => {
           const dataUploaded = await this.lpValidatorServices.getUpload({ file: result.nameFile });
           if (dataUploaded) {
             this.uploadFiles.emit(dataUploaded);
-            console.log(dataUploaded);
-            
             this.common.hideSpinner();
-
           }
-          // this.subscription$  = this.lpValidatorServices.getUpload({ file: result.nameFile }).pipe(
-          //     map((result) => {
-          //       if (result) {
-          //         return result;
-          //       }
-          //       // this.viewData = result;
-          //       // this.uploadFiles.emit(result);
-          //     })
-          //   ).subscribe();
-          // }, 5000)
-
-          // console.log(this.subscription$);
-              
 
         }
       } catch (error) {
@@ -131,7 +115,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription$.unsubscribe();
   }
 

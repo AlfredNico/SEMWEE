@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatListOption } from '@angular/material/list';
 import { SettingRowsTable } from '@app/models/setting-table';
 
 @Component({
@@ -18,8 +17,8 @@ export class SettingTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.facetLists.forEach((item, index) => {
-      if (!this.selectedOptions.includes(item) && index < 2) {
+    this.facetLists.forEach((item: string, index: number) => {
+      if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
         this.selectedOptions.push(item);
       }
     });

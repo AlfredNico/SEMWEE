@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   BASE_URL: 'http://localhost:4200/backend-api',
   // URL_API: 'http://192.168.43.7:3000/api'
-  URL_API: 'http://192.168.88.88:3000/api'
+  // URL_API: 'http://192.168.88.88:3000/api',
+  URL_API: 'https://back-semwee.herokuapp.com/api'
 
 };
 
