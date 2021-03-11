@@ -56,6 +56,7 @@ import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
+import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
 
 
 
@@ -102,7 +103,8 @@ import { TableOptionsComponent } from '@app/shared/components/table-options/tabl
     CartDropdownInnerComponent,
     LanguageSelectorComponent,
     SearchResultComponent,
-    TableOptionsComponent
+    TableOptionsComponent,
+    UserDropdownInnerComponent
   ],
   imports: [
     LandingPageModule,

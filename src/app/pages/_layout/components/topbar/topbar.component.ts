@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 import { LayoutService } from '../../../../_metronic/core';
 // import { AuthService } from '../../../../modules/auth/_services/auth.service';
 // import { UserModel } from '../../../../modules/auth/_models/user.model';
@@ -11,6 +11,8 @@ import KTLayoutQuickPanel from '../../../../../assets/js/layout/extended/quick-p
 import KTLayoutQuickUser from '../../../../../assets/js/layout/extended/quick-user';
 import KTLayoutHeaderTopbar from '../../../../../assets/js/layout/base/header-topbar';
 import { KTUtil } from '../../../../../assets/js/components/util';
+import { User } from '@app/classes/users';
+import { AuthService } from '@app/authentification/services/auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -19,6 +21,7 @@ import { KTUtil } from '../../../../../assets/js/components/util';
 })
 export class TopbarComponent implements OnInit, AfterViewInit {
   // user$: Observable<UserModel>;
+  user!: User;
   // tobbar extras
   extraSearchDisplay: boolean;
   extrasSearchLayout: 'offcanvas' | 'dropdown';
@@ -33,9 +36,9 @@ export class TopbarComponent implements OnInit, AfterViewInit {
   extrasUserDisplay: boolean;
   extrasUserLayout: 'offcanvas' | 'dropdown';
 
-  // private auth: AuthService
-  constructor(private layout: LayoutService) {
+  constructor(private layout: LayoutService, public auth: AuthService) {
     // this.user$ = this.auth.currentUserSubject.asObservable();
+    this.user = this.auth.currentUserSubject.value;
   }
 
   ngOnInit(): void {
