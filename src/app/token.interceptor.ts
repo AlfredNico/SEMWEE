@@ -8,20 +8,25 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from './authentification/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { NotificationService } from './services/notification.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService, private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService, private notifs: NotificationService, private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if (this.cookieService.check('SEMEWEE')) {
+    if (this.cookieService.check('SEMEWEE') == true) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.cookieService.get('SEMEWEE')}`
         }
       });
+    }else if(request.url.includes('user-space') && this.cookieService.check('SEMEWEE') === false){
+      this.notifs.warn('Session expiré');
+      this.router.navigateByUrl('/sign-in');
     }
     return next.handle(request);
   }

@@ -40,10 +40,28 @@ export class TableOptionsComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+
+      console.log(event.previousContainer.data);
+        
+      if (event.previousContainer.data[event.previousIndex].includes('Facet')) {
+        // console.log(this.noHidden);
+        console.log(event.previousContainer.data[event.previousIndex]);
+        console.log(event.currentIndex);
+
+        transferArrayItem(event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex);
+      }
     }
-    this.noHidden.forEach((column, index) => {
-      this.filters.addControl(column, new FormControl(''));
-    });
+    // this.noHidden.forEach((column, index) => {
+    //   this.filters.addControl(column, new FormControl(''));
+    // });
+
+    console.log(this.hidden);
+    // console.log(event.previousContainer.data[event.previousIndex]);
+    // console.log(event.currentIndex);
+
 
     this.displayRows = {
       noHiddenRows: this.noHidden,

@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
+  public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  
   private readonly spinnerOptions: Spinner = {
     type: 'ball-clip-rotate',
     size: 'medium',

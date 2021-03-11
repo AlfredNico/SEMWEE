@@ -18,10 +18,12 @@ import { map } from 'rxjs/operators';
   styles: [`
     .datatable:not(.table) {
       display: revert;
-    },
+    }
+
     .drag_n_drop {
       cursor: move;
-    },
+    }
+
     .table-container {
       position: relative;
       max-height: 500px;

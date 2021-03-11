@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from '@app/shared/services/common.service';
+import { Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 
@@ -46,7 +47,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
   styles: [
   ]
 })
-export class ImportItemComponent implements OnInit {
+export class ImportItemComponent implements OnInit, OnDestroy {
 
   public form = new FormGroup({
     fileName: new FormControl('', [Validators.required, Validators.pattern(/(.csv)/)]),
@@ -61,6 +62,9 @@ export class ImportItemComponent implements OnInit {
   //shared data
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() uploadFiles = new EventEmitter<any>();
+
+  //subscription
+  public subscription$ = new Subscription();
 
   constructor(private lpValidatorServices: LpValidatorService, private common: CommonService) { }
 
@@ -85,7 +89,8 @@ export class ImportItemComponent implements OnInit {
 
   public async onSubmit() {
     if (this.form.valid) {
-      this.common.showSpinner();
+      console.log(this.common.isLoading$.getValue());
+      this.common.showSpinner('root');
 
       try {
         const formData = new FormData();
@@ -94,31 +99,40 @@ export class ImportItemComponent implements OnInit {
         console.log(result);
         
         if (result && result.message && result.nameFile) {
-          this.lpValidatorServices.getUpload({file: result.nameFile}).pipe(
-                map((result) => {
-            // this.viewData = result;
-                this.uploadFiles.emit(result);
-            })
-          ).subscribe();
-        }
-        //   map((result) => {
-        //     // this.viewData = result;
-        //     this.uploadFiles.emit(result);
+          // setTimeout(() => {
+          const dataUploaded = await this.lpValidatorServices.getUpload({ file: result.nameFile });
+          if (dataUploaded) {
+            this.uploadFiles.emit(dataUploaded);
+            console.log(dataUploaded);
+            
+            this.common.hideSpinner();
 
-        //   })
-        // ).subscribe();
-        // console.log('result', result);
-        // if (result && result.message && result.nameFile) {
-        //   const data = await this.lpValidatorServices.getUpload(result.nameFile);
-        //   console.log('data', data);
-        // }
-        this.common.hideSpinner();
+          }
+          // this.subscription$  = this.lpValidatorServices.getUpload({ file: result.nameFile }).pipe(
+          //     map((result) => {
+          //       if (result) {
+          //         return result;
+          //       }
+          //       // this.viewData = result;
+          //       // this.uploadFiles.emit(result);
+          //     })
+          //   ).subscribe();
+          // }, 5000)
+
+          // console.log(this.subscription$);
+              
+
+        }
       } catch (error) {
         console.log('error ', error);
 
       }
     }
 
+  }
+
+  ngOnDestroy(){
+    this.subscription$.unsubscribe();
   }
 
 }
