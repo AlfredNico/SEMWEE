@@ -1,0 +1,10 @@
+{
+    "/backend-semwee/*": {
+        "target": "https://back-semwee.herokuapp.com/api",
+        "secure": true,
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/api/*": ""
+        }
+    }
+}

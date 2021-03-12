@@ -75,7 +75,8 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "SEMWEE:build"
+                        "browserTarget": "SEMWEE:build",
+                        "proxyConfig": "src/proxy.conf.json"
                     },
                     "configurations": {
                         "production": {
