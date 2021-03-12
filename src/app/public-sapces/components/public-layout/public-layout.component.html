@@ -12,10 +12,10 @@
                     <a mat-button [routerLink]="['/user-space']">Accueil</a>
                     <div class="spacer"></div>
                     <ng-template #loginTemplete>
-                        <button mat-stroked-button [routerLink]="['/sign-in']" class="mx-3">Connecter</button>
+                        <button mat-stroked-button [routerLink]="['/sign-in']" class="mx-3">Sign in</button>
                     </ng-template>
                     <ng-template #logoutTemplete>
-                        <button mat-stroked-button (click)="auth.logout()" class="mx-3">Déconnecter</button>
+                        <button mat-stroked-button (click)="auth.logout()" class="mx-3">Sing up</button>
                     </ng-template>
 
                     <ng-container *ngTemplateOutlet="!auth.currentUserSubject?.value ? loginTemplete : logoutTemplete">
@@ -51,11 +51,7 @@
                 </p>
 
                 <div class="scroll-top" *ngIf="isShow" (click)="gotoTop()">
-                <span
-                    [inlineSVG]="'./assets/media/svg/icons/Navigation/Up-2.svg'"
-                    cacheSVG="true"
-                    class="svg-icon"
-                  ></span>
+                    <span [inlineSVG]="'./assets/media/svg/icons/Navigation/Up-2.svg'" cacheSVG="true" class="svg-icon"></span>
                 </div>
             </div>
         </mat-drawer-content>

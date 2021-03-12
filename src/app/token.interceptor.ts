@@ -33,8 +33,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
     // default --> json
     if (!request.headers.has('Content-Type')) {
-      console.log('Content - Type');
-
       request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
     }
 
