@@ -1,10 +1,10 @@
 {
     "/api/*": {
-        "target": "http://192.168.88.88:3000/",
+        "target": "https://back-semwee.herokuapp.com/api",
         "secure": false,
         "changeOrigin": true,
         "pathRewrite": {
-            "^/api*": ""
+            "^/api/*": ""
         }
     }
 }
