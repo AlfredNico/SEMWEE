@@ -9,12 +9,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxCaptchaModule } from 'ngx-captcha';
 
 import { NgxSpinnerModule } from "ngx-spinner";
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule,
   ],
   exports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     FlexLayoutModule,
     MatSnackBarModule,
     NgxCaptchaModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    TranslateModule,
   ]
 })
 export class SharedModule { }

@@ -5,5 +5,7 @@ export const environment = {
   isMockEnabled: true,
   // apiUrl: 'api',
   // BASE_URL: 'http://localhost:4200/backend-api',
-  URL_API: '/api/'
+  baseUrl: 'http://192.168.88.88:3000/api',
+  // baseUrl: 'https://back-semwee.herokuapp.com/api'
+  // baseUrl: '/api'
 };

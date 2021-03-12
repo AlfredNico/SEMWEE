@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "https://back-semwee.herokuapp.com/api",
+        "target": "https://back-semwee.herokuapp.com/",
         "secure": false,
         "changeOrigin": true,
         "pathRewrite": {

@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   public getAllUsers() {
-    return this.http.get(`${environment.URL_API}/user/allUser`).subscribe(
+    return this.http.get(`${environment.baseUrl}/user/allUser`).subscribe(
       (user: any) => {
         console.log(user);
 
@@ -36,7 +36,7 @@ export class AuthService {
 
   public login(value: { email: string, password: string }) {
 
-    return this.http.post<any>(`${environment.URL_API}/auth/login`, value).pipe()
+    return this.http.post<any>(`${environment.baseUrl}/auth/login`, value).pipe()
       .pipe(
         map((user: Users) => {
           console.log('user', user);

@@ -25,7 +25,7 @@ export class IsLoggedInGuard implements CanActivate {
           return of(true);
         } else if (this.cookieService.get('SEMEWEE')) {
           this.authService.currentUserSubject.next(new User({
-            _id: +this.cookieService.get('_id'),
+            _id: this.cookieService.get('_id'),
             firstname: this.cookieService.get('firstname'),
             lastname: this.cookieService.get('lastname'),
             email: this.cookieService.get('email'),

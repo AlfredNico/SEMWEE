@@ -2,7 +2,7 @@ import { getRoles, Users } from "../models/users";
 
 
 export class User {
-    _id?: number;
+    _id?: string;
     image?: string;
     lastname!: string;
     firstname!: string;
