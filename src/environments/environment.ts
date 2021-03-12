@@ -10,9 +10,10 @@ export const environment = {
   // apiUrl: 'api',
   // BASE_URL: 'http://localhost:4200/backend-api',
   // URL_API: 'http://192.168.43.7:3000/api'
-  baseUrl: 'http://192.168.88.88:3000/api',
+  // baseUrl: 'http://192.168.88.88:3000/api',
   // URL_API: 'https://back-semwee.herokuapp.com/api'
-  // baseUrl: 'https://back-semwee.herokuapp.com/api'
+  baseUrl: 'https://back-semwee.herokuapp.com/api'
+  // baseUrl: 'http://192.168.88.88:3000/api'
   // baseUrl: '/api'
 };
 

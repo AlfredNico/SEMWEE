@@ -51,7 +51,7 @@ export class MockInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
-    // all-fast-csv
+    // all-fast-cs
 
     switch (true) {
       // case url.endsWith('auth/login') && method === 'POST':

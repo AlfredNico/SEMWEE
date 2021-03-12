@@ -30,7 +30,7 @@ export class IsLoggedInGuard implements CanActivate {
             lastname: this.cookieService.get('lastname'),
             email: this.cookieService.get('email'),
             token: this.cookieService.get('SEMEWEE'),
-            image: this.cookieService.get('image'),
+            image: this.cookieService.get('image')
           }));
           return of(true);
         } else {
