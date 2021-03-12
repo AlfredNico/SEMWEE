@@ -184,11 +184,11 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         let i = 0;
         let object: any = { 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' };
         Object.keys(value).forEach((key: string, index: number) => {
-          if (!key.includes('Facet') && !key.includes('Value')) {
+          if (!key.includes('Facet') && !key.includes('Value') && value['select'] == true) {
             object[header[i]] = value[key];
             this.filterData[currentIndex] = { ...object };
             i++;
-          } else if (key.includes('Facet') && this.checklist.includes(key)) {
+          } else if (key.includes('Facet') && this.checklist.includes(key) && value['select'] == true) {
             // i++;
             // this.checklist.findIndex()
             // const keyIndex = this.checklist.indexOf(key);
