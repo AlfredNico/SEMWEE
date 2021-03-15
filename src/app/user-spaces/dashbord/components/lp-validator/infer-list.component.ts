@@ -174,15 +174,15 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   }
 
   async tableReady() {
-    const fake_header = ["ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
+    const fake_header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
 
-    const header = ["ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
+    const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
 
     if (this.checklist.length > 0) {
       this.dataView.data.forEach((value: any, currentIndex: number) => {
 
         let i = 0;
-        let object: any = { 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' };
+        let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' };
         Object.keys(value).forEach((key: string, index: number) => {
           if (!key.includes('Facet') && !key.includes('Value') && value['select'] == true) {
             object[header[i]] = value[key];
@@ -208,9 +208,9 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     // this.dataFilterReady.emit(this.filterData);
     const result = await this.lpValidatorServices.postInferList(this.filterData);
 
-    if (result && result.message) {
-      const value = await this.lpValidatorServices.getInfterList();
-      this.dataInferListReady.emit(value);
+    if (result && result.data) {
+      // const value = await this.lpValidatorServices.getInfterList();
+      this.dataInferListReady.emit(result);
     }
     // console.log(this.filterData);
   }
