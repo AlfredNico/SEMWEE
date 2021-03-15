@@ -95,15 +95,12 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       try {
         // const formData = new FormData();
         // formData.append('file', this.form.get('files')?.value);
-        const result = await this.lpValidatorServices.sendFile(this.form.get('fileSource')?.value as File);
+        const result = await this.lpValidatorServices.getUpload(this.form.get('fileSource')?.value as File);
 
-        if (result && result.message && result.nameFile) {
-          // setTimeout(() => {
-          const dataUploaded = await this.lpValidatorServices.getUpload({ file: result.nameFile });
-          if (dataUploaded) {
-            this.uploadFiles.emit(dataUploaded);
-            this.common.hideSpinner();
-          }
+        if (result && result.data) {
+          this.uploadFiles.emit(result);
+        } else {
+          this.common.hideSpinner();
         }
       } catch (error) {
         console.log('error ', error);
