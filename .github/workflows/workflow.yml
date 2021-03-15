@@ -8,34 +8,25 @@ on:
   push:
     branches: 
       - deploy
-  # pull_request:
-    # branches: [ releases ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-20.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - uses: actions/setup-node@v1 #this installs node and npm for us
-      with:
-        node-version: '12.x'
-    - uses: actions/cache@v1 # this allows for re-using node_modules caching, making builds a bit faster.
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-    
-    - name: Build
-      run: |
-        npm install
-        npm run-script deploy
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.HEROKU_API_KEY }}
-        BRANCH: deploy
-        FOLDER: dist/semwee
+      - uses: actions/checkout@v2
+      - name: Updating Ubuntu system and Heroku
+        env: 
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: sudo apt update && sudo apt install heroku neofetch
+      - name: Checking the info
+        run: neofetch
+
+      - uses: akhileshns/heroku-deploy@v3.8.8
+        with:
+          heroku_email: alfrednicotsu@gmail.com
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: semwee
+          branch: HEAD
+          useforce: false
+          dynamicFiles: false
+
