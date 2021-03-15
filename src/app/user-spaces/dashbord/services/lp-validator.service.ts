@@ -27,7 +27,7 @@ export class LpValidatorService {
     formData.append('files', files);
 
     // const params = new HttpParams().set('nameFile', file);
-    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv`, files).pipe(
+    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: []}>(`${environment.baseUrl}/validator/import-csv`, formData).pipe(
       map((result: any) => {
         if (result) {
           console.log(result);

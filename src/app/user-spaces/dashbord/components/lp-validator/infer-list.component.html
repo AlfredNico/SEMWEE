@@ -33,13 +33,12 @@
                         <mat-checkbox color="primary" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()"></mat-checkbox>
                     </td>
                 </ng-container>
-
                 <!-- DYNAMICS Column -->
-                <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
+                <ng-container [matColumnDef]="column" *ngIf="column !== 'select' && column !== 'id'">
                     <th mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                         <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
                             <div mat-sort-header class="text-uppercase">
-                                {{ column }}
+                                {{ column.replace('_', ' ').replace('_', ' ') }}
                             </div>
                             <mat-form-field appearance="outline" id="filters">
                                 <input matInput type="search" [formControlName]="column" autocomplete="off">
