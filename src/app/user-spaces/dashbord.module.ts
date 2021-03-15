@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 // import { DashbordComponent } from './dashbord/dashbord.component';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { LandingModule } from '@app/shared/modules/landing.module';
@@ -57,8 +57,12 @@ import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dro
 import { InlineSVGModule } from 'ng-inline-svg';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslationService } from '@app/modules/i18n/translation.service';
 
-
+@Injectable({
+  providedIn: 'root'
+})
 
 @NgModule({
   declarations: [
@@ -130,6 +134,8 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
   ],
   exports: [RouterModule],
   providers: [
+    TranslateService,
+    TranslationService,
     LpValidatorService,
     ConvertUploadFileService
   ],

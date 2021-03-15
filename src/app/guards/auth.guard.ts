@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
           return of(true);
         } else if (this.cookieService.check('SEMEWEE')) {
           // const user = new User({
-          //   id: +this.cookieService.get('id'),
+          //   _id: this.cookieService.get('id'),
           //   firstName: this.cookieService.get('firstName'),
           //   lastName: this.cookieService.get('lastName'),
           //   password: this.cookieService.get('password'),

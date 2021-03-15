@@ -12,19 +12,21 @@ export class LpValidatorService {
 
   public data: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
 
+  public inferListData: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
+
   constructor(private http: HttpClient, private fakeData: ConvertUploadFileService, private common: CommonService) { }
 
   public sendFile(files: File) {
     const formData: FormData = new FormData();
     formData.append('files', files);
 
-    // return this.http.post<{ message: string, nameFile: string }>(`${environment.URL_API}/validator/all-fast-csv`, formData);
-    return this.http.post<{ message: string, nameFile: string }>(`${environment.URL_API}/validator/all-fast-csv`, formData).toPromise();
+    // return this.http.post<{ message: string, nameFile: string }>(`${environment.baseUrl}/validator/all-fast-csv`, formData);
+    return this.http.post<{ message: string, nameFile: string }>(`${environment.baseUrl}/validator/import-csv`, formData).toPromise();
   }
 
   public getUpload(value: { file: string }) {
     // const params = new HttpParams().set('nameFile', file);
-    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.URL_API}/validator/post-one-fast-csv`, value).pipe(
+    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/post-name-csv`, value).pipe(
       map((result: any) => {
         if (result) {
           console.log(result);
@@ -54,31 +56,29 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any) {
-    return this.http.post<{ message: string }>(`${environment.URL_API}/validator/post-infer-list`, value).toPromise()
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/validator/post-infer-list`, value).toPromise()
   }
 
 
   public getInfterList() {
-    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.URL_API}/validator/get-infer-list`).pipe(
-      map((result: any) => {
-        if (result) {
-          console.log(result);
-
+    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/get-infer-list`).pipe(
+      map((values: any) => {
+        if (values) {
           let dataValue: any[] = [];
-          result.map((value: any) => {
-            Object.keys(value).map((key: string, index: number) => {
+          values.map((result: any) => {
+            Object.keys(result).map((key: string, index: number) => {
               // console.log(key, index);
-              if (!this.data.displayColumns.includes(key)) {
-                this.data.displayColumns.push(key);
+              if (!this.inferListData.displayColumns.includes(key)) {
+                this.inferListData.displayColumns.push(key);
               }
             })
-            dataValue.push({ ...value, 'select': true });
+            dataValue.push({ ...result, 'select': true });
           });
 
           this.common.isLoading$.next(true);
 
-          return this.data = {
-            displayColumns: this.data.displayColumns,
+          return this.inferListData = {
+            displayColumns: this.inferListData.displayColumns,
             hideColumns: [],
             data: dataValue
           };

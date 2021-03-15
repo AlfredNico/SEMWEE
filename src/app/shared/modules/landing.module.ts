@@ -12,7 +12,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -31,7 +33,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatSortModule,
     DragDropModule,
     MatDialogModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
   ]
 })
 export class LandingModule { }

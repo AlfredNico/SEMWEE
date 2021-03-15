@@ -33,7 +33,7 @@ export class LayoutService {
     aside_menu: {},
   };
 
-  constructor() {}
+  constructor() { }
 
   initConfig(): any {
     const configFromLocalStorage = localStorage.getItem(

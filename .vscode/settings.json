@@ -1,5 +1,6 @@
 {
     // "editor.wordWrap": "on",
+    "typescript.tsdk": "node_modules\\typescript\\lib",
     "editor.wordWrap": "wordWrapColumn",
     // "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 1000,

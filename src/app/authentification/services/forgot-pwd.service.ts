@@ -10,6 +10,6 @@ export class ForgotPwdService {
   constructor(private http: HttpClient) { }
 
   public sign_up(email: string) {
-    return this.http.post<{ message: string }>(`${environment.URL_API}/auth/signup`, email).toPromise();
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/auth/signup`, email).toPromise();
   }
 }

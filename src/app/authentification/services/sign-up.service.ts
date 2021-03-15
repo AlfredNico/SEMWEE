@@ -12,6 +12,6 @@ export class SignUpService {
   constructor(private http: HttpClient) { }
 
   public sign_up(user: Users) {
-    return this.http.post<{message: string}>(`${environment.URL_API}/auth/signup`, user).toPromise();
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/auth/signup`, user).toPromise();
   }
 }

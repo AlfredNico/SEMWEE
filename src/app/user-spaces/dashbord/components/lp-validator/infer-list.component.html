@@ -46,7 +46,7 @@
                             </mat-form-field>
                         </div>
                     </th>
-                    <td mat-cell *matCellDef="let row" (click)="selectRow(row)">{{ row[column] }} </td>
+                    <td mat-cell *matCellDef="let row" (click)="selectRow(row)" [matTooltip]="row[column]">{{ row[column] }} </td>
                 </ng-container>
             </div>
 

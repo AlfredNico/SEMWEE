@@ -31,10 +31,10 @@ export class TokenInterceptor implements HttpInterceptor {
       this.router.navigateByUrl('/sign-in');
     }
 
-    // default --> json
-    if (!request.headers.has('Content-Type')) {
-      request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
-    }
+    // // default --> json
+    // if (!request.headers.has('Content-Type')) {
+    //   request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
+    // }
 
     return next.handle(request);
   }

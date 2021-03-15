@@ -1,5 +1,5 @@
 export interface Users {
-    _id?: number;
+    _id?: string;
     image?: string;
     lastname: string;
     firstname: string;
