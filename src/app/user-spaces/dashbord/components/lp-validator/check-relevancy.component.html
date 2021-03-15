@@ -39,7 +39,7 @@
                     <th mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                         <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
                             <div mat-sort-header class="text-uppercase">
-                                {{ column }}
+                                {{ column.replace('_', ' ').replace('_', ' ') }}
                             </div>
                             <mat-form-field appearance="outline" id="filters">
                                 <input matInput type="search" [formControlName]="column" autocomplete="off">

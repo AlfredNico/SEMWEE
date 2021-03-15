@@ -6,7 +6,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from '@app/authentification/services/auth.service';
+import { User } from '@app/classes/users';
 import { SettingRowsTable } from '@app/models/setting-table';
+import { Users } from '@app/models/users';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
@@ -45,6 +48,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   @ViewChild(MatSort) sort!: MatSort;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
+  //getUser
+  user!: Users;
   //generate form controle dynamics
   public filters = this.fb.group([]);
   public search = new FormControl('');
@@ -58,9 +63,13 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService) { }
+  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService, private auth: AuthService) { 
+    
+  }
 
   ngOnChanges() {
+    this.user = this.auth.currentUserSubject.value;
+
     this.commonServices.showSpinner();
     Object.assign(this.dataView, this.data);
 
@@ -179,28 +188,35 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
 
     if (this.checklist.length > 0) {
+      let tabIndex = 0;
+
       this.dataView.data.forEach((value: any, currentIndex: number) => {
+        let i = 5;
+        let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' , 'email': this.user.email};
 
-        let i = 0;
-        let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' };
         Object.keys(value).forEach((key: string, index: number) => {
-          if (!key.includes('Facet') && !key.includes('Value') && value['select'] == true) {
-            object[header[i]] = value[key];
-            this.filterData[currentIndex] = { ...object };
-            i++;
-          } else if (key.includes('Facet') && this.checklist.includes(key) && value['select'] == true) {
-            // i++;
-            // this.checklist.findIndex()
-            // const keyIndex = this.checklist.indexOf(key);
-            const keyIndex = fake_header.indexOf(key);
-
-            object[header[i]] = value[key];
-            i++;
-            object[header[i]] = value[fake_header[keyIndex + 1]];
-            this.filterData[currentIndex] = { ...object };
-            i++;
+          if (value['select'] === true) {
+            if (!key.includes('Facet') && !key.includes('Value')) {
+              // object[header[i]] = value[key];
+              object[key] = value[key];
+              this.filterData[tabIndex] = { ...object };
+  
+            } else if (key.includes('Facet') && !key.includes('Value')  && this.checklist.includes(key)) {
+              
+              const keyIndex = header.indexOf(key);
+  
+              object[header[i]] = value[key];
+              i++;
+              object[header[i]] = value[`${key}_Value`];
+              this.filterData[tabIndex] = { ...object };
+              i++;
+            }
           }
         })
+
+        if (value['select']) {
+          tabIndex++;
+        }
       })
     }
     console.log('inferLIST', this.filterData);
