@@ -14,7 +14,7 @@
 	font-size: 0.8rem;
 	background-color: $gray-200;
 	color: $dark-75;
-	font-weight: 400;
+	font-weight: 500;
 
 	// Theme colors
 	@each $name, $color in $theme-colors {

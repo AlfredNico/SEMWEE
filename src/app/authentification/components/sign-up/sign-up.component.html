@@ -1,13 +1,19 @@
-<div fxLayout="row" class="d-flex flex-column flex-root" style="height: 100%;">
-    <div class="row" style="height: 100%; width:100%;background-color: white;">
-        <div class="col-md-5" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; height: 100%;background-size: auto 100%;">
+<div class="d-flex flex-column flex-root h-100" id="kt_login_wrapper">
+    <!--begin::Login-->
+    <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
 
-        </div>
-        <div class="col-md-7" style="margin: auto;">
-            <div fxLayout="column" class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+        <!--begin::Aside-->
+    <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; background-size: auto 100%;">
+      </div>
+      <!--begin::Aside-->
+        
+        <!--begin::Content-->
+    <div
+    class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
                 <!--begin::Content body-->
-                <div class="d-flex flex-column-fluid flex-center centre">
+                <div class="d-flex flex-column-fluid flex-center">
 
+                    <div class="login-form login-signin">
                     <!--begin::Signin-->
                     <div fxLayout="column" fxLayoutAlign="space-between center" class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
                         <!--begin::Form-->
@@ -25,18 +31,18 @@
                             <!--begin::Form group-->
                             <table class="example-full-width" cellspacing="0">
                                 <tr>
-                                    <td>
+                                    <td style="padding-right: 10px;">
                                         <mat-form-field appearance="standard">
                                             <mat-label>First name</mat-label>
-                                            <input matInput type="text" formControlName="lastname">
-                                            <mat-error *ngIf="registrationForm.get('lastname')?.invalid && registrationForm.get('lastname')?.errors?.required">First Name required</mat-error>
+                                            <input matInput type="text" formControlName="firstname">
+                                            <mat-error *ngIf="registrationForm.get('firstname')?.invalid && registrationForm.get('firstname')?.errors?.required">First Name required</mat-error>
                                         </mat-form-field>
                                     </td>
                                     <td>
                                         <mat-form-field appearance="standard">
                                             <mat-label>Last name</mat-label>
-                                            <input matInput type="text" formControlName="firstname">
-                                            <mat-error *ngIf="registrationForm.get('firstname')?.touched && registrationForm.get('firstname')?.errors?.required">Last name required</mat-error>
+                                            <input matInput type="text" formControlName="lastname">
+                                            <mat-error *ngIf="registrationForm.get('lastname')?.touched && registrationForm.get('lastname')?.errors?.required">Last name required</mat-error>
                                         </mat-form-field>
                                     </td>
                                 </tr>
@@ -66,20 +72,20 @@
                             </mat-form-field>
 
                             <!--end::Form group-->
-                            <div class="py-2 text-condition" fxLayout="column" fxLayoutAlign="space-between start">
+                            <div class="py-2">
                                 <mat-checkbox #checkbox formControlName="acceptTerms" color="primary">I agree with terms and conditions
                                 </mat-checkbox>
                                 <div [style.color]="'#f44336'" *ngIf="submitted === true && registrationForm.get('acceptTerms')?.errors">Accept Terms is requird
                                 </div>
 
                                 <!--begin::Action-->
-                                <div class="pb-lg-0 pb-5 my-5" fxLayout="column">
-                                    <div fxLayout="row " fxLayoutAlign="space-between center">
+                                <div class="pb-lg-0 pb-5 my-5 centre">
+                                    <div class="centre">
 
                                         <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Sign up</button>
                                     </div>
 
-                                    <div class="my-2">
+                                    <div class="my-2 centre">
                                         <a class="nav-link" [routerLink]="['/sign-in']">Already have
                                       an account? Sign in</a>
                                     </div>
@@ -91,13 +97,19 @@
                     </div>
                     <!--end::Signin-->
                 </div>
+
+                </div>
                 <!--end::Content body-->
+
+                
                 <!--begin::Content footer-->
-                <p class="term">Terms of use. Privacy policy</p>
+                <div class="d-flex justify-content-center py-lg-0">
+                    <p class="term">Terms of use. Privacy policy</p>
+                </div>
                 <!--end::Content footer-->
-            </div>
-            <!--end::Content-->
+
         </div>
-        <!--end::Login-->
+        <!--end::Content-->
     </div>
+    <!--end::Login-->
 </div>

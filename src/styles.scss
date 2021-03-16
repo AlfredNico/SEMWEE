@@ -6,16 +6,16 @@
     font-weight: 300;
     src: url('./assets/fonts/Raleway/Raleway-Light.ttf') format('truetype');
 }
-// @font-face {
-//     font-family: Raleway;
-//     font-style: normal;
-//     font-weight: 400;
-//     src: url('./assets/fonts/Raleway/Raleway-Regular.ttf') format('truetype');
-// }
+@font-face {
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 400;
+    src: url('./assets/fonts/Raleway/Raleway-Regular.ttf') format('truetype');
+}
 @font-face {
     font-family: Raleway;
     font-style: medium;
-    font-weight: 400;
+    font-weight: 500;
     src: url('./assets/fonts/Raleway/Raleway-Medium.ttf') format('truetype');
 }
 @font-face {
@@ -176,7 +176,7 @@
 //     height: 100%;
 // }
 * {
-    font-family: "Open Sans", Raleway;
+    font-family: Raleway, "Open Sans";
 }
 // .mat-snack-bar-container.snack-bar-error {
 //     background-color: #FF8A80;
@@ -354,7 +354,7 @@ body {
 
 body {
     margin: 0;
-    font-family: "Open Sans", Raleway;
+    font-family: Raleway, "Open Sans";
     // min-height: 100vh;
     background: #e2e2e2;
 }
