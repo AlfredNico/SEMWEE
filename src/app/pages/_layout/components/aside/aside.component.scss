@@ -29,6 +29,8 @@
 
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
   border-left-color: #A3A0FB;
+  // transform: scale(Y);
+  // transition: transform 0.2s, opacity 0.2s;
 }
 
 .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
