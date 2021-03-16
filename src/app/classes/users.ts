@@ -8,7 +8,7 @@ export class User {
     firstname!: string;
     email!: string;
     token!: string;
-    role?: getRoles[];
+    role: getRoles;
 
     constructor(user?: Users) {
         Object.assign(this, user);

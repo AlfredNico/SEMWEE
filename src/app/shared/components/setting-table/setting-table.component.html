@@ -3,7 +3,7 @@
     <div mat-dialog-content>
         <!-- <div *ngFor="let facet of facetLists; let i = index"> -->
         <mat-selection-list #items color="primary" *ngFor="let facet of facetLists; let i = index">
-            <mat-list-option #item [disabled]="selectedOptions.length > 5 && !item.selected" [selected]="facet && i < 15" (click)="onNgModelChange(facet)" *ngIf="!facet.includes('Value') && facet.includes('Facet');">
+            <mat-list-option #item [disabled]="selectedOptions.length > 5 && !item.selected" [selected]="facet && i < 15 && facet.includes('Facet') && !facet.includes('Value')" (click)="onNgModelChange(facet)" *ngIf="!facet.includes('Value') && facet.includes('Facet');">
                 {{ facet.replace('_', ' ') }}
             </mat-list-option>
         </mat-selection-list>

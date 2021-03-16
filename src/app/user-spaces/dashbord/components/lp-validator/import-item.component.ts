@@ -89,7 +89,6 @@ export class ImportItemComponent implements OnInit, OnDestroy {
 
   public async onSubmit() {
     if (this.form.valid) {
-      console.log(this.common.isLoading$.getValue());
       this.common.showSpinner('root');
 
       try {

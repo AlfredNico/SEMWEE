@@ -46,8 +46,6 @@ export class SignUpComponent implements OnInit {
 
     try {
       const value = this.registrationForm.value as Users;
-      console.log('value', value);
-
       const result = await this.signUp.sign_up(value);
       if (result && result.message) {
         this.notifs.sucess(result.message);

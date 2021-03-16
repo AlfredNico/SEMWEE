@@ -23,7 +23,6 @@ export class LpValidatorComponent implements OnInit {
   public dataInferList = [];
 
   ngOnInit(): void {
-    console.log(this.auth.getAllUsers());
   }
 
   // Upload file ok
@@ -35,7 +34,6 @@ export class LpValidatorComponent implements OnInit {
 
   public inferListReady(event: any) {
     this.dataInferList = event;
-    console.log(event);
 
     this.stepper.selected.completed = true;
     this.stepper.next();

@@ -176,7 +176,6 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       width: '600px',
     }).afterClosed().pipe(
       map((result: string[]) => {
-        console.log('result', result);
         this.checklist = result;
       })
     ).subscribe();
@@ -219,7 +218,6 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         }
       })
     }
-    console.log('inferLIST', this.filterData);
 
     // this.dataFilterReady.emit(this.filterData);
     const result = await this.lpValidatorServices.postInferList(this.filterData);

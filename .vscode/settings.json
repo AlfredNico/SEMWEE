@@ -9,6 +9,7 @@
     "editor.autoClosingBrackets": "languageDefined",
     "editor.autoClosingOvertype": "auto",
     "html.format.wrapAttributes": "auto",
+    "files.hotExit": "onExit",
     
     "html.format.wrapLineLength": 100,
     "editor.wordWrapColumn": 100,
@@ -20,7 +21,7 @@
         "editor.formatOnSave": true,
         "editor.wordWrap": "on",
         "editor.renderWhitespace": "all",
-        "editor.acceptSuggestionOnEnter": "off"
+        "editor.acceptSuggestionOnEnter": "on"
       },
       // TypeScript
       "javascript.format.insertSpaceAfterConstructor": false,

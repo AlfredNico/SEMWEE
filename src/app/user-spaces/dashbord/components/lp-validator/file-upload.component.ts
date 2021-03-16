@@ -75,27 +75,12 @@ export class FileUploadComponent implements OnInit, OnDestroy {
       try {
         const formData = new FormData();
         formData.append('file', this.form.get('files')?.value);
-        // this.subscription = this.lpValidatorServices.sendFile(this.form.get('fileSource')?.value as File).subscribe(
-        //   (value: any) => {
-        //     console.log('value', value);
-        //     this.uploadFileData = value;
-        //     // return value;
-        //   }
-        // );
-
-        console.log('sub', this.subscription);
-
-        // console.log('result', result);
-        // if (result && result.message && result.nameFile) {
-        //   const data = await this.lpValidatorServices.getUpload(result.nameFile);
-        //   console.log('data', data);
-        // }
 
       } catch (error) {
         console.log('error ', error);
 
       }
-    }else{
+    } else {
       console.log('form not valid');
     }
 

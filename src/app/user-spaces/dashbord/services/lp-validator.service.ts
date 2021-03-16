@@ -30,7 +30,6 @@ export class LpValidatorService {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: []}>(`${environment.baseUrl}/validator/import-csv`, formData).pipe(
       map((result: any) => {
         if (result) {
-          console.log(result);
 
           let dataValue: any[] = [];
           result.map((value: any) => {
@@ -42,8 +41,6 @@ export class LpValidatorService {
             })
             dataValue.push({ ...value, 'select': true });
           });
-
-          this.common.isLoading$.next(true);
 
           return this.data = {
             displayColumns: this.data.displayColumns,
