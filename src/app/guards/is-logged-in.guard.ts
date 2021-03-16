@@ -19,12 +19,11 @@ export class IsLoggedInGuard implements CanActivate {
       mergeMap((user: User) => {
 
         if (user && user.token) {
-          // this.authService.currentUserSubject.next(user);
+          this.authService.currentUserSubject.next(user);
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
           console.log('currentUser', JSON.parse(localStorage.getItem('currentUser') || '{}'));
-          // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
-          // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser')));
+          this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
           return of(true);
         } else if (this.cookieService.check('SEMEWEE')) {
           const authUser = new User({

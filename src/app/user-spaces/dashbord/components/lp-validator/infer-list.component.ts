@@ -132,6 +132,9 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
+    // if (event.container.data) {
+      
+    // }
     moveItemInArray(this.displayColumns, event.previousIndex, event.currentIndex);
     this.displayColumns.forEach((column, index) => {
       this.dataView.displayColumns[index] = column;

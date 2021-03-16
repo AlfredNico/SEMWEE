@@ -20,6 +20,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ResetPasswordGuard } from './guards/reset-password.guard';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -64,6 +65,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }, {
         path: 'forgot-password',
         loadChildren: () => import('./authentification/components/forget-password/forget-password.module').then(m => m.ForgetPasswordModule)
+      }, {
+        path: 'reset-password',
+        loadChildren: () => import('./authentification/components/resetpassword/resetpassword.module').then(m => m.ResetpasswordModule),
+        canActivate: [ResetPasswordGuard]
       },
       { path: '', pathMatch: 'full', redirectTo: 'home' },
       { path: '**', component: PageNotFoundComponent },

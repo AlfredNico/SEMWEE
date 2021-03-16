@@ -20,8 +20,9 @@ export class ForgetPasswordComponent implements OnInit {
   }
 
   async onSubmit() {
+    // console.log(location.origin);
     try {
-      const result = await this.forgetPwdService.forgetPassword(this.form.value);
+      const result = await this.forgetPwdService.forgetPassword({ email: this.form.value, baseUrl: location.origin});
       if (result && result.message) {
         this.nofits.sucess(result.message);
       }

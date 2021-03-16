@@ -3,17 +3,16 @@
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
 
         <!--begin::Aside-->
-    <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; background-size: auto 100%;">
-      </div>
-      <!--begin::Aside-->
-        
-        <!--begin::Content-->
-    <div
-    class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
-                <!--begin::Content body-->
-                <div class="d-flex flex-column-fluid flex-center">
+        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; background-size: auto 100%;">
+        </div>
+        <!--begin::Aside-->
 
-                    <div class="login-form login-signin">
+        <!--begin::Content-->
+        <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+            <!--begin::Content body-->
+            <div class="d-flex flex-column-fluid flex-center">
+
+                <div class="login-form login-signin">
                     <!--begin::Signin-->
                     <div fxLayout="column" fxLayoutAlign="space-between center" class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
                         <!--begin::Form-->
@@ -51,15 +50,15 @@
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
                                 <input matInput type="email" formControlName="email">
-                                <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.errors?.required">Addres e-amil required</mat-error>
-                                <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.errors?.email">Addres e-amil ivalid</mat-error>
+                                <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.errors?.required">Addres e-mail required</mat-error>
+                                <mat-error *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.errors?.email">Addres e-mail ivalid</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Password</mat-label>
                                 <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" autocomplete="off">
                                 <mat-icon matSuffix (click)="hide=! hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.required">Mot de passe requis</mat-error>
+                                <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.required">Password required</mat-error>
                                 <mat-error *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.errors?.invalidPassword">Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number</mat-error>
                             </mat-form-field>
 
@@ -81,7 +80,6 @@
                                 <!--begin::Action-->
                                 <div class="pb-lg-0 pb-5 my-5 centre">
                                     <div class="centre">
-
                                         <button mat-raised-button type="submit" class="m-2 btn-signin" color="primary">Sign up</button>
                                     </div>
 
@@ -98,15 +96,15 @@
                     <!--end::Signin-->
                 </div>
 
-                </div>
-                <!--end::Content body-->
+            </div>
+            <!--end::Content body-->
 
-                
-                <!--begin::Content footer-->
-                <div class="d-flex justify-content-center py-lg-0">
-                    <p class="term">Terms of use. Privacy policy</p>
-                </div>
-                <!--end::Content footer-->
+
+            <!--begin::Content footer-->
+            <div class="d-flex justify-content-center py-lg-0">
+                <p class="term">Terms of use. Privacy policy</p>
+            </div>
+            <!--end::Content footer-->
 
         </div>
         <!--end::Content-->

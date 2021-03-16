@@ -1,9 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SignUpService } from '@app/authentification/services/sign-up.service';
-import { usersData } from '@app/mock.interceptor';
 import { Users } from '@app/models/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CustomValidationService } from '@app/shared/services/custom-validation.service';
