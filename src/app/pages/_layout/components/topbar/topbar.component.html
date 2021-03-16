@@ -153,7 +153,7 @@
                     <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ (user | async).firstname }}</span>
                     <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
             <span class="symbol-label font-size-h5 font-weight-bold">{{
-              (user | async).firstname[0]
+              (user | async)?.firstname[0]
             }}</span>
                     </span>
                 </div>
