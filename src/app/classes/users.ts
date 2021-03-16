@@ -14,9 +14,9 @@ export class User {
         Object.assign(this, user);
     }
 
-    get fullName() {
+    get fullname() {
         if (this.lastname != null) {
-            return `${this.firstname} ${this.firstname}`;
+            return `${this.firstname} ${this.lastname}`;
         } else {
             return this.lastname;
         }

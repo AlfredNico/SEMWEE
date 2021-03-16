@@ -1,20 +1,18 @@
 <ng-container *ngIf="user">
     <ng-container *ngIf="extrasUserDropdownStyle === 'light'">
-      <!--begin::Header-->
-      <div class="d-flex align-items-center p-8 rounded-top">
-        <!--begin::Symbol-->
-        <div class="symbol symbol-md bg-light-primary mr-3 flex-shrink-0">
-          <img src="./assets/media/users/300_21.jpg" alt="" />
-        </div>
-        <!--end::Symbol-->
-  
-        <!--begin::Text-->
-        <div class="text-dark m-0 flex-grow-1 mr-3 font-size-h5">
-          {{ user.firstname }} {{ user.lastname }}
-        </div>
-        <span
-          class="label label-light-success label-lg font-weight-bold label-inline"
-          >3 messages</span
+        <!--begin::Header-->
+        <div class="d-flex align-items-center p-8 rounded-top">
+            <!--begin::Symbol-->
+            <div class="symbol symbol-md bg-light-primary mr-3 flex-shrink-0">
+                <img src="./assets/media/users/300_21.jpg" alt="" />
+            </div>
+            <!--end::Symbol-->
+
+            <!--begin::Text-->
+            <div class="text-dark m-0 flex-grow-1 mr-3 font-size-h5">
+                {{ (user | async).fullname }}
+            </div>
+            <span class="label label-light-success label-lg font-weight-bold label-inline">3 messages</span
         >
         <!--end::Text-->
       </div>
@@ -33,14 +31,14 @@
           <div class="symbol bg-white-o-15 mr-3">
             <span
               class="symbol-label text-success font-weight-bold font-size-h4"
-              >{{ user.firstname | firstLetter }}</span
+              >{{ (user | async).firstname | firstLetter }}</span
             >
           </div>
           <!--end::Symbol-->
   
           <!--begin::Text-->
           <div class="text-white m-0 flex-grow-1 mr-3 font-size-h5">
-            {{ user.firstname }} {{ user.lastname }}
+            {{ (user | async).firstname }} {{ (user | async).lastname }}
           </div>
           <!--end::Text-->
         </div>
@@ -142,4 +140,3 @@
     </div>
     <!--end::Nav-->
   </ng-container>
-  

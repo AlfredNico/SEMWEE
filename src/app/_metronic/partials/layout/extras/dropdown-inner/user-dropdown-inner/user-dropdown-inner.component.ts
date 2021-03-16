@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
+import { Subject } from 'rxjs';
 // import { Subject } from 'rxjs';
 import { LayoutService } from '../../../../../core';
 // import { UserModel } from '../../../../../../modules/auth/_models/user.model';
@@ -12,12 +13,12 @@ import { LayoutService } from '../../../../../core';
 })
 export class UserDropdownInnerComponent implements OnInit {
   extrasUserDropdownStyle: 'light' | 'dark' = 'light';
-  // user$: Observable<UserModel>;
-  user!: User;
+  // user$: Observable<UserModel>
+  user: Subject<User> = new Subject<User>();
 
   // , private auth: AuthService
   constructor(private layout: LayoutService, public auth: AuthService) {
-    this.user = this.auth.currentUserSubject.value;
+    this.user = this.auth.currentUserSubject;
     // console.log(this.user)
   }
 

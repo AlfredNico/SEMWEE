@@ -13,6 +13,7 @@ import KTLayoutHeaderTopbar from '../../../../../assets/js/layout/base/header-to
 import { KTUtil } from '../../../../../assets/js/components/util';
 import { User } from '@app/classes/users';
 import { AuthService } from '@app/authentification/services/auth.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-topbar',
@@ -21,7 +22,7 @@ import { AuthService } from '@app/authentification/services/auth.service';
 })
 export class TopbarComponent implements OnInit, AfterViewInit {
   // user$: Observable<UserModel>;
-  user!: User;
+  user: Subject<User> = new Subject<User>();
   // tobbar extras
   extraSearchDisplay: boolean;
   extrasSearchLayout: 'offcanvas' | 'dropdown';
@@ -38,7 +39,7 @@ export class TopbarComponent implements OnInit, AfterViewInit {
 
   constructor(private layout: LayoutService, public auth: AuthService) {
     // this.user$ = this.auth.currentUserSubject.asObservable();
-    this.user = this.auth.currentUserSubject.value;
+    this.user = this.auth.currentUserSubject;
   }
 
   ngOnInit(): void {
