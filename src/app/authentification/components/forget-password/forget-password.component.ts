@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ForgotPwdService } from '@app/authentification/services/forgot-pwd.service';
+import { NotificationService } from '@app/services/notification.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -12,13 +14,20 @@ export class ForgetPasswordComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
-  constructor() { }
+  constructor(private forgetPwdService: ForgotPwdService, private nofits: NotificationService) { }
 
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    console.log(this.form.value);
+  async onSubmit() {
+    try {
+      const result = await this.forgetPwdService.forgetPassword(this.form.value);
+      if (result && result.message) {
+        this.nofits.sucess(result.message);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
 }
