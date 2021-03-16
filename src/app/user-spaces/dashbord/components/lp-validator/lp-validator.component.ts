@@ -17,12 +17,14 @@ export class LpValidatorComponent implements OnInit {
 
   //Access content on cheild
   @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
-  constructor(private uploadDataServices: ConvertUploadFileService, private auth: AuthService) { }
+  constructor(private auth: AuthService) { }
   public dataSources = [];
 
   public dataInferList = [];
 
   ngOnInit(): void {
+    console.log(this.auth.currentUserSubject.value);
+    
   }
 
   // Upload file ok
@@ -41,8 +43,6 @@ export class LpValidatorComponent implements OnInit {
 
   @HostListener('window:scroll') checkScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-
-    console.log('[scroll]', scrollPosition);
   }
 
 

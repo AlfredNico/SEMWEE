@@ -58,8 +58,6 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
   constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog) { }
 
   ngOnChanges() {
-    console.log(this.dataInferList);
-
     this.commonServices.showSpinner();
     Object.assign(this.dataView, this.dataInferList);
 
@@ -160,7 +158,6 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
       width: '600px',
     }).afterClosed().pipe(
       map((result: string[]) => {
-        console.log('result', result);
         this.checklist = result;
       })
     ).subscribe();

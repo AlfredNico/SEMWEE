@@ -12,6 +12,7 @@ import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
 import * as SEMEWEE from 'src/app/shared/fake-data/semwee.json';
 
+//  | 'PREMIUM' | 'ADMIN' | 'USER';
 export const usersData: Users[] = [
   {
     "_id": "1",
@@ -20,6 +21,7 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
+    "role": 'FREEMIUM'
   }, {
     "_id": "2",
     "firstname": "Licensed",
@@ -27,6 +29,7 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
+    "role": 'PREMIUM'
   }, {
     "_id": "3",
     "firstname": "12",
@@ -34,6 +37,7 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
+    "role": 'FREEMIUM'
   }, {
     "_id": "4",
     "firstname": "Licensed",
@@ -41,6 +45,7 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
+    "role": 'ADMIN'
   }
 ]
 

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '@app/classes/users';
+import { Users } from '@app/models/users';
 import { ReCapchaService } from '@app/services/re-capcha.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../../services/auth.service';
@@ -40,16 +41,14 @@ export class SignInComponent implements OnInit {
 
     try {
       const user = await this.authService.login({ email: email.value, password: password.value });
-      if (user) {
-        console.log('user' + user);
-        
+      if (user && user.token) {
         if (this.stayOn.value === true) {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
         this.router.navigateByUrl('/user-space');
       }
-      console.log('user', user);
-      
+
+
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         console.log(error);

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
+import { Subject } from 'rxjs';
 // import { Subject } from 'rxjs';
 // import { Observable } from 'rxjs';
 // import { UserModel } from '../../../../../../modules/auth/_models/user.model';
@@ -15,12 +16,12 @@ import { User } from '@app/classes/users';
 export class UserOffcanvasComponent implements OnInit {
   extrasUserOffcanvasDirection = 'offcanvas-right';
   // user$: Observable<UserModel>;
-  // user: Subject<User> = new Subject<User>();
-  user!: User;
+  user: Subject<User> = new Subject<User>();
+  // user!: User;
 
   // , private auth: AuthService
   constructor(private layout: LayoutService, public auth: AuthService) {
-    this.user = this.auth.currentUserSubject.value;
+    this.user = this.auth.currentUserSubject;
   }
 
   

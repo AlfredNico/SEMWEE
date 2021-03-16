@@ -17,24 +17,30 @@ export class IsLoggedInGuard implements CanActivate {
 
     return this.authService.currentUserSubject.pipe(
       mergeMap((user: User) => {
+
         if (user && user.token) {
+          // this.authService.currentUserSubject.next(user);
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
           console.log('currentUser', JSON.parse(localStorage.getItem('currentUser') || '{}'));
-          this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser')));
           return of(true);
-        } else if (this.cookieService.get('SEMEWEE')) {
-          this.authService.currentUserSubject.next(new User({
+        } else if (this.cookieService.check('SEMEWEE')) {
+          const authUser = new User({
             _id: this.cookieService.get('_id'),
             firstname: this.cookieService.get('firstname'),
             lastname: this.cookieService.get('lastname'),
             email: this.cookieService.get('email'),
             token: this.cookieService.get('SEMEWEE'),
-            image: this.cookieService.get('image')
-          }));
+            image: this.cookieService.get('image'),
+            role: this.cookieService.get('role') as any,
+          });
+          this.authService.currentUserSubject.next(authUser);
           return of(true);
         } else {
-          return of(true);
+          return of(this.router.parseUrl("/sign-in"));
+          // return of(false);
         }
       })
     )

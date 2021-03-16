@@ -25,14 +25,6 @@ export class AuthGuard implements CanActivate {
           this.router.navigateByUrl('/user-space');
           return of(true);
         } else if (this.cookieService.check('SEMEWEE')) {
-          // const user = new User({
-          //   _id: this.cookieService.get('id'),
-          //   firstName: this.cookieService.get('firstName'),
-          //   lastName: this.cookieService.get('lastName'),
-          //   password: this.cookieService.get('password'),
-          //   token: this.cookieService.get('SEMEWEE'),
-          //   username: this.cookieService.get('username'),
-          // });
           this.router.navigateByUrl('/user-space');
           return of(true);
         }

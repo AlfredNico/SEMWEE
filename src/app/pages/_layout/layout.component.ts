@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { LayoutService, LayoutInitService } from '../../_metronic/core';
 import KTLayoutContent from '../../../assets/js/layout/base/content';
+import { CommonService } from '@app/shared/services/common.service';
 
 @Component({
   selector: 'app-layout',
@@ -45,6 +46,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   constructor(
     private initService: LayoutInitService,
     private layout: LayoutService,
+    public common: CommonService
   ) {
     this.initService.init();
   }

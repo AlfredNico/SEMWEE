@@ -11,18 +11,6 @@ import { LpValidatorService } from '../../services/lp-validator.service';
     <div class="w-100">
       <form [formGroup]="form">
         <div fxLayout="column" fxLayoutAlign="space-around center">
-            <!-- <div fxLayout="row" fxLayoutAlign="space-around center">
-              <mat-form-field appearance="outline">
-                <mat-label>File name</mat-label>
-                <input matInput formControlName="fileName" readonly="true">
-                <mat-error *ngIf="form.get('fileName')?.errors?.pattern"> This is not an Excel file </mat-error>
-              </mat-form-field>
-              <div *ngIf="fileName.length > 0 && isExcelFile === false" [style.color]="'red'">This is not an Excel file </div>
-              <button type="button" mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
-                  Upload excel
-              </button>
-              <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
-            </div> -->
             <div *ngIf="fileName.length > 0 && isExcelFile === true" fxLayout="column">
               <h1> {{ fileName }} </h1>
                <h1> Is uploaded !</h1> 
