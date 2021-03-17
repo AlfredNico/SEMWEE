@@ -59,6 +59,7 @@ import { TableOptionsComponent } from '@app/shared/components/table-options/tabl
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslationService } from '@app/modules/i18n/translation.service';
+import { ProjectsComponent } from './dashbord/components/projects/projects.component';
 
 @Injectable({
   providedIn: 'root'
@@ -108,7 +109,8 @@ import { TranslationService } from '@app/modules/i18n/translation.service';
     LanguageSelectorComponent,
     SearchResultComponent,
     TableOptionsComponent,
-    UserDropdownInnerComponent
+    UserDropdownInnerComponent,
+    ProjectsComponent
   ],
   imports: [
     LandingPageModule,
@@ -127,7 +129,8 @@ import { TranslationService } from '@app/modules/i18n/translation.service';
       {
         path: '', component: LayoutComponent, children: [
           { path: 'lp-validator', component: LpValidatorComponent },
-          { path: '', redirectTo: 'lp-validator', pathMatch: 'full' }
+          { path: 'project', component: ProjectsComponent },
+          { path: '', redirectTo: 'project', pathMatch: 'full' }
         ]
       },
     ]),

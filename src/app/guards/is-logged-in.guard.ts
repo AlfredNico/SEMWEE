@@ -36,10 +36,9 @@ export class IsLoggedInGuard implements CanActivate {
           });
           this.authService.currentUserSubject.next(authUser);
           return of(true);
-        } else {
-          return of(this.router.parseUrl("/sign-in"));
-          // return of(false);
-        }
+        } 
+        // return of(this.router.parseUrl("/sign-in"));
+        return of(true);
       })
     )
   }

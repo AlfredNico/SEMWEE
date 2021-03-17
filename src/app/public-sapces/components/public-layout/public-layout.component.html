@@ -9,7 +9,9 @@
                     <button mat-icon-button aria-label="menu icon" (click)="leftSidenav.toggle();">
                                 <mat-icon>menu</mat-icon>
                             </button>
-                    <a mat-button [routerLink]="['/user-space']">Accueil</a>
+                    <a [routerLink]="['/user-space']">
+                        <img alt="Logo" height="20" [src]="'./assets/images/logo.png'" />
+                    </a>
                     <div class="spacer"></div>
                     <ng-template #loginTemplete>
                         <button mat-stroked-button [routerLink]="['/sign-in']" class="mx-3">Sign in</button>
