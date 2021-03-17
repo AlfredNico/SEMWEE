@@ -9,7 +9,7 @@
                 <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
                     <div *ngFor="let item of noHidden">
                         <div *ngIf="!item.includes('Value');" class="example-box" cdkDrag>
-                            {{item.replace('_', ' ') }}
+                            {{ item.split('_').join(' ') }}
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                 <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event)" class="containt-list">
                     <div *ngFor="let item of hidden">
                         <div *ngIf="!item.includes('Value');" class="example-box" cdkDrag>
-                            {{item.replace('_', ' ') }}
+                            {{ item.split('_').join(' ') }}
                         </div>
                     </div>
                 </div>

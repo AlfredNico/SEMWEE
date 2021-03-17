@@ -68,6 +68,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   }
 
   ngOnChanges() {
+    console.log('3 : ', this.data);
+
     this.user = this.auth.currentUserSubject.value;
 
     this.commonServices.showSpinner();

@@ -42,10 +42,11 @@ export class ResetpasswordComponent implements OnInit {
     }
 
     try {
-      const { newPassword, token } = this.form.value;
 
-      const result = await this.forgetPwdService.resetPassword({ newPassword, token });
-
+      const result = await this.forgetPwdService.resetPassword({
+        newPass: this.form.controls.password.value,
+        resetLink: this.form.controls.token.value
+      });
       if (result && result.message) {
         this.notifs.sucess(result.message);
         this.router.navigate(['/sign-in']);

@@ -20,8 +20,7 @@ export class AuthGuard implements CanActivate {
         if (user && user.token) {
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
-          console.log('localStorage', localStorage.getItem('currentUser'));
-          this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
           this.router.navigateByUrl('/user-space');
           return of(true);
         } else if (this.cookieService.check('SEMEWEE')) {

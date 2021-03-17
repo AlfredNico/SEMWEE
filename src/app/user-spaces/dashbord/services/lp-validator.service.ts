@@ -30,6 +30,8 @@ export class LpValidatorService {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: []}>(`${environment.baseUrl}/validator/import-csv`, formData).pipe(
       map((result: any) => {
         if (result) {
+          console.log('1 : ', result);
+          
 
           let dataValue: any[] = [];
           result.map((value: any) => {
