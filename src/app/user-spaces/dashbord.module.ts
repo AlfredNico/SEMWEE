@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { SideMenuComponent } from '@app/shared/components/side-menu/side-menu.component';
 import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
 import { ConvertUploadFileService } from './dashbord/services/convert-upload-file.service';
-import { LpValidatorComponent } from './dashbord/components/lp-validator/lp-validator.component';
 import { ImportItemComponent } from './dashbord/components/lp-validator/import-item.component';
 import { CheckRelevancyComponent } from './dashbord/components/lp-validator/check-relevancy.component';
 import { InferListComponent } from './dashbord/components/lp-validator/infer-list.component';
@@ -55,11 +54,7 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 import { InlineSVGModule } from 'ng-inline-svg';
-import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
-import { TranslateService } from '@ngx-translate/core';
-import { TranslationService } from '@app/modules/i18n/translation.service';
-import { ProjectsComponent } from './dashbord/components/projects/projects.component';
 
 @Injectable({
   providedIn: 'root'
@@ -70,11 +65,6 @@ import { ProjectsComponent } from './dashbord/components/projects/projects.compo
     // DashbordComponent,
     LayoutComponent,
     SideMenuComponent,
-    LpValidatorComponent,
-    ImportItemComponent,
-    CheckRelevancyComponent,
-    InferListComponent,
-    SettingTableComponent,
     SubheaderWrapperComponent, //...
     SearchOffcanvasComponent,
     NotificationsOffcanvasComponent,
@@ -108,15 +98,12 @@ import { ProjectsComponent } from './dashbord/components/projects/projects.compo
     CartDropdownInnerComponent,
     LanguageSelectorComponent,
     SearchResultComponent,
-    TableOptionsComponent,
     UserDropdownInnerComponent,
-    ProjectsComponent
   ],
   imports: [
     LandingPageModule,
     LandingModule,
     SharedModule,
-    MatStepperModule, // stepper module
     // LayoutModule,
     CommonModule,
     FormsModule,
@@ -128,27 +115,35 @@ import { ProjectsComponent } from './dashbord/components/projects/projects.compo
     RouterModule.forChild([
       {
         path: '', component: LayoutComponent, children: [
-          { path: 'lp-validator', component: LpValidatorComponent },
-          { path: 'project', component: ProjectsComponent },
-          { path: '', redirectTo: 'project', pathMatch: 'full' }
+          {
+            path: 'lp-validator',
+            loadChildren: () => import('./dashbord/components/lp-validator/lp-validator.module').then(m => m.LpValidatorModule)
+          }, {
+            path: 'all-project',
+            loadChildren: () => import('./dashbord/components/projects/all-projects/all-projects.module').then(m => m.AllProjectsModule)
+          }, {
+            path: 'new-project',
+            loadChildren: () => import('./dashbord/components/projects/new-projects/new-projects.module').then(m => m.NewProjectsModule)
+          },
+          { path: '', redirectTo: 'all-project', pathMatch: 'full' }
         ]
       },
     ]),
   ],
   exports: [RouterModule],
-  providers: [
-    TranslateService,
-    TranslationService,
-    LpValidatorService,
-    ConvertUploadFileService
-  ],
-  entryComponents: [
-    TableOptionsComponent,
-    SettingTableComponent,
-    ImportItemComponent,
-    CheckRelevancyComponent,
-    InferListComponent
-  ]
+  // providers: [
+  //   TranslateService,
+  //   TranslationService,
+  //   LpValidatorService,
+  //   ConvertUploadFileService
+  // ],
+  // entryComponents: [
+  //   TableOptionsComponent,
+  //   SettingTableComponent,
+  //   ImportItemComponent,
+  //   CheckRelevancyComponent,
+  //   InferListComponent
+  // ]
 
 })
 export class DashbordModule { }

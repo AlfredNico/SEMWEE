@@ -1,0 +1,11 @@
+::ng-deep {
+    //align button mat-dialog-action
+    .mat-dialog-actions {
+        &[align='end'] {
+            justify-content: flex-end;
+        }
+        &[align='center'] {
+            justify-content: center;
+        }
+    }
+}

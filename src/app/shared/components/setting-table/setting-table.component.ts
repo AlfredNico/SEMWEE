@@ -32,12 +32,6 @@ export class SettingTableComponent implements OnInit {
     } else {
       this.selectedOptions = this.selectedOptions.filter(s => s !== options);
     }
-    //console.log(options);
-    // this.selectedOptions = options.selectedOptions.selected.map((item: any) => item.value);
-    console.log(this.selectedOptions);
-
-    // map these MatListOptions to their values
-    // options.map(o => o.value);
   };
 
   onClick(): void {

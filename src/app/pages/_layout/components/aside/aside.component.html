@@ -327,7 +327,7 @@
             <!-- begin::1 Level -->
             <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open">
                 <!-- href="/ngbootstrap" -->
-                <a class="menu-link menu-toggle" routerLinkActive="active">
+                <a class="menu-link menu-toggle">
                     <span cacheSVG="true" class="svg-icon menu-icon">
             <img [src]="'./assets/images/png/icons/aside/projects-icon.png'" alt=". " />
           </span>
@@ -337,14 +337,14 @@
                 <div class="menu-submenu">
                     <i class="menu-arrow"></i>
                     <ul class="menu-subnav">
-                        <li class="menu-item menu-item-parent" aria-haspopup="true">
+                        <li class="menu-item menu-item-parent" aria-haspopup="true" routerLinkActive="active">
                             <span class="menu-link">
                 <span class="menu-text">Projects</span>
                             </span>
                         </li>
                         <!-- begin::2 Level -->
                         <li class="menu-item" routerLinkActive="menu-item-active" aria-haspopup="true" data-menu-toggle="hover">
-                            <a class="menu-link disabled" routerLink="/ngbootstrap/accordion" routerLinkActive="active">
+                            <a class="menu-link" [routerLink]="'/user-space/all-project'" routerLinkActive="active">
                                 <i class="sous-aside">
                   <span cacheSVG="true" class="svg-icon menu-icon">
                     <img [src]="'./assets/images/png/icons/aside/all-projects-icon.png'" alt=". " />
@@ -356,7 +356,7 @@
                         <!-- end::2 Level -->
                         <!-- begin::2 Level -->
                         <li class="menu-item" routerLinkActive="menu-item-active" aria-haspopup="true" data-menu-toggle="hover">
-                            <a class="menu-link" [routerLink]="'/user-space/project'" routerLinkActive="active"> <i class="sous-aside">
+                            <a class="menu-link" [routerLink]="'/user-space/new-project'" routerLinkActive="active"> <i class="sous-aside">
                 <span cacheSVG="true" class="svg-icon menu-icon">
                   <img [src]="'./assets/images/png/icons/aside/new-project-icon.png'" alt=". " />
                 </span>

@@ -19,6 +19,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
+import { MatListModule } from '@angular/material/list';
+
+
 
 
 @NgModule({
@@ -38,7 +41,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatDialogModule,
     MatDialogModule,
     MatTooltipModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatListModule
   ]
 })
 export class LandingModule { }

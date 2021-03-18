@@ -1,0 +1,18 @@
+<mat-list class="w-100" *ngFor="let project of projectLists">
+    <mat-list-item class="w-100 my-1">
+        <mat-card fxLayout="row" fxLayoutAlign="space-between center" class="w-100 py-1 px-4">
+            <div> {{ project.nameProject }} </div>
+            <div>
+                <button mat-icon-button color="primary" (click)="onEdit(project)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="onDelete(project)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" (click)="onDeteils(project)">
+                    <mat-icon>list</mat-icon>
+                </button>
+            </div>
+        </mat-card>
+    </mat-list-item>
+</mat-list>

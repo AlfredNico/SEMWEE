@@ -175,15 +175,7 @@ export class FilterDataComponent implements OnInit {
           this.displayedColumns = result.noHiddenRows;
           this.settingDisplayRows.noHiddenRows = result.noHiddenRows;
           this.settingDisplayRows = result;
-
-          // result.noHiddenRows?.map(async item => {
-          //   await this.filters.addControl(item, new FormControl(''));
-          //   if (this.displayedColumns[this.displayedColumns.length - 1] === item) {
-          //     this.common.hideSpinner();
-          //   }
-          // });
-          // this.dataSource.data = this.productsFake.views.data;
-          // console.log(this.settingDisplayRows.noHiddenRows);
+          
           this.displayColumns();
 
         }
