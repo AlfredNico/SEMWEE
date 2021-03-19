@@ -16,10 +16,10 @@ export class LpValidatorComponent implements OnInit {
   //Access content on cheild
   @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
 
-  public selectedIndex = 1;
+  public selectedIndex = 0;
+  public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
   
   constructor(private auth: AuthService) { }
-  public dataSources = [];
 
   public dataInferList = [];
 

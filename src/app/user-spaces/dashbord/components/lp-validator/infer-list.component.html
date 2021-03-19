@@ -36,7 +36,7 @@
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="drag_n_drop p-1" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
+                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="drag_n_drop p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                         <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
                             <div mat-sort-header class="text-uppercase">
                                 {{ column.split('_').join(' ') }}

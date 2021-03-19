@@ -1,11 +1,11 @@
-<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange(stepper)">
-    <mat-step label="Import Items" completed="true">
+<mat-horizontal-stepper labelPosition="bottom" linear #stepper>
+    <mat-step label="Import Items" completed="false">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
         <app-import-item #form (uploadFiles)="UploadFileReady($event)"></app-import-item>
     </mat-step>
-    <mat-step label="Infer List Pages" state="text_snippet" completed="true">
+    <mat-step label="Infer List Pages" state="text_snippet" completed="false">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->

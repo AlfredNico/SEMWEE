@@ -39,7 +39,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
 })
 export class InferListComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
 
-  @Input() data: any[] = [];
+  @Input() data!: { displayColumns: string[], hideColumns: string[], data: any[] };
   public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
   public displayColumns: string[] = ['select'];
 
@@ -73,7 +73,13 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     this.user = this.auth.currentUserSubject.value;
 
     this.commonServices.showSpinner();
-    Object.assign(this.dataView, this.data);
+    if (this.data !== undefined) {
+      if (this.dataView.data.length > 0 ) {
+        this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
+        this.displayColumns = ['select'];
+      }
+      Object.assign(this.dataView, this.data);
+    }
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
