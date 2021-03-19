@@ -15,14 +15,19 @@ export class LpValidatorComponent implements OnInit {
 
   //Access content on cheild
   @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
+
+  public selectedIndex = 1;
+  
   constructor(private auth: AuthService) { }
   public dataSources = [];
 
   public dataInferList = [];
 
   ngOnInit(): void {
-    console.log(this.auth.currentUserSubject.value);
-    
+  }
+
+  selectionChange(stepper: any) {
+    console.log('item', stepper);
   }
 
   // Upload file ok

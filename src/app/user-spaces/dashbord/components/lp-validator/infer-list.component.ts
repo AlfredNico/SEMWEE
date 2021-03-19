@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -37,7 +37,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [FormBuilder] // <-- THIS PART
 })
-export class InferListComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
+export class InferListComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
 
   @Input() data: any[] = [];
   public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
@@ -274,6 +274,11 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
   updateAllComplete() {
     this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
+  }
+
+  ngOnDestroy(){
+    this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
+    this.dataSource.data = [];
   }
 
 
