@@ -34,7 +34,7 @@ export class LpValidatorService {
           
 
           let dataValue: any[] = [];
-          result.map((value: any) => {
+          result['default'].map((value: any) => {
             Object.keys(value).map((key: string, index: number) => {
               // console.log(key, index);
               if (!this.data.displayColumns.includes(key)) {

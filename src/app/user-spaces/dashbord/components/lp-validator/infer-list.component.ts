@@ -134,17 +134,30 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
-    // if (event.container.data) {
-      
-    // }
-    moveItemInArray(this.displayColumns, event.previousIndex, event.currentIndex);
-    this.displayColumns.forEach((column, index) => {
-      this.dataView.displayColumns[index] = column;
-      //création formControl Dynamics
-      if (column != 'select') {
-        this.filters.addControl(column, new FormControl(''));
+    const previousIndex = event.previousIndex;
+    const currentIndex = event.currentIndex;
+
+    if (!this.displayColumns[previousIndex].includes('Value') && !this.displayColumns[currentIndex].includes('Value')) {
+      console.log(this.displayColumns[currentIndex]);
+
+      moveItemInArray(this.displayColumns, previousIndex, currentIndex);
+      if (this.displayColumns[previousIndex].includes('Facet')) {
+        const indexValue = this.displayColumns.indexOf(`${this.displayColumns[previousIndex]} Value`);
+
+        console.log(`Value`, indexValue);
+
+        
+        moveItemInArray(this.displayColumns, indexValue, currentIndex + 1);
       }
-    });
+
+      this.displayColumns.forEach((column, index) => {
+        this.dataView.displayColumns[index] = column;
+        //création formControl Dynamics
+        if (column != 'select') {
+          this.filters.addControl(column, new FormControl(''));
+        }
+      });
+    }
   }
 
   tableOpons() {

@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { DetailsComponent } from '../dialog/details.component';
 import { EditComponent } from '../dialog/edit.component';
 import { RemoveComponent } from '../dialog/remove.component';
@@ -17,7 +18,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
 
   public projectLists: Projects[] = [];
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog) { }
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -37,10 +38,16 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
       data: item,
       width: '600px',
     }).afterClosed().pipe(
+      tap(() => {
+        this.common.showSpinner('root');
+      }),
       map(result => {
         console.log(result);
         
-      })
+      }),
+      tap(() => {
+        this.common.hideSpinner();
+      }),
     ).subscribe();
   }
 

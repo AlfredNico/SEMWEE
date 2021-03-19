@@ -22,6 +22,7 @@ export class NewProjectsComponent implements OnInit {
     number_of_item: ['', Validators.required],
     numberPLI: ['', Validators.required],
     numberLPVa: ['', Validators.required],
+    user_id: ['', Validators.required],
   });
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private projetctService: ProjectsService) {
@@ -31,9 +32,9 @@ export class NewProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.form.patchValue({
-    //   user_id: this.user._id,
-    // });
+    this.form.patchValue({
+      user_id: this.user._id,
+    });
     // this.form[name].patchValue(value[name], { onlySelf: true, emitEvent });
   }
 
@@ -52,7 +53,7 @@ export class NewProjectsComponent implements OnInit {
           if (file && file.url) {
             try {
               const result = await this.projetctService.addProjects(
-                { ...this.form.value, 'user_id': this.user._id, 'image_project': file.url }
+                { ...this.form.value, 'image_project': file.url }
               );
               if (result && result.message) {
                 console.log(result);
@@ -76,10 +77,7 @@ export class NewProjectsComponent implements OnInit {
 
       }
       reader.readAsDataURL(event.target.files[0]);
-
-      // this.form.patchValue({
-      //   image_project: file,
-      // });
+      
       this.image_project = file;
 
     }
