@@ -77,6 +77,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
 
   public async onSubmit() {
     if (this.form.valid) {
+      this.common.isLoading$.next(true);
       this.common.showSpinner('root');
 
       try {
@@ -88,12 +89,16 @@ export class ImportItemComponent implements OnInit, OnDestroy {
 
         if (result && result.data) {
           this.uploadFiles.emit(result);
+          this.common.isLoading$.next(false);
+          this.common.hideSpinner();
         } else {
           this.common.hideSpinner();
+          this.common.isLoading$.next(false);
         }
       } catch (error) {
         console.log('error ', error);
-
+        this.common.hideSpinner();
+        this.common.isLoading$.next(false);
       }
     }
 

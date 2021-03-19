@@ -23,11 +23,9 @@ import { LpValidatorService } from '../../services/lp-validator.service';
     .datatable:not(.table) {
       display: revert;
     }
-
     .drag_n_drop {
       cursor: move;
     }
-
     .table-container {
       position: relative;
       max-height: 500px;
@@ -206,6 +204,9 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   }
 
   async tableReady() {
+    this.commonServices.isLoading$.next(true);
+    this.commonServices.showSpinner();
+
     const fake_header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
 
     const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
@@ -243,14 +244,23 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       })
     }
 
-    // this.dataFilterReady.emit(this.filterData);
-    const result = await this.lpValidatorServices.postInferList(this.filterData);
-
-    if (result && result.data) {
-      // const value = await this.lpValidatorServices.getInfterList();
-      this.dataInferListReady.emit(result);
+    try {
+      // this.dataFilterReady.emit(this.filterData);
+      const result = await this.lpValidatorServices.postInferList(this.filterData);
+  
+      if (result && result.data) {
+        // const value = await this.lpValidatorServices.getInfterList();
+        this.dataInferListReady.emit(result);
+      }
+      this.commonServices.isLoading$.next(false);
+      this.commonServices.hideSpinner();
+      // console.log(this.filterData);
+    } catch (error) {
+      this.commonServices.isLoading$.next(false);
+      this.commonServices.hideSpinner();
+      // console.log(this.filterData);
     }
-    // console.log(this.filterData);
+
   }
 
 

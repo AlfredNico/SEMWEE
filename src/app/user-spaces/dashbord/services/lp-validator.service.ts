@@ -30,8 +30,6 @@ export class LpValidatorService {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: []}>(`${environment.baseUrl}/validator/import-csv`, formData).pipe(
       map((result: any) => {
         if (result) {
-          console.log('1 : ', result);
-          
 
           let dataValue: any[] = [];
           result['default'].map((value: any) => {
@@ -61,7 +59,7 @@ export class LpValidatorService {
         map((values: any) => {
           if (values) {
             let dataValue: any[] = [];
-            values.map((result: any) => {
+            values['default'].map((result: any) => {
               Object.keys(result).map((key: string, index: number) => {
                 // console.log(key, index);
                 if (!this.inferListData.displayColumns.includes(key)) {
@@ -70,8 +68,6 @@ export class LpValidatorService {
               })
               dataValue.push({ ...result, 'select': true });
             });
-
-            this.common.isLoading$.next(true);
 
             return this.inferListData = {
               displayColumns: this.inferListData.displayColumns,

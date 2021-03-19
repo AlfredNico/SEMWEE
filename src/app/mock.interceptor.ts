@@ -11,6 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
 import * as SEMEWEE from 'src/app/shared/fake-data/semwee.json';
+import * as SEMEWEE2 from 'src/app/shared/fake-data/semwee2.json';
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
 export const usersData: Users[] = [
@@ -71,11 +72,11 @@ export class MockInterceptor implements HttpInterceptor {
       case url.endsWith('validator/import-csv') && method === 'POST':
         return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
 
-      case url.endsWith('/validator/post-infer-list') && method === 'POST':
-        return of(new HttpResponse({ status: 200, body: { message: 'seccuss' } }));
+      case url.endsWith('validator/post-infer-list') && method === 'POST':
+        return of(new HttpResponse({ status: 200, body: SEMEWEE2 as any }));
 
-      case url.endsWith('/validator/get-infer-list') && method === 'GET':
-        return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
+      case url.endsWith('/validator/get-infer-list') && method === 'POST':
+        return of(new HttpResponse({ status: 200, body: SEMEWEE2 as any }));
 
       default:
         // pass through any requests not handled above
