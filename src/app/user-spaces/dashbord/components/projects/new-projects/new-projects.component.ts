@@ -48,20 +48,22 @@ export class NewProjectsComponent implements OnInit {
 
   onSubmit() {
     console.log(this.image_project);
-    
+
     if (this.form.valid && this.image_project !== undefined) {
       this.projetctService.uploadFiles(this.image_project).subscribe(
         async (file: any) => {
-          console.log(file);
-          
+          console.log(this.user._id);
+
+          const id = this.user._id;
+
           if (file && file.message) {
             try {
               const result = await this.projetctService.addProjects(
-                { ...this.form.value, 'image_project': file.message, 'user_id': this.user._id }
+                { ...this.form.value, 'image_project': file.message, 'user_id': this.user }
               );
               console.log(result);
               // if (result && result.message) {
-                this.router.navigateByUrl('/user-space/all-project');
+              this.router.navigateByUrl('/user-space/all-project');
               // }
             } catch (error) {
               console.log(error);
@@ -70,7 +72,7 @@ export class NewProjectsComponent implements OnInit {
           }
         }
       )
-    } else if (this.image_project !== undefined){
+    } else if (this.image_project === undefined) {
       this.notis.warn('File upload undefined');
     }
   }
@@ -84,7 +86,7 @@ export class NewProjectsComponent implements OnInit {
 
       }
       reader.readAsDataURL(event.target.files[0]);
-      
+
       this.image_project = file;
 
     }
