@@ -17,11 +17,11 @@ export class SettingTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.facetLists.forEach((item: string, index: number) => {
-    //   if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
-    //     this.selectedOptions.push(item);
-    //   }
-    // });
+    this.facetLists.forEach((item: string, index: number) => {
+      if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
+        this.selectedOptions.push(item);
+      }
+    });
     // console.log(this.selectedOptions);
 
   }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
+import { CommonService } from '@app/shared/services/common.service';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
 @Component({
@@ -26,7 +27,7 @@ export class NewProjectsComponent implements OnInit {
     user_id: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private projetctService: ProjectsService, private notis: NotificationService) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private projetctService: ProjectsService, private notis: NotificationService, private common: CommonService) {
     this.auth.currentUserSubject.subscribe(
       user => this.user = user
     );
@@ -51,6 +52,7 @@ export class NewProjectsComponent implements OnInit {
     console.log(this.image_project);
 
     if (this.form.valid && this.image_project !== undefined) {
+      this.common.showSpinner('root');
       this.projetctService.uploadFiles(this.image_project).subscribe(
         async (file: any) => {
           console.log(this.user._id);
@@ -65,9 +67,10 @@ export class NewProjectsComponent implements OnInit {
               if (result && result.message) {
                 this.notis.sucess(result.message);
                 this.router.navigateByUrl('/user-space/all-project');
+                this.common.hideSpinner();
               }
             } catch (error) {
-              console.log(error);
+              this.common.hideSpinner();
               throw error;
             }
           }

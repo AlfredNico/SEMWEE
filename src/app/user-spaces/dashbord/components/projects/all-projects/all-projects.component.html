@@ -1,4 +1,4 @@
-<mat-list class="w-100" *ngFor="let project of projectLists">
+<mat-list class="w-100" *ngFor="let project of projects | async">
     <mat-list-item class="w-100 my-1">
         <mat-card fxLayout="row" fxLayoutAlign="space-between center" class="w-100 py-1 px-4">
             <div> {{ project.nameProject }} </div>

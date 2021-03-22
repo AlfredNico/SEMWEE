@@ -1,8 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
+import { BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { DetailsComponent } from '../dialog/details.component';
 import { EditComponent } from '../dialog/edit.component';
@@ -13,12 +15,12 @@ import { RemoveComponent } from '../dialog/remove.component';
   templateUrl: './all-projects.component.html',
   styleUrls: ['./all-projects.component.scss']
 })
-export class AllProjectsComponent implements OnInit, AfterViewInit {
+export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
-  public projectLists: Projects[] = [];
+  public projects: BehaviorSubject<Projects[]> = new BehaviorSubject<Projects[]>([]);
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService) { }
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -27,7 +29,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
     // this.
     this.projectServices.getAllProjects().subscribe(
       lists => {
-        this.projectLists = lists;
+        this.projects.next(lists);
       }
     )
     
@@ -43,7 +45,16 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
       }),
       map(result => {
         console.log(result);
-        
+
+        if (result === true) {
+          this.projectServices.getAllProjects().subscribe(
+            lists => {
+              console.log(lists);
+              this.projects.next(lists);
+            }
+          )
+          // console.log(result);
+        }
       }),
       tap(() => {
         this.common.hideSpinner();
@@ -60,7 +71,18 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
     }).afterClosed().pipe(
       map(result => {
         if (result === true) {
-          console.log(result);
+          this.projectServices.deleteProjects(item._id).subscribe(result => {
+            if (result && result.message) {
+              console.log(result)
+              this.notifs.sucess(result.message);
+
+              this.projectServices.getAllProjects().subscribe(
+                lists => {
+                  this.projects.next(lists);
+                }
+              )
+            }
+          })
         }
       })
     ).subscribe();
@@ -71,10 +93,21 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
       data: item,
       width: '600px',
     }).afterClosed().pipe(
-      map((result: Projects) => {
-        console.log(result);
+      map((result: boolean) => {
+        if (result === true) {
+          this.projectServices.getAllProjects().subscribe(
+            lists => {
+              console.log(result);
+              this.projects.next(lists);
+            }
+          )
+        }
       })
     ).subscribe();
+  }
+
+  ngOnDestroy(){
+    this.projects.next(undefined);
   }
 
 }

@@ -38,7 +38,7 @@ export class ProjectsService {
     return this.http.post<{ message: string }>(`${environment.baseUrl}/project/get-project-img`, formData);
   }
 
-  public deleteProjects(project_id: number) {
+  public deleteProjects(project_id: string) {
     return this.http.delete<{message: string}>(`${environment.baseUrl}/project/delete-project/${project_id}`);
   }
 }

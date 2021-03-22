@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NotificationService } from '@app/services/notification.service';
+import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
@@ -70,7 +72,7 @@ export class EditComponent implements OnInit {
     user_id: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Projects, public dialogRef: MatDialogRef<EditComponent>, private projetctService: ProjectsService) {
+  constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Projects, public dialogRef: MatDialogRef<EditComponent>, private projetctService: ProjectsService, private notifs: NotificationService) {
     // this.project = this.data;
     console.log(this.data)
     this.form.patchValue({
@@ -90,8 +92,8 @@ export class EditComponent implements OnInit {
     console.log(this.form.value)
 
     if (this.form.valid) {
-      if (this.image_project instanceof File) {
 
+      if (this.image_project instanceof File) {
         this.projetctService.uploadFiles(this.image_project).subscribe(
           async (file: any) => {
             if (file && file.message) {
@@ -102,8 +104,8 @@ export class EditComponent implements OnInit {
               this.projetctService.editProjects(
                 value
               ).subscribe(result => {
-                console.log('result', result);
-
+                this.notifs.sucess(result.message);
+                this.dialogRef.close(true);
               })
             }
           }
@@ -111,7 +113,8 @@ export class EditComponent implements OnInit {
       } else {
         const value = { '_id': this.data._id, ...this.form.value };
         this.projetctService.editProjects(value).subscribe(result => {
-          console.log('result', result);
+          this.notifs.sucess(result.message);
+          this.dialogRef.close(true);
         })
       }
     }

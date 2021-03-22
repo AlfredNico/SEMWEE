@@ -57,6 +57,8 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
   ngOnChanges() {
     this.commonServices.showSpinner();
+    console.log(this.dataInferList);
+    
     if (this.dataInferList.data !== undefined && this.dataInferList.data.length > 0) {
       this.dataView.displayColumns = [];
       Object.assign(this.dataView, this.dataInferList);

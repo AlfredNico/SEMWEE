@@ -42,6 +42,7 @@ export class SignInComponent implements OnInit {
     try {
       const user = await this.authService.login({ email: email.value, password: password.value });
       if (user && user.token) {
+        console.log(user)
         if (this.stayOn.value === true) {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }

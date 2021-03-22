@@ -18,7 +18,7 @@ import { EditComponent } from './edit.component';
             </p>
           </div>
         </div>
-        <div mat-dialog-actions align='center'>
+        <div mat-dialog-actions align='end'>
             <button mat-raised-button tabindex="-1" mat-dialog-close>Close</button>
              <button mat-raised-button tabindex="-1" color="primary"  mat-dialog-close (click)="onEdit(data)">Edit</button>
         </div>

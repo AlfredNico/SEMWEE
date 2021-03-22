@@ -215,7 +215,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
     const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
 
-    if (this.checklist.length > 0) {
+    
       let tabIndex = 0;
 
       this.dataView.data.forEach((value: any, currentIndex: number) => {
@@ -246,7 +246,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
           tabIndex++;
         }
       })
-    }
+
+    console.log(this.filterData)
 
     try {
       // this.dataFilterReady.emit(this.filterData);
