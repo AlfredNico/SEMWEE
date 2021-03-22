@@ -33,7 +33,7 @@ export class ProjectsService {
   uploadFiles(file: File) {
     const formData: FormData = new FormData();
     formData.append('image_project', file);
-    return this.http.post<{ url: string }>(`${environment.baseUrl}/project/upload-file`, formData);
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/project/get-project-img`, formData);
   }
 
   public deleteProjects(project_id: number) {

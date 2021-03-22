@@ -10,9 +10,9 @@ import { ConvertUploadFileService } from './convert-upload-file.service';
 })
 export class LpValidatorService {
 
-  public data: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
+  public data: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
 
-  public inferListData: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
+  public inferListData: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
 
   constructor(private http: HttpClient, private fakeData: ConvertUploadFileService, private common: CommonService) { }
 
@@ -27,17 +27,21 @@ export class LpValidatorService {
     formData.append('files', files);
 
     // const params = new HttpParams().set('nameFile', file);
-    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: []}>(`${environment.baseUrl}/validator/import-csv`, formData).pipe(
+    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv`, formData).pipe(
       map((result: any) => {
         if (result) {
 
           let dataValue: any[] = [];
-          result['default'].map((value: any) => {
+          result.map((value: any) => {
             Object.keys(value).map((key: string, index: number) => {
               // console.log(key, index);
               if (!this.data.displayColumns.includes(key)) {
                 this.data.displayColumns.push(key);
               }
+              // if (!this.data.displayColumns.includes(key) && !key.includes('Value') && key.includes('Facet')) {
+              //   // [key, `${key}_Value`]
+              //   this.data.displayColumns.push(key);
+              // }
             })
             dataValue.push({ ...value, 'select': true });
           });
@@ -58,8 +62,10 @@ export class LpValidatorService {
       .pipe(
         map((values: any) => {
           if (values) {
+            console.log(value);
+            
             let dataValue: any[] = [];
-            values['default'].map((result: any) => {
+            values.map((result: any) => {
               Object.keys(result).map((key: string, index: number) => {
                 // console.log(key, index);
                 if (!this.inferListData.displayColumns.includes(key)) {

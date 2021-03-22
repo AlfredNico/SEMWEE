@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
+import { NotificationService } from '@app/services/notification.service';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
 @Component({
@@ -22,19 +23,18 @@ export class NewProjectsComponent implements OnInit {
     number_of_item: ['', Validators.required],
     numberPLI: ['', Validators.required],
     numberLPVa: ['', Validators.required],
-    user_id: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private projetctService: ProjectsService) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private projetctService: ProjectsService, private notis: NotificationService) {
     this.auth.currentUserSubject.subscribe(
       user => this.user = user
     );
   }
 
   ngOnInit(): void {
-    this.form.patchValue({
-      user_id: this.user._id,
-    });
+    // this.form.patchValue({
+    //   user_id: this.user._id,
+    // });
     // this.form[name].patchValue(value[name], { onlySelf: true, emitEvent });
   }
 
@@ -47,24 +47,31 @@ export class NewProjectsComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.valid) {
+    console.log(this.image_project);
+    
+    if (this.form.valid && this.image_project !== undefined) {
       this.projetctService.uploadFiles(this.image_project).subscribe(
         async (file: any) => {
-          if (file && file.url) {
+          console.log(file);
+          
+          if (file && file.message) {
             try {
               const result = await this.projetctService.addProjects(
-                { ...this.form.value, 'image_project': file.url }
+                { ...this.form.value, 'image_project': file.message, 'user_id': this.user._id }
               );
-              if (result && result.message) {
-                console.log(result);
-                // this.router.navigateByUrl('/user-space/all-project');
-              }
+              console.log(result);
+              // if (result && result.message) {
+                this.router.navigateByUrl('/user-space/all-project');
+              // }
             } catch (error) {
-              console.log(error)
+              console.log(error);
+              throw error;
             }
           }
         }
       )
+    } else if (this.image_project !== undefined){
+      this.notis.warn('File upload undefined');
     }
   }
 

@@ -33,7 +33,7 @@ import { map } from 'rxjs/operators';
 })
 export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
 
-  @Input() dataInferList: any[] = [];
+  @Input() dataInferList: { displayColumns: string[], hideColumns: string[], data: any[] };
   public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
   public displayColumns: string[] = ['select'];
 
@@ -57,7 +57,10 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
   ngOnChanges() {
     this.commonServices.showSpinner();
-    Object.assign(this.dataView, this.dataInferList);
+    if (this.dataInferList.data !== undefined && this.dataInferList.data.length > 0) {
+      this.dataView.displayColumns = [];
+      Object.assign(this.dataView, this.dataInferList);
+    }
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;

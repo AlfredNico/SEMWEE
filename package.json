@@ -1,14 +1,14 @@
 {
     "name": "semwee",
-    "version": "0.0.0",
+    "version": "1.0.1",
     "scripts": {
         "ng": "ng",
         "start": "node server.js",
-        "build": "ng build",
+        "build": "ng build --prod",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "postinstall": "ng build"
+        "postinstall": "ng build --prod"
     },
     "private": true,
     "dependencies": {

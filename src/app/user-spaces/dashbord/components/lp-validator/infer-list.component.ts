@@ -61,23 +61,22 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService, private auth: AuthService) { 
-    
+  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService, private auth: AuthService) {
+
   }
 
   ngOnChanges() {
-    console.log('3 : ', this.data);
 
     this.user = this.auth.currentUserSubject.value;
 
     this.commonServices.showSpinner();
-    if (this.data !== undefined) {
-      if (this.dataView.data.length > 0 ) {
-        this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
-        this.displayColumns = ['select'];
-      }
+    // if (this.data !== undefined) {
+    //   if (this.dataView.data.length > 0) {
+    //     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
+    //     this.displayColumns = ['select'];
+    //   }
       Object.assign(this.dataView, this.data);
-    }
+    // }
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
@@ -89,14 +88,18 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         this.displayColumns.push(key);
         this.filters.addControl(key, new FormControl(''));
       }
+
+      if (index < 14 && key.includes('Facet') && !key.includes('Value')) {
+        this.checklist.push(key);
+      }
     })
     this.commonServices.hideSpinner();
 
-    this.dataView.displayColumns.forEach((item: string, index: number) => {
-      if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
-        this.checklist.push(item);
-      }
-    });
+    // this.dataView.displayColumns.forEach((item: string, index: number) => {
+    //   if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
+    //     this.checklist.push(item);
+    //   }
+    // });
   }
 
   ngOnInit(): void {
@@ -141,27 +144,28 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     const previousIndex = event.previousIndex;
     const currentIndex = event.currentIndex;
 
-    if (!this.displayColumns[previousIndex].includes('Value') && !this.displayColumns[currentIndex].includes('Value')) {
-      console.log(this.displayColumns[currentIndex]);
-
-      moveItemInArray(this.displayColumns, previousIndex, currentIndex);
-      if (this.displayColumns[previousIndex].includes('Facet')) {
-        const indexValue = this.displayColumns.indexOf(`${this.displayColumns[previousIndex]} Value`);
-
-        console.log(`Value`, indexValue);
-
-        
-        moveItemInArray(this.displayColumns, indexValue, currentIndex + 1);
-      }
-
-      this.displayColumns.forEach((column, index) => {
-        this.dataView.displayColumns[index] = column;
-        //création formControl Dynamics
-        if (column != 'select') {
-          this.filters.addControl(column, new FormControl(''));
-        }
-      });
+    let isFacetSelected = false;
+    let facetName = '';
+    if (this.displayColumns[previousIndex].includes('Facet')) {
+      isFacetSelected = true;
+      facetName = this.displayColumns[previousIndex];
     }
+
+    moveItemInArray(this.displayColumns, previousIndex, currentIndex);
+
+    if (isFacetSelected == true) {
+      const facetIndex = this.displayColumns.indexOf(facetName);
+      const facetValueIndex = this.displayColumns.indexOf(`${facetName}_Value`);
+      moveItemInArray(this.displayColumns, facetValueIndex, facetIndex + 1);
+    }
+
+    this.displayColumns.forEach((column, index) => {
+      this.dataView.displayColumns[index] = column;
+      //création formControl Dynamics
+      if (column != 'select') {
+        this.filters.addControl(column, new FormControl(''));
+      }
+    });
   }
 
   tableOpons() {
@@ -207,7 +211,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner();
 
-    const fake_header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
+    // const fake_header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
 
     const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
 
@@ -216,7 +220,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
       this.dataView.data.forEach((value: any, currentIndex: number) => {
         let i = 5;
-        let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '' , 'email': this.user.email};
+        let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '', 'email': this.user.email };
 
         Object.keys(value).forEach((key: string, index: number) => {
           if (value['select'] === true) {
@@ -224,11 +228,11 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
               // object[header[i]] = value[key];
               object[key] = value[key];
               this.filterData[tabIndex] = { ...object };
-  
-            } else if (key.includes('Facet') && !key.includes('Value')  && this.checklist.includes(key)) {
-              
+
+            } else if (key.includes('Facet') && !key.includes('Value') && this.checklist.includes(key)) {
+
               const keyIndex = header.indexOf(key);
-  
+
               object[header[i]] = value[key];
               i++;
               object[header[i]] = value[`${key}_Value`];
@@ -238,7 +242,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
           }
         })
 
-        if (value['select']) {
+        if (value['select'] === true) {
           tabIndex++;
         }
       })
@@ -247,7 +251,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     try {
       // this.dataFilterReady.emit(this.filterData);
       const result = await this.lpValidatorServices.postInferList(this.filterData);
-  
+
       if (result && result.data) {
         // const value = await this.lpValidatorServices.getInfterList();
         this.dataInferListReady.emit(result);
@@ -292,7 +296,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
     this.dataSource.data = [];
   }
