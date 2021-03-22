@@ -7,7 +7,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 @Component({
   selector: 'app-edit',
   template: `
-    <div fxLayout="column">
+    <div fxLayout="column" *ngIf="data">
         <h3 mat-dialog-title>Edit project</h3>
         <div mat-dialog-content [formGroup]="form">
 
@@ -47,8 +47,8 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 
         </div>
         <div mat-dialog-actions align='end'>
-            <button mat-raised-button tabindex="-1"  [mat-dialog-close]="false">Close</button>
-             <button mat-raised-button tabindex="-1" color="primary" (click)="onSubmit()">Edit</button>
+              <button mat-raised-button tabindex="-1"  [mat-dialog-close]="false">Close</button>
+              <button mat-raised-button tabindex="-1" color="primary" (click)="onSubmit()">Edit</button>
         </div>
     </div>
   `,
@@ -91,24 +91,30 @@ export class EditComponent implements OnInit {
 
     if (this.form.valid) {
       if (this.image_project instanceof File) {
-        
+
         this.projetctService.uploadFiles(this.image_project).subscribe(
           async (file: any) => {
             if (file && file.message) {
               console.log(this.form.value);
               console.log(this.form.get('image_project').value);
-  
-              const value = this.form.value;
 
-               this.projetctService.editProjects(
-                    { ...this.form.value, 'image_project': file.message }
-                  )
+              const value = { '_id': this.data._id, ...this.form.value, 'image_project': file.message };
+              this.projetctService.editProjects(
+                value
+              ).subscribe(result => {
+                console.log('result', result);
+
+              })
             }
           }
-        ) } else{
-          const result = this.projetctService.editProjects(this.form.value);
-        }
+        )
+      } else {
+        const value = { '_id': this.data._id, ...this.form.value };
+        this.projetctService.editProjects(value).subscribe(result => {
+          console.log('result', result);
+        })
       }
+    }
   }
 
   onImageChanged(event: any) {

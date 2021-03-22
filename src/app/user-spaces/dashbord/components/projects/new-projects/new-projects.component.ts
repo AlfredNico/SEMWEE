@@ -61,11 +61,11 @@ export class NewProjectsComponent implements OnInit {
             try {
               const result = await this.projetctService.addProjects(
                 { ...this.form.value, 'image_project': file.message }
-              );
-              console.log(result);
-              // if (result && result.message) {
-              this.router.navigateByUrl('/user-space/all-project');
-              // }
+              )
+              if (result && result.message) {
+                this.notis.sucess(result.message);
+                this.router.navigateByUrl('/user-space/all-project');
+              }
             } catch (error) {
               console.log(error);
               throw error;
