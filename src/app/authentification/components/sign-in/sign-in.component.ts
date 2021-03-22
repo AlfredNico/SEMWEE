@@ -19,14 +19,13 @@ export class SignInComponent implements OnInit {
 
   public loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-    recaptcha: ['', Validators.required]
+    password: ['', Validators.required]
   });
   public readonly stayOn = this.fb.control(false);
 
 
   constructor(private authService: AuthService, private fb: FormBuilder,
-    private cookie: CookieService, private router: Router, public recaptcha: ReCapchaService) { }
+    private cookie: CookieService, private router: Router) { }
 
   get getemail() { return this.loginForm.controls.email; }
   get getpassword() { return this.loginForm.controls.password; }
