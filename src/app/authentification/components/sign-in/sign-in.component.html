@@ -3,17 +3,16 @@
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
 
         <!--begin::Aside-->
-    <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; background-size: auto 100%;">
-      </div>
-      <!--begin::Aside-->
-        
-        <!--begin::Content-->
-    <div
-    class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
-                <!--begin::Content body-->
-                <div class="d-flex flex-column-fluid flex-center">
+        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url('../../../assets/images/bg_sign.png');background-repeat: no-repeat; background-size: auto 100%;">
+        </div>
+        <!--begin::Aside-->
 
-                    <div class="login-form login-signin">
+        <!--begin::Content-->
+        <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+            <!--begin::Content body-->
+            <div class="d-flex flex-column-fluid flex-center">
+
+                <div class="login-form login-signin">
                     <!--begin::Signin-->
                     <div fxLayout="column" fxLayoutAlign="space-between center" class="login-form login-signin sous-host d-flex flex-column-auto flex-column">
                         <!--begin::Form-->
@@ -32,7 +31,7 @@
                             <!--begin::Form group-->
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
-                                <input matInput type="email" formControlName="email">
+                                <input matInput type="email" formControlName="email" autocomplete="off">
                                 <mat-error *ngIf="getemail.errors && getemail.errors.required">Email required
                                 </mat-error>
                                 <mat-error *ngIf="getemail.errors && getemail.errors.email">
@@ -76,15 +75,15 @@
                     <!--end::Signin-->
                 </div>
 
-                </div>
-                <!--end::Content body-->
+            </div>
+            <!--end::Content body-->
 
-                
-                <!--begin::Content footer-->
-                <div class="d-flex justify-content-center py-lg-0">
-                    <p class="term">Terms of use. Privacy policy</p>
-                </div>
-                <!--end::Content footer-->
+
+            <!--begin::Content footer-->
+            <div class="d-flex justify-content-center py-lg-0">
+                <p class="term">Terms of use. Privacy policy</p>
+            </div>
+            <!--end::Content footer-->
 
         </div>
         <!--end::Content-->

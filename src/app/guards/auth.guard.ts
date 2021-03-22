@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
           // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
           this.router.navigateByUrl('/user-space');
           return of(true);
-        } else if (this.cookieService.check('SEMEWEE')) {
+        } else if (this.cookieService.check('SEMEWEE') === true) {
           this.router.navigateByUrl('/user-space');
           return of(true);
         }

@@ -13,7 +13,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 
             <div fxLayout="column" fxLayoutAlign="center center">
                 <img mat-card-image style="height: 100px;
-                width: 100px;" [src]="image_url" alt="project images">
+                width: 100px;" [src]="data.image_project" alt="project images">
                 <input type="file" accept="image/*" #file (change)="onImageChanged($event)" style="display:none;" />
                 <button mat-raised-button type="button" (click)="file.click()">Change</button>
             </div>
@@ -67,10 +67,12 @@ export class EditComponent implements OnInit {
     number_of_item: ['', Validators.required],
     numberPLI: ['', Validators.required],
     numberLPVa: ['', Validators.required],
+    user_id: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) private data: Projects, public dialogRef: MatDialogRef<EditComponent>, private projetctService: ProjectsService) {
+  constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Projects, public dialogRef: MatDialogRef<EditComponent>, private projetctService: ProjectsService) {
     // this.project = this.data;
+    console.log(this.data)
     this.form.patchValue({
       ...this.data
     })
@@ -84,31 +86,29 @@ export class EditComponent implements OnInit {
   }
 
   onSubmit() {
+
+    console.log(this.form.value)
+
     if (this.form.valid) {
-      this.projetctService.uploadFiles(this.image_project).subscribe(
-        async (file: any) => {
-          if (file && file.url) {
+      if (this.image_project instanceof File) {
+        
+        this.projetctService.uploadFiles(this.image_project).subscribe(
+          async (file: any) => {
+            if (file && file.message) {
+              console.log(this.form.value);
+              console.log(this.form.get('image_project').value);
+  
+              const value = this.form.value;
 
-            const value = this.form.value;
-            if (this.image_project instanceof File) {
-              try {
-                const result = await this.projetctService.addProjects(
-                  { ...this.form.value, 'image_project': file.url }
-                );
-                if (result && result.message) {
-                  console.log(result);
-                  // this.router.navigateByUrl('/user-space/all-project');
-                }
-              } catch (error) {
-                console.log(error)
-              }
-            } else {
-
+               this.projetctService.editProjects(
+                    { ...this.form.value, 'image_project': file.message }
+                  )
             }
           }
+        ) } else{
+          const result = this.projetctService.editProjects(this.form.value);
         }
-      )
-    }
+      }
   }
 
   onImageChanged(event: any) {

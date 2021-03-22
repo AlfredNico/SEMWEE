@@ -23,6 +23,7 @@ export class NewProjectsComponent implements OnInit {
     number_of_item: ['', Validators.required],
     numberPLI: ['', Validators.required],
     numberLPVa: ['', Validators.required],
+    user_id: ['', Validators.required],
   });
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private projetctService: ProjectsService, private notis: NotificationService) {
@@ -32,9 +33,9 @@ export class NewProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.form.patchValue({
-    //   user_id: this.user._id,
-    // });
+    this.form.patchValue({
+      user_id: this.user._id,
+    });
     // this.form[name].patchValue(value[name], { onlySelf: true, emitEvent });
   }
 
@@ -59,7 +60,7 @@ export class NewProjectsComponent implements OnInit {
           if (file && file.message) {
             try {
               const result = await this.projetctService.addProjects(
-                { ...this.form.value, 'image_project': file.message, 'user_id': this.user }
+                { ...this.form.value, 'image_project': file.message }
               );
               console.log(result);
               // if (result && result.message) {

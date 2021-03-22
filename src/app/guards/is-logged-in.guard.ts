@@ -21,8 +21,9 @@ export class IsLoggedInGuard implements CanActivate {
         if (user && user.token) {
           // this.authService.currentUserSubject.next(user);
           return of(true);
-        } else if (localStorage.getItem('currentUser')) {
+        } else if (JSON.parse(localStorage.getItem('currentUser')) === true) {
           // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+          this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser')));
           return of(true);
         } else if (this.cookieService.check('SEMEWEE')) {
           const authUser = new User({
@@ -36,7 +37,7 @@ export class IsLoggedInGuard implements CanActivate {
           });
           this.authService.currentUserSubject.next(authUser);
           return of(true);
-        } 
+        }
         // return of(this.router.parseUrl("/sign-in"));
         return of(true);
       })

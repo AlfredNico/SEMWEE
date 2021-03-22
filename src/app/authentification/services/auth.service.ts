@@ -39,14 +39,14 @@ export class AuthService {
         map((user: Users) => {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           this.cookieService.set('SEMEWEE', user.token, 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('_id', JSON.stringify(user._id), 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('_id', user._id, 0.2, '/', undefined, false, 'Strict');
           this.cookieService.set('firstname', user.firstname, 0.2, '/', undefined, false, 'Strict');
           this.cookieService.set('lastname', user.lastname, 0.2, '/', undefined, false, 'Strict');
           this.cookieService.set('email', user.email, 0.2, '/', undefined, false, 'Strict');
-          this.cookieService.set('image', JSON.stringify(user.image), 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('image', user.image, 0.2, '/', undefined, false, 'Strict');
           this.cookieService.set('role', JSON.stringify(user.role), 0.2, '/', undefined, false, 'Strict');
 
-          this.currentUserSubject.next(new User(user));
+          // this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);
           return user;
         })).toPromise();

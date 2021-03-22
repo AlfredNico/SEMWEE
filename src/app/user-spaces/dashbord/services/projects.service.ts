@@ -26,8 +26,8 @@ export class ProjectsService {
     ).toPromise();
   }
 
-  public editProjects(_id: string) {
-    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project`, _id);
+  public editProjects(project: Projects) {
+    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${project._id}`, project)
   }
 
   uploadFiles(file: File) {
