@@ -50,4 +50,4 @@ Thumbs.db
 #make vscode and environnement not to github
 /.vscode
 *.vscode
-*environnement
+# *environnement
