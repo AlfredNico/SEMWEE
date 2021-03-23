@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthService } from '@app/authentification/services/auth.service';
+import { Users } from '@app/models/users';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,25 +12,27 @@ import { Projects } from '../interfaces/projects';
 })
 export class ProjectsService {
 
-  constructor(private http: HttpClient) { }
+  private user: Users;
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.user = this.auth.currentUserSubject.value;
+  }
 
   public getAllProjects(): Observable<Projects[]> {
-    return this.http.get<Projects[]>(`${environment.baseUrl}/project/get-project`);
+    return this.http.get<Projects[]>(`${environment.baseUrl}/project/get-project/${this.user._id}`);
   }
 
   public addProjects(data: any) {
     console.log(data);
     return this.http.post<{ message: string }>(`${environment.baseUrl}/project/add-project`, data).pipe(
       map(result => {
-        console.log('result ', result)
         return result;
       })
     ).toPromise();
   }
 
-  public editProjects(value: {_id: number, project: Projects}) {
+  public editProjects(value: { _id: number, project: Projects }) {
     console.log(value);
-    
+
     return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value);
   }
 
@@ -39,6 +43,6 @@ export class ProjectsService {
   }
 
   public deleteProjects(project_id: string) {
-    return this.http.delete<{message: string}>(`${environment.baseUrl}/project/delete-project/${project_id}`);
+    return this.http.delete<{ message: string }>(`${environment.baseUrl}/project/delete-project/${project_id}`);
   }
 }

@@ -31,7 +31,7 @@ export class DetailsComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: Projects, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.data.nameProject
+    this.data.name_project
   }
 
   onEdit(item: Projects) {

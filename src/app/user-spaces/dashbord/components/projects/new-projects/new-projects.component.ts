@@ -19,11 +19,11 @@ export class NewProjectsComponent implements OnInit {
 
   private user: User;
   form = this.fb.group({
-    nameProject: ['', [Validators.required, Validators.max(4)]],
+    name_project: ['', [Validators.required, Validators.max(4)]],
     // image_project: new FormControl(null, [Validators.required]),
-    number_of_item: ['', Validators.required],
-    numberPLI: ['', Validators.required],
-    numberLPVa: ['', Validators.required],
+    // number_of_item: ['', Validators.required],
+    // numberPLI: ['', Validators.required],
+    // numberLPVa: ['', Validators.required],
     user_id: ['', Validators.required],
   });
 
@@ -40,13 +40,13 @@ export class NewProjectsComponent implements OnInit {
     // this.form[name].patchValue(value[name], { onlySelf: true, emitEvent });
   }
 
-  get mixItem() {
-    return this.form.controls.number_of_item.setValidators([Validators.min(0)]);
-  }
+  // get mixItem() {
+  //   return this.form.controls.number_of_item.setValidators([Validators.min(0)]);
+  // }
 
-  get maxItem() {
-    return this.form.controls.number_of_item.setValidators([Validators.min(100)]);
-  }
+  // get maxItem() {
+  //   return this.form.controls.number_of_item.setValidators([Validators.min(100)]);
+  // }
 
   onSubmit() {
     console.log(this.image_project);

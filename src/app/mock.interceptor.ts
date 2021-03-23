@@ -22,35 +22,8 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
-    "role": 'FREEMIUM',
-    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }]
-  }, {
-    "_id": "2",
-    "firstname": "Licensed",
-    "lastname": " Frozen Hat",
-    "email": 'zaho@gmail.com',
-    'image': 'images',
-    "token": "fesfefefieh283hcecugeé33",
-    "role": 'PREMIUM',
-    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }]
-  }, {
-    "_id": "3",
-    "firstname": "12",
-    "lastname": " Frozen Hat",
-    "email": 'zaho@gmail.com',
-    'image': 'images',
-    "token": "fesfefefieh283hcecugeé33",
-    "role": 'FREEMIUM',
-    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }]
-  }, {
-    "_id": "4",
-    "firstname": "Licensed",
-    "lastname": "Frozen Hat",
-    "email": 'zaho@gmail.com',
-    'image': 'images',
-    "token": "fesfefefieh283hcecugeé33",
-    "role": 'ADMIN',
-    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }, { id: 'EIFHEFUGE', name: 'Projet 2' }]
+    "role": ['FREEMIUM'],
+    'projet': [{ _id: 'ekfeisifie', name_project: 'Projet 1' }]
   }
 ]
 

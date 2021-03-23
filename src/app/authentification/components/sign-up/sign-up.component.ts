@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SignUpService } from '@app/authentification/services/sign-up.service';
 import { Users } from '@app/models/users';
 import { NotificationService } from '@app/services/notification.service';
+import { CommonService } from '@app/shared/services/common.service';
 import { CustomValidationService } from '@app/shared/services/custom-validation.service';
 @Component({
   selector: 'app-sign-up',
@@ -30,31 +31,36 @@ export class SignUpComponent implements OnInit {
   private image!: string;
   private currentFile!: File;
 
-  constructor(private fb: FormBuilder, private router: Router, private custumValidator: CustomValidationService, private signUp: SignUpService, private notifs: NotificationService) { }
+  constructor(private fb: FormBuilder, private router: Router, private custumValidator: CustomValidationService, private signUp: SignUpService, private notifs: NotificationService, private common: CommonService) { }
 
   ngOnInit(): void {
   }
 
   async onSubmit() {
+    this.common.showSpinner('root');
     this.submitted = true;
     this.image = ''
     // stop here if form is invalid
     if (this.registrationForm.invalid) {
+      this.common.hideSpinner();
       return;
     }
-
     try {
       const value = this.registrationForm.value as Users;
       const result = await this.signUp.sign_up(value);
       if (result && result.message) {
         this.notifs.sucess(result.message);
         this.router.navigateByUrl('sign-in');
+      }else{
+        console.log(result);
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         console.log('error', error);
       }
     }
+    this.common.hideSpinner();
+
   }
 
 }

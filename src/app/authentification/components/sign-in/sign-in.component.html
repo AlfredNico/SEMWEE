@@ -55,10 +55,13 @@
                                       password</a>
                                 </div>
                             </div>
-<!--                             <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
-                                <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.options.siteKey" [hl]="recaptcha.options.language" [size]="'normal'" formControlName="recaptcha">
-                                </ngx-recaptcha2>
-                            </div> -->
+
+                            <div id="recaptch" #recaptch class="w-100">
+                                <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
+                                    <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.options.siteKey" [hl]="recaptcha.options.language" [size]="'normal'" formControlName="recaptcha">
+                                    </ngx-recaptcha2>
+                                </div>
+                            </div>
 
                             <!--begin::Action-->
                             <div class="pb-lg-0 pb-5 my-5" fxLayout="column">

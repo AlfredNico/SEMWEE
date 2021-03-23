@@ -1,4 +1,4 @@
-import { getRoles, Users } from "../models/users";
+import { getRoles, userProject, Users } from "../models/users";
 
 
 export class User {
@@ -8,8 +8,8 @@ export class User {
     firstname!: string;
     email!: string;
     token!: string;
-    role: getRoles;
-    projet: Array<any>;
+    role: getRoles[];
+    projet: userProject[];
 
     constructor(user?: Users) {
         Object.assign(this, user);
@@ -20,6 +20,23 @@ export class User {
             return `${this.firstname} ${this.lastname}`;
         } else {
             return this.lastname;
+        }
+    }
+
+    get projets() {
+        return JSON.parse(this.projet as any);
+    }
+
+    get roles() {
+        switch (true) {
+            case this.role.includes('ADMIN'):
+                return 'ADMIN'
+            case this.role.includes('FREEMIUM'):
+                return 'FREEMIUM'
+            case this.role.includes('PREMIUM'):
+                return 'PREMIUM'
+            case this.role.includes('USER'):
+                return 'USER'
         }
     }
 }

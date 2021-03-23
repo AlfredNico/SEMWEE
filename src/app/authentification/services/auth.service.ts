@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Users } from 'src/app/models/users';
 import { Router } from '@angular/router';
@@ -50,8 +50,24 @@ export class AuthService {
           // this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);
           return user;
-        })).toPromise();
+        }),
+        catchError((err) => {
+          return this.handleError(err);
+        })
+      ).toPromise();
   }
+
+  public handleError(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
+  }
+
 
   public logout() {
     // remove user from local storage to log user out

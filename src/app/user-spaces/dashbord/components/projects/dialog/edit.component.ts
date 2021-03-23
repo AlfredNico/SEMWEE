@@ -5,6 +5,7 @@ import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-edit',
@@ -15,19 +16,19 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 
             <div fxLayout="column" fxLayoutAlign="center center">
                 <img mat-card-image style="height: 100px;
-                width: 100px;" [src]="data.image_project" alt="project images">
+                width: 100px;" [src]="image_url" alt="project images">
                 <input type="file" accept="image/*" #file (change)="onImageChanged($event)" style="display:none;" />
                 <button mat-raised-button type="button" (click)="file.click()">Change</button>
             </div>
 
             <mat-form-field appearance="outline" class="w-100 my-1 mx-1">
                 <mat-label>Project name</mat-label>
-                <input matInput placeholder="project name ..." formControlName="nameProject">
-                <mat-error *ngIf="form.get('nameProject')?.touched && form.get('nameProject')?.errors?.required">Project name is required</mat-error>
-                <mat-error *ngIf="form.get('nameProject')?.max">Maximum length name is 40 words</mat-error>
+                <input matInput placeholder="project name ..." formControlName="name_project">
+                <mat-error *ngIf="form.get('name_project')?.touched && form.get('name_project')?.errors?.required">Project name is required</mat-error>
+                <mat-error *ngIf="form.get('name_project')?.max">Maximum length name is 40 words</mat-error>
             </mat-form-field>
 
-            <div fxLayout="row" fxLayoutAlign="space-between center">
+          <!--  <div fxLayout="row" fxLayoutAlign="space-between center">
                 <mat-form-field appearance="outline" class="w-100 my-1 mx-1">
                     <mat-label>Number of items</mat-label>
                     <input matInput type="number" placeholder="Number of items ..." formControlName="number_of_item">
@@ -45,7 +46,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
                     <input matInput type="number" placeholder="project name ..." formControlName="numberLPVa">
                     <mat-error *ngIf="form.get('numberLPVa')?.touched && form.get('numberLPVa')?.errors?.required">Number of validated list pages is required</mat-error>
                 </mat-form-field>
-            </div>
+            </div> -->
 
         </div>
         <div mat-dialog-actions align='end'>
@@ -58,29 +59,33 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 })
 export class EditComponent implements OnInit {
 
-  public image_url: any = "https://material.angular.io/assets/img/examples/shiba2.jpg";
+  public image_url: any;
   image_project!: File;
 
   // public project!: Projects;
 
   form = this.fb.group({
-    nameProject: ['', [Validators.required, Validators.max(4)]],
+    name_project: ['', [Validators.required, Validators.max(4)]],
     // image_project: new FormControl(null, [Validators.required]),
-    number_of_item: ['', Validators.required],
-    numberPLI: ['', Validators.required],
-    numberLPVa: ['', Validators.required],
+    // number_of_item: ['', Validators.required],
+    // numberPLI: ['', Validators.required],
+    // numberLPVa: ['', Validators.required],
     user_id: ['', Validators.required],
   });
 
   constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Projects, public dialogRef: MatDialogRef<EditComponent>, private projetctService: ProjectsService, private notifs: NotificationService) {
     // this.project = this.data;
-    console.log(this.data)
+    this.image_url = environment.baseUrlImg + this.data.image_project;
+
+    console.log(environment.baseUrlImg + this.data.image_project)
+
     this.form.patchValue({
       ...this.data
     })
   }
 
   ngOnInit(): void {
+    console.log(this.image_url)
   }
 
   onClick(): void {
@@ -98,7 +103,7 @@ export class EditComponent implements OnInit {
           async (file: any) => {
             if (file && file.message) {
               console.log(this.form.value);
-              console.log(this.form.get('image_project').value);
+              // console.log(this.form.get('image_project').value);
 
               const value = { '_id': this.data._id, ...this.form.value, 'image_project': file.message };
               this.projetctService.editProjects(
