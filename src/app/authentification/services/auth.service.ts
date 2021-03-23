@@ -45,6 +45,7 @@ export class AuthService {
           this.cookieService.set('email', user.email, 0.2, '/', undefined, false, 'Strict');
           this.cookieService.set('image', user.image, 0.2, '/', undefined, false, 'Strict');
           this.cookieService.set('role', JSON.stringify(user.role), 0.2, '/', undefined, false, 'Strict');
+          this.cookieService.set('projet', JSON.stringify(user.projet), 0.2, '/', undefined, false, 'Strict');
 
           // this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);

@@ -1,5 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@app/authentification/services/auth.service';
+import { User } from '@app/classes/users';
+import { Users } from '@app/models/users';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { LayoutService } from '../../../../_metronic/core';
 
 @Component({
@@ -20,7 +24,12 @@ export class AsideComponent implements OnInit {
   asideMenuScroll = 1;
   asideSelfMinimizeToggle = false;
 
-  constructor(private layout: LayoutService, private loc: Location) { }
+  public user: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
+
+  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService) { 
+    this.user.next(this.auth.currentUserSubject.value);
+    console.log(this.auth.currentUserSubject.value)
+  }
 
   ngOnInit(): void {
     // load view settings

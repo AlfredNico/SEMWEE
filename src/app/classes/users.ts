@@ -9,6 +9,7 @@ export class User {
     email!: string;
     token!: string;
     role: getRoles;
+    projet: Array<any>;
 
     constructor(user?: Users) {
         Object.assign(this, user);

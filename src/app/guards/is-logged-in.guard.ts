@@ -34,7 +34,9 @@ export class IsLoggedInGuard implements CanActivate {
             token: this.cookieService.get('SEMEWEE'),
             image: this.cookieService.get('image'),
             role: this.cookieService.get('role') as any,
+            projet: this.cookieService.get('projet') as any,
           });
+
           this.authService.currentUserSubject.next(authUser);
           return of(true);
         }

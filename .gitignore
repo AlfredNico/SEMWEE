@@ -1,6 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 # compiled output
-/.vscode
 
 # compiled output
 /dist
@@ -47,4 +46,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
+
+#make vscode and environnement not to github
 /.vscode
+*.vscode
+*environnement

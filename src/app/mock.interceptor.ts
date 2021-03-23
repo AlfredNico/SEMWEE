@@ -22,7 +22,8 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
-    "role": 'FREEMIUM'
+    "role": 'FREEMIUM',
+    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }]
   }, {
     "_id": "2",
     "firstname": "Licensed",
@@ -30,7 +31,8 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
-    "role": 'PREMIUM'
+    "role": 'PREMIUM',
+    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }]
   }, {
     "_id": "3",
     "firstname": "12",
@@ -38,7 +40,8 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
-    "role": 'FREEMIUM'
+    "role": 'FREEMIUM',
+    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }]
   }, {
     "_id": "4",
     "firstname": "Licensed",
@@ -46,7 +49,8 @@ export const usersData: Users[] = [
     "email": 'zaho@gmail.com',
     'image': 'images',
     "token": "fesfefefieh283hcecugeé33",
-    "role": 'ADMIN'
+    "role": 'ADMIN',
+    'projet': [{ id: 'ekfeisifie', name: 'Projet 1' }, { id: 'EIFHEFUGE', name: 'Projet 2' }]
   }
 ]
 
