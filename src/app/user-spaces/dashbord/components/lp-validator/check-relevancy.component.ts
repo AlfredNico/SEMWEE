@@ -57,9 +57,8 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
   ngOnChanges() {
     this.commonServices.showSpinner();
-    console.log(this.dataInferList);
     
-    if (this.dataInferList.data !== undefined && this.dataInferList.data.length > 0) {
+    if (this.dataInferList !== undefined) {
       this.dataView.displayColumns = [];
       Object.assign(this.dataView, this.dataInferList);
     }
@@ -192,6 +191,10 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
   updateAllComplete() {
     this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
+  }
+
+  checkRevelancy(){
+    console.log('okok')
   }
 
 }

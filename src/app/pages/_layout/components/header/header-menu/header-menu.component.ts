@@ -4,9 +4,10 @@ import { LayoutService } from '../../../../../_metronic/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { map } from 'rxjs/operators';
-import { userProject } from '@app/models/users';
+import { userProject, Users } from '@app/models/users';
 import { BehaviorSubject } from 'rxjs';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
+import { FormControl, FormGroup } from '@angular/forms';
 
 function getCurrentURL(location) {
   return location.split(/[?#]/)[0];
@@ -23,6 +24,10 @@ export class HeaderMenuComponent implements OnInit {
   location: Location;
   headerMenuDesktopToggle: string;
 
+  public form = new FormGroup({
+    selected: new FormControl(''),
+  })
+
   // projects = [
   //   {_id: 'project-1', name_project: 'Project 1'},
   //   { value: 'project-2', name_project: 'Project 2'},
@@ -30,7 +35,7 @@ export class HeaderMenuComponent implements OnInit {
   // ];
 
   // projects: userProject[] = [];
-  projects: BehaviorSubject<Projects[]> = new BehaviorSubject<Projects[]>([]);
+  projects: BehaviorSubject<userProject[]> = new BehaviorSubject<userProject[]>([]);
 
   constructor(private layout: LayoutService, private loc: Location, private auth: AuthService) {
     this.location = this.loc;
@@ -38,10 +43,12 @@ export class HeaderMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.currentUserSubject.pipe(
-      map((user: User) => {
-        console.log(user.projets[0].name_project);
-        this.projects.next(user.projets);
-        console.log(this.projects);
+      map((user: Users) => {
+        if (user && user.token && user.projet.length > 0) {
+          console.log(user.projet['0']._id);
+          this.form.get('selected').setValue(user.projet['0']._id);
+          this.projects.next(user.projet);
+        }
       })
     )
     .subscribe();

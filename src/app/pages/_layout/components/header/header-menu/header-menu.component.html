@@ -13,10 +13,10 @@
 
     <!-- begin::1 Level -->
     <li class="menu-item menu-item-rel">
-        <div class="example-container">
+        <div class="example-container" [formGroup]="form">
             <mat-form-field>
-                <mat-select placeholder="Project">
-                    <mat-option *ngFor="let project of projects | async" [value]="project?._id">
+                <mat-select formControlName="selected" [placeholder]="(projects | async).length > 0 ? 'Project' : 'No project'">
+                    <mat-option *ngFor="let project of projects | async " [value]="project?._id ">
                         {{ project.name_project }}
                     </mat-option>
                 </mat-select>

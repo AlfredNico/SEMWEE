@@ -13,17 +13,11 @@ export class SettingTableComponent implements OnInit {
   facetLists: string[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any, public dialogRef: MatDialogRef<SettingRowsTable>) {
-    this.facetLists = this.data.facetLists;
+    this.facetLists = this.data.selectedOptions;
+    this.selectedOptions = this.data.checklist;
   }
 
   ngOnInit(): void {
-    this.facetLists.forEach((item: string, index: number) => {
-      if (index < 14 && item.includes('Facet') && !item.includes('Value')) {
-        this.selectedOptions.push(item);
-      }
-    });
-    // console.log(this.selectedOptions);
-
   }
 
   onNgModelChange(options: string) {
@@ -36,6 +30,10 @@ export class SettingTableComponent implements OnInit {
 
   onClick(): void {
     this.dialogRef.close(this.selectedOptions);
+  }
+
+  onChecked(item: any){
+    return this.selectedOptions.includes(item) ? false: true;
   }
 
 }

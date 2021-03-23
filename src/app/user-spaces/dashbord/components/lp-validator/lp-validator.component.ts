@@ -1,6 +1,9 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
 import { AuthService } from '@app/authentification/services/auth.service';
+import { Users } from '@app/models/users';
+import { map } from 'rxjs/operators';
+import { LpValidatorService } from '../../services/lp-validator.service';
 import { InferListComponent } from './infer-list.component';
 
 @Component({
@@ -19,11 +22,26 @@ export class LpValidatorComponent implements OnInit {
   public selectedIndex = 0;
   public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
   
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService) { }
 
   public dataInferList = [];
 
   ngOnInit(): void {
+    this.auth.currentUserSubject.pipe(
+      map((user: Users) => {
+        if (user) {
+          if (user.projet.length > 0) {
+            this.selectedIndex = 1;
+            this.lpValidatorService.getIngetListProject().subscribe(
+              (result) => {
+              if (result) {
+                this.dataSources = result;
+              }
+            })
+          }
+        }
+      })
+    ).subscribe();
   }
 
   selectionChange(stepper: any) {

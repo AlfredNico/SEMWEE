@@ -12,6 +12,7 @@ import { CheckRelevancyComponent } from './check-relevancy.component';
 import { InferListComponent } from './infer-list.component';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { MatStepperModule } from '@angular/material/stepper';
+import { GoogleMachingComponent } from './google-maching/google-maching.component';
 
 
 
@@ -22,7 +23,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     SettingTableComponent,
     ImportItemComponent,
     CheckRelevancyComponent,
-    InferListComponent
+    InferListComponent,
+    GoogleMachingComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     SettingTableComponent,
     ImportItemComponent,
     CheckRelevancyComponent,
-    InferListComponent
+    InferListComponent,
+    GoogleMachingComponent
   ]
 })
 export class LpValidatorModule { }
