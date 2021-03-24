@@ -21,7 +21,7 @@
         </a>
     </div>
     <div class="px-2 m-3 table-container">
-        <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
+        <table *ngIf="displayColumns.length > 0" mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <!-- SELECT Column -->
@@ -56,12 +56,17 @@
             </div>
 
             <div *ngIf="dataSource.data.length === 0">
-                No Records Found!
+                No Records Found !
             </div>
+
 
             <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
         </table>
+
+        <div *ngIf="displayColumns.length === 0">
+            No data !
+        </div>
     </div>
 
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
@@ -70,6 +75,9 @@
         <button type="button" mat-raised-button color="primary" class="m-3" (click)="openSettingTable()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             Settings
+        </button>
+        <button type="button" mat-raised-button color="primary" class="m-3" (click)="next.emit()">
+            Check Revelancy
         </button>
     </div>
 </div>

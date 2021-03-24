@@ -61,4 +61,7 @@
             max-width: 100% !important;
         }
     }
+    [mat-align-tabs=center]>.mat-tab-header .mat-tab-labels {
+        display: none !important;
+    }
 }

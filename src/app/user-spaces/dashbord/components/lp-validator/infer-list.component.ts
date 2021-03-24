@@ -58,6 +58,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   //data after filter
   filterData: any[] = [];
   checklist: string[] = [];
+  selectedOptions: string[] = [];
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
@@ -69,14 +70,14 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
     this.user = this.auth.currentUserSubject.value;
 
-    this.commonServices.showSpinner();
-    // if (this.data !== undefined) {
-    //   if (this.dataView.data.length > 0) {
-    //     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
-    //     this.displayColumns = ['select'];
-    //   }
+    this.commonServices.showSpinner('root');
+    if (this.data !== undefined) {
+      // if (this.dataView.data.length > 0) {
+      this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
+      this.displayColumns = ['select'];
+      // }
       Object.assign(this.dataView, this.data);
-    // }
+    }
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
@@ -89,8 +90,11 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         this.filters.addControl(key, new FormControl(''));
       }
 
-      if (index < 14 && key.includes('Facet') && !key.includes('Value')) {
-        this.checklist.push(key);
+      if (!key.includes('Value') && !key.includes('select') && key.includes('Facet')) {
+        this.selectedOptions.push(key);
+        if (this.checklist.length < 5 && key.includes('Facet') && !key.includes('Value')) {
+          this.checklist.push(key);
+        }
       }
     })
     this.commonServices.hideSpinner();
@@ -141,24 +145,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
-    const previousIndex = event.previousIndex;
-    const currentIndex = event.currentIndex;
-
-    let isFacetSelected = false;
-    let facetName = '';
-    if (this.displayColumns[previousIndex].includes('Facet')) {
-      isFacetSelected = true;
-      facetName = this.displayColumns[previousIndex];
-    }
-
-    moveItemInArray(this.displayColumns, previousIndex, currentIndex);
-
-    if (isFacetSelected == true) {
-      const facetIndex = this.displayColumns.indexOf(facetName);
-      const facetValueIndex = this.displayColumns.indexOf(`${facetName}_Value`);
-      moveItemInArray(this.displayColumns, facetValueIndex, facetIndex + 1);
-    }
-
+    moveItemInArray(this.displayColumns, event.previousIndex, event.currentIndex);
     this.displayColumns.forEach((column, index) => {
       this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
@@ -166,6 +153,31 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         this.filters.addControl(column, new FormControl(''));
       }
     });
+    // const previousIndex = event.previousIndex;
+    // const currentIndex = event.currentIndex;
+
+    // let isFacetSelected = false;
+    // let facetName = '';
+    // if (this.displayColumns[previousIndex].includes('Facet')) {
+    //   isFacetSelected = true;
+    //   facetName = this.displayColumns[previousIndex];
+    // }
+
+    // moveItemInArray(this.displayColumns, previousIndex, currentIndex);
+
+    // if (isFacetSelected == true) {
+    //   const facetIndex = this.displayColumns.indexOf(facetName);
+    //   const facetValueIndex = this.displayColumns.indexOf(`${facetName}_Value`);
+    //   moveItemInArray(this.displayColumns, facetValueIndex, facetIndex + 1);
+    // }
+
+    // this.displayColumns.forEach((column, index) => {
+    //   this.dataView.displayColumns[index] = column;
+    //   //création formControl Dynamics
+    //   if (column != 'select') {
+    //     this.filters.addControl(column, new FormControl(''));
+    //   }
+    // });
   }
 
   tableOpons() {
@@ -197,7 +209,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   openSettingTable() {
     this.dialog.open(SettingTableComponent, {
       data: {
-        facetLists: this.displayColumns,
+        selectedOptions: this.selectedOptions,
+        checklist: this.checklist,
       },
       width: '600px',
     }).afterClosed().pipe(
@@ -215,37 +228,37 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
     const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
 
-    
-      let tabIndex = 0;
 
-      this.dataView.data.forEach((value: any, currentIndex: number) => {
-        let i = 5;
-        let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '', 'email': this.user.email };
+    let tabIndex = 0;
 
-        Object.keys(value).forEach((key: string, index: number) => {
-          if (value['select'] === true) {
-            if (!key.includes('Facet') && !key.includes('Value')) {
-              // object[header[i]] = value[key];
-              object[key] = value[key];
-              this.filterData[tabIndex] = { ...object };
+    this.dataView.data.forEach((value: any, currentIndex: number) => {
+      let i = 5;
+      let object: any = { 'select': '', 'ID': '', 'Category': '', 'Subcategory': '', 'Subcategory_2': '', 'Facet_1': '', 'Facet_1_Value': '', 'Facet_2': '', 'Facet_2_Value': '', 'Facet_3': '', 'Facet_3_Value': '', 'Facet_4': '', 'Facet_4_Value': '', 'Facet_5': '', 'Facet_5_Value': '', 'email': this.user.email };
 
-            } else if (key.includes('Facet') && !key.includes('Value') && this.checklist.includes(key)) {
-
-              const keyIndex = header.indexOf(key);
-
-              object[header[i]] = value[key];
-              i++;
-              object[header[i]] = value[`${key}_Value`];
-              this.filterData[tabIndex] = { ...object };
-              i++;
-            }
-          }
-        })
-
+      Object.keys(value).forEach((key: string, index: number) => {
         if (value['select'] === true) {
-          tabIndex++;
+          if (!key.includes('Facet') && !key.includes('Value')) {
+            // object[header[i]] = value[key];
+            object[key] = value[key];
+            this.filterData[tabIndex] = { ...object };
+
+          } else if (key.includes('Facet') && !key.includes('Value') && this.checklist.includes(key)) {
+
+            const keyIndex = header.indexOf(key);
+
+            object[header[i]] = value[key];
+            i++;
+            object[header[i]] = value[`${key}_Value`];
+            this.filterData[tabIndex] = { ...object };
+            i++;
+          }
         }
       })
+
+      if (value['select'] === true) {
+        tabIndex++;
+      }
+    })
 
     console.log(this.filterData)
 

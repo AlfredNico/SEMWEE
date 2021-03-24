@@ -1,6 +1,9 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
 import { AuthService } from '@app/authentification/services/auth.service';
+import { Users } from '@app/models/users';
+import { map } from 'rxjs/operators';
+import { LpValidatorService } from '../../services/lp-validator.service';
 import { InferListComponent } from './infer-list.component';
 
 @Component({
@@ -16,17 +19,34 @@ export class LpValidatorComponent implements OnInit {
   //Access content on cheild
   @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
 
+  @ViewChild("matTabGroup", { static: true }) tab: any;
+
   public selectedIndex = 0;
+  selectedTabIndex = 0;
+  isStepper = false;
   public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
-  
-  constructor(private auth: AuthService) { }
+
+  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService) { }
 
   public dataInferList = [];
 
   ngOnInit(): void {
+    this.auth.currentUserSubject.pipe(
+      map(async (user: Users) => {
+        if (user) {
+          if (user.projet.length > 0) {
+            console.log(user.projet.length);
+
+            this.selectedIndex = 1;
+            this.dataSources = await this.lpValidatorService.getIngetListProject();
+          }
+        }
+      })
+    ).subscribe();
   }
 
   selectionChange(stepper: any) {
+    this.tab.selectedIndex = 0;
     console.log('item', stepper);
   }
 
@@ -38,6 +58,8 @@ export class LpValidatorComponent implements OnInit {
   }
 
   public inferListReady(event: any) {
+    this.tab.selectedIndex = 0;
+
     this.dataInferList = event;
 
     this.stepper.selected.completed = true;
@@ -46,6 +68,10 @@ export class LpValidatorComponent implements OnInit {
 
   @HostListener('window:scroll') checkScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  }
+
+  nextTab() {
+    this.tab.selectedIndex = 1;
   }
 
 

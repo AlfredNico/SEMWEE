@@ -58,7 +58,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         canActivate: [AuthGuard, IsLoggedInGuard]
       }, {
         path: 'sign-in',
-        loadChildren: () => import('./authentification/components/sign-in/auth.module').then(m => m.AuthModule)
+        loadChildren: () => import('./authentification/components/sign-in/auth.module').then(m => m.AuthModule),
       }, {
         path: 'sign-up',
         loadChildren: () => import('./authentification/components/sign-up/sign-up.module').then(m => m.SignUpModule)

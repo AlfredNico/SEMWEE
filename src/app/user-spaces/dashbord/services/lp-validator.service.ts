@@ -2,7 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
-import { map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { ConvertUploadFileService } from './convert-upload-file.service';
 
 @Injectable({
@@ -22,6 +23,33 @@ export class LpValidatorService {
     return this.http.post<{ message: string, nameFile: string }>(`${environment.baseUrl}/validator/import-csv`, formData).toPromise();
   }
 
+  public getIngetListProject() {
+    // const params = new HttpParams().set('nameFile', file);
+    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv`).pipe(
+      map((result: any)  => {
+        if (result) {
+          let dataValue: any[] = [];
+          result['default'].map((value: any) => {
+            Object.keys(value).map((key: string, index: number) => {
+              if (!this.data.displayColumns.includes(key)) {
+                this.data.displayColumns.push(key);
+              }
+            })
+            dataValue.push({ ...value, 'select': true });
+          });
+          return this.data = {
+            displayColumns: this.data.displayColumns,
+            hideColumns: [],
+            data: dataValue
+          };
+        }
+      }),
+      catchError((err) => {
+        return this.handleError(err);
+      })
+    ).toPromise();
+  }
+
   public getUpload(files: File) {
     const formData: FormData = new FormData();
     formData.append('files', files);
@@ -32,16 +60,11 @@ export class LpValidatorService {
         if (result) {
 
           let dataValue: any[] = [];
-          result.map((value: any) => {
+          result['default'].map((value: any) => {
             Object.keys(value).map((key: string, index: number) => {
-              // console.log(key, index);
               if (!this.data.displayColumns.includes(key)) {
                 this.data.displayColumns.push(key);
               }
-              // if (!this.data.displayColumns.includes(key) && !key.includes('Value') && key.includes('Facet')) {
-              //   // [key, `${key}_Value`]
-              //   this.data.displayColumns.push(key);
-              // }
             })
             dataValue.push({ ...value, 'select': true });
           });
@@ -52,7 +75,9 @@ export class LpValidatorService {
             data: dataValue
           };
         }
-
+      }),
+      catchError((err) => {
+        return this.handleError(err);
       })
     ).toPromise();
   }
@@ -65,7 +90,7 @@ export class LpValidatorService {
             console.log(value);
             
             let dataValue: any[] = [];
-            values.map((result: any) => {
+            values['default'].map((result: any) => {
               Object.keys(result).map((key: string, index: number) => {
                 // console.log(key, index);
                 if (!this.inferListData.displayColumns.includes(key)) {
@@ -82,9 +107,14 @@ export class LpValidatorService {
             };
           }
 
+        }),
+        catchError((err) => {
+          return this.handleError(err);
         })
       ).toPromise()
   }
+
+
 
 
   public getInfterList() {
@@ -92,7 +122,7 @@ export class LpValidatorService {
       map((values: any) => {
         if (values) {
           let dataValue: any[] = [];
-          values.map((result: any) => {
+          values['default'].map((result: any) => {
             Object.keys(result).map((key: string, index: number) => {
               // console.log(key, index);
               if (!this.inferListData.displayColumns.includes(key)) {
@@ -111,7 +141,28 @@ export class LpValidatorService {
           };
         }
 
+      }),
+      catchError((err) => {
+        return this.handleError(err);
       })
     ).toPromise();
   }
+
+// }),
+// catchError((err) => {
+//   return this.handleError(err);
+// })
+//       ).toPromise();
+//   }
+
+  public handleError(error) {
+  let errorMessage = '';
+  if (error.error instanceof ErrorEvent) {
+    errorMessage = `Error: ${error.error.message}`;
+  } else {
+    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  }
+  console.log(errorMessage);
+  return throwError(errorMessage);
+}
 }

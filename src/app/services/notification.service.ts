@@ -16,14 +16,14 @@ export class NotificationService {
   constructor(private snackbar: MatSnackBar) { }
 
   public warn(message: string) {
-    this.snackbar.open(message, 'Fermer', { ...this.config, panelClass: ['snack-bar-error'] });
+    this.snackbar.open(message, 'Close', { ...this.config, panelClass: ['snack-bar-error'] });
   }
 
   public sucess(message: string) {
-    this.snackbar.open(message, 'Fermer', { ...this.config, panelClass: ['snack-bar-success'] });
+    this.snackbar.open(message, 'Close', { ...this.config, panelClass: ['snack-bar-success'] });
   }
 
   public info(message: string) {
-    this.snackbar.open(message, 'Fermer', { ...this.config, panelClass: ['snack-bar-info'], duration: undefined });
+    this.snackbar.open(message, 'Close', { ...this.config, panelClass: ['snack-bar-info'], duration: undefined });
   }
 }

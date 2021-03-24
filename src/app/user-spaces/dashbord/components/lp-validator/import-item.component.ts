@@ -81,11 +81,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       this.common.showSpinner('root');
 
       try {
-        // const formData = new FormData();
-        // formData.append('file', this.form.get('files')?.value);
         const result = await this.lpValidatorServices.getUpload(this.form.get('fileSource')?.value as File);
-
-        console.log('2 : ', result);
 
         if (result && result.data) {
           this.uploadFiles.emit(result);
@@ -99,6 +95,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         console.log('error ', error);
         this.common.hideSpinner();
         this.common.isLoading$.next(false);
+        throw error;
       }
     }
 

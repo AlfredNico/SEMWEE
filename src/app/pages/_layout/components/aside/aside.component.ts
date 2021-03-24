@@ -28,7 +28,6 @@ export class AsideComponent implements OnInit {
 
   constructor(private layout: LayoutService, private loc: Location, private auth: AuthService) { 
     this.user.next(this.auth.currentUserSubject.value);
-    console.log(this.auth.currentUserSubject.value)
   }
 
   ngOnInit(): void {
