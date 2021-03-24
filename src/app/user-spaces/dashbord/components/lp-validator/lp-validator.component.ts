@@ -12,6 +12,7 @@ import { InferListComponent } from './infer-list.component';
   styleUrls: ['./lp-validator.component.scss']
 })
 export class LpValidatorComponent implements OnInit {
+  isEditable="false"
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   // @ViewChild('stepper', { static: true }) private myStepper: MatStepper;
@@ -73,6 +74,4 @@ export class LpValidatorComponent implements OnInit {
   nextTab() {
     this.tab.selectedIndex = 1;
   }
-
-
 }

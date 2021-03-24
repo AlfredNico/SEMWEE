@@ -20,23 +20,31 @@
             <span>Table options </span>
         </a>
     </div>
-    <div class="px-2 m-3 table-container">
-        <table *ngIf="displayColumns.length > 0" mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
+    <div class="example-container">
+        <mat-table *ngIf="displayColumns.length > 0" [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <!-- SELECT Column -->
                 <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
-                    <th mat-header-cell *matHeaderCellDef class="">
+                    <mat-header-cell *matHeaderCellDef 
+
+                    mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event, column)" [resizeEdges]="{bottom: false, right: true, top: false, left: true}"
+
+                    >
                         <mat-checkbox color="primary" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
-                    </th>
-                    <td mat-cell *matCellDef="let row; let index = index" [ngClass]="{'tr-inpaire': index % 2 == 0, 'tr-paire': index % 2 != 0}">
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row; let index = index" [ngClass]="{'tr-inpaire': index % 2 == 0, 'tr-paire': index % 2 != 0}">
                         <mat-checkbox color="primary" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()"></mat-checkbox>
-                    </td>
+                    </mat-cell>
                 </ng-container>
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
+                    <mat-header-cell [ngClass]="{'hide-rows': column === 'ID'}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag
+                    
+                    mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event, column)" [resizeEdges]="{bottom: false, right: true, top: false, left: true}"
+
+                    >
                         <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
                                 <div mat-sort-header class="text-uppercase">
@@ -50,58 +58,22 @@
                                 <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
                             </mat-form-field>
                         </div>
-                    </th>
-                    <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
+                    </mat-header-cell>
+                    <mat-cell [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td"
+                    
+                    mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event, column)" [resizeEdges]="{bottom: false, right: true, top: false, left: true}"
+                    
+                    >{{ row[column] }} </mat-cell>
                 </ng-container>
-
-                <!-- Facet Column -->
-                <!-- <ng-container [matColumnDef]="column" *ngIf="column.includes('Facet') && !column.includes('Value')">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="pl-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                        <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
-                                <div mat-sort-header class="text-uppercase">
-                                    {{ column.split('_').join(' ') }}
-                                </div>
-                                <div cdkDragHandle class="drag_n_drop pl-3">
-                                    <mat-icon>api</mat-icon>
-                                </div>
-                            </div>
-                            <mat-form-field appearance="outline" id="filter-table">
-                                <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
-                        </div>
-                    </th>
-                    <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
-                </ng-container>
-
-                <ng-container [matColumnDef]="column" *ngIf="!column.includes('Facet') && column.includes('Value')">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="pr-1 py-1 text-truncate">
-                        {{ column + '_Value'}}
-                        <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
-                                <div mat-sort-header class="text-uppercase">
-                                    {{ column.split('_').join(' ') }}
-                                </div>
-                                <div class="pl-3">
-                                    <mat-icon>api</mat-icon>
-                                </div>
-                            </div>
-                            <mat-form-field appearance="outline" id="filter-table">
-                                <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
-                        </div>
-                    </th>
-                    <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column + '_Value'] }} </td>
-                </ng-container> -->
             </div>
 
             <div *ngIf="dataSource.data.length === 0">
                 No Records Found !
             </div>
 
-            <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
-        </table>
+            <mat-header-row *matHeaderRowDef="dataView.displayColumns" class="mat-elevation-z1"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: dataView.displayColumns;"></mat-row>
+        </mat-table>
     </div>
 
     <div *ngIf="displayColumns.length === 0">
