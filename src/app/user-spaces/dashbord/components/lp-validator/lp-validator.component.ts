@@ -1,9 +1,13 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { Users } from '@app/models/users';
+import { CommonService } from '@app/shared/services/common.service';
 import { map } from 'rxjs/operators';
+import { CheckUserInfoService } from '../../services/check-user-info.service';
 import { LpValidatorService } from '../../services/lp-validator.service';
+import { CheckRelevancyComponent } from './check-relevancy.component';
 import { InferListComponent } from './infer-list.component';
 
 @Component({
@@ -19,6 +23,10 @@ export class LpValidatorComponent implements OnInit {
   //Access content on cheild
   @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
 
+  //Access content on cheild
+  @ViewChild(CheckRelevancyComponent, { static: false }) checkRevelancey!: CheckRelevancyComponent;
+  childRevelancy = { displayColumns: [], hideColumns: [], data: [] };
+
   @ViewChild("matTabGroup", { static: true }) tab: any;
 
   public selectedIndex = 0;
@@ -29,32 +37,37 @@ export class LpValidatorComponent implements OnInit {
   isUserProject: boolean = false;
   isCheckRevelancy: boolean = false;
 
+  public idProjet: string;
+
   public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
 
-  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService) { }
+  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService) { }
 
   public dataInferList = [];
 
   ngOnInit(): void {
-    this.auth.currentUserSubject.pipe(
-      map(async (user: Users) => {
-        if (user) {
-          if (user.projet.length > 0) {
-            this.isUserProject = true;
-            this.selectedStepperIndex = 1;
-            this.dataSources = await this.lpValidatorService.getIngetListProject();
-          }
+    this.common.showSpinner('root');
+    this.route.paramMap.subscribe(async (params: ParamMap) => {
+      this.idProjet = params.get('idProduit');
+
+      if (this.idProjet) {
+        const result = await this.infoProduitService.getInferList(this.idProjet);
+        if (result) {
+          this.selectedStepperIndex = 1;
+
+          this.dataSources = result;
+          this.common.hideSpinner('root');
+          this.common.isLoading$.next(false);
+        }else{
+          this.common.hideSpinner('root');
+          this.common.isLoading$.next(false);
         }
-      })
-    ).subscribe();
+      }
+    })
   }
 
   selectionChange(stepper: any) {
-    console.log('1', this.isImportItem);
-    console.log('2', this.isUserProject);
-    console.log('3', this.isCheckRevelancy);
     this.tab.selectedIndex = 0;
-    console.log('item', stepper);
   }
 
   // Upload file ok
@@ -69,6 +82,7 @@ export class LpValidatorComponent implements OnInit {
   public inferListReady(event: any) {
     this.tab.selectedIndex = 0;
     // this.isCheckRevelancy = true;
+    console.log('event', event)
 
     this.dataInferList = event;
 
@@ -81,7 +95,16 @@ export class LpValidatorComponent implements OnInit {
   }
 
   nextTab() {
-    this.tab.selectedIndex = 1;
+    
+    if (this.checkRevelancey.dataView !== undefined) {
+      Object.assign(this.childRevelancy, this.checkRevelancey.dataView);
+      
+      this.tab.selectedIndex = 1;
+    }
+  }
+
+  previewTab(){
+    this.tab.selectedIndex = 0;
   }
 
 

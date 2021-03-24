@@ -72,10 +72,10 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
     this.commonServices.showSpinner('root');
     if (this.data !== undefined) {
-      // if (this.dataView.data.length > 0) {
-      this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
-      this.displayColumns = ['select'];
-      // }
+      if (this.dataView.data.length > 0) {
+        this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
+        this.displayColumns = ['select'];
+      }
       Object.assign(this.dataView, this.data);
     }
 
@@ -153,31 +153,6 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         this.filters.addControl(column, new FormControl(''));
       }
     });
-    // const previousIndex = event.previousIndex;
-    // const currentIndex = event.currentIndex;
-
-    // let isFacetSelected = false;
-    // let facetName = '';
-    // if (this.displayColumns[previousIndex].includes('Facet')) {
-    //   isFacetSelected = true;
-    //   facetName = this.displayColumns[previousIndex];
-    // }
-
-    // moveItemInArray(this.displayColumns, previousIndex, currentIndex);
-
-    // if (isFacetSelected == true) {
-    //   const facetIndex = this.displayColumns.indexOf(facetName);
-    //   const facetValueIndex = this.displayColumns.indexOf(`${facetName}_Value`);
-    //   moveItemInArray(this.displayColumns, facetValueIndex, facetIndex + 1);
-    // }
-
-    // this.displayColumns.forEach((column, index) => {
-    //   this.dataView.displayColumns[index] = column;
-    //   //création formControl Dynamics
-    //   if (column != 'select') {
-    //     this.filters.addControl(column, new FormControl(''));
-    //   }
-    // });
   }
 
   tableOpons() {

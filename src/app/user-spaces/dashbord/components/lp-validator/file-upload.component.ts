@@ -10,21 +10,23 @@ import { LpValidatorService } from '../../services/lp-validator.service';
       <form [formGroup]="form">
         <div fxLayout="column" fxLayoutAlign="space-around center">
             <div fxLayout="row" fxLayoutAlign="space-around center">
-              <mat-form-field appearance="outline">
+              <!-- <mat-form-field appearance="outline">
                 <mat-label>File name</mat-label>
                 <input matInput formControlName="fileName" readonly="true">
                 <mat-error *ngIf="form.get('fileName')?.errors?.pattern"> This is not an Excel file </mat-error>
-              </mat-form-field>
+              </mat-form-field> -->
+
               <div *ngIf="fileName.length > 0 && isExcelFile === false" [style.color]="'red'">This is not an Excel file </div>
               <button type="button" mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
-                  Upload excel
+                  Or Select File to Upload
               </button>
               <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
             </div>
 
-            <button mat-raised-button [disabled]="!isExcelFile" (click)="form.valid && onSubmit()">Next</button>
-        </div>
+          </div>
       </form>
+
+      <button mat-raised-button [disabled]="!isExcelFile" (click)="form.valid && onSubmit()">Display Items</button>
     </div>
   `,
   styles: [

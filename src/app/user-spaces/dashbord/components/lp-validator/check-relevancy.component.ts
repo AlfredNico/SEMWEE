@@ -34,8 +34,8 @@ import { map } from 'rxjs/operators';
 export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
 
   @Input() dataInferList: { displayColumns: string[], hideColumns: string[], data: any[] };
-  public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
-  public displayColumns: string[] = ['select'];
+  public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: [], hideColumns: [], data: [] };
+  public displayColumns: string[] = [];
 
   //generate Data
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -59,9 +59,15 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
   ngOnChanges() {
     this.commonServices.showSpinner();
-    
+
+    console.log('inferlist ', this.dataInferList);
+
     if (this.dataInferList !== undefined) {
-      this.dataView.displayColumns = [];
+      if (this.dataView.data.length > 0) {
+        this.dataView = { displayColumns: [], hideColumns: [], data: [] };
+        this.displayColumns = [];
+        // this.dataView.displayColumns = [];
+      }
       Object.assign(this.dataView, this.dataInferList);
     }
 
@@ -70,11 +76,9 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.dataSource.sort = this.sort;
 
     this.dataView.displayColumns.map((key: string, index: number) => {
-      if (key != 'select') {
         //création formControl Dynamics
         this.displayColumns.push(key);
         this.filters.addControl(key, new FormControl(''));
-      }
     })
     this.commonServices.hideSpinner();
   }
@@ -122,9 +126,7 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.displayColumns.forEach((column, index) => {
       this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
-      if (column != 'select') {
         this.filters.addControl(column, new FormControl(''));
-      }
     });
   }
 
@@ -145,9 +147,7 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
           result.noHiddenRows?.map(async item => {
             //création formControl Dynamics
-            if (item != 'select') {
               this.filters.addControl(item, new FormControl(''));
-            }
           });
         }
       }),
@@ -175,28 +175,28 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.dataView.data.forEach(t => t.select = completed);
   }
 
-  public selectRow(row: any) {
-    // let data, indexData;
-    // this.allSelect = this.dataView.data.includes(t => t.select === false);
-    let index = this.dataView.data.findIndex((x: any) => x.ID === row.ID)
-    this.dataView.data[index] = { ...row, 'select': row['select'] === true ? false : true };
+  // public selectRow(row: any) {
+  //   // let data, indexData;
+  //   // this.allSelect = this.dataView.data.includes(t => t.select === false);
+  //   let index = this.dataView.data.findIndex((x: any) => x.ID === row.ID)
+  //   this.dataView.data[index] = { ...row, 'select': row['select'] === true ? false : true };
 
-    this.dataSource.data = this.dataView.data;
-  }
+  //   this.dataSource.data = this.dataView.data;
+  // }
 
-  someComplete(): boolean {
-    if (this.dataView.data == null) {
-      return false;
-    }
-    return this.dataView.data.filter(t => t.select).length > 0 && !this.allSelect;
-  }
+  // someComplete(): boolean {
+  //   if (this.dataView.data == null) {
+  //     return false;
+  //   }
+  //   return this.dataView.data.filter(t => t.select).length > 0 && !this.allSelect;
+  // }
 
-  updateAllComplete() {
-    this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
-  }
+  // updateAllComplete() {
+  //   this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
+  // }
 
-  checkRevelancy(){
-    console.log('okok')
-  }
+  // checkRevelancy() {
+  //   console.log('okok')
+  // }
 
 }

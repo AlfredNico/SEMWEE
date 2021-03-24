@@ -88,7 +88,7 @@
                         <!-- end::2 Level --
         <!-- begin::2 Level -->
                         <li class="menu-item" routerLinkActive="menu-item-active" aria-haspopup="true" data-menu-toggle="hover">
-                            <a class="menu-link" routerLink="/user-space/lp-validator" routerLinkActive="active">
+                            <a class="menu-link" [routerLink]="['/user-space/lp-validator', (user | async).projet['0']._id]" routerLinkActive="active">
                                 <i class="sous-aside">
                                     <span cacheSVG="true" class="svg-icon menu-icon">
                                         <img [src]="'./assets/images/png/icons/aside/validator-icon.png'"

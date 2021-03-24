@@ -1,25 +1,25 @@
 <mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange(stepper)">
-    <mat-step label="Import Items" [completed]="isImportItem">
+    <mat-step label="Import Items" [completed]="isImportItem  === true">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
-        <app-import-item #form (uploadFiles)="UploadFileReady($event)"></app-import-item>
+        <app-import-item #form [idProjet]="idProjet" (uploadFiles)="UploadFileReady($event)"></app-import-item>
     </mat-step>
-    <mat-step label="Infer List Pages" state="text_snippet" [completed]="isUserProject">
+    <mat-step label="Infer List Pages" state="text_snippet" [completed]="isUserProject  === true">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
         <app-infer-list [data]="dataSources" (dataInferListReady)="inferListReady($event)"></app-infer-list>
         <!-- <app-files></app-files> -->
     </mat-step>
-    <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy">
+    <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
         <!-- <ng-template matStepLabel>Check Relevancy</ng-template> -->
         <mat-tab-group #matTabGroup mat-align-tabs="center">
             <mat-tab label="Check Relevancy">
                 <app-check-relevancy (next)="nextTab()" [dataInferList]="dataInferList"></app-check-relevancy>
             </mat-tab>
             <mat-tab label="Google matching">
-                <app-google-maching></app-google-maching>
+                <app-google-maching [dataSources]="childRevelancy" (previewTab)="previewTab()"></app-google-maching>
             </mat-tab>
         </mat-tab-group>
     </mat-step>

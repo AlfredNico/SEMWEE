@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from '@app/shared/services/common.service';
 import { Subscription } from 'rxjs';
@@ -9,31 +9,50 @@ import { LpValidatorService } from '../../services/lp-validator.service';
   selector: 'app-import-item',
   template: `
     <div class="w-100">
-      <form [formGroup]="form">
-        <div fxLayout="column" fxLayoutAlign="space-around center">
-            <div *ngIf="fileName.length > 0 && isExcelFile === true" fxLayout="column">
+    
+    <form [formGroup]="form">
+
+        <div *ngIf="fileName !== undefined && fileName?.length > 0 && isExcelFile === true" fxLayout="column" fxLayoutAlign="space-around center">
               <h1> {{ fileName }} </h1>
-               <h1> Is uploaded !</h1> 
-            </div>
-
-            <div *ngIf="fileName.length > 0 && isExcelFile === false">
-              <h1 [style.color]="'red'"> This is not an Excel file  </h1>
-            </div>
-
-            <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-              <button type="button" mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
-                  Upload csv
-              </button>
-              <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
-
-              <button mat-raised-button [disabled]="!isExcelFile" (click)="form.valid && onSubmit()">Next</button>
-            </div>
+                <h1> Is uploaded !</h1>
         </div>
+
+        <div *ngIf="fileName?.length >= 0 && isExcelFile === false">
+            <div class="uploaded_file w-100" fxLayout="column" fxLayoutAlign="space-around center">
+              
+              <div>Drap and drop your item to start list page validation process</div>
+
+              <div fxLayout="row" fxLayoutAlign="space-around center" class="w-100">
+                <button type="button" mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
+                  Or Select File to Upload
+                </button>
+                <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
+              </div>
+              
+              <div *ngIf="fileName !== undefined && fileName?.length > 0 && isExcelFile === false" [style.color]="'red'">
+                 This is not an Excel file 
+              </div>
+            </div>
+
+
+            <div>
+             If you don't know what to upload, you can read documentation in your <a href="google.com">Help Center</a>, or you can <a href="google.com">donwload our items list sample</a>
+            </div>
+
+        </div>
+
+        <button style="margin: 25px 0 5px;" mat-raised-button color="primary" [disabled]="!isExcelFile" (click)="form.valid && onSubmit()">Display Items</button>
       </form>
     </div>
   `,
-  styles: [
-  ]
+  styles: [`
+    .uploaded_file{
+      padding: 10px;
+      border: dashed 3px #40425d;
+      margin: 10px 0;
+      border-radius: 12px
+    }
+  `]
 })
 export class ImportItemComponent implements OnInit, OnDestroy {
 
@@ -51,13 +70,14 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() uploadFiles = new EventEmitter<any>();
 
+  @Input() idProjet: string;
+
   //subscription
   public subscription$ = new Subscription();
 
   constructor(private lpValidatorServices: LpValidatorService, private common: CommonService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   public onFileChange(event: any) {
     const target: DataTransfer = <DataTransfer>(event.target);
@@ -81,7 +101,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       this.common.showSpinner('root');
 
       try {
-        const result = await this.lpValidatorServices.getUpload(this.form.get('fileSource')?.value as File);
+        const result = await this.lpValidatorServices.getUpload(this.idProjet, this.form.get('fileSource')?.value as File);
 
         if (result && result.data) {
           this.uploadFiles.emit(result);

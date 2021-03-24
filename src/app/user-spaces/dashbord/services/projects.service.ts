@@ -18,6 +18,8 @@ export class ProjectsService {
   }
 
   public getAllProjects(): Observable<Projects[]> {
+    console.log('id ', this.user._id);
+
     return this.http.get<Projects[]>(`${environment.baseUrl}/project/get-project/${this.user._id}`);
   }
 

@@ -4,8 +4,10 @@ import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
-import { BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { UpdatesUserInfoService } from '@app/user-spaces/dashbord/services/updates-user-info.service';
+import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { map, tap, takeUntil, retry } from 'rxjs/operators';
 import { DetailsComponent } from '../dialog/details.component';
 import { EditComponent } from '../dialog/edit.component';
 import { RemoveComponent } from '../dialog/remove.component';
@@ -18,24 +20,22 @@ import { RemoveComponent } from '../dialog/remove.component';
 export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
-  public projects: BehaviorSubject<Projects[]> = new BehaviorSubject<Projects[]>([]);
+  // public projects: Subject<Projects[]> = new Subject<Projects[]>();
+  public projects: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(undefined);
+  private trigger: Subject<Projects[]> = new Subject();
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService) { }
+  subscription$: Observable<Projects[]>;
+
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService) { }
 
   ngOnInit(): void {
+    this.getAllProject();
   }
 
-  ngAfterViewInit(){
-    // this.
-    this.projectServices.getAllProjects().subscribe(
-      lists => {
-        this.projects.next(lists);
-      }
-    )
-    
+  ngAfterViewInit() {
   }
 
-  onDeteils(item: Projects){
+  onDeteils(item: Projects) {
     this.dialog.open(DetailsComponent, {
       data: item,
       width: '600px',
@@ -44,17 +44,6 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.common.showSpinner('root');
       }),
       map(result => {
-        console.log(result);
-
-        if (result === true) {
-          this.projectServices.getAllProjects().subscribe(
-            lists => {
-              console.log(lists);
-              this.projects.next(lists);
-            }
-          )
-          // console.log(result);
-        }
       }),
       tap(() => {
         this.common.hideSpinner();
@@ -76,11 +65,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
               console.log(result)
               this.notifs.sucess(result.message);
 
-              this.projectServices.getAllProjects().subscribe(
-                lists => {
-                  this.projects.next(lists);
-                }
-              )
+              this.getAllProject();
             }
           })
         }
@@ -95,19 +80,33 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     }).afterClosed().pipe(
       map((result: boolean) => {
         if (result === true) {
-          this.projectServices.getAllProjects().subscribe(
-            lists => {
-              console.log(result);
-              this.projects.next(lists);
-            }
-          )
+          this.getAllProject();
         }
       })
     ).subscribe();
   }
 
-  ngOnDestroy(){
-    this.projects.next(undefined);
+  private getAllProject(){
+    return this.projectServices.getAllProjects()
+    .pipe(
+      takeUntil(this.trigger),
+      map(result => {
+        this.projects.next(result);
+      }),
+    )
+    .subscribe()
+  }
+
+  ngOnDestroy() {
+    // this.projects.unsubscribe();
+    // this.projects.complete();
+    this.projects.next(null);
+    // this.subscription$.unsubscribe();
+    // this.projects.next([]);
+
+    this.trigger.next();
+    this.trigger.complete();
+
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { LayoutService } from '../../../../../_metronic/core';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -18,7 +18,7 @@ function getCurrentURL(location) {
   templateUrl: './header-menu.component.html',
   styleUrls: ['./header-menu.component.scss'],
 })
-export class HeaderMenuComponent implements OnInit {
+export class HeaderMenuComponent implements OnInit, AfterViewInit {
   ulCSSClasses: string;
   rootArrowEnabled: boolean;
   location: Location;
@@ -57,6 +57,10 @@ export class HeaderMenuComponent implements OnInit {
     this.headerMenuDesktopToggle = this.layout.getProp(
       'header.menu.desktop.toggle'
     );
+  }
+
+  ngAfterViewInit(){
+    
   }
 
   getMenuItemActive(url) {

@@ -12,6 +12,9 @@
                 <button mat-icon-button color="primary" (click)="onDeteils(project)">
                     <mat-icon>list</mat-icon>
                 </button>
+                <button mat-icon-button [routerLink]="['/user-space/lp-validator', project._id]">
+                    <mat-icon>navigate_next</mat-icon>
+                </button>
             </div>
         </mat-card>
     </mat-list-item>

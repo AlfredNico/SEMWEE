@@ -53,46 +53,6 @@
                     </th>
                     <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
                 </ng-container>
-
-                <!-- Facet Column -->
-                <!-- <ng-container [matColumnDef]="column" *ngIf="column.includes('Facet') && !column.includes('Value')">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="pl-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                        <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
-                                <div mat-sort-header class="text-uppercase">
-                                    {{ column.split('_').join(' ') }}
-                                </div>
-                                <div cdkDragHandle class="drag_n_drop pl-3">
-                                    <mat-icon>api</mat-icon>
-                                </div>
-                            </div>
-                            <mat-form-field appearance="outline" id="filter-table">
-                                <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
-                        </div>
-                    </th>
-                    <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
-                </ng-container>
-
-                <ng-container [matColumnDef]="column" *ngIf="!column.includes('Facet') && column.includes('Value')">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="pr-1 py-1 text-truncate">
-                        {{ column + '_Value'}}
-                        <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
-                                <div mat-sort-header class="text-uppercase">
-                                    {{ column.split('_').join(' ') }}
-                                </div>
-                                <div class="pl-3">
-                                    <mat-icon>api</mat-icon>
-                                </div>
-                            </div>
-                            <mat-form-field appearance="outline" id="filter-table">
-                                <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
-                        </div>
-                    </th>
-                    <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column + '_Value'] }} </td>
-                </ng-container> -->
             </div>
 
             <div *ngIf="dataSource.data.length === 0">
@@ -110,12 +70,17 @@
 
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 
-    <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-        <button type="button" mat-raised-button color="primary" class="m-3" (click)="openSettingTable()">
-            <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-            Settings
-        </button>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button>Updates Items</button>
 
-        <button mat-raised-button (click)="tableReady()">Check Relevancy</button>
+        <div fxLayoutAlign="end center" class="w-100">
+            <button type="button" mat-raised-button color="primary" class="m-3" (click)="openSettingTable()">
+                <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
+                Settings
+            </button>
+
+            <button mat-raised-button (click)="tableReady()">Infer List Pages</button>
+        </div>
     </div>
+
 </div>

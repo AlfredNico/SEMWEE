@@ -116,7 +116,7 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
       {
         path: '', component: LayoutComponent, children: [
           {
-            path: 'lp-validator',
+            path: 'lp-validator/:idProduit',
             loadChildren: () => import('./dashbord/components/lp-validator/lp-validator.module').then(m => m.LpValidatorModule)
           }, {
             path: 'all-project',
@@ -125,7 +125,7 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
             path: 'new-project',
             loadChildren: () => import('./dashbord/components/projects/new-projects/new-projects.module').then(m => m.NewProjectsModule)
           },
-          { path: '', redirectTo: 'lp-validator', pathMatch: 'full' }
+          { path: '', redirectTo: 'all-project', pathMatch: 'full' }
         ]
       },
     ]),
