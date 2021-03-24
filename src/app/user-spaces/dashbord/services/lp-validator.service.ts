@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
 import { throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { ConvertUploadFileService } from './convert-upload-file.service';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class LpValidatorService {
   public getIngetListProject() {
     // const params = new HttpParams().set('nameFile', file);
     return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv`).pipe(
-      map((result: any) => {
+      map((result: any)  => {
         if (result) {
           let dataValue: any[] = [];
           result['default'].map((value: any) => {
@@ -47,7 +47,7 @@ export class LpValidatorService {
       catchError((err) => {
         return this.handleError(err);
       })
-    );
+    ).toPromise();
   }
 
   public getUpload(files: File) {

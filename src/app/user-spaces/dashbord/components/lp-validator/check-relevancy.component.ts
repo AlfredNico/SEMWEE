@@ -42,6 +42,8 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
   @ViewChild(MatSort) sort!: MatSort;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
+  @Output() next = new EventEmitter<void>();
+
   //generate form controle dynamics
   public filters = this.fb.group([]);
   public search = new FormControl('');

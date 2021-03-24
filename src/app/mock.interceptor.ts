@@ -55,10 +55,10 @@ export class MockInterceptor implements HttpInterceptor {
       case url.endsWith('/validator/all-fast-csv') && method === 'POST':
         return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' } }));
 
-      case url.endsWith('validator/import-csv') && method === 'POST':
-        return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
+      // case url.endsWith('validator/import-csv') && method === 'POST':
+      //   return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
 
-      case url.endsWith('validator/import-csv') && method === 'GET':
+      case url.endsWith('validator/import-csv'):
         return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
 
       case url.endsWith('validator/post-infer-list') && method === 'POST':
