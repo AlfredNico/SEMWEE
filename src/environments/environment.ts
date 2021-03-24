@@ -11,8 +11,10 @@ export const environment = {
   // baseUrl: 'https://back-semwee.herokuapp.com/api' 
   // baseUrl: 'http://192.168.43.7:3000/api',
   // baseUrlImg: 'http://192.168.43.7:3000'
-  baseUrl: 'https://51.75.255.155:3000/api',
-  baseUrlImg: 'https://51.75.255.155:3000/'
+  baseUrl: 'http://192.168.88.53:3000/api',
+  baseUrlImg: 'http://192.168.88.53:3000'
+  // baseUrl: 'https://51.75.255.155:3000/api',
+  // baseUrlImg: 'https://51.75.255.155:3000'
   // baseUrl: 'https://back-semwee.herokuapp.com/api'
   // baseUrl: 'http://192.168.43.7:3000/api',
   // baseUrl: 'backend-semwee'
