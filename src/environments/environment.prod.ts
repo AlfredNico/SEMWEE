@@ -5,7 +5,7 @@ export const environment = {
   isMockEnabled: true,
   // apiUrl: 'api',
   // baseUrl: 'https://back-semwee.herokuapp.com/api'
-  baseUrl: 'http://51.75.255.155:3000/api',
-  baseUrlImg: 'http://51.75.255.155:3000/'
+  baseUrl: 'https://51.75.255.155:3000/api',
+  baseUrlImg: 'https://51.75.255.155:3000/'
   // baseUrl: 'backend-semwee'
 };
