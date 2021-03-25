@@ -69,7 +69,7 @@ export class EditComponent implements OnInit {
     // image_project: new FormControl(null, [Validators.required]),
     // number_of_item: ['', Validators.required],
     // numberPLI: ['', Validators.required],
-    // numberLPVa: ['', Validators.required],
+    // numberLPVa: ['', Validators.required],// 
     user_id: ['', Validators.required],
   });
 
@@ -116,7 +116,7 @@ export class EditComponent implements OnInit {
           }
         )
       } else {
-        const value = { '_id': this.data._id, ...this.form.value };
+        const value = { '_id': this.data._id, ...this.form.value, 'image_project': this.data.image_project };
         this.projetctService.editProjects(value).subscribe(result => {
           this.notifs.sucess(result.message);
           this.dialogRef.close(true);

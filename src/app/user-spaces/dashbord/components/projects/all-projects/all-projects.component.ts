@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '@app/authentification/services/auth.service';
+import { Users } from '@app/models/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
@@ -7,7 +9,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 import { UpdatesUserInfoService } from '@app/user-spaces/dashbord/services/updates-user-info.service';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { map, tap, takeUntil, retry } from 'rxjs/operators';
+import { map, tap, takeUntil, retry, switchMap } from 'rxjs/operators';
 import { DetailsComponent } from '../dialog/details.component';
 import { EditComponent } from '../dialog/edit.component';
 import { RemoveComponent } from '../dialog/remove.component';
@@ -23,13 +25,19 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   // public projects: Subject<Projects[]> = new Subject<Projects[]>();
   public projects: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(undefined);
   private trigger: Subject<Projects[]> = new Subject();
+  public allProjects$: Observable<Projects[]>;
 
-  subscription$: Observable<Projects[]>;
+  refresh$ = new BehaviorSubject<boolean>(true);
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService) { }
+  private user!: Users;
+
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { }
 
   ngOnInit(): void {
-    this.getAllProject();
+    // this.getAllProject();
+    this.allProjects$ = this.refresh$.pipe(
+      switchMap(_ => this.projectServices.getAllProjects(this.user._id))
+    )
   }
 
   ngAfterViewInit() {
@@ -65,7 +73,8 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
               console.log(result)
               this.notifs.sucess(result.message);
 
-              this.getAllProject();
+              // this.getAllProject();
+              this.refresh$.next(false);
             }
           })
         }
@@ -80,32 +89,20 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     }).afterClosed().pipe(
       map((result: boolean) => {
         if (result === true) {
-          this.getAllProject();
+          // this.getAllProject();
+          this.refresh$.next(false);
         }
       })
     ).subscribe();
   }
 
-  private getAllProject(){
-    return this.projectServices.getAllProjects()
-    .pipe(
-      takeUntil(this.trigger),
-      map(result => {
-        this.projects.next(result);
-      }),
-    )
-    .subscribe()
-  }
+  // private getAllProject(){
+  //   this.allProjects$ =this.refresh$.pipe(
+  //     switchMap(_ => this.projectServices.getAllProjects())
+  //   )
+  // }
 
   ngOnDestroy() {
-    // this.projects.unsubscribe();
-    // this.projects.complete();
-    this.projects.next(null);
-    // this.subscription$.unsubscribe();
-    // this.projects.next([]);
-
-    this.trigger.next();
-    this.trigger.complete();
 
   }
 

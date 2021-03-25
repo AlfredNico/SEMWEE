@@ -12,6 +12,7 @@ import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
 import * as SEMEWEE from 'src/app/shared/fake-data/semwee.json';
 import * as SEMEWEE2 from 'src/app/shared/fake-data/semwee2.json';
+import * as FILE from 'src/app/shared/fake-data/file.json';
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
 export const usersData: Users[] = [
@@ -46,29 +47,29 @@ export class MockInterceptor implements HttpInterceptor {
     // all-fast-cs
 
     switch (true) {
-        case url.endsWith('auth/login') && method === 'POST':
-          const { email, password } = body;
-          const user = usersData.find(x => x.email === email && x.firstname === password);
-          if (!user) return throwError({ error: { error: 'Incorrect email address or password' } });
-          return of(new HttpResponse({ status: 200, body: user as Users }));
+      //   case url.endsWith('auth/login') && method === 'POST':
+      //     const { email, password } = body;
+      //     const user = usersData.find(x => x.email === email && x.firstname === password);
+      //     if (!user) return throwError({ error: { error: 'Incorrect email address or password' } });
+      //     return of(new HttpResponse({ status: 200, body: user as Users }));
 
-      case url.includes('/validator/all-fast-csv') && method === 'POST':
-          return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' } }));
+      // case url.includes('/validator/all-fast-csv') && method === 'POST':
+      //     return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' } }));
 
-        case url.includes('validator/import-csv') && method === 'POST':
-          return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
+      //   case url.includes('validator/import-csv') && method === 'POST':
+      //     return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
 
-      case url.includes('validator/import-csv'):
-          return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
+      // case url.includes('validator/import-csv'):
+      //     return of(new HttpResponse({ status: 200, body: SEMEWEE as any }));
 
-      case url.includes('validator/post-infer-list') && method === 'POST':
-          return of(new HttpResponse({ status: 200, body: SEMEWEE2 as any }));
+      // case url.includes('validator/post-infer-list') && method === 'POST':
+      //   return of(new HttpResponse({ status: 200, body: FILE as any }));
 
-      case url.includes('validator/post-infer-list') && method === 'POST':
-        return of(new HttpResponse({ status: 200, body: SEMEWEE2 as any }));
+      // case url.includes('validator/post-infer-list') && method === 'POST':
+      //   return of(new HttpResponse({ status: 200, body: FILE as any }));
 
-      case url.includes('/validator/get-infer-list') && method === 'POST':
-          return of(new HttpResponse({ status: 200, body: SEMEWEE2 as any }));
+      // case url.includes('/validator/get-infer-list') && method === 'POST':
+      //   return of(new HttpResponse({ status: 200, body: FILE as any }));
 
       default:
         // pass through any requests not handled above

@@ -10,6 +10,7 @@ import { SettingRowsTable } from '@app/models/setting-table';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
+import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -33,7 +34,7 @@ import { map } from 'rxjs/operators';
 })
 export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
 
-  @Input() dataInferList: { displayColumns: string[], hideColumns: string[], data: any[] };
+  @Input() dataInferList: DataTypes;
   public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: [], hideColumns: [], data: [] };
   public displayColumns: string[] = [];
 
@@ -43,6 +44,9 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @Output() next = new EventEmitter<void>();
+
+  @Output() dataMatching = new EventEmitter<any>();
+
 
   //generate form controle dynamics
   public filters = this.fb.group([]);
@@ -68,6 +72,8 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
         this.displayColumns = [];
         // this.dataView.displayColumns = [];
       }
+
+      console.log('dataInferList 4', this.dataInferList);
       Object.assign(this.dataView, this.dataInferList);
     }
 
@@ -175,28 +181,8 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.dataView.data.forEach(t => t.select = completed);
   }
 
-  // public selectRow(row: any) {
-  //   // let data, indexData;
-  //   // this.allSelect = this.dataView.data.includes(t => t.select === false);
-  //   let index = this.dataView.data.findIndex((x: any) => x.ID === row.ID)
-  //   this.dataView.data[index] = { ...row, 'select': row['select'] === true ? false : true };
-
-  //   this.dataSource.data = this.dataView.data;
-  // }
-
-  // someComplete(): boolean {
-  //   if (this.dataView.data == null) {
-  //     return false;
-  //   }
-  //   return this.dataView.data.filter(t => t.select).length > 0 && !this.allSelect;
-  // }
-
-  // updateAllComplete() {
-  //   this.allSelect = this.dataView.data != null && this.dataView.data.every(t => t.select);
-  // }
-
-  // checkRevelancy() {
-  //   console.log('okok')
-  // }
+  dataMachingReady(){
+    this.dataMatching.emit(this.dataView);
+  }
 
 }

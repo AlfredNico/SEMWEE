@@ -1,0 +1,20 @@
+.datatable:not(.table) {
+    display: revert;
+}
+
+.drag_n_drop {
+    cursor: move;
+}
+
+.table-container {
+    position: relative;
+    max-height: 500px;
+    overflow-x: auto;
+}
+
+::ng-deep {
+    circle.ng-star-inserted {
+        stroke-dasharray: 20px !important;
+        stroke-width: 7% !important;
+    }
+}

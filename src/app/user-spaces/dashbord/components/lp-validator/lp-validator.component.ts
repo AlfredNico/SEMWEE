@@ -32,9 +32,7 @@ export class LpValidatorComponent implements OnInit {
 
   @ViewChild("matTabGroup", { static: true }) tab: any;
 
-  public selectedIndex = 0;
   selectedStepperIndex = 0;
-  isStepper = false;
 
   isImportItem: boolean = false;
   isUserProject: boolean = false;
@@ -44,7 +42,7 @@ export class LpValidatorComponent implements OnInit {
 
   public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
 
-  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService, private sharedData: CheckUserInfoService) { }
+  constructor(private auth: AuthService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService) { }
 
   public dataInferList = [];
 
@@ -61,7 +59,7 @@ export class LpValidatorComponent implements OnInit {
           this.dataSources = result;
           this.common.hideSpinner('root');
           this.common.isLoading$.next(false);
-        }else{
+        } else {
           this.common.hideSpinner('root');
           this.common.isLoading$.next(false);
         }
@@ -70,7 +68,6 @@ export class LpValidatorComponent implements OnInit {
   }
 
   selectionChange(stepper: any) {
-    this.tab.selectedIndex = 0;
   }
 
   // Upload file ok
@@ -83,11 +80,16 @@ export class LpValidatorComponent implements OnInit {
   }
 
   public inferListReady(event: any) {
-    this.tab.selectedIndex = 0;
     // this.isCheckRevelancy = true;
-    console.log('event', event)
-
     this.dataInferList = event;
+
+    this.stepper.selected.completed = true;
+    this.stepper.next();
+  }
+
+  public nextMatching(event: any) {
+
+    this.childRevelancy = event;
 
     this.stepper.selected.completed = true;
     this.stepper.next();
@@ -95,25 +97,6 @@ export class LpValidatorComponent implements OnInit {
 
   @HostListener('window:scroll') checkScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-  }
-
-  nextTab() {
-    
-    if (this.checkRevelancey.dataView !== undefined) {
-      // Object.assign(this.childRevelancy, this.checkRevelancey.dataView);
-      // Object.assign(this.googleMatching.data, this.checkRevelancey.dataView);
-      this.googleMatching.data = this.checkRevelancey.dataView;
-      this.googleMatching.isTabSelected = true;
-
-      // this.sharedData.changeData(this.checkRevelancey.dataView);
-
-      
-      this.tab.selectedIndex = 1;
-    }
-  }
-
-  previewTab(){
-    this.tab.selectedIndex = 0;
   }
 
 

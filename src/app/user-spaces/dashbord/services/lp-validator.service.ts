@@ -14,42 +14,11 @@ export class LpValidatorService {
 
   public data: DataTypes = { displayColumns: ['select'], hideColumns: [], data: [] };
 
+  public matching: DataTypes = { displayColumns: [], hideColumns: [], data: [] };
+
   public inferListData: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: [], hideColumns: [], data: [] };
 
   constructor(private http: HttpClient, private fakeData: ConvertUploadFileService, private common: CommonService) { }
-
-  public sendFile(files: File) {
-    const formData: FormData = new FormData();
-    formData.append('files', files);
-    return this.http.post<{ message: string, nameFile: string }>(`${environment.baseUrl}/validator/import-csv`, formData).toPromise();
-  }
-
-  public getIngetListProject() {
-    // const params = new HttpParams().set('nameFile', file);
-    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv`).pipe(
-      map((result: any) => {
-        if (result) {
-          let dataValue: any[] = [];
-          result.map((value: any) => {
-            Object.keys(value).map((key: string, index: number) => {
-              if (!this.data.displayColumns.includes(key)) {
-                this.data.displayColumns.push(key);
-              }
-            })
-            dataValue.push({ ...value, 'select': true });
-          });
-          return this.data = {
-            displayColumns: this.data.displayColumns,
-            hideColumns: [],
-            data: dataValue
-          };
-        }
-      }),
-      catchError((err) => {
-        return this.handleError(err);
-      })
-    ).toPromise();
-  }
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
@@ -59,7 +28,22 @@ export class LpValidatorService {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
       map((result: any) => {
         if (result) {
-          return this.converDataSelected(result);
+          // return this.converDataSelected(result);
+          let values = [];
+          result.map((val: any) => {
+            Object.keys(val).map((key: string, index: number) => {
+              if (!this.data.displayColumns.includes(key)) {
+                this.data.displayColumns.push(key);
+              }
+            })
+            values.push({ ...val, 'select': true });
+          });
+
+          return this.data = {
+            displayColumns: this.data.displayColumns,
+            hideColumns: [],
+            data: values
+          };
         }
       }),
       catchError((err) => {
@@ -73,7 +57,25 @@ export class LpValidatorService {
       .pipe(
         map((result: any) => {
           if (result) {
-            return this.converData(result);
+            console.log('result', result);
+            // return this.converData(result);
+            let inferer: any[] = [];
+            result.map((res: any) => {
+              Object.keys(res).map((key: string, index: number) => {
+                // console.log(key, index);
+                if (!this.inferListData.displayColumns.includes(key)) {
+                  this.inferListData.displayColumns.push(key);
+                }
+              })
+              inferer.push({ ...res });
+            });
+
+            console.log('inferer', inferer);
+            return this.inferListData = {
+              displayColumns: this.inferListData.displayColumns,
+              hideColumns: [],
+              data: inferer
+            };
           }
 
         }),
@@ -90,7 +92,7 @@ export class LpValidatorService {
 
   private converDataSelected(dataSurces: any[]): DataTypes {
     let dataValue: any[] = [];
-    dataSurces['default'].map((value: any) => {
+    dataSurces.map((value: any) => {
       Object.keys(value).map((key: string, index: number) => {
         if (!this.data.displayColumns.includes(key)) {
           this.data.displayColumns.push(key);
@@ -108,13 +110,13 @@ export class LpValidatorService {
 
   private converData(dataSurces: any[]): DataTypes {
     let dataValue: any[] = [];
-    dataSurces['default'].map((result: any) => {
+    dataSurces.map((result: any) => {
       Object.keys(result).map((key: string, index: number) => {
         // console.log(key, index);
         if (!this.inferListData.displayColumns.includes(key)) {
           this.inferListData.displayColumns.push(key);
         }
-        dataValue.push({ ...result});
+        dataValue.push({ ...result });
       })
     });
 
@@ -125,46 +127,37 @@ export class LpValidatorService {
     };
   }
 
+  public converDataMatching(dataSurces: any[]): DataTypes {
+    const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
+    const obj = { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' };
+    let dataValue: any[] = [];
+    dataSurces.map((values: any) => {
+      Object.keys(values).map((key: string, index: number) => {
+        // console.log(key, index);
+        if (!this.matching.displayColumns.includes(key)) {
+          if (index === 0) {
+            this.matching.displayColumns.push(columnAdd[0]);
+          }
+          if (index === 2) {
+            this.matching.displayColumns.push(columnAdd[1]);
+          }
+          if (index === 3) {
+            this.matching.displayColumns.push(columnAdd[2]);
+          }
 
+          this.matching.displayColumns.push(key);
+        }
+      });
 
+      dataValue.push({ ...values, ...obj });
+    });
 
-  // public getInfterList() {
-  //   return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/get-infer-list`).pipe(
-  //     map((values: any) => {
-  //       if (values) {
-  //         let dataValue: any[] = [];
-  //         values['default'].map((result: any) => {
-  //           Object.keys(result).map((key: string, index: number) => {
-  //             // console.log(key, index);
-  //             if (!this.inferListData.displayColumns.includes(key)) {
-  //               this.inferListData.displayColumns.push(key);
-  //             }
-  //           })
-  //           dataValue.push({ ...result, 'select': true });
-  //         });
-
-  //         this.common.isLoading$.next(true);
-
-  //         return this.inferListData = {
-  //           displayColumns: this.inferListData.displayColumns,
-  //           hideColumns: [],
-  //           data: dataValue
-  //         };
-  //       }
-
-  //     }),
-  //     catchError((err) => {
-  //       return this.handleError(err);
-  //     })
-  //   ).toPromise();
-  // }
-
-  // }),
-  // catchError((err) => {
-  //   return this.handleError(err);
-  // })
-  //       ).toPromise();
-  //   }
+    return this.matching = {
+      displayColumns: this.matching.displayColumns,
+      hideColumns: [],
+      data: dataValue
+    };
+  }
 
 
 }

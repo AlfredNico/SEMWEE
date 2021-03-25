@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { Users } from '@app/models/users';
 import { environment } from '@environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Projects } from '../interfaces/projects';
 
@@ -12,15 +12,16 @@ import { Projects } from '../interfaces/projects';
 })
 export class ProjectsService {
 
+  private projects: BehaviorSubject<Projects[]> = new BehaviorSubject<Projects[]>(undefined);
+  currentPojet = this.projects.asObservable();
+
   private user: Users;
   constructor(private http: HttpClient, private auth: AuthService) {
     this.user = this.auth.currentUserSubject.value;
   }
 
-  public getAllProjects(): Observable<Projects[]> {
-    console.log('id ', this.user._id);
-
-    return this.http.get<Projects[]>(`${environment.baseUrl}/project/get-project/${this.user._id}`);
+  public getAllProjects(_idUsers): Observable<Projects[]> {
+    return this.http.get<Projects[]>(`${environment.baseUrl}/project/get-project/${_idUsers}`);
   }
 
   public addProjects(data: any) {

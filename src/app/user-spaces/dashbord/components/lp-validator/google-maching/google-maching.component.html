@@ -29,28 +29,32 @@
                                     <mat-icon>api</mat-icon>
                                 </div>
                             </div>
-                            <!-- <mat-form-field appearance="outline" id="filter-table ">
+                            <mat-form-field appearance="outline" id="filter-table ">
                                 <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
-                            </mat-form-field> -->
+                            </mat-form-field>
                         </div>
                     </th>
-                    <td mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
+                    <td [ngClass]="{'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td">
+                        <div *ngIf="row[column] === 'loadingQuery'; else noLoading">
+                            <mat-spinner style="zoom: .2;" class="m-auto"></mat-spinner>
+                        </div>
+
+                        <ng-template #noLoading>
+                            {{ row[column] }}
+                        </ng-template>
+                    </td>
                 </ng-container>
             </div>
-
 
             <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
         </table>
     </div>
 
-    <div>
-    </div>
-
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
-        <button type="button" mat-raised-button color="primary" class="m-3" (click)="previewTab.emit()">
+        <button type="button" mat-raised-button color="primary" class="m-3">
             Display Revelant List Page
         </button>
 
@@ -58,7 +62,7 @@
             <button type="button" mat-raised-button color="primary" class="m-3">
             Export
             </button>
-            <button type="button" mat-raised-button color="primary" class="m-3" (click)="previewTab.emit()">
+            <button type="button" mat-raised-button color="primary" class="m-3">
                 Send data to ...
             </button>
         </div>

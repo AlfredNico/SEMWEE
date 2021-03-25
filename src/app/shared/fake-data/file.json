@@ -1,0 +1,16 @@
+[{
+    "ItemType": "Ultrabook",
+    "property_Schema": "RAM Capacité, DDur capacité + type, Type de disque, OS, Marque",
+    "List_Page_Main": "Ultrabook",
+    "List_Page_Label": "Ultrabook",
+    "Number_of_Item": "3",
+    "property_1_value": "",
+    "property_2_value": "",
+    "property_3_value": "",
+    "property_4_value": "",
+    "property_5_value": "",
+    "select": true,
+    "_id": "605c5df4b0f82a1c34a68547",
+    "idProduct": "605c486c3b52e92318cc322b",
+    "__v": 0
+}]

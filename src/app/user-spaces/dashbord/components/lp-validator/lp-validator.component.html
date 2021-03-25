@@ -13,26 +13,11 @@
         <!-- <app-files></app-files> -->
     </mat-step>
     <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
-        <!-- <ng-template matStepLabel>Check Relevancy</ng-template> -->
-        <mat-tab-group #matTabGroup mat-align-tabs="center">
-            <mat-tab label="Check Relevancy">
-                <app-check-relevancy (next)="nextTab()" [dataInferList]="dataInferList"></app-check-relevancy>
-            </mat-tab>
-            <mat-tab label="Google matching">
-                <app-google-maching [dataSources]="childRevelancy" (previewTab)="previewTab()"></app-google-maching>
-            </mat-tab>
-        </mat-tab-group>
+        <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)"></app-check-relevancy>
     </mat-step>
 
     <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
-        <!-- <ng-template matStepLabel>Check Relevancy</ng-template> -->
-        <mat-tab-group #matTabGroup mat-align-tabs="center">
-            <mat-tab label="Check Relevancy">
-                <app-check-relevancy (next)="nextTab()" [dataInferList]="dataInferList"></app-check-relevancy>
-            </mat-tab>
-            <mat-tab label="Google matching">
-                <app-google-maching [dataSources]="childRevelancy" (previewTab)="previewTab()"></app-google-maching>
-            </mat-tab>
-        </mat-tab-group>
+        <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
     </mat-step>
+
 </mat-horizontal-stepper>

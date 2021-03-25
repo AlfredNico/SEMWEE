@@ -243,6 +243,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       const result = await this.lpValidatorServices.postInferList(this.filterData);
 
       if (result && result.data) {
+        console.log('result 3', result);
         // const value = await this.lpValidatorServices.getInfterList();
         this.dataInferListReady.emit(result);
       }

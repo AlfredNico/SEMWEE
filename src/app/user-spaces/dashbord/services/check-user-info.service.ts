@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
@@ -12,13 +12,10 @@ export class CheckUserInfoService {
 
   public data: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
 
-  private dataSource = new BehaviorSubject<DataTypes>(undefined);
-  currentDatasources = this.dataSource.asObservable();
-
   constructor(private http: HttpClient) { }
 
   getInferList(_idProduit: any){
-    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv`).pipe(
+    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv/${_idProduit}`).pipe(
       map((result: any) => {
         if (result) {
 
@@ -47,16 +44,12 @@ export class CheckUserInfoService {
 
   public handleError(error) {
     let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
+    if (error.error instanceof HttpErrorResponse) {
       errorMessage = `Error: ${error.error.message}`;
     } else {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
-    return throwError(errorMessage);
-  }
-
-  changeData(data: DataTypes) {
-    this.dataSource.next(data);
+    console.log(error);
+    return throwError(error);
   }
 }

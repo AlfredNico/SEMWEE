@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { Users } from '@app/models/users';
+import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
+import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { LayoutService } from '../../../../_metronic/core';
 
@@ -26,7 +28,9 @@ export class AsideComponent implements OnInit {
 
   public user: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
 
-  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService) { 
+  allprojets: Projects[] = [];
+
+  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projets: ProjectsService) { 
     this.user.next(this.auth.currentUserSubject.value);
   }
 
