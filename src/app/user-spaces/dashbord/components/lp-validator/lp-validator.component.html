@@ -1,41 +1,19 @@
-<<<<<<< HEAD
 <mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange(stepper)">
-    <mat-step label="Import Items" [completed]="isImportItem  === true">
-=======
-<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange(stepper)">
     <mat-step label="Import Items" [completed]="'true'" [editable]="isEditable">
->>>>>>> ebcdca688db0ff724a16139553d6ffde1d8ba4e5
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
         <app-import-item #form [idProjet]="idProjet" (uploadFiles)="UploadFileReady($event)"></app-import-item>
     </mat-step>
-<<<<<<< HEAD
     <mat-step label="Infer List Pages" state="text_snippet" [completed]="isUserProject  === true">
-=======
-    <mat-step label="Infer List Pages" state="text_snippet" [completed]="'true'" [editable]="isEditable">
->>>>>>> ebcdca688db0ff724a16139553d6ffde1d8ba4e5
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
         <app-infer-list [data]="dataSources" (dataInferListReady)="inferListReady($event)"></app-infer-list>
         <!-- <app-files></app-files> -->
     </mat-step>
-<<<<<<< HEAD
     <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
         <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)"></app-check-relevancy>
-=======
-    <mat-step label="Check Relevancy" state="download_done" [completed]="'true'" [editable]="isEditable">
-        <!-- <ng-template matStepLabel>Check Relevancy</ng-template> -->
-        <mat-tab-group #matTabGroup mat-align-tabs="center">
-            <mat-tab label="Check Relevancy">
-                <app-check-relevancy (next)="nextTab()" [dataInferList]="dataInferList"></app-check-relevancy>
-            </mat-tab>
-            <mat-tab label="Google matching">
-                <app-google-maching></app-google-maching>
-            </mat-tab>
-        </mat-tab-group>
->>>>>>> ebcdca688db0ff724a16139553d6ffde1d8ba4e5
     </mat-step>
 
     <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
