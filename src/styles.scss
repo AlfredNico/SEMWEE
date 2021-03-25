@@ -262,7 +262,7 @@ $dark-primary-map: ( 50: #e7ebf0,
 900: #162e4f,
 A100: #8bb8ff,
 A200: #5898ff,
-A400: #2579ff,
+A400: #3B85FE,
 A700: #0c69ff,
 contrast: ( 50: #000000,
 100: #000000,
@@ -339,17 +339,18 @@ A700: #000000));
 // hue. Available color palettes: https://material.io/design/color/
 $SEMWEE-primary: mat-palette($dark-primary-map,
 500);
-$SEMWEE-accent: mat-palette($mat-pink,
-A200,
-A100,
-A400);
+$SEMWEE-accent: mat-palette($dark-primary-map,A400);
 // The warn palette is optional (defaults to red).
 $SEMWEE-warn: mat-palette($mat-red);
+
+$SEMWEE-secondary: mat-palette($dark-primary-map,
+400);
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
 $SEMWEE-theme: mat-light-theme(( color: ( primary: $SEMWEE-primary,
 accent: $SEMWEE-accent,
 warn: $SEMWEE-warn,
+secondary: $SEMWEE-secondary,
 )));
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -367,7 +368,7 @@ body {
     margin: 0;
     font-family: Raleway, "Open Sans";
     // min-height: 100vh;
-    background: #e2e2e2;
+    background: #F0F1F6;
 }
 
 app-root {

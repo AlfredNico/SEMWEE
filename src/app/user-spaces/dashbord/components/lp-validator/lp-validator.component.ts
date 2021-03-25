@@ -18,6 +18,7 @@ import { InferListComponent } from './infer-list.component';
   // encapsulation: ViewEncapsulation.None,
 })
 export class LpValidatorComponent implements OnInit {
+  isEditable="false"
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   // @ViewChild('stepper', { static: true }) private myStepper: MatStepper;
@@ -98,6 +99,4 @@ export class LpValidatorComponent implements OnInit {
   @HostListener('window:scroll') checkScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
   }
-
-
 }

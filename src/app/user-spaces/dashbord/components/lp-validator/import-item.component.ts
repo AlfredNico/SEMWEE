@@ -34,6 +34,14 @@ import { LpValidatorService } from '../../services/lp-validator.service';
               </div>
             </div>
 
+<<<<<<< HEAD
+=======
+            <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
+              <button type="button" mat-raised-button color="accent" class="m-3" (click)="fileInput.click()">
+                  Upload csv
+              </button>
+              <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
+>>>>>>> ebcdca688db0ff724a16139553d6ffde1d8ba4e5
 
             <div>
              If you don't know what to upload, you can read documentation in your <a href="google.com">Help Center</a>, or you can <a href="google.com">donwload our items list sample</a>

@@ -15,6 +15,9 @@ import { TableOptionsComponent } from '@app/shared/components/table-options/tabl
 import { CommonService } from '@app/shared/services/common.service';
 import { map } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
+import {
+	ResizeEvent
+} from 'angular-resizable-element';
 
 @Component({
   selector: 'app-infer-list',
@@ -25,11 +28,6 @@ import { LpValidatorService } from '../../services/lp-validator.service';
     }
     .drag_n_drop {
       cursor: move;
-    }
-    .table-container {
-      position: relative;
-      max-height: 500px;
-      overflow-x: auto;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -292,6 +290,17 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     this.dataSource.data = [];
   }
 
+  
 
+  onResizeEnd(event: ResizeEvent, columnName): void {
+		if (event.edges.right) {
+			const cssValue = event.rectangle.width + 'px';
+			const columnElts = document.getElementsByClassName('mat-column-' + columnName);
+			for (let i = 0; i < columnElts.length; i++) {
+				const currentEl = columnElts[i] as HTMLDivElement;
+				currentEl.style.width = cssValue;
+			}
+		}
+	}
 
 }

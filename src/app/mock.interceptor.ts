@@ -47,11 +47,19 @@ export class MockInterceptor implements HttpInterceptor {
     // all-fast-cs
 
     switch (true) {
+<<<<<<< HEAD
       //   case url.endsWith('auth/login') && method === 'POST':
       //     const { email, password } = body;
       //     const user = usersData.find(x => x.email === email && x.firstname === password);
       //     if (!user) return throwError({ error: { error: 'Incorrect email address or password' } });
       //     return of(new HttpResponse({ status: 200, body: user as Users }));
+=======
+      // case url.endsWith('auth/login') && method === 'POST':
+      //   const { email, password } = body;
+      //   const user = usersData.find(x => x.email === email && x.firstname === password);
+      //   if (!user) return throwError({ error: { error: 'Incorrect email address or password' } });
+      //   return of(new HttpResponse({ status: 200, body: user as Users }));
+>>>>>>> ebcdca688db0ff724a16139553d6ffde1d8ba4e5
 
       // case url.includes('/validator/all-fast-csv') && method === 'POST':
       //     return of(new HttpResponse({ status: 200, body: { message: 'seccuss', nameFile: 'nico.csc' } }));
