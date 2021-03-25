@@ -21,7 +21,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
             </div>
 
             <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-              <button type="button" mat-raised-button color="primary" class="m-3" (click)="fileInput.click()">
+              <button type="button" mat-raised-button color="accent" class="m-3" (click)="fileInput.click()">
                   Upload csv
               </button>
               <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" formControlName="files"/>
