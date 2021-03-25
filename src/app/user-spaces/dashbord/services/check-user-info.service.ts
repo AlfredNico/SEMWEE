@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -10,6 +11,9 @@ import { catchError, map } from 'rxjs/operators';
 export class CheckUserInfoService {
 
   public data: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
+
+  private dataSource = new BehaviorSubject<DataTypes>(undefined);
+  currentDatasources = this.dataSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -50,5 +54,9 @@ export class CheckUserInfoService {
     }
     console.log(errorMessage);
     return throwError(errorMessage);
+  }
+
+  changeData(data: DataTypes) {
+    this.dataSource.next(data);
   }
 }

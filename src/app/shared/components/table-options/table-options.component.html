@@ -1,12 +1,11 @@
 <div fxLayout="column" class="w-100">
-    <div mat-dialog-content cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-
-        <div class="example-container" class="w-25 h-100">
+    <div mat-dialog-content cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-evenly start">
+        <div class="container-box" class="w-50 h-100">
             <h2>Avalable columns</h2>
             <div class="table-columns">
-                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
-                    <div *ngFor="let item of noHidden">
-                        <div *ngIf="!item.includes('Value');" class="example-box" cdkDrag>
+                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event) " class="containt-list">
+                    <div *ngFor="let item of hidden">
+                        <div *ngIf="!item.includes('Value');" class="box" [ngClass]="{'setItem': itelLabel === item}" cdkDrag (click)="setItemRigth(item)">
                             {{ item.split('_').join(' ') }}
                         </div>
                     </div>
@@ -14,24 +13,26 @@
             </div>
         </div>
 
-        <div fxLayout="column" class="w-25">
-            <button type="button" mat-raised-button class="m-1">
-                    <mat-icon>navigate_next</mat-icon> Display
-                </button>
-            <button type="button" mat-raised-button class="m-1">
-                    <mat-icon>navigate_preview</mat-icon> Hide
-                </button>
+        <div fxLayout="column" style="margin: auto 4em;">
+            <button [disabled]="btnToRigth" (click)="moveToRigth()" type="button" mat-raised-button class="m-1">
+                Display
+                <mat-icon>navigate_next</mat-icon>
+            </button>
+            <button [disabled]="btnToLeft" (click)="moveToLeft()" type="button" mat-raised-button class="m-1">
+                Hide
+                <!-- <mat-icon>navigate_preview</mat-icon> -->
+            </button>
             <mat-checkbox color="primary">
                 But keep hiding properties labels
             </mat-checkbox>
         </div>
 
-        <div class="example-container" class="w-25 h-100">
+        <div class="container-box" class="w-50 h-100">
             <h2>Table columns</h2>
             <div class="table-columns">
-                <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event) " class="containt-list ">
-                    <div *ngFor="let item of hidden">
-                        <div *ngIf="!item.includes( 'Value');" class="example-box" cdkDrag>
+                <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
+                    <div *ngFor="let item of noHidden">
+                        <div *ngIf="!item.includes('Value');" class="box" cdkDrag (click)="setItemLeft(item)" [ngClass]="{'setItem': itelLabel === item}">
                             {{ item.split('_').join(' ') }}
                         </div>
                     </div>
@@ -40,6 +41,6 @@
         </div>
     </div>
     <div mat-dialog-actions align='center'>
-        <button mat-button (click)="onClick() " tabindex="-1 ">FERMER</button>
+        <button mat-button (click)="onClick()" mat-raised-button tabindex="-1">CLOSE</button>
     </div>
 </div>

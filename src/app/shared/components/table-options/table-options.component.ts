@@ -12,10 +12,15 @@ import { FormBuilder, FormControl } from '@angular/forms';
 export class TableOptionsComponent implements OnInit {
 
 
-  public hidden = new Array<string>();
+  public hidden: string[] = [];
   public noHidden: string[] = [];
   // Generate form builder rows
   public filters = this.fb.group([]);
+  btnToRigth: boolean = true;
+  btnToLeft: boolean = true;
+  itelLabel: string = '';
+
+  infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
 
   private isDrop = false;
 
@@ -36,42 +41,15 @@ export class TableOptionsComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     // const previousIndex = event.previousIndex;
-
     const previousIndex = event.previousIndex;
     const currentIndex = event.currentIndex % 2 == 0 ? event.currentIndex : event.currentIndex + 1;
     if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data, previousIndex, currentIndex);
-        
-        if (event.container.data[previousIndex]?.includes('Facet')) {
-          moveItemInArray(event.container.data,previousIndex + 1, currentIndex + 1);
-        }
-    } else {
-      console.log(event.previousContainer.data[previousIndex]);
-      if (!event.previousContainer.data[previousIndex].includes('Value')) {
-        transferArrayItem(event.previousContainer.data,
-          event.container.data,
-          previousIndex,
-          currentIndex
-        );
-  
-        const current = event.previousContainer.data[previousIndex];
-        const index = event.previousContainer.data.indexOf(`${current}`);
-  
-      if (event.previousContainer.data[previousIndex]?.includes('Facet')) {
-          transferArrayItem(event.previousContainer.data,
-            event.container.data,
-            index,
-            currentIndex + 1
-          );
-        }
+      moveItemInArray(event.container.data, previousIndex, currentIndex);
+
+      if (event.container.data[previousIndex]?.includes('Facet')) {
+        moveItemInArray(event.container.data, previousIndex + 1, currentIndex + 1);
       }
-
     }
-
-    console.log(this.hidden);
-    // console.log(event.previousContainer.data[event.previousIndex]);
-    // console.log(event.currentIndex);
-
 
     this.displayRows = {
       noHiddenRows: this.noHidden,
@@ -90,6 +68,89 @@ export class TableOptionsComponent implements OnInit {
       const value = this.noHidden.unshift('select');
     }
     this.dialogRef.close(this.displayRows);
+  }
+
+  moveToLeft() {
+    this.btnToLeft = true;
+    transferArrayItem(
+      this.noHidden,
+      this.hidden,
+      this.infItems.previewIndex,
+      this.infItems.currentIndex
+    );
+
+    if (this.infItems.isFacet === true) {
+      const facetIndex = this.noHidden.indexOf(this.noHidden[this.infItems.previewIndex]);
+      transferArrayItem(
+        this.noHidden,
+        this.hidden,
+        facetIndex,
+        this.hidden.length
+      );
+    }
+
+    this.itelLabel = '';
+    this.infItems ={ previewIndex: 0, currentIndex: 0, isFacet: false };
+  }
+
+  moveToRigth() {
+    this.btnToRigth = true;
+    transferArrayItem(
+      this.hidden,
+      this.noHidden,
+      this.infItems.previewIndex,
+      this.infItems.currentIndex
+    );
+    if (this.infItems.isFacet === true) {
+      const facetIndex = this.noHidden.indexOf(this.noHidden[this.infItems.previewIndex]);
+      transferArrayItem(
+        this.hidden,
+        this.noHidden,
+        facetIndex,
+        this.noHidden.length
+      );
+    }
+    this.itelLabel = '';
+    this.infItems ={ previewIndex: 0, currentIndex: 0, isFacet: false };
+  }
+
+  setItemLeft(item: string) {
+    this.btnToLeft = false;
+    this.btnToRigth = true;
+    this.itelLabel = item;
+
+    this.infItems = this.getIndexDisplayColums(item);
+  }
+
+  setItemRigth(item: string) {
+    this.btnToRigth = false;
+    this.btnToLeft = true;
+
+    this.itelLabel = item;
+    this.infItems = this.getIndexHiddenColumns(item);
+  }
+
+  getIndexDisplayColums(item: string) {
+    const previewIndex = this.noHidden.indexOf(item);
+    const currentIndex = this.hidden.length;
+    let isFacet = false;
+    if (item.includes('Facet')) {
+      const facetIndex = this.noHidden.indexOf(`${item}_Value`);
+      isFacet = true;
+    }
+    return { previewIndex, currentIndex, isFacet };
+  }
+
+  getIndexHiddenColumns(item: string) {
+    const previewIndex = this.hidden.indexOf(item);
+    const currentIndex = this.noHidden.length;
+
+    let isFacet = false;
+    if (item.includes('Facet')) {
+      const facetIndex = this.noHidden.indexOf(`${item}_Value`);
+      isFacet = true;
+    }
+    return { previewIndex, currentIndex, isFacet };
   }
 
 }

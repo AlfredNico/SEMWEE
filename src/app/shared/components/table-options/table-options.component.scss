@@ -8,11 +8,15 @@
     }
 }
 
+.mat-dialog-content {
+    max-height: initial;
+}
+
 .table-columns {
     background: rgb(197, 196, 196);
 }
 
-.example-container {
+.container-box {
     width: 400px;
     max-width: 100%;
     margin: 0 15px 15px 0;
@@ -21,24 +25,17 @@
 }
 
 .containt-list {
-    border: solid 1px #ccc;
-    background: white;
-    min-height: 60px;
+    background: whitesmoke;
     border-radius: 4px;
     overflow: hidden;
     display: block;
+    min-height: 50vh;
+    padding: 3em 3em;
+    overflow-y: auto;
+    max-height: 50vh;
 }
 
-.no-list {
-    border: solid 1px #ccc;
-    min-height: 60px;
-    background: white;
-    border-radius: 4px;
-    overflow: hidden;
-    display: block;
-}
-
-.example-box {
+.box {
     padding: 10px 5px;
     border-bottom: solid 1px #ccc;
     color: rgba(0, 0, 0, 0.87);
@@ -47,9 +44,15 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    cursor: move;
+    // cursor: move;
     background: white;
     font-size: 14px;
+    margin: 15px 0;
+    border-radius: .5em;
+}
+
+.setItem {
+    background: rgb(147, 199, 236);
 }
 
 .cdk-drag-preview {

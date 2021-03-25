@@ -1,7 +1,3 @@
-<li *ngFor="let item of displayColumns">
-    {{item }}
-</li>
-Nico
 <div fxLayout="column" class="w-100">
     <!-- <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
         <mat-form-field appearance="outline" id="filters">
@@ -33,9 +29,9 @@ Nico
                                     <mat-icon>api</mat-icon>
                                 </div>
                             </div>
-                            <mat-form-field appearance="outline" id="filter-table ">
+                            <!-- <mat-form-field appearance="outline" id="filter-table ">
                                 <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
+                            </mat-form-field> -->
                         </div>
                     </th>
                     <td mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
@@ -49,12 +45,7 @@ Nico
     </div>
 
     <div>
-
     </div>
-
-
-
-
 
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 

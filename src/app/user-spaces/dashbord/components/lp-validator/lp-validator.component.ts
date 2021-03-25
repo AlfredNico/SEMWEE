@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -8,12 +8,14 @@ import { map } from 'rxjs/operators';
 import { CheckUserInfoService } from '../../services/check-user-info.service';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { CheckRelevancyComponent } from './check-relevancy.component';
+import { GoogleMachingComponent } from './google-maching/google-maching.component';
 import { InferListComponent } from './infer-list.component';
 
 @Component({
   selector: 'app-lp-validator',
   templateUrl: './lp-validator.component.html',
-  styleUrls: ['./lp-validator.component.scss']
+  styleUrls: ['./lp-validator.component.scss'],
+  // encapsulation: ViewEncapsulation.None,
 })
 export class LpValidatorComponent implements OnInit {
 
@@ -25,6 +27,7 @@ export class LpValidatorComponent implements OnInit {
 
   //Access content on cheild
   @ViewChild(CheckRelevancyComponent, { static: false }) checkRevelancey!: CheckRelevancyComponent;
+  @ViewChild(GoogleMachingComponent, { static: false }) googleMatching!: GoogleMachingComponent;
   childRevelancy = { displayColumns: [], hideColumns: [], data: [] };
 
   @ViewChild("matTabGroup", { static: true }) tab: any;
@@ -41,7 +44,7 @@ export class LpValidatorComponent implements OnInit {
 
   public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
 
-  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService) { }
+  constructor(private auth: AuthService, private lpValidatorService: LpValidatorService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService, private sharedData: CheckUserInfoService) { }
 
   public dataInferList = [];
 
@@ -97,7 +100,13 @@ export class LpValidatorComponent implements OnInit {
   nextTab() {
     
     if (this.checkRevelancey.dataView !== undefined) {
-      Object.assign(this.childRevelancy, this.checkRevelancey.dataView);
+      // Object.assign(this.childRevelancy, this.checkRevelancey.dataView);
+      // Object.assign(this.googleMatching.data, this.checkRevelancey.dataView);
+      this.googleMatching.data = this.checkRevelancey.dataView;
+      this.googleMatching.isTabSelected = true;
+
+      // this.sharedData.changeData(this.checkRevelancey.dataView);
+
       
       this.tab.selectedIndex = 1;
     }

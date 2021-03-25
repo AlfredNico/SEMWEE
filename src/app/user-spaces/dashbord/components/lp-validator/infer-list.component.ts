@@ -160,7 +160,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       data: {
         noHiddenRows: this.displayColumns,
         hiddenRows: this.dataView.hideColumns
-      }
+      }, 
+      width: '70%',
     }).afterClosed().pipe(
       // tap(() => {
       //   this.common.showSpinner('root');
