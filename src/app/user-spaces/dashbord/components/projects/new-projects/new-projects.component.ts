@@ -74,6 +74,10 @@ export class NewProjectsComponent implements OnInit {
               throw error;
             }
           }
+        },
+        (error) => {
+          this.notis.warn('Error to upload file');
+          this.common.hideSpinner();
         }
       )
     } else if (this.image_project === undefined) {
