@@ -31,7 +31,9 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user!: Users;
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { }
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { 
+    this.user = this.auth.currentUserSubject.value;
+  }
 
   ngOnInit(): void {
     // this.getAllProject();

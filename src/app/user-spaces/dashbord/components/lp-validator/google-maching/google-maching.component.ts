@@ -50,7 +50,7 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
     }
 
     // console.log(this.dataView);
-    
+
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;

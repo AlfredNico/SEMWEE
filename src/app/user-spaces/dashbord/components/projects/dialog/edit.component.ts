@@ -115,7 +115,7 @@ export class EditComponent implements OnInit {
             }
           },
           (error) => {
-            this.notifs.warn('Error to upload file');
+            this.notifs.warn('Server is not responding');
           }
         )
       } else {

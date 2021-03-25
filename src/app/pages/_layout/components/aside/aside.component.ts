@@ -5,7 +5,8 @@ import { User } from '@app/classes/users';
 import { Users } from '@app/models/users';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { LayoutService } from '../../../../_metronic/core';
 
 @Component({
@@ -26,15 +27,21 @@ export class AsideComponent implements OnInit {
   asideMenuScroll = 1;
   asideSelfMinimizeToggle = false;
 
-  public user: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
+  // public user: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
 
-  allprojets: Projects[] = [];
+  allprojets$: Observable<Projects[]>;
+  user: Users;
 
-  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projets: ProjectsService) { 
-    this.user.next(this.auth.currentUserSubject.value);
+  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projets: ProjectsService) {
+    // this.getAllProject();
+    this.user = this.auth.currentUserSubject.value;
+
   }
 
   ngOnInit(): void {
+    this.allprojets$ = this.projets.refresh$.pipe(
+      switchMap(_ => this.projets.getAllProjects(this.user._id))
+    )
     // load view settings
     this.disableAsideSelfDisplay =
       this.layout.getProp('aside.self.display') === false;
