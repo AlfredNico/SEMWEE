@@ -8,4 +8,6 @@ export const environment = {
   // baseUrl: 'http://51.75.255.155:3000/api',
   // baseUrlImg: 'http://51.75.255.155:3000/'
   // baseUrl: 'backend-semwee'
+  baseUrl: 'http://51.75.255.155:3000/api',
+  baseUrlImg: 'http://51.75.255.155:3000'
 };
