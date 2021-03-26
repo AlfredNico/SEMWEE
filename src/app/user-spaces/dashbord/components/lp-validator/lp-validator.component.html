@@ -16,7 +16,7 @@
         <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)"></app-check-relevancy>
     </mat-step>
 
-    <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
+    <mat-step class="hide-stepper" label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
         <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
     </mat-step>
 
