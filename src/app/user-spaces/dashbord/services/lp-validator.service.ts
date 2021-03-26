@@ -54,12 +54,12 @@ export class LpValidatorService {
   }
 
   private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
-    this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
+    return this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
       map((result: any) => {
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
-          data[result._id] = tmp;
-          assign(this.converDataMatching(dataSources,data));
+          return data[result._id] = tmp;
+          // assign(this.converDataMatching(dataSources,data));
         }
       }),
       catchError((err) => {
@@ -69,10 +69,19 @@ export class LpValidatorService {
   }
 
   public searchAllItem(dataSources: any[],data: any,assign: Function){
-    dataSources.map((value: any) => {
+    return dataSources.map((value: any) => {
+      // let item = { 'Valid': '', 'Popular Search Queries': '', 'Website Browser': '' }
       if(value.Valid == undefined || value.Valid == 'loadingQuery'){
-        this.searchItem(value._id,dataSources,data,assign);
+        this.searchItem(value._id,dataSources,data,assign).then(
+          result => {
+            value['Valid'] = result['Valid'];
+            value['Popular Search Queries'] = result['Popular Search Queries'];
+            value['Website Browser'] = result['Website Browser'];
+            return result;
+          }
+        )
       }
+      return { ...value}
     });
   }
 
@@ -81,7 +90,6 @@ export class LpValidatorService {
       .pipe(
         map((result: any) => {
           if (result) {
-            console.log('result', result);
             // return this.converData(result);
             let inferer: any[] = [];
             result.map((res: any) => {
