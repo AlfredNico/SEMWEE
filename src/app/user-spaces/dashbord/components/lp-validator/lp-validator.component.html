@@ -1,4 +1,4 @@
-<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange(stepper)">
+<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange($event)">
     <mat-step label="Import Items" [completed]="'true'" [editable]="isEditable">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
