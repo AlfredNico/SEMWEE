@@ -27,6 +27,7 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
       const v = this;
       Object.assign(v.dataView, newData);
       v.ref.detectChanges()
+      v.ref.markForCheck()
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
