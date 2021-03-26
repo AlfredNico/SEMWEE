@@ -68,7 +68,10 @@ export class LpValidatorComponent implements OnInit {
     })
   }
 
-  selectionChange(stepper: any) {
+  selectionChange(ev: any) {
+    if(ev.selectedIndex == 3){
+      this.googleMatching.checkValid();
+    }
   }
 
   // Upload file ok
