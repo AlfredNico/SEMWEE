@@ -92,8 +92,7 @@ export class LpValidatorService {
               })
               inferer.push({ ...res });
             });
-
-            console.log('inferer', inferer);
+            
             return this.inferListData = {
               displayColumns: this.inferListData.displayColumns,
               hideColumns: [],
@@ -111,43 +110,6 @@ export class LpValidatorService {
   public handleError(error) {
     console.log(error);
     return throwError(error);
-  }
-
-  private converDataSelected(dataSurces: any[]): DataTypes {
-    let dataValue: any[] = [];
-    dataSurces.map((value: any) => {
-      Object.keys(value).map((key: string, index: number) => {
-        if (!this.data.displayColumns.includes(key)) {
-          this.data.displayColumns.push(key);
-        }
-      })
-      dataValue.push({ ...value, 'select': true });
-    });
-
-    return this.data = {
-      displayColumns: this.data.displayColumns,
-      hideColumns: [],
-      data: dataValue
-    };
-  }
-
-  private converData(dataSurces: any[]): DataTypes {
-    let dataValue: any[] = [];
-    dataSurces.map((result: any) => {
-      Object.keys(result).map((key: string, index: number) => {
-        // console.log(key, index);
-        if (!this.inferListData.displayColumns.includes(key)) {
-          this.inferListData.displayColumns.push(key);
-        }
-        dataValue.push({ ...result });
-      })
-    });
-
-    return this.inferListData = {
-      displayColumns: this.inferListData.displayColumns,
-      hideColumns: [],
-      data: dataValue
-    };
   }
 
   public converDataMatching(dataSurces: any[],obj: any = {}): DataTypes {

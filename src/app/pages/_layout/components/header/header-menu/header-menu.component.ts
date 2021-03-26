@@ -3,11 +3,12 @@ import { Location } from '@angular/common';
 import { LayoutService } from '../../../../../_metronic/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { userProject, Users } from '@app/models/users';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
 function getCurrentURL(location) {
   return location.split(/[?#]/)[0];
@@ -37,21 +38,30 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
   // projects: userProject[] = [];
   projects: BehaviorSubject<userProject[]> = new BehaviorSubject<userProject[]>([]);
 
-  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService) {
-    this.location = this.loc;
-  }
+  allprojets$: Observable<Projects[]>;
+  user: Users;
 
-  ngOnInit(): void {
+  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projectsServices: ProjectsService) {
+    this.location = this.loc;
+
     this.auth.currentUserSubject.pipe(
       map((user: Users) => {
         if (user && user.token && user.projet.length > 0) {
           console.log(user.projet['0']._id);
-          this.form.get('selected').setValue(user.projet['0']._id);
+          this.user = user;
+          // this.form.get('selected').setValue(this.allprojets$..projet['0']._id);
+          this.allprojets$.subscribe(value => this.form.get('selected').setValue(value[0]._id))
           this.projects.next(user.projet);
         }
       })
     )
-    .subscribe();
+  }
+
+  ngOnInit(): void {
+    this.allprojets$ = this.projectsServices.refresh$.pipe(
+      switchMap(_ => this.projectsServices.getAllProjects(this.user._id))
+    );
+
     this.ulCSSClasses = this.layout.getStringCSSClasses('header_menu_nav');
     this.rootArrowEnabled = this.layout.getProp('header.menu.self.rootArrow');
     this.headerMenuDesktopToggle = this.layout.getProp(

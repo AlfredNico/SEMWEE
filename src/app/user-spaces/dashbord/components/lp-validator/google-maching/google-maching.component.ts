@@ -91,6 +91,7 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
 
   public checkValid(): void{
     this.lpValidator.searchAllItem(this.dataSources.data,this.resultData,this.sCallback);
+    this.dataSource.data = this.dataView.data;
   }
 
 }
