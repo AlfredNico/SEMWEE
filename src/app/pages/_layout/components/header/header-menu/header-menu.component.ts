@@ -44,7 +44,14 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
   constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projectsServices: ProjectsService) {
     this.location = this.loc;
 
+    this.projectsServices.refresh$.subscribe(
+      value => {
+        console.log('all projet value', value);
+      }
+    )
+
     this.auth.currentUserSubject.pipe(
+
       map((user: Users) => {
         if (user && user.token && user.projet.length > 0) {
           console.log(user.projet['0']._id);

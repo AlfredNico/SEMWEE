@@ -53,7 +53,8 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
         this.displayColumns = [];
         // this.dataView.displayColumns = [];
       }
-      Object.assign(this.dataView, this.lpValidator.converDataMatching(this.dataSources.data,this.resultData));
+      const value = this.lpValidator.converDataMatching(this.dataSources.data, this.resultData);
+      Object.assign(this.dataView, value);
     }
 
     // console.log(this.dataView);
@@ -91,7 +92,6 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
 
   public checkValid(): void{
     this.lpValidator.searchAllItem(this.dataSources.data,this.resultData,this.sCallback);
-    this.dataSource.data = this.dataView.data;
   }
 
 }

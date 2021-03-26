@@ -17,8 +17,6 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService, private notifs: NotificationService, private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log(request.url)
-
     if (request.url.includes('user-space') && this.cookieService.check('SEMEWEE') == false) {
       this.notifs.warn('Session expiré');
       this.router.navigateByUrl('/sign-in');

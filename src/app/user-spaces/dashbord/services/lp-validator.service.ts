@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
@@ -55,6 +56,7 @@ export class LpValidatorService {
   private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
     this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
       map((result: any) => {
+        console.log(result)
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
           data[result._id] = tmp;
