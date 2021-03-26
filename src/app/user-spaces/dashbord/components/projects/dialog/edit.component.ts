@@ -113,6 +113,9 @@ export class EditComponent implements OnInit {
                 this.dialogRef.close(true);
               })
             }
+          },
+          (error) => {
+            this.notifs.warn('Server is not responding');
           }
         )
       } else {

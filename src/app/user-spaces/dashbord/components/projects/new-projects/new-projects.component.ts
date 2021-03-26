@@ -14,7 +14,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 })
 export class NewProjectsComponent implements OnInit {
 
-  public image_url: any = "https://material.angular.io/assets/img/examples/shiba2.jpg";
+  public image_url: string = 'assets/images/png/project_img.png';
   image_project!: File;
 
   private user: User;
@@ -49,7 +49,6 @@ export class NewProjectsComponent implements OnInit {
   // }
 
   onSubmit() {
-    console.log(this.image_project);
 
     if (this.form.valid && this.image_project !== undefined) {
       this.common.showSpinner('root');
@@ -74,6 +73,10 @@ export class NewProjectsComponent implements OnInit {
               throw error;
             }
           }
+        },
+        (error) => {
+          this.notis.warn('Server is not responding');
+          this.common.hideSpinner();
         }
       )
     } else if (this.image_project === undefined) {

@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -22,6 +22,13 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
   @Input() isTabSelected: boolean = false;
   public data: DataTypes = undefined;
   dataView = { displayColumns: [], hideColumns: [], data: [] };
+  resultData = {};
+  sCallback = (newData: any) : void => {
+      const v = this;
+      Object.assign(v.dataView, newData);
+      v.ref.detectChanges()
+      v.ref.markForCheck()
+  }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -34,7 +41,7 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
   public displayColumns: string[] = [];
   columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
 
-  constructor(private fb: FormBuilder, private commonServices: CommonService, private lpValidator: LpValidatorService) {
+  constructor(private fb: FormBuilder, private commonServices: CommonService, private lpValidator: LpValidatorService,private ref: ChangeDetectorRef) {
 
   }
 
@@ -46,11 +53,12 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
         this.displayColumns = [];
         // this.dataView.displayColumns = [];
       }
-      Object.assign(this.dataView, this.lpValidator.converDataMatching(this.dataSources.data));
+      const value = this.lpValidator.converDataMatching(this.dataSources.data, this.resultData);
+      Object.assign(this.dataView, value);
     }
 
     // console.log(this.dataView);
-    
+
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
@@ -60,6 +68,7 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
       this.displayColumns.push(key);
       this.filters.addControl(key, new FormControl(''));
     })
+    this.checkValid();
     this.commonServices.hideSpinner();
   }
 
@@ -68,7 +77,6 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   ngAfterViewInit() {
-
     console.log('2', this.dataView)
   }
 
@@ -82,6 +90,8 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
     });
   }
 
-
+  public checkValid(): void{
+    this.lpValidator.searchAllItem(this.dataSources.data,this.resultData,this.sCallback);
+  }
 
 }

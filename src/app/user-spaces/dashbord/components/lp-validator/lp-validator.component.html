@@ -1,5 +1,5 @@
-<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange(stepper)">
-    <mat-step label="Import Items" [completed]="isImportItem  === true">
+<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange($event)">
+    <mat-step label="Import Items" [completed]="'true'" [editable]="isEditable">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
@@ -16,7 +16,7 @@
         <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)"></app-check-relevancy>
     </mat-step>
 
-    <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
+    <mat-step class="hide-stepper" label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
         <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
     </mat-step>
 

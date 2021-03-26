@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
@@ -52,6 +53,30 @@ export class LpValidatorService {
     ).toPromise();
   }
 
+  private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
+    this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
+      map((result: any) => {
+        console.log(result)
+        if (result) {
+          const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
+          data[result._id] = tmp;
+          assign(this.converDataMatching(dataSources,data));
+        }
+      }),
+      catchError((err) => {
+        return this.handleError(err);
+      })
+    ).toPromise();
+  }
+
+  public searchAllItem(dataSources: any[],data: any,assign: Function){
+    dataSources.map((value: any) => {
+      if(value.Valid == undefined || value.Valid == 'loadingQuery'){
+        this.searchItem(value._id,dataSources,data,assign);
+      }
+    });
+  }
+
   public postInferList(value: any) {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/post-infer-list`, value)
       .pipe(
@@ -69,8 +94,7 @@ export class LpValidatorService {
               })
               inferer.push({ ...res });
             });
-
-            console.log('inferer', inferer);
+            
             return this.inferListData = {
               displayColumns: this.inferListData.displayColumns,
               hideColumns: [],
@@ -90,50 +114,12 @@ export class LpValidatorService {
     return throwError(error);
   }
 
-  private converDataSelected(dataSurces: any[]): DataTypes {
-    let dataValue: any[] = [];
-    dataSurces.map((value: any) => {
-      Object.keys(value).map((key: string, index: number) => {
-        if (!this.data.displayColumns.includes(key)) {
-          this.data.displayColumns.push(key);
-        }
-      })
-      dataValue.push({ ...value, 'select': true });
-    });
-
-    return this.data = {
-      displayColumns: this.data.displayColumns,
-      hideColumns: [],
-      data: dataValue
-    };
-  }
-
-  private converData(dataSurces: any[]): DataTypes {
-    let dataValue: any[] = [];
-    dataSurces.map((result: any) => {
-      Object.keys(result).map((key: string, index: number) => {
-        // console.log(key, index);
-        if (!this.inferListData.displayColumns.includes(key)) {
-          this.inferListData.displayColumns.push(key);
-        }
-        dataValue.push({ ...result });
-      })
-    });
-
-    return this.inferListData = {
-      displayColumns: this.inferListData.displayColumns,
-      hideColumns: [],
-      data: dataValue
-    };
-  }
-
-  public converDataMatching(dataSurces: any[]): DataTypes {
+  public converDataMatching(dataSurces: any[],obj: any = {}): DataTypes {
     const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
-    const obj = { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' };
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
       Object.keys(values).map((key: string, index: number) => {
-        // console.log(key, index);
+        //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
           if (index === 0) {
             this.matching.displayColumns.push(columnAdd[0]);
@@ -148,8 +134,9 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
+      const tmp = obj[values['idProduct']] != undefined ? obj[values['idProduct']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
 
-      dataValue.push({ ...values, ...obj });
+      dataValue.push({ ...values, ...tmp });
     });
 
     return this.matching = {

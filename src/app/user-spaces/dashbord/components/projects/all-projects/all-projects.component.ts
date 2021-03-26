@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@app/authentification/services/auth.service';
-import { Users } from '@app/models/users';
+import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
@@ -29,9 +29,11 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   refresh$ = new BehaviorSubject<boolean>(true);
 
-  private user!: Users;
+  private user!: User;
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { }
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { 
+    this.user = this.auth.currentUserSubject.value;
+  }
 
   ngOnInit(): void {
     // this.getAllProject();

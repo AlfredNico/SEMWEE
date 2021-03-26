@@ -13,6 +13,9 @@ import { InferListComponent } from './infer-list.component';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
+import {
+	ResizableModule
+} from 'angular-resizable-element';
 
 
 
@@ -32,6 +35,7 @@ import { GoogleMachingComponent } from './google-maching/google-maching.componen
     LandingModule,
     MatStepperModule, // stepper module
     LandingPageModule,
+    ResizableModule,
     RouterModule.forChild([
       { path: '', component: LpValidatorComponent }
     ])
