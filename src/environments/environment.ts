@@ -22,6 +22,8 @@ export const environment = {
   // baseUrl: 'https://back-semwee.herokuapp.com/api'
   // baseUrl: 'http://192.168.43.7:3000/api',
   // baseUrl: 'backend-semwee'
+  //baseUrl: 'http://192.168.88.17:3000/api',//Adriela-loc
+  //baseUrlImg: 'http://192.168.88.17:3000'//Adriela-loc
 };
 
 /*

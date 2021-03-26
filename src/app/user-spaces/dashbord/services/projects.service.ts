@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { Users } from '@app/models/users';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Projects } from '../interfaces/projects';
 
@@ -27,16 +27,18 @@ export class ProjectsService {
     console.log(data);
     return this.http.post<{ message: string }>(`${environment.baseUrl}/project/add-project`, data).pipe(
       map(result => {
-        this.refresh$.next(false)
+        tap(() => this.refresh$.next(false));
         return result;
       })
     )
-    .toPromise();
+      .toPromise();
   }
 
   public editProjects(value: { _id: number, project: Projects }) {
     this.refresh$.next(false)
-    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value);
+    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value).pipe(
+      tap(() => this.refresh$.next(false))
+    );
   }
 
   uploadFiles(file: File) {

@@ -40,18 +40,26 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
 
   allprojets$: Observable<Projects[]>;
   user: Users;
-
   constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projectsServices: ProjectsService) {
     this.location = this.loc;
+    this.user = this.auth.currentUserSubject.value;
+
+    // this.projectsServices.refresh$.subscribe(
+    //   value => {
+    //     this.allprojets$.subscribe(value => this.form.get('selected').setValue(value[0]._id))
+    //   }
+    // )
+    this.allprojets$ = this.projectsServices.refresh$.pipe(
+      switchMap(_ => this.projectsServices.getAllProjects(this.user._id))
+    )
 
     this.auth.currentUserSubject.pipe(
+
       map((user: Users) => {
         if (user && user.token && user.projet.length > 0) {
-          console.log(user.projet['0']._id);
-          this.user = user;
-          // this.form.get('selected').setValue(this.allprojets$..projet['0']._id);
-          this.allprojets$.subscribe(value => this.form.get('selected').setValue(value[0]._id))
+          // this.allprojets$.subscribe(value => this.form.get('selected').setValue(value[0]._id))
           this.projects.next(user.projet);
+          this.form.get('selected').setValue(this.projects.value['0']?._id);
         }
       })
     )
@@ -59,7 +67,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.allprojets$ = this.projectsServices.refresh$.pipe(
-      switchMap(_ => this.projectsServices.getAllProjects(this.user._id))
+      switchMap(_ => this.projectsServices.getAllProjects(this.user?._id))
     );
 
     this.ulCSSClasses = this.layout.getStringCSSClasses('header_menu_nav');
@@ -69,8 +77,8 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(){
-    
+  ngAfterViewInit() {
+
   }
 
   getMenuItemActive(url) {

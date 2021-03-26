@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
@@ -52,13 +53,13 @@ export class LpValidatorService {
     ).toPromise();
   }
 
-  private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
-    this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
+  private searchItem(_id: any, dataSources: any[] , data: any,assign: Function){
+    this.http.get<any>(`${environment.baseUrl}/validator/search-item/${_id}`).pipe(
       map((result: any) => {
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
           data[result._id] = tmp;
-          assign(this.converDataMatching(dataSources,data));
+          assign(this.converDataMatching(dataSources,data,true));
         }
       }),
       catchError((err) => {
@@ -112,7 +113,7 @@ export class LpValidatorService {
     return throwError(error);
   }
 
-  public converDataMatching(dataSurces: any[],obj: any = {}): DataTypes {
+  public converDataMatching(dataSurces: any[],obj: any = {},afterSearch: boolean = false): DataTypes {
     const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
@@ -132,8 +133,11 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
-      const tmp = obj[values['idProduct']] != undefined ? obj[values['idProduct']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
-
+      var tmp = obj[values['_id']] != undefined ? obj[values['_id']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
+      if(afterSearch && obj[values['_id']] == undefined){
+        tmp =  {'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+      }
+      //console.log(obj[values['idProduct']] + " : ", tmp);
       dataValue.push({ ...values, ...tmp });
     });
 
