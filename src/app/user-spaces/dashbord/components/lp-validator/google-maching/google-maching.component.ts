@@ -72,13 +72,9 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
     this.commonServices.hideSpinner();
   }
 
-  ngOnInit(): void {
-    console.log('2', this.dataView)
-  }
+  ngOnInit(): void { }
 
-  ngAfterViewInit() {
-    console.log('2', this.dataView)
-  }
+  ngAfterViewInit() { }
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {

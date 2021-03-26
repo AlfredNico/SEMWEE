@@ -233,15 +233,14 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
         tabIndex++;
       }
     })
-
-    console.log(this.filterData)
+    
 
     try {
       // this.dataFilterReady.emit(this.filterData);
       const result = await this.lpValidatorServices.postInferList(this.filterData);
 
       if (result && result.data) {
-        console.log('result 3', result);
+        
         // const value = await this.lpValidatorServices.getInfterList();
         this.dataInferListReady.emit(result);
       }

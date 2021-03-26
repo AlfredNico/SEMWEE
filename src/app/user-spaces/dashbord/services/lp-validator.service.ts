@@ -56,7 +56,6 @@ export class LpValidatorService {
   private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
     this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
       map((result: any) => {
-        console.log(result)
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
           data[result._id] = tmp;
