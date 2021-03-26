@@ -40,17 +40,11 @@
                         </div> -->
                         <mat-spinner *ngIf="row[column]==='loadingQuery'; noLoading" style="zoom: .2;" class="m-auto"></mat-spinner>
 
-                        <mat-icon color="primary" *ngIf="column==='Valie' && row[column]===true">done</mat-icon>
+                        <mat-icon color="primary" *ngIf="column==='Valid' && row[column]===true">done</mat-icon>
 
-                        <mat-icon color="warn" *ngIf="column==='Valie' &&  row[column]===false">close</mat-icon>
+                        <mat-icon color="warn" *ngIf="column==='Valid' &&  row[column]===false">close</mat-icon>
 
-                        <mat-icon color="primary" *ngIf="column==='Popular Search Queries' &&  row[column]!=='loadingQuery'">{{ row[column] }}</mat-icon>
-
-                        <mat-icon color="primary" *ngIf="column==='Popular Search Queries' && row[column]!=='loadingQuery'">{{ row[column] }}</mat-icon>
-
-                        <mat-icon color="primary" *ngIf="column==='Website Browser' && row[column]!=='loadingQuery'">{{ row[column] }}</mat-icon>
-
-                        <div *ngIf="row[column]!=='loadingQuery'">{{ row[column] }} </div>
+                        <div class="middle" *ngIf="row[column]!=='loadingQuery' && column!=='Valid'">{{ row[column] }} </div>
 
                         <ng-template #noLoading> {{ row[column] }} </ng-template>
 

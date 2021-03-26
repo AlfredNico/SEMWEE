@@ -25,7 +25,23 @@ export class GoogleMachingComponent implements OnInit, OnChanges, AfterViewInit 
   resultData = {};
   sCallback = (newData: any) : void => {
       const v = this;
-      Object.assign(v.dataView, newData);
+      v.dataSources = newData;
+      if (v.dataSources.data.length > 0) {
+        if (v.dataView.data.length > 0) {
+          v.dataView = { displayColumns: [], hideColumns: [], data: [] };
+          v.displayColumns = [];
+          Object.assign(v.dataView, newData);
+        }
+      }
+      v.dataSource.data = v.dataView.data;
+      v.dataSource.paginator = v.paginator;
+      v.dataSource.sort = v.sort;
+
+      v.dataView.displayColumns.map((key: string, index: number) => {
+        v.displayColumns.push(key);
+        v.filters.addControl(key, new FormControl(''));
+      })
+
       v.ref.detectChanges()
       v.ref.markForCheck()
   }
