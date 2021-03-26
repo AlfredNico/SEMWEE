@@ -70,14 +70,12 @@ export class LpValidatorService {
 
   public searchAllItem(dataSources: any[],data: any,assign: Function){
     return dataSources.map((value: any) => {
-      // let item = { 'Valid': '', 'Popular Search Queries': '', 'Website Browser': '' }
       if(value.Valid == undefined || value.Valid == 'loadingQuery'){
         this.searchItem(value._id,dataSources,data,assign).then(
           result => {
             value['Valid'] = result['Valid'];
             value['Popular Search Queries'] = result['Popular Search Queries'];
             value['Website Browser'] = result['Website Browser'];
-            return result;
           }
         )
       }
