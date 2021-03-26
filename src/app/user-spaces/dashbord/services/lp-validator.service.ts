@@ -52,6 +52,29 @@ export class LpValidatorService {
     ).toPromise();
   }
 
+  private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
+    this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
+      map((result: any) => {
+        if (result) {
+          const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
+          data[result._id] = tmp;
+          assign(this.converDataMatching(dataSources,data));
+        }
+      }),
+      catchError((err) => {
+        return this.handleError(err);
+      })
+    ).toPromise();
+  }
+
+  public searchAllItem(dataSources: any[],data: any,assign: Function){
+    dataSources.map((value: any) => {
+      if(value.Valid == undefined || value.Valid == 'loadingQuery'){
+        this.searchItem(value._id,dataSources,data,assign);
+      }
+    });
+  }
+
   public postInferList(value: any) {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/post-infer-list`, value)
       .pipe(
@@ -127,13 +150,12 @@ export class LpValidatorService {
     };
   }
 
-  public converDataMatching(dataSurces: any[]): DataTypes {
+  public converDataMatching(dataSurces: any[],obj: any = {}): DataTypes {
     const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
-    const obj = { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' };
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
       Object.keys(values).map((key: string, index: number) => {
-        // console.log(key, index);
+        //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
           if (index === 0) {
             this.matching.displayColumns.push(columnAdd[0]);
@@ -148,8 +170,9 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
+      const tmp = obj[values['idProduct']] != undefined ? obj[values['idProduct']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
 
-      dataValue.push({ ...values, ...obj });
+      dataValue.push({ ...values, ...tmp });
     });
 
     return this.matching = {
