@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [14.15.4]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -25,6 +25,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm cache clean --force
+    - run: rm -r package-lock.json
+    - run: npm cache verify
+    - run: npm install -g node-pre-gyp
     - run: npm i
 #     - run: npm run build --if-present
 #     - run: npm test
