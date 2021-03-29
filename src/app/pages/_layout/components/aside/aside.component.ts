@@ -42,6 +42,8 @@ export class AsideComponent implements OnInit {
     this.allprojets$ = this.projets.refresh$.pipe(
       switchMap(_ => this.projets.getAllProjects(this.user._id))
     )
+
+    console.log(this.allprojets$)
     // load view settings
     this.disableAsideSelfDisplay =
       this.layout.getProp('aside.self.display') === false;
