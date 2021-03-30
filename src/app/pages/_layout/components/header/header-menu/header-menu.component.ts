@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
+import { TriggerService } from '@app/user-spaces/services/trigger.service';
 
 function getCurrentURL(location) {
   return location.split(/[?#]/)[0];
@@ -40,39 +41,16 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
 
   allprojets$: Observable<Projects[]>;
   user: Users;
-  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projectsServices: ProjectsService) {
+  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projectsServices: ProjectsService, private triggerServices: TriggerService) {
     this.location = this.loc;
     this.user = this.auth.currentUserSubject.value;
-
-    // this.projectsServices.refresh$.subscribe(
-    //   value => {
-    //     this.allprojets$.subscribe(value => this.form.get('selected').setValue(value[0]._id))
-    //   }
-    // )
-    this.allprojets$ = this.projectsServices.refresh$.pipe(
-      switchMap(_ => this.projectsServices.getAllProjects(this.user._id))
-    )
-
-    this.auth.currentUserSubject.pipe(
-
-      map((user: Users) => {
-        if (user && user.token && user.projet.length > 0) {
-          // this.allprojets$.subscribe(value => this.form.get('selected').setValue(value[0]._id))
-          this.projects.next(user.projet);
-          this.form.get('selected').setValue(this.projects.value['0']?._id);
-        }
-      })
-    )
   }
 
   ngOnInit(): void {
-    this.allprojets$ = this.projectsServices.refresh$.pipe(
-      switchMap(_ => this.projectsServices.getAllProjects(this.user?._id))
-    );
-
-    this.projectsServices.refresh$.subscribe((isRefresh: boolean) => {
-      console.log('isRefresh: ', isRefresh); // => true/false
-    });
+    this.triggerServices.trigrer$.subscribe(
+      () => {
+        this.allprojets$ = this.projectsServices.getAllProjects(this.user._id);
+      });
 
     this.ulCSSClasses = this.layout.getStringCSSClasses('header_menu_nav');
     this.rootArrowEnabled = this.layout.getProp('header.menu.self.rootArrow');
@@ -81,9 +59,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit() {
-
-  }
+  ngAfterViewInit() { }
 
   getMenuItemActive(url) {
     return this.checkIsActive(url) ? 'menu-item-active' : '';

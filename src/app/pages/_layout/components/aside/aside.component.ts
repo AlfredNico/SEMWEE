@@ -7,6 +7,7 @@ import { Users } from '@app/models/users';
 import { AllProjectsComponent } from '@app/user-spaces/dashbord/components/projects/all-projects/all-projects.component';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
+import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { LayoutService } from '../../../../_metronic/core';
@@ -15,10 +16,10 @@ import { LayoutService } from '../../../../_metronic/core';
   selector: 'app-aside',
   templateUrl: './aside.component.html',
   styleUrls: ['./aside.component.scss'],
-  providers: [ProjectsService, FormBuilder],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // providers: [ProjectsService, FormBuilder],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AsideComponent implements OnInit, AfterViewInit, OnChanges {
+export class AsideComponent implements OnInit, AfterViewInit {
   disableAsideSelfDisplay: boolean;
   headerLogo: string;
   brandSkin: string;
@@ -33,78 +34,30 @@ export class AsideComponent implements OnInit, AfterViewInit, OnChanges {
 
   // public user: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
 
-  public allProjects$: Observable<Projects[]>;
-  public refresh$ = new BehaviorSubject<boolean>(false);
+  public allProjects$: Observable<Projects[]> = new Observable<Projects[]>();
+  public projects: Projects[] = [];
   user: Users;
 
-  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projets: ProjectsService) {
+  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projets: ProjectsService, private triggerServices: TriggerService) {
     // this.getAllProject();
     this.user = this.auth.currentUserSubject.value;
   }
 
-  ngOnChanges() {
-    this.refresh$.pipe(
-      tap(result => console.log('result', result)),
-    )
-
-    this.projets.
-      invokeFirstComponentFunction.subscribe(
-        () => {
-          console.log('name');
-        },
-        error => console.log('erro', error)
-      );
-
-    this.projets.getClickEvent().subscribe(
-      _ => {
-        console.log('value');
-      },
-      error => console.log('erro', error)
-    );
-
-    this.projets.refresh$.pipe(
-      tap(result => console.log(result))
-    ).subscribe();
-  }
-
-  ngAfterViewInit() {
-    this.refresh$.pipe(
-      tap(result => console.log('result', result)),
-    )
-
-    this.projets.
-      invokeFirstComponentFunction.subscribe(
-        (name: any) => {
-          console.log('name', name);
-        },
-        error => console.log('erro', error)
-      );
-
-    this.projets.getClickEvent().subscribe(
-      () => {
-        console.log('value');
-      },
-      error => console.log('erro', error)
-    );
-
-    this.projets.refresh$.pipe(
-      tap(result => console.log(result))
-    ).subscribe();
-  }
+  ngAfterViewInit() { }
 
   ngOnInit() {
-    if (this.projets.subsVar == undefined) {
-      this.projets.subsVar = this.projets.
-        invokeFirstComponentFunction.subscribe(() => {
-          console.log('value');
-        },
-          error => console.log('erro', error));
-    }
+    this.triggerServices.trigrer$.subscribe(
+      () => {
+        this.projets.getAllProjects(this.user._id).subscribe(
+          result => {
+            if (result.length !== this.projects.length) {
+              this.projects = result;
+            }
+          }
+        )
+      });
 
-    this.allProjects$ = this.projets.refresh$.pipe(
-      tap(result => console.log(result)),
-      switchMap(_ => this.projets.getAllProjects(this.user._id))
-    )
+
     // load view settings
     this.disableAsideSelfDisplay =
       this.layout.getProp('aside.self.display') === false;

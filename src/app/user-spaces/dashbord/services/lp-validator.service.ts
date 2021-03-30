@@ -13,11 +13,7 @@ import { ConvertUploadFileService } from './convert-upload-file.service';
 })
 export class LpValidatorService {
 
-  public data: DataTypes = { displayColumns: ['select'], hideColumns: [], data: [] };
-
   public matching: DataTypes = { displayColumns: [], hideColumns: [], data: [] };
-
-  public inferListData: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: [], hideColumns: [], data: [] };
 
   constructor(private http: HttpClient) { }
 
@@ -26,41 +22,20 @@ export class LpValidatorService {
     formData.append('files', files);
 
     return this.http.post<DataTypes>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
-      map((results: any) => Object.keys(results).map(key => {
-        const obj = {
+      map((results: any) => {
+        let obj = {
           displayColumns: [] as string[],
           data: [] as any[],
           hideColumns: [] as string[]
         };
+
         obj.displayColumns = Object.keys(results[0]);
-        obj.hideColumns.unshift('select');
-
-        obj.data = results.reduce((tbObj: any, td: any, index: number) => {
-          return tbObj[index] = { ...td, 'selec': true };
-        })
-
+        obj.displayColumns.unshift('select');
+        results.reduce((tbObj: any, td: any, index: number) => {
+          obj.data[index - 1] = { ...td, 'select': true };
+        });
         return obj;
-      })),
-      // map((result: any) => {
-      //   if (result) {
-      //     // return this.converDataSelected(result);
-      //     let values = [];
-      //     result.map((val: any) => {
-      //       Object.keys(val).map((key: string, index: number) => {
-      //         if (!this.data.displayColumns.includes(key)) {
-      //           this.data.displayColumns.push(key);
-      //         }
-      //       })
-      //       values.push({ ...val, 'select': true });
-      //     });
-
-      //     return this.data = {
-      //       displayColumns: this.data.displayColumns,
-      //       hideColumns: [],
-      //       data: values
-      //     };
-      //   }
-      // }),
+      }),
       catchError((err) => {
         return this.handleError(err);
       })
@@ -68,7 +43,7 @@ export class LpValidatorService {
   }
 
   private searchItem(_id: any, dataSources: any[], data: any, assign: Function) {
-    this.http.get<any>(`${environment.baseUrl}/validator/search-item/${_id}`).pipe(
+    return this.http.get<any>(`${environment.baseUrl}/validator/search-item/${_id}`).pipe(
       map((result: any) => {
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
@@ -86,11 +61,6 @@ export class LpValidatorService {
     return dataSources.map((value: any) => {
       if (value.Valid == undefined || value.Valid == 'loadingQuery') {
         this.searchItem(value._id, dataSources, data, assign)
-        // result => {
-        //   value['Valid'] = result['Valid'];
-        //   value['Popular Search Queries'] = result['Popular Search Queries'];
-        //   value['Website Browser'] = result['Website Browser'];
-        // }
       }
       return { ...value }
     });
@@ -99,26 +69,18 @@ export class LpValidatorService {
   public postInferList(value: any) {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/post-infer-list`, value)
       .pipe(
-        map((result: any) => {
-          if (result) {
-            // return this.converData(result);
-            let inferer: any[] = [];
-            result.map((res: any) => {
-              Object.keys(res).map((key: string, index: number) => {
-                // console.log(key, index);
-                if (!this.inferListData.displayColumns.includes(key)) {
-                  this.inferListData.displayColumns.push(key);
-                }
-              })
-              inferer.push({ ...res });
-            });
+        map((results: any) => {
+          let infer = {
+            displayColumns: [] as string[],
+            data: [] as any[],
+            hideColumns: [] as string[]
+          };
 
-            return this.inferListData = {
-              displayColumns: this.inferListData.displayColumns,
-              hideColumns: [],
-              data: inferer
-            };
-          }
+          infer.displayColumns = Object.keys(results[0]);
+          results.reduce((tbObj: any, td: any, index: number) => {
+            infer.data[index - 1] = td;
+          });
+          return infer;
 
         }),
         catchError((err) => {
@@ -153,9 +115,9 @@ export class LpValidatorService {
         }
       });
       var tmp = obj[values['_id']] != undefined ? obj[values['_id']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
-      if (afterSearch && obj[values['_id']] == undefined) {
-        tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
-      }
+      // if (afterSearch && obj[values['_id']] == undefined) {
+      //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+      // }
       //console.log(obj[values['idProduct']] + " : ", tmp);
       dataValue.push({ ...values, ...tmp });
     });

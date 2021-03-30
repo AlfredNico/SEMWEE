@@ -6,7 +6,7 @@ import { CommonService } from './shared/services/common.service';
   selector: 'app-root',
   template: `
     <ngx-spinner name="root">
-      <p [style.color]="'white'">loading</p>
+      <p [style.color]="'white'">loading ...</p>
     </ngx-spinner>
     <router-outlet></router-outlet>
   `,
@@ -19,11 +19,11 @@ import { CommonService } from './shared/services/common.service';
 export class AppComponent {
   title = 'SEMWEE';
 
-  constructor(private router: Router, private common: CommonService){
+  constructor(private router: Router, private common: CommonService) {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
-          this.common.showSpinner();
+          this.common.showSpinner('root');
           break;
         }
         case event instanceof NavigationEnd:

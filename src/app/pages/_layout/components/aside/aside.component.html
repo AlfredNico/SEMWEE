@@ -36,14 +36,14 @@
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/home-icon.png'" alt=". " />
                     </span>
-                    <span class="menu-text">Home</span>
+                    <span class="menu-text">Home </span>
                 </a>
             </li>
             <!-- end::1 Level -->
 
             <!-- List Pages -->
             <!-- begin::1 Level -->
-            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open" *ngIf="projects.length > 0">
                 <a class="menu-link menu-toggle" href="/user-space/lp-validator" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/list-pages-icon.png'"
@@ -88,7 +88,7 @@
                         <!-- end::2 Level --
         <!-- begin::2 Level -->
                         <li class="menu-item" routerLinkActive="menu-item-active" aria-haspopup="true" data-menu-toggle="hover">
-                            <a *ngIf="(allProjects$ | async) != null" class="menu-link" [routerLink]="['/user-space/lp-validator', (allProjects$ | async)['0']._id]" routerLinkActive="active">
+                            <a class="menu-link" [routerLink]="['/user-space/lp-validator', projects[0]?._id]" routerLinkActive="active">
                                 <i class="sous-aside">
                                     <span cacheSVG="true" class="svg-icon menu-icon">
                                         <img [src]="'./assets/images/png/icons/aside/validator-icon.png'"
@@ -145,7 +145,7 @@
 
             <!-- Item Pages -->
             <!-- begin::1 Level -->
-            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open" *ngIf="projects.length > 0">
                 <a class="menu-link menu-toggle" href="/ngbootstrap" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/item-pages-icon.png'"
@@ -220,7 +220,7 @@
             <!-- end::1 Level -->
 
             <!-- begin::1 Level -->
-            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="projects.length > 0">
                 <a class="menu-link disabled" routerLink="/linker" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon linker-cls">
                         <img [src]="'./assets/images/png/icons/aside/linker-icon.png'" alt=". " />
@@ -231,7 +231,7 @@
             <!-- end::1 Level -->
 
             <!-- begin::1 Level -->
-            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="projects.length > 0">
                 <a class="menu-link disabled" routerLink="/builder" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/index-checker-icon.png'"
@@ -243,7 +243,7 @@
             <!-- end::1 Level -->
 
             <!-- begin::1 Level -->
-            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="projects.length > 0">
                 <a class="menu-link disabled" routerLink="/builder" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/analyzer-icon.png'" alt=". " />
@@ -255,7 +255,7 @@
 
             <!-- Tuner -->
             <!-- begin::1 Level -->
-            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open" *ngIf="projects.length > 0">
                 <a class="menu-link menu-toggle" href="/ngbootstrap" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/tuner-icon.png'" alt=". " />
@@ -329,7 +329,7 @@
             <!-- end::1 Level -->
 
             <!-- begin::1 Level -->
-            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="(allProjects$ | async) !== null && (allProjects$ | async)?.length > 0">
+            <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active" *ngIf="projects.length > 0">
                 <a class="menu-link disabled" routerLink="/builder" routerLinkActive="active">
                     <span cacheSVG="true" class="svg-icon menu-icon">
                         <img [src]="'./assets/images/png/icons/aside/project-settings-icon.png'"

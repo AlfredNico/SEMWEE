@@ -1,18 +1,18 @@
 <mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange($event)">
-    <mat-step label="Import Items" [completed]="'true'" [editable]="isEditable">
+    <mat-step label="Import Items" [completed]="false" [editable]="isEditable">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
         <app-import-item #form [idProjet]="idProjet" (uploadFiles)="UploadFileReady($event)"></app-import-item>
     </mat-step>
-    <mat-step label="Infer List Pages" state="text_snippet" [completed]="isUserProject  === true">
+    <mat-step label="Infer List Pages" state="text_snippet" [completed]="false">
         <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
         <app-infer-list [data]="dataSources" (dataInferListReady)="inferListReady($event)"></app-infer-list>
         <!-- <app-files></app-files> -->
     </mat-step>
-    <mat-step label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
+    <mat-step label="Check Relevancy" state="download_done" [completed]="false">
         <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)"></app-check-relevancy>
     </mat-step>
 

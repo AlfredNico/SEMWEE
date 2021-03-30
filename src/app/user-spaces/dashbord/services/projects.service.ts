@@ -11,9 +11,12 @@ import { Projects } from '../interfaces/projects';
 export class ProjectsService {
 
   refresh$ = new BehaviorSubject<boolean>(false);
-  private subject = new Subject<any>();
   invokeFirstComponentFunction = new EventEmitter();
   subsVar: Subscription;
+
+  public trigrer$ = new BehaviorSubject<boolean>(false);
+  public subject = new Subject<any>();
+  public currentSubject = this.subject.asObservable();
   // isVisibleSource: BehaviorSubject<boolean> = new BehaviorSubject(false);
   isProjects = false;
 
@@ -29,13 +32,14 @@ export class ProjectsService {
   }
 
   public editProjects(value: { _id: number, project: Projects }) {
-    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value).pipe(
-      tap(() => {
-        console.log('edit');
-        this.subject.next();
-        this.invokeFirstComponentFunction.emit();
-      })
-    )
+    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value)
+    // .pipe(
+    //   tap(() => {
+    //     console.log('edit');
+    //     this.subject.next(false);
+    //     this.invokeFirstComponentFunction.emit({ name: 'okok' });
+    //   })
+    // )
   }
 
   uploadFiles(file: File) {
