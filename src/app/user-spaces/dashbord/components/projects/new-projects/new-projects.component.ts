@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
@@ -20,7 +21,7 @@ export class NewProjectsComponent implements OnInit {
   private user: User;
   form = this.fb.group({
     name_project: ['', [Validators.required, Validators.max(4)]],
-    // image_project: new FormControl(null, [Validators.required]),
+    // image_project: new FormControl(null),
     // number_of_item: ['', Validators.required],
     // numberPLI: ['', Validators.required],
     // numberLPVa: ['', Validators.required],
@@ -36,17 +37,8 @@ export class NewProjectsComponent implements OnInit {
   ngOnInit(): void {
     this.form.patchValue({
       user_id: this.user._id,
-    });
-    // this.form[name].patchValue(value[name], { onlySelf: true, emitEvent });
+    })
   }
-
-  // get mixItem() {
-  //   return this.form.controls.number_of_item.setValidators([Validators.min(0)]);
-  // }
-
-  // get maxItem() {
-  //   return this.form.controls.number_of_item.setValidators([Validators.min(100)]);
-  // }
 
   onSubmit() {
 
@@ -54,9 +46,7 @@ export class NewProjectsComponent implements OnInit {
       this.common.showSpinner('root');
       this.projetctService.uploadFiles(this.image_project).subscribe(
         async (file: any) => {
-          console.log(this.user._id);
-
-          const id = this.user._id;
+          const _id = this.user._id;
 
           if (file && file.message) {
             try {
@@ -66,13 +56,17 @@ export class NewProjectsComponent implements OnInit {
               if (result && result.message) {
                 this.notis.sucess(result.message);
                 this.router.navigateByUrl('/user-space/all-project');
-                this.common.hideSpinner();
+                // this.common.hideSpinner();
               }
             } catch (error) {
-              this.common.hideSpinner();
+              if (error instanceof HttpErrorResponse) {
+                console.log(error.message);
+                this.notis.warn(error.message);
+              }
               throw error;
             }
           }
+          this.common.hideSpinner();
         },
         (error) => {
           this.notis.warn('Server is not responding');

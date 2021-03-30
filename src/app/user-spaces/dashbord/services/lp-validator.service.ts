@@ -5,7 +5,7 @@ import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
 import { throwError } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ConvertUploadFileService } from './convert-upload-file.service';
 
 @Injectable({
@@ -19,41 +19,57 @@ export class LpValidatorService {
 
   public inferListData: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: [], hideColumns: [], data: [] };
 
-  constructor(private http: HttpClient, private fakeData: ConvertUploadFileService, private common: CommonService) { }
+  constructor(private http: HttpClient) { }
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
     formData.append('files', files);
 
     // const params = new HttpParams().set('nameFile', file);
-    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
-      map((result: any) => {
-        if (result) {
-          // return this.converDataSelected(result);
-          let values = [];
-          result.map((val: any) => {
-            Object.keys(val).map((key: string, index: number) => {
-              if (!this.data.displayColumns.includes(key)) {
-                this.data.displayColumns.push(key);
-              }
-            })
-            values.push({ ...val, 'select': true });
-          });
+    return this.http.post<{ [key: string]: Array<any[]> }>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
+      map((results: any) => Object.keys(results).map(key => {
+        const obj = {
+          displayColumns: [] as string[],
+          data: [] as any[],
+          hideColumns: [] as string[]
+        };
 
-          return this.data = {
-            displayColumns: this.data.displayColumns,
-            hideColumns: [],
-            data: values
-          };
-        }
-      }),
+        obj.displayColumns = Object.keys(results[0]);
+        obj.hideColumns.unshift('select');
+
+        obj.data = results.reduce((tbObj: any, td: any, index: number) => {
+          return tbObj[index] = { ...td, 'selec': true };
+        })
+
+        return obj;
+      })),
+      // map((result: any) => {
+      //   if (result) {
+      //     // return this.converDataSelected(result);
+      //     let values = [];
+      //     result.map((val: any) => {
+      //       Object.keys(val).map((key: string, index: number) => {
+      //         if (!this.data.displayColumns.includes(key)) {
+      //           this.data.displayColumns.push(key);
+      //         }
+      //       })
+      //       values.push({ ...val, 'select': true });
+      //     });
+
+      //     return this.data = {
+      //       displayColumns: this.data.displayColumns,
+      //       hideColumns: [],
+      //       data: values
+      //     };
+      //   }
+      // }),
       catchError((err) => {
         return this.handleError(err);
       })
     ).toPromise();
   }
 
-  private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
+  private searchItem(_idProduit: any, dataSources: any[], data: any, assign: Function) {
     return this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
       map((result: any) => {
         if (result) {
@@ -68,10 +84,10 @@ export class LpValidatorService {
     ).toPromise();
   }
 
-  public searchAllItem(dataSources: any[],data: any,assign: Function){
+  public searchAllItem(dataSources: any[], data: any, assign: Function) {
     return dataSources.map((value: any) => {
-      if(value.Valid == undefined || value.Valid == 'loadingQuery'){
-        this.searchItem(value._id,dataSources,data,assign).then(
+      if (value.Valid == undefined || value.Valid == 'loadingQuery') {
+        this.searchItem(value._id, dataSources, data, assign).then(
           result => {
             value['Valid'] = result['Valid'];
             value['Popular Search Queries'] = result['Popular Search Queries'];
@@ -79,7 +95,7 @@ export class LpValidatorService {
           }
         )
       }
-      return { ...value}
+      return { ...value }
     });
   }
 
@@ -99,7 +115,7 @@ export class LpValidatorService {
               })
               inferer.push({ ...res });
             });
-            
+
             return this.inferListData = {
               displayColumns: this.inferListData.displayColumns,
               hideColumns: [],
@@ -119,7 +135,7 @@ export class LpValidatorService {
     return throwError(error);
   }
 
-  public converDataMatching(dataSurces: any[],obj: any = {}): DataTypes {
+  public converDataMatching(dataSurces: any[], obj: any = {}): DataTypes {
     const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {

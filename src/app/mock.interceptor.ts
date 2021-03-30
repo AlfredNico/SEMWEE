@@ -79,7 +79,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 }
 
-export let fakeBackendProvider = {
+export let mockInterceptor = {
   // use fake backend in place of Http service for backend-less development
   provide: HTTP_INTERCEPTORS,
   useClass: MockInterceptor,
