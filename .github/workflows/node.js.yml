@@ -25,11 +25,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm cache clean --force
-    - run: rm -r package-lock.json
-    - run: npm cache verify
-    - run: npm install -g node-pre-gyp
-    - run: npm update
+    - run: node --max-old-space-size=512 node_modules/gulp/bin/gulp.js build
     - run: npm i
 #     - run: npm run build --if-present
 #     - run: npm test
