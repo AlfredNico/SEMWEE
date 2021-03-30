@@ -29,11 +29,7 @@ jobs:
     - run: rm -r package-lock.json
     - run: npm cache verify
     - run: npm install -g node-pre-gyp
-    - run: npm i
-    - run: npm cache clean --force
-    - run: rm -r package-lock.json
-    - run: npm cache verify
-    - run: npm install -g node-pre-gyp
+    - run: npm update
     - run: npm i
 #     - run: npm run build --if-present
 #     - run: npm test
