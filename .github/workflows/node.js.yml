@@ -26,6 +26,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install -g increase-memory-limit
-    - run: npm i --max-old-space-size=3096
+    - run: sudo npm i --max-old-space-size=3096
 #     - run: npm run build --if-present
 #     - run: npm test
