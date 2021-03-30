@@ -11,6 +11,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { OutputComponent } from './components/output/output.component';
 import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { ProjectsService } from './dashbord/services/projects.service';
 
 
 @NgModule({
@@ -32,6 +33,9 @@ import { MatStepperModule } from '@angular/material/stepper';
       },
     ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    ProjectsService
+  ]
 })
 export class UserSpaceModule { }

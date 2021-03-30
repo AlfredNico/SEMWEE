@@ -25,15 +25,13 @@ export class LpValidatorService {
     const formData: FormData = new FormData();
     formData.append('files', files);
 
-    // const params = new HttpParams().set('nameFile', file);
-    return this.http.post<{ [key: string]: Array<any[]> }>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
+    return this.http.post<DataTypes>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
       map((results: any) => Object.keys(results).map(key => {
         const obj = {
           displayColumns: [] as string[],
           data: [] as any[],
           hideColumns: [] as string[]
         };
-
         obj.displayColumns = Object.keys(results[0]);
         obj.hideColumns.unshift('select');
 
@@ -69,13 +67,13 @@ export class LpValidatorService {
     ).toPromise();
   }
 
-  private searchItem(_idProduit: any, dataSources: any[], data: any, assign: Function) {
-    return this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
+  private searchItem(_id: any, dataSources: any[], data: any, assign: Function) {
+    this.http.get<any>(`${environment.baseUrl}/validator/search-item/${_id}`).pipe(
       map((result: any) => {
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
-          return data[result._id] = tmp;
-          // assign(this.converDataMatching(dataSources,data));
+          data[result._id] = tmp;
+          assign(this.converDataMatching(dataSources, data, true));
         }
       }),
       catchError((err) => {
@@ -87,13 +85,12 @@ export class LpValidatorService {
   public searchAllItem(dataSources: any[], data: any, assign: Function) {
     return dataSources.map((value: any) => {
       if (value.Valid == undefined || value.Valid == 'loadingQuery') {
-        this.searchItem(value._id, dataSources, data, assign).then(
-          result => {
-            value['Valid'] = result['Valid'];
-            value['Popular Search Queries'] = result['Popular Search Queries'];
-            value['Website Browser'] = result['Website Browser'];
-          }
-        )
+        this.searchItem(value._id, dataSources, data, assign)
+        // result => {
+        //   value['Valid'] = result['Valid'];
+        //   value['Popular Search Queries'] = result['Popular Search Queries'];
+        //   value['Website Browser'] = result['Website Browser'];
+        // }
       }
       return { ...value }
     });
@@ -135,7 +132,7 @@ export class LpValidatorService {
     return throwError(error);
   }
 
-  public converDataMatching(dataSurces: any[], obj: any = {}): DataTypes {
+  public converDataMatching(dataSurces: any[], obj: any = {}, afterSearch: boolean = false): DataTypes {
     const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
@@ -155,8 +152,11 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
-      const tmp = obj[values['idProduct']] != undefined ? obj[values['idProduct']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
-
+      var tmp = obj[values['_id']] != undefined ? obj[values['_id']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
+      if (afterSearch && obj[values['_id']] == undefined) {
+        tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+      }
+      //console.log(obj[values['idProduct']] + " : ", tmp);
       dataValue.push({ ...values, ...tmp });
     });
 

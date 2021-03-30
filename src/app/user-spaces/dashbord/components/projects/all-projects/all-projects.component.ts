@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
+import { AsideComponent } from '@app/pages/_layout/components/aside/aside.component';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
@@ -27,19 +28,23 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   private trigger: Subject<Projects[]> = new Subject();
   public allProjects$: Observable<Projects[]>;
 
-  refresh$ = new BehaviorSubject<boolean>(true);
+  // refresh$ = new BehaviorSubject<boolean>(true);
+  isRefresh = false;
 
   private user!: User;
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { 
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) {
     this.user = this.auth.currentUserSubject.value;
   }
 
   ngOnInit(): void {
     // this.getAllProject();
-    this.allProjects$ = this.refresh$.pipe(
+    this.allProjects$ = this.projectServices.refresh$.pipe(
+      tap(result => console.log(result)),
       switchMap(_ => this.projectServices.getAllProjects(this.user._id))
     )
+
+    console.log(this.projectServices.isProjects);
   }
 
   ngAfterViewInit() {
@@ -70,13 +75,14 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     }).afterClosed().pipe(
       map(result => {
         if (result === true) {
+          this.isRefresh = !this.isRefresh;
           this.projectServices.deleteProjects(item._id).subscribe(result => {
             if (result && result.message) {
               console.log(result)
               this.notifs.sucess(result.message);
 
               // this.getAllProject();
-              this.refresh$.next(false);
+              this.projectServices.refresh$.next(this.isRefresh);
             }
           })
         }
@@ -91,8 +97,9 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
     }).afterClosed().pipe(
       map((result: boolean) => {
         if (result === true) {
+          this.isRefresh = !this.isRefresh;
           // this.getAllProject();
-          this.refresh$.next(false);
+          this.projectServices.refresh$.next(this.isRefresh);
         }
       })
     ).subscribe();

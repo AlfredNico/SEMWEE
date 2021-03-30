@@ -2,7 +2,7 @@
     // "editor.wordWrap": "on",
     "typescript.tsdk": "node_modules\\typescript\\lib",
     "editor.wordWrap": "wordWrapColumn",
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "off",
     "files.autoSaveDelay": 2000,
     "diffEditor.wordWrap": "inherit",
     "editor.acceptSuggestionOnEnter": "on",

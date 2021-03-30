@@ -70,6 +70,10 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
       switchMap(_ => this.projectsServices.getAllProjects(this.user?._id))
     );
 
+    this.projectsServices.refresh$.subscribe((isRefresh: boolean) => {
+      console.log('isRefresh: ', isRefresh); // => true/false
+    });
+
     this.ulCSSClasses = this.layout.getStringCSSClasses('header_menu_nav');
     this.rootArrowEnabled = this.layout.getProp('header.menu.self.rootArrow');
     this.headerMenuDesktopToggle = this.layout.getProp(

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -7,11 +7,14 @@ import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-projects',
   templateUrl: './new-projects.component.html',
-  styleUrls: ['./new-projects.component.scss']
+  styleUrls: ['./new-projects.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [FormBuilder] // <-- THIS PART
 })
 export class NewProjectsComponent implements OnInit {
 
