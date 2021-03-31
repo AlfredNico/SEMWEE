@@ -19,6 +19,7 @@ import {
   ResizeEvent
 } from 'angular-resizable-element';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
+import { NotificationService } from '@app/services/notification.service';
 
 @Component({
   selector: 'app-infer-list',
@@ -61,7 +62,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService, private auth: AuthService) {
+  constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService, private auth: AuthService, private notifs: NotificationService) {
     this.user = this.auth.currentUserSubject.value;
   }
 
@@ -235,14 +236,16 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       if (result && result.data) {
         this.dataInferListReady.emit(result);
       }
+      this.notifs.warn('Server is not responding');
       this.commonServices.isLoading$.next(false);
+      this.commonServices.hideSpinner();
       // console.log(this.filterData);
     } catch (error) {
       // console.log(this.filterData);
+      this.commonServices.isLoading$.next(false);
+      this.commonServices.hideSpinner();
       throw error;
     }
-    this.commonServices.isLoading$.next(false);
-    this.commonServices.hideSpinner();
 
   }
 

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -75,7 +76,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   //subscription
   public subscription$ = new Subscription();
 
-  constructor(private lpValidatorServices: LpValidatorService, private common: CommonService) { }
+  constructor(private lpValidatorServices: LpValidatorService, private common: CommonService, private notifs: NotificationService) { }
 
   ngOnInit(): void { }
 
@@ -105,12 +106,16 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         if (result) {
           this.uploadFiles.emit(result);
         }
+        this.notifs.warn('Server is not responding');
+        this.common.hideSpinner();
+        this.common.isLoading$.next(false);
       } catch (error) {
+        this.notifs.warn('Server is not responding');
         console.log('error ', error);
+        this.common.hideSpinner();
+        this.common.isLoading$.next(false);
         throw error;
       }
-      this.common.hideSpinner();
-      this.common.isLoading$.next(false);
     }
 
   }
