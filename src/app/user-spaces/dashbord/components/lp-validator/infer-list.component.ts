@@ -235,8 +235,9 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
       if (result && result.data) {
         this.dataInferListReady.emit(result);
+      } else {
+        this.notifs.warn('Server is not responding');
       }
-      this.notifs.warn('Server is not responding');
       this.commonServices.isLoading$.next(false);
       this.commonServices.hideSpinner();
       // console.log(this.filterData);
