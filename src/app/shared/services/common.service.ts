@@ -9,9 +9,9 @@ import { BehaviorSubject } from 'rxjs';
 export class CommonService {
 
   public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  
+
   private readonly spinnerOptions: Spinner = {
-    type: 'ball-clip-rotate',
+    type: 'ball-spin-clockwise',
     size: 'medium',
     bdColor: 'rgba(131,128,128,0.8)',
     color: 'white',

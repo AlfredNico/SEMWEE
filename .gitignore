@@ -26,10 +26,10 @@ speed-measure-plugin*.json
 
 # IDE - VSCode
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
 .history/*
 
 # misc
@@ -48,6 +48,4 @@ Thumbs.db
 
 
 #make vscode and environnement not to github
-/.vscode
-*.vscode
-*environnement
+*/environnement*

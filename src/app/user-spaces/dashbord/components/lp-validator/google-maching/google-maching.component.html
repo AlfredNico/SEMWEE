@@ -34,36 +34,25 @@
                             </mat-form-field>
                         </div>
                     </th>
-                    <td [ngClass]="{'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td">
-                        <!-- <div *ngIf="row[column] === 'loadingQuery'; else noLoading">
-                            <mat-spinner style="zoom: .2;" class="m-auto"></mat-spinner>
-                        </div> -->
-                        <mat-spinner *ngIf="row[column]==='loadingQuery'; noLoading" style="zoom: .2;" class="m-auto"></mat-spinner>
-
-                        <mat-icon color="primary" *ngIf="column==='Valid' && row[column]===true">done</mat-icon>
-
-                        <mat-icon color="warn" *ngIf="column==='Valid' &&  row[column]===false">close</mat-icon>
-
-                        <div class="middle" *ngIf="row[column]!=='loadingQuery' && column!=='Valid'">{{ row[column] }} </div>
-
-                        <ng-template #noLoading> {{ row[column] }} </ng-template>
-
-
-                        <!-- <ng-template #noLoading>
-                            <div [ngSwitch]="column === 'Valid'">
-                                <mat-icon color="primary" *ngSwitchCase="row[column] === true">done</mat-icon>
-                                <mat-icon color="warn" *ngSwitchCase="row[column] === true">close</mat-icon>
+                    <td [ngClass]="{'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td" [ngSwitch]="column">
+                        <div *ngSwitchCase="'Valid'">
+                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
+                            <mat-icon color="primary" *ngIf="row[column]===true">done</mat-icon>
+                            <mat-icon color="warn" *ngIf=" row[column]===false">close</mat-icon>
+                        </div>
+                        <div *ngSwitchCase="'Popular Search Queries'">
+                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
+                            <div *ngIf="row[column]!=='loadingQuery'">
+                                {{ row[column] }}
                             </div>
-                            <div [ngSwitch]="column === 'Popular Search Queries'">
-                                <mat-icon color="warn" *ngSwitchCase="row[column] !== 'searchQuery'">{{ row[column] }}</mat-icon>
+                        </div>
+                        <div *ngSwitchCase="'Website Browser'">
+                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
+                            <div *ngIf="row[column]!=='loadingQuery'">
+                                {{ row[column] }}
                             </div>
-                            <div [ngSwitch]="column === 'Website Browser'">
-                                <mat-icon color="warn" *ngSwitchCase="row[column] !== 'searchQuery'">{{ row[column] }}</mat-icon>
-                            </div>
-
-                            <div *ngSwitchDefault>{{ row[column] }} </div>
-                        </ng-template> -->
-
+                        </div>
+                        <div *ngSwitchDefault>{{ row[column] }}</div>
                     </td>
                 </ng-container>
             </div>
