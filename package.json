@@ -4,12 +4,11 @@
     "scripts": {
         "ng": "ng",
         "start": "node server.js",
-        "build": "ng build --prod",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "postinstall": "ng build --prod",
         "fix-memory-limit": "cross-env LIMIT=2048 increase-memory-limit"
+        "build-prod": "node --max_old_space_size=1900 ng build --prod"
     },
     "private": true,
     "dependencies": {
