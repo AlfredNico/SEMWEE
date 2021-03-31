@@ -84,9 +84,7 @@ export class EditComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-    console.log(this.image_url)
-  }
+  ngOnInit(): void { }
 
   onClick(): void {
     this.dialogRef.close(this.form.value);
@@ -99,9 +97,6 @@ export class EditComponent implements OnInit {
         this.projetctService.uploadFiles(this.image_project).subscribe(
           async (file: any) => {
             if (file && file.message) {
-              console.log(this.form.value);
-              // console.log(this.form.get('image_project').value);
-
               const value = { '_id': this.data._id, ...this.form.value, 'image_project': file.message };
               this.projetctService.editProjects(
                 value
@@ -113,6 +108,7 @@ export class EditComponent implements OnInit {
           },
           (error) => {
             this.notifs.warn('Server is not responding');
+            throw error;
           }
         )
       } else {
