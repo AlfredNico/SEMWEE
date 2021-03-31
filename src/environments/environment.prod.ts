@@ -5,9 +5,9 @@ export const environment = {
   isMockEnabled: true,
   // apiUrl: 'api',
   // baseUrl: 'https://back-semwee.herokuapp.com/api'
-  // baseUrl: 'http://51.75.255.155:3000/api',
-  // baseUrlImg: 'http://51.75.255.155:3000'
+  baseUrl: 'http://51.75.255.155:3000/api',
+  baseUrlImg: 'http://51.75.255.155:3000'
   // baseUrl: 'backend-semwee'
-  baseUrl: 'https://semwee-dev-back.herokuapp.com/api',//Adriela-loc
-  baseUrlImg: 'https://semwee-dev-back.herokuapp.com'//Adriela-loc
+  // baseUrl: 'http://192.168.88.17:3000/api',//Adriela-loc
+  // baseUrlImg: 'http://192.168.88.17:3000'//Adriela-loc
 };

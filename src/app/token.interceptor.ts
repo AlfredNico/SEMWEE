@@ -3,13 +3,15 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './authentification/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NotificationService } from './services/notification.service';
 import { Router } from '@angular/router';
+import { ErrorInterceptor } from './error.interceptor';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -17,8 +19,6 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private cookieService: CookieService, private notifs: NotificationService, private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log(request.url)
-
     if (request.url.includes('user-space') && this.cookieService.check('SEMEWEE') == false) {
       this.notifs.warn('Session expiré');
       this.router.navigateByUrl('/sign-in');
@@ -38,4 +38,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request);
   }
+}
+
+export const tokenInterceptor = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: TokenInterceptor,
+  multi: true
 }

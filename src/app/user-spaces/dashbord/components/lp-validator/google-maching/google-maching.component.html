@@ -34,14 +34,25 @@
                             </mat-form-field>
                         </div>
                     </th>
-                    <td [ngClass]="{'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td">
-                        <div *ngIf="row[column] === 'loadingQuery'; else noLoading">
-                            <mat-spinner style="zoom: .2;" class="m-auto"></mat-spinner>
+                    <td [ngClass]="{'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td" [ngSwitch]="column">
+                        <div *ngSwitchCase="'Valid'">
+                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
+                            <mat-icon color="primary" *ngIf="row[column]===true">done</mat-icon>
+                            <mat-icon color="warn" *ngIf=" row[column]===false">close</mat-icon>
                         </div>
-
-                        <ng-template #noLoading>
-                            {{ row[column] }}
-                        </ng-template>
+                        <div *ngSwitchCase="'Popular Search Queries'">
+                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
+                            <div *ngIf="row[column]!=='loadingQuery'">
+                                {{ row[column] }}
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'Website Browser'">
+                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
+                            <div *ngIf="row[column]!=='loadingQuery'">
+                                {{ row[column] }}
+                            </div>
+                        </div>
+                        <div *ngSwitchDefault>{{ row[column] }}</div>
                     </td>
                 </ng-container>
             </div>

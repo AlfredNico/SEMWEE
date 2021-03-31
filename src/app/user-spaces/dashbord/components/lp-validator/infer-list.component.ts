@@ -16,8 +16,9 @@ import { CommonService } from '@app/shared/services/common.service';
 import { map } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import {
-	ResizeEvent
+  ResizeEvent
 } from 'angular-resizable-element';
+import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 
 @Component({
   selector: 'app-infer-list',
@@ -35,8 +36,8 @@ import {
 })
 export class InferListComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
 
-  @Input() data!: { displayColumns: string[], hideColumns: string[], data: any[] };
-  public dataView: { displayColumns: string[], hideColumns: string[], data: any[] } = { displayColumns: ['select'], hideColumns: [], data: [] };
+  @Input() data: DataTypes;
+  public dataView: DataTypes = { displayColumns: [], hideColumns: [], data: [] };
   public displayColumns: string[] = ['select'];
 
   //generate Data
@@ -61,18 +62,16 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   @Output() dataInferListReady = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder, private commonServices: CommonService, public dialog: MatDialog, private lpValidatorServices: LpValidatorService, private auth: AuthService) {
-
+    this.user = this.auth.currentUserSubject.value;
   }
 
   ngOnChanges() {
 
-    this.user = this.auth.currentUserSubject.value;
-
     this.commonServices.showSpinner('root');
     if (this.data !== undefined) {
       if (this.dataView.data.length > 0) {
-        this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
-        this.displayColumns = ['select'];
+        this.dataView = { displayColumns: [], hideColumns: [], data: [] };
+        this.displayColumns = [];
       }
       Object.assign(this.dataView, this.data);
     }
@@ -158,7 +157,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       data: {
         noHiddenRows: this.displayColumns,
         hiddenRows: this.dataView.hideColumns
-      }, 
+      },
       width: '70%',
     }).afterClosed().pipe(
       // tap(() => {
@@ -196,12 +195,9 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
 
   async tableReady() {
     this.commonServices.isLoading$.next(true);
-    this.commonServices.showSpinner();
-
-    // const fake_header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory 2', 'Facet 1', 'Facet 1 Value', 'Facet 2', 'Facet 2 Value', 'Facet 3', 'Facet 3 Value', 'Facet 4', 'Facet 4 Value', 'Facet 5', 'Facet 5 Value'];
+    this.commonServices.showSpinner('root');
 
     const header = ['select', "ID", 'Category', 'Subcategory', 'Subcategory_2', 'Facet_1', 'Facet_1_Value', 'Facet_2', 'Facet_2_Value', 'Facet_3', 'Facet_3_Value', 'Facet_4', 'Facet_4_Value', 'Facet_5', 'Facet_5_Value'];
-
 
     let tabIndex = 0;
 
@@ -217,9 +213,7 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
             this.filterData[tabIndex] = { ...object };
 
           } else if (key.includes('Facet') && !key.includes('Value') && this.checklist.includes(key)) {
-
             const keyIndex = header.indexOf(key);
-
             object[header[i]] = value[key];
             i++;
             object[header[i]] = value[`${key}_Value`];
@@ -234,25 +228,21 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
       }
     })
 
-    console.log(this.filterData)
 
     try {
-      // this.dataFilterReady.emit(this.filterData);
       const result = await this.lpValidatorServices.postInferList(this.filterData);
 
       if (result && result.data) {
-        console.log('result 3', result);
-        // const value = await this.lpValidatorServices.getInfterList();
         this.dataInferListReady.emit(result);
       }
       this.commonServices.isLoading$.next(false);
-      this.commonServices.hideSpinner();
       // console.log(this.filterData);
     } catch (error) {
-      this.commonServices.isLoading$.next(false);
-      this.commonServices.hideSpinner();
       // console.log(this.filterData);
+      throw error;
     }
+    this.commonServices.isLoading$.next(false);
+    this.commonServices.hideSpinner();
 
   }
 
@@ -268,8 +258,8 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   public selectRow(row: any) {
     // let data, indexData;
     // this.allSelect = this.dataView.data.includes(t => t.select === false);
-    let index = this.dataView.data.findIndex((x: any) => x.ID === row.ID)
-    this.dataView.data[index] = { ...row, 'select': row['select'] === true ? false : true };
+    let index = this.dataView.data.findIndex(x => x.ID == row.ID);
+    this.dataView.data[index] = { ...row, 'select': row['select'] == true ? false : true };
 
     this.dataSource.data = this.dataView.data;
   }
@@ -290,17 +280,17 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
     this.dataSource.data = [];
   }
 
-  
+
 
   onResizeEnd(event: ResizeEvent, columnName): void {
-		if (event.edges.right) {
-			const cssValue = event.rectangle.width + 'px';
-			const columnElts = document.getElementsByClassName('mat-column-' + columnName);
-			for (let i = 0; i < columnElts.length; i++) {
-				const currentEl = columnElts[i] as HTMLDivElement;
-				currentEl.style.width = cssValue;
-			}
-		}
-	}
+    if (event.edges.right) {
+      const cssValue = event.rectangle.width + 'px';
+      const columnElts = document.getElementsByClassName('mat-column-' + columnName);
+      for (let i = 0; i < columnElts.length; i++) {
+        const currentEl = columnElts[i] as HTMLDivElement;
+        currentEl.style.width = cssValue;
+      }
+    }
+  }
 
 }

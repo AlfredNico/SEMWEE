@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthService } from '@app/authentification/services/auth.service';
-import { Users } from '@app/models/users';
+import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Projects } from '../interfaces/projects';
 
 @Injectable({
@@ -12,31 +10,36 @@ import { Projects } from '../interfaces/projects';
 })
 export class ProjectsService {
 
-  public refresh$ = new BehaviorSubject<boolean>(true);
+  refresh$ = new BehaviorSubject<boolean>(false);
+  invokeFirstComponentFunction = new EventEmitter();
+  subsVar: Subscription;
 
-  private user: Users;
-  constructor(private http: HttpClient, private auth: AuthService) {
-    this.user = this.auth.currentUserSubject.value;
-  }
+  public trigrer$ = new BehaviorSubject<boolean>(false);
+  public subject = new Subject<any>();
+  public currentSubject = this.subject.asObservable();
+  // isVisibleSource: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  isProjects = false;
+
+  constructor(private http: HttpClient) { }
 
   public getAllProjects(_idUsers): Observable<Projects[]> {
     return this.http.get<Projects[]>(`${environment.baseUrl}/project/get-project/${_idUsers}`);
   }
 
   public addProjects(data: any) {
-    console.log(data);
-    return this.http.post<{ message: string }>(`${environment.baseUrl}/project/add-project`, data).pipe(
-      map(result => {
-        this.refresh$.next(false)
-        return result;
-      })
-    )
-    .toPromise();
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/project/add-project`, data)
+      .toPromise();
   }
 
   public editProjects(value: { _id: number, project: Projects }) {
-    this.refresh$.next(false)
-    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value);
+    return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value)
+    // .pipe(
+    //   tap(() => {
+    //     console.log('edit');
+    //     this.subject.next(false);
+    //     this.invokeFirstComponentFunction.emit({ name: 'okok' });
+    //   })
+    // )
   }
 
   uploadFiles(file: File) {
@@ -46,7 +49,13 @@ export class ProjectsService {
   }
 
   public deleteProjects(project_id: string) {
-    this.refresh$.next(false)
     return this.http.delete<{ message: string }>(`${environment.baseUrl}/project/delete-project/${project_id}`);
+  }
+
+  // sendClickEvent() {
+  //   this.subject.next();
+  // }
+  getClickEvent(): Observable<any> {
+    return this.subject.asObservable();
   }
 }

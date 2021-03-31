@@ -1,10 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
 import { throwError } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ConvertUploadFileService } from './convert-upload-file.service';
 
 @Injectable({
@@ -12,39 +13,28 @@ import { ConvertUploadFileService } from './convert-upload-file.service';
 })
 export class LpValidatorService {
 
-  public data: DataTypes = { displayColumns: ['select'], hideColumns: [], data: [] };
-
   public matching: DataTypes = { displayColumns: [], hideColumns: [], data: [] };
 
-  public inferListData: { displayColumns: any[], hideColumns: any[], data: any[] } = { displayColumns: [], hideColumns: [], data: [] };
-
-  constructor(private http: HttpClient, private fakeData: ConvertUploadFileService, private common: CommonService) { }
+  constructor(private http: HttpClient) { }
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
     formData.append('files', files);
 
-    // const params = new HttpParams().set('nameFile', file);
-    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
-      map((result: any) => {
-        if (result) {
-          // return this.converDataSelected(result);
-          let values = [];
-          result.map((val: any) => {
-            Object.keys(val).map((key: string, index: number) => {
-              if (!this.data.displayColumns.includes(key)) {
-                this.data.displayColumns.push(key);
-              }
-            })
-            values.push({ ...val, 'select': true });
-          });
+    return this.http.post<DataTypes>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
+      map((results: any) => {
+        let obj = {
+          displayColumns: [] as string[],
+          data: [] as any[],
+          hideColumns: [] as string[]
+        };
 
-          return this.data = {
-            displayColumns: this.data.displayColumns,
-            hideColumns: [],
-            data: values
-          };
-        }
+        obj.displayColumns = Object.keys(results[0]);
+        obj.displayColumns.unshift('select');
+        results.reduce((tbObj: any, td: any, index: number) => {
+          obj.data[index - 1] = { ...td, 'select': true };
+        });
+        return obj;
       }),
       catchError((err) => {
         return this.handleError(err);
@@ -52,13 +42,13 @@ export class LpValidatorService {
     ).toPromise();
   }
 
-  private searchItem(_idProduit: any, dataSources: any[] , data: any,assign: Function){
-    this.http.get<any>(`${environment.baseUrl}/validator/search-item/`).pipe(
+  private searchItem(_id: any, dataSources: any[], data: any, assign: Function) {
+    return this.http.get<any>(`${environment.baseUrl}/validator/search-item/${_id}`).pipe(
       map((result: any) => {
         if (result) {
           const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
           data[result._id] = tmp;
-          assign(this.converDataMatching(dataSources,data));
+          assign(this.converDataMatching(dataSources, data, true));
         }
       }),
       catchError((err) => {
@@ -67,39 +57,30 @@ export class LpValidatorService {
     ).toPromise();
   }
 
-  public searchAllItem(dataSources: any[],data: any,assign: Function){
-    dataSources.map((value: any) => {
-      if(value.Valid == undefined || value.Valid == 'loadingQuery'){
-        this.searchItem(value._id,dataSources,data,assign);
+  public searchAllItem(dataSources: any[], data: any, assign: Function) {
+    return dataSources.map((value: any) => {
+      if (value.Valid == undefined || value.Valid == 'loadingQuery') {
+        this.searchItem(value._id, dataSources, data, assign)
       }
+      return { ...value }
     });
   }
 
   public postInferList(value: any) {
     return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/post-infer-list`, value)
       .pipe(
-        map((result: any) => {
-          if (result) {
-            console.log('result', result);
-            // return this.converData(result);
-            let inferer: any[] = [];
-            result.map((res: any) => {
-              Object.keys(res).map((key: string, index: number) => {
-                // console.log(key, index);
-                if (!this.inferListData.displayColumns.includes(key)) {
-                  this.inferListData.displayColumns.push(key);
-                }
-              })
-              inferer.push({ ...res });
-            });
+        map((results: any) => {
+          let infer = {
+            displayColumns: [] as string[],
+            data: [] as any[],
+            hideColumns: [] as string[]
+          };
 
-            console.log('inferer', inferer);
-            return this.inferListData = {
-              displayColumns: this.inferListData.displayColumns,
-              hideColumns: [],
-              data: inferer
-            };
-          }
+          infer.displayColumns = Object.keys(results[0]);
+          results.reduce((tbObj: any, td: any, index: number) => {
+            infer.data[index - 1] = td;
+          });
+          return infer;
 
         }),
         catchError((err) => {
@@ -113,44 +94,7 @@ export class LpValidatorService {
     return throwError(error);
   }
 
-  private converDataSelected(dataSurces: any[]): DataTypes {
-    let dataValue: any[] = [];
-    dataSurces.map((value: any) => {
-      Object.keys(value).map((key: string, index: number) => {
-        if (!this.data.displayColumns.includes(key)) {
-          this.data.displayColumns.push(key);
-        }
-      })
-      dataValue.push({ ...value, 'select': true });
-    });
-
-    return this.data = {
-      displayColumns: this.data.displayColumns,
-      hideColumns: [],
-      data: dataValue
-    };
-  }
-
-  private converData(dataSurces: any[]): DataTypes {
-    let dataValue: any[] = [];
-    dataSurces.map((result: any) => {
-      Object.keys(result).map((key: string, index: number) => {
-        // console.log(key, index);
-        if (!this.inferListData.displayColumns.includes(key)) {
-          this.inferListData.displayColumns.push(key);
-        }
-        dataValue.push({ ...result });
-      })
-    });
-
-    return this.inferListData = {
-      displayColumns: this.inferListData.displayColumns,
-      hideColumns: [],
-      data: dataValue
-    };
-  }
-
-  public converDataMatching(dataSurces: any[],obj: any = {}): DataTypes {
+  public converDataMatching(dataSurces: any[], obj: any = {}, afterSearch: boolean = false): DataTypes {
     const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
@@ -170,8 +114,11 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
-      const tmp = obj[values['idProduct']] != undefined ? obj[values['idProduct']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
-
+      var tmp = obj[values['_id']] != undefined ? obj[values['_id']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
+      // if (afterSearch && obj[values['_id']] == undefined) {
+      //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+      // }
+      //console.log(obj[values['idProduct']] + " : ", tmp);
       dataValue.push({ ...values, ...tmp });
     });
 

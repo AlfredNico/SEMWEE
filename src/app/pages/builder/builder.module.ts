@@ -6,6 +6,7 @@ import { BuilderComponent } from './builder.component';
 import { FormsModule } from '@angular/forms';
 import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule } from 'ngx-highlightjs';
+import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
 @NgModule({
   declarations: [BuilderComponent],
@@ -23,5 +24,8 @@ import { HighlightModule } from 'ngx-highlightjs';
       },
     ]),
   ],
+  providers: [
+    ProjectsService
+  ]
 })
-export class BuilderModule {}
+export class BuilderModule { }
