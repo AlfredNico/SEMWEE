@@ -3,13 +3,15 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './authentification/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NotificationService } from './services/notification.service';
 import { Router } from '@angular/router';
+import { ErrorInterceptor } from './error.interceptor';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -36,4 +38,10 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request);
   }
+}
+
+export const tokenInterceptor = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: TokenInterceptor,
+  multi: true
 }

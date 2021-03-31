@@ -23,6 +23,7 @@ import { AsideDynamicComponent } from './_layout/components/aside-dynamic/aside-
 import { HeaderMenuDynamicComponent } from './_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
 @NgModule({
   declarations: [
@@ -50,5 +51,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     SubheaderModule,
     MatProgressBarModule
   ],
+  providers: [
+    ProjectsService
+  ]
 })
 export class LayoutModule { }

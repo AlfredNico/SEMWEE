@@ -93,9 +93,6 @@ export class EditComponent implements OnInit {
   }
 
   onSubmit() {
-
-    console.log(this.form.value)
-
     if (this.form.valid) {
 
       if (this.image_project instanceof File) {

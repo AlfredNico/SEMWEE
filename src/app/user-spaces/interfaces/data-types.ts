@@ -1,6 +1,6 @@
 export interface DataTypes {
-    displayColumns: any[],
-    hideColumns: any[], 
+    displayColumns: string[],
+    hideColumns: string[],
     data: any[]
 }
 

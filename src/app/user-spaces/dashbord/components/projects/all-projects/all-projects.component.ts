@@ -2,11 +2,13 @@ import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
+import { AsideComponent } from '@app/pages/_layout/components/aside/aside.component';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 import { UpdatesUserInfoService } from '@app/user-spaces/dashbord/services/updates-user-info.service';
+import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { map, tap, takeUntil, retry, switchMap } from 'rxjs/operators';
@@ -24,20 +26,22 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // public projects: Subject<Projects[]> = new Subject<Projects[]>();
   public projects: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(undefined);
-  private trigger: Subject<Projects[]> = new Subject();
   public allProjects$: Observable<Projects[]>;
 
-  refresh$ = new BehaviorSubject<boolean>(true);
+  // refresh$ = new BehaviorSubject<boolean>(true);
 
   private user!: User;
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService) { 
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService, private triggerServices: TriggerService) {
     this.user = this.auth.currentUserSubject.value;
   }
 
   ngOnInit(): void {
     // this.getAllProject();
-    this.allProjects$ = this.refresh$.pipe(
+    this.allProjects$ = this.projectServices.refresh$.pipe(
+      tap(() => {
+        this.triggerServices.trigrer$.next(true);
+      }),
       switchMap(_ => this.projectServices.getAllProjects(this.user._id))
     )
   }
@@ -76,7 +80,8 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
               this.notifs.sucess(result.message);
 
               // this.getAllProject();
-              this.refresh$.next(false);
+              this.projectServices.refresh$.next(true);
+              this.triggerServices.trigrer$.next(true);
             }
           })
         }
@@ -92,17 +97,12 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
       map((result: boolean) => {
         if (result === true) {
           // this.getAllProject();
-          this.refresh$.next(false);
+          this.projectServices.refresh$.next(true);
+          this.triggerServices.trigrer$.next(true);
         }
       })
     ).subscribe();
   }
-
-  // private getAllProject(){
-  //   this.allProjects$ =this.refresh$.pipe(
-  //     switchMap(_ => this.projectServices.getAllProjects())
-  //   )
-  // }
 
   ngOnDestroy() {
 

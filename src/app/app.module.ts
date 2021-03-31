@@ -10,9 +10,9 @@ import { RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ErrorInterceptor } from './error.interceptor';
-import { TokenInterceptor } from './token.interceptor';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { errorInterceptor } from './error.interceptor';
+import { tokenInterceptor } from './token.interceptor';
 import { MockInterceptor } from './mock.interceptor';
 import { IsLoggedInGuard } from './guards/is-logged-in.guard';
 import { InlineSVGModule } from 'ng-inline-svg';
@@ -79,9 +79,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   providers: [
     CookieService,
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
+    tokenInterceptor,
+    errorInterceptor,
+    MockInterceptor
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
