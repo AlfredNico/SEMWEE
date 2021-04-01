@@ -4,11 +4,11 @@
     "scripts": {
         "ng": "ng",
         "start": "node server.js",
-        "build": "ng build --prod",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "postinstall": "ng build --prod"
+        "fix-memory-limit": "cross-env LIMIT=1900 increase-memory-limit",
+        "build-prod": "node --max_old_space_size=1900 ./node_modules/@angular/cli/bin/ng build --prod --base-href /"
     },
     "private": true,
     "dependencies": {
@@ -78,7 +78,9 @@
         "typescript": "~4.0.2",
         "webpack-cli": "^3.3.12",
         "webpack-messages": "^2.0.4",
-        "webpack-rtl-plugin": "^2.0.0"
+        "webpack-rtl-plugin": "^2.0.0",
+        "increase-memory-limit": "^1.0.3",
+        "cross-env": "^5.0.5"
     },
     "engines": {
         "node": "14.15.4",
