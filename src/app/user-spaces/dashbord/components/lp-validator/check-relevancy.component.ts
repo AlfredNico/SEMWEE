@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,6 +12,7 @@ import { TableOptionsComponent } from '@app/shared/components/table-options/tabl
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { map } from 'rxjs/operators';
+import { TuneItComponent } from './dialog/tune-it.component';
 
 @Component({
   selector: 'app-check-relevancy',
@@ -78,9 +79,9 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.dataSource.sort = this.sort;
 
     this.dataView.displayColumns.map((key: string, index: number) => {
-        //création formControl Dynamics
-        this.displayColumns.push(key);
-        this.filters.addControl(key, new FormControl(''));
+      //création formControl Dynamics
+      this.displayColumns.push(key);
+      this.filters.addControl(key, new FormControl(''));
     })
     this.commonServices.hideSpinner();
   }
@@ -128,7 +129,7 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.displayColumns.forEach((column, index) => {
       this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
-        this.filters.addControl(column, new FormControl(''));
+      this.filters.addControl(column, new FormControl(''));
     });
   }
 
@@ -149,7 +150,7 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
           result.noHiddenRows?.map(async item => {
             //création formControl Dynamics
-              this.filters.addControl(item, new FormControl(''));
+            this.filters.addControl(item, new FormControl(''));
           });
         }
       }),
@@ -177,8 +178,26 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
     this.dataView.data.forEach(t => t.select = completed);
   }
 
-  dataMachingReady(){
+  dataMachingReady() {
     this.dataMatching.emit(this.dataView);
+  }
+
+  openTuneIt(id: string, row: any, event: any) {
+    const el: HTMLElement = document.getElementById(id);
+    // let pos: number = el.offsetTop;
+    const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
+    const postLeft: number = offsetLeft + offsetWidth;
+    console.log('x', offsetTop, 'y', postLeft);
+    const { clientX, clientY } = event;
+    console.log(clientX, '', clientY);
+
+
+
+    this.dialog.open(TuneItComponent, {
+      position: { top: `${clientX}px`, left: `${clientY}px` },
+      width: '400px',
+      data: row
+    });
   }
 
 }

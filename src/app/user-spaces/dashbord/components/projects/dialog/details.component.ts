@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
+import { environment } from '@environments/environment';
 import { map } from 'rxjs/operators';
 import { EditComponent } from './edit.component';
 
@@ -9,13 +10,13 @@ import { EditComponent } from './edit.component';
   template: `
     <div fxLayout="column" *ngIf="data">
         <h3 mat-dialog-title>Details project</h3>
-        <div mat-dialog-content>
-          <img [src]="data.image_project" alt="image project" heigth="50" width="100">
+        <div mat-dialog-content class="w-100">
+          <div class="w-100" style="text-align: center;">
+            <img [src]="image_url" alt="image project" heigth="80" width="130">
+          </div>
 
           <div>
-            <p>
-              Project name: <span> data.nameProject </span>
-            </p>
+              Project name: <span>{{ data.name_project}} </span>
           </div>
         </div>
         <div mat-dialog-actions align='end'>
@@ -28,10 +29,14 @@ import { EditComponent } from './edit.component';
 })
 export class DetailsComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Projects, public dialog: MatDialog) { }
+  public image_url: any;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Projects, public dialog: MatDialog) {
+    this.image_url = environment.baseUrlImg + this.data.image_project;
+  }
 
   ngOnInit(): void {
-    this.data.name_project
+    this.data.name_project;
   }
 
   onEdit(item: Projects) {
