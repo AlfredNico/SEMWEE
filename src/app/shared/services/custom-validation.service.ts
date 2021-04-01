@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ValidatorFn, AbstractControl } from '@angular/forms';
+import { ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
@@ -38,6 +38,15 @@ export class CustomValidationService {
       } else {
         return confirmPasswordControl.setErrors(null);
       }
+    }
+  }
+
+  lowercaseValidator(c: FormControl) {
+    let regex = /[a-z]/g
+    if (regex.test(c.value)) {
+      return null;
+    } else {
+      return { lowercase: true }
     }
   }
 

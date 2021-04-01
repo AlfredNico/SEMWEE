@@ -48,6 +48,12 @@ export class ProjectsService {
     return this.http.post<{ message: string }>(`${environment.baseUrl}/project/get-project-img`, formData);
   }
 
+  uploadImages(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('image_project', file);
+    return this.http.post<{ message: string }>(`${environment.baseUrl}/project/get-project-img`, formData).toPromise();
+  }
+
   public deleteProjects(project_id: string) {
     return this.http.delete<{ message: string }>(`${environment.baseUrl}/project/delete-project/${project_id}`);
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { AsideComponent } from '@app/pages/_layout/components/aside/aside.component';
@@ -32,8 +33,9 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user!: User;
 
-  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private updatesUserService: UpdatesUserInfoService, private auth: AuthService, private triggerServices: TriggerService) {
+  constructor(private projectServices: ProjectsService, public dialog: MatDialog, private common: CommonService, private notifs: NotificationService, private auth: AuthService, private triggerServices: TriggerService, private router: Router) {
     this.user = this.auth.currentUserSubject.value;
+
   }
 
   ngOnInit(): void {
@@ -47,6 +49,13 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.allProjects$.subscribe(
+      (result: any[]) => {
+        if (result && result.length == 0) {
+          this.router.navigateByUrl('/user-space/new-project');
+        }
+      }
+    )
   }
 
   onDeteils(item: Projects) {
