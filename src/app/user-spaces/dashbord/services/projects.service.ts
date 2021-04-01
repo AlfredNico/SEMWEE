@@ -33,13 +33,6 @@ export class ProjectsService {
 
   public editProjects(value: { _id: number, project: Projects }) {
     return this.http.put<{ message: string }>(`${environment.baseUrl}/project/update-project/${value._id}`, value)
-    // .pipe(
-    //   tap(() => {
-    //     console.log('edit');
-    //     this.subject.next(false);
-    //     this.invokeFirstComponentFunction.emit({ name: 'okok' });
-    //   })
-    // )
   }
 
   uploadFiles(file: File) {
@@ -51,7 +44,7 @@ export class ProjectsService {
   uploadImages(file: File) {
     const formData: FormData = new FormData();
     formData.append('image_project', file);
-    return this.http.post<{ message: string }>(`${environment.baseUrl}/project/get-project-img`, formData).toPromise();
+    return this.http.post<{ img: string }>(`${environment.baseUrl}/project/get-project-img`, formData).toPromise();
   }
 
   public deleteProjects(project_id: string) {

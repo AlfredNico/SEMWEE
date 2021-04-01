@@ -85,7 +85,6 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (result === true) {
           this.projectServices.deleteProjects(item._id).subscribe(result => {
             if (result && result.message) {
-              console.log(result)
               this.notifs.sucess(result.message);
 
               // this.getAllProject();
@@ -101,7 +100,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   onEdit(item: Projects) {
     this.dialog.open(EditComponent, {
       data: item,
-      width: '600px',
+      width: '65%',
     }).afterClosed().pipe(
       map((result: boolean) => {
         if (result === true) {

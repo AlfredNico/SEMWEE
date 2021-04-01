@@ -67,7 +67,6 @@ export class InferListComponent implements OnInit, AfterViewInit, OnChanges, Aft
   }
 
   ngOnChanges() {
-
     this.commonServices.showSpinner('root');
     if (this.data !== undefined) {
       if (this.dataView.data.length > 0) {

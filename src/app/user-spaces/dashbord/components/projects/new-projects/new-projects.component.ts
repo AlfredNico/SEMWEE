@@ -40,12 +40,15 @@ export class NewProjectsComponent implements OnInit {
   formInfo: FormGroup;
   formCatg: FormGroup;
   formLicencesPlans: FormGroup;
+  // regex = /^(ftp|http|https):\/\/[^ "]+$/;
+  private readonly regex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/;
+  // /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.\d{2}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.\d{2}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.\d{2}|www\.[a-zA-Z0-9]+\.\d{2})/gi)
 
   form = this.fb.group({
     name_project: ['', [Validators.required, Validators.maxLength(10)]],
     image_project_Landscape: [''],
     image_project_Squared: [''],
-    domain_project: ['', [Validators.required, Validators.pattern(/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi)]],
+    domain_project: ['', [Validators.required, Validators.pattern(this.regex)]],
     country_project: [''],
     language_project: ['', [Validators.required]],
     path_project: [''],
@@ -115,9 +118,7 @@ export class NewProjectsComponent implements OnInit {
     this.letter.updateValueAndValidity();
 
     if (this.form.valid) {
-      console.log('form', this.form.value);
       this.common.showSpinner('root');
-
       try {
         const img1 = this.imageLandscape
           ? await this.projetctService.uploadImages(this.imageLandscape)
@@ -125,11 +126,14 @@ export class NewProjectsComponent implements OnInit {
         const img2 = this.imageSquared
           ? await this.projetctService.uploadImages(this.imageSquared)
           : undefined;
-        const result = await this.projetctService.addProjects({
+
+        const valus = {
           ...this.form.value,
-          'image_project_Landscape': img1 ? img1.message : '',
-          'image_project_Squared': img2 ? img2.message : '',
-        })
+          'image_project_Landscape': img1 ? img1.img : '',
+          'image_project_Squared': img2 ? img2.img : '',
+        }
+
+        const result = await this.projetctService.addProjects(valus)
         if (result && result.message) {
           this.notis.sucess(result.message);
           this.common.hideSpinner();

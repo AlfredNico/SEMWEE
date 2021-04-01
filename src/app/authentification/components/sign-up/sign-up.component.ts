@@ -51,8 +51,6 @@ export class SignUpComponent implements OnInit {
       if (result && result.message) {
         this.notifs.sucess(result.message);
         this.router.navigateByUrl('sign-in');
-      }else{
-        console.log(result);
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
