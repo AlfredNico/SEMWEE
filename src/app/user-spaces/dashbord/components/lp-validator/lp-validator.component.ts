@@ -59,8 +59,9 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     this.common.showSpinner('root');
     if (this.idProjet) {
       const res = await this.infoProduitService.checkProject(this.idProjet);
+      console.log(res);
 
-      if (res[0] && res[1]) {
+      if (res && res[0].length > 0 && res[1].length > 0) {
         this.selectedStepperIndex = 2;
         this.isImportItem = true;
         this.isUserProject = true;
@@ -70,7 +71,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         this.common.hideSpinner('root');
         this.common.isLoading$.next(false);
 
-      } else if (res[0]) {
+      } else if (res && res[0].length > 0 && res[1].length == 0) {
         this.selectedStepperIndex = 1;
         this.isImportItem = true;
         this.isUserProject = true;
