@@ -14,27 +14,10 @@ export class CheckUserInfoService {
 
   constructor(private http: HttpClient) { }
 
-  getInferList(_idProduit: any){
-    return this.http.get<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/import-csv/${_idProduit}`).pipe(
-      map((result: any) => {
-        if (result) {
-
-          console.log('result', result)
-          let dataValue: any[] = [];
-          result.map((value: any) => {
-            Object.keys(value).map((key: string, index: number) => {
-              if (!this.data.displayColumns.includes(key)) {
-                this.data.displayColumns.push(key);
-              }
-            })
-            dataValue.push({ ...value, 'select': true });
-          });
-          return this.data = {
-            displayColumns: this.data.displayColumns,
-            hideColumns: [],
-            data: dataValue
-          };
-        }
+  checkProject(_idProduit: any) {
+    return this.http.get<any[]>(`${environment.baseUrl}/project/get-project-product/${_idProduit}`).pipe(
+      map((results: any) => {
+        return results;
       }),
       catchError((err) => {
         return this.handleError(err);

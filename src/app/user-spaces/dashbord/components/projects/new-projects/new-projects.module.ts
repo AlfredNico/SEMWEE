@@ -8,6 +8,8 @@ import { NewProjectsComponent } from './new-projects.component';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
     LandingModule,
     SharedModule,
     LandingPageModule,
+    MatAutocompleteModule,
     RouterModule.forChild([
       { path: '', component: NewProjectsComponent }
     ])

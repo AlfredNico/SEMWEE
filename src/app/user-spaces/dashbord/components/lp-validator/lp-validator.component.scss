@@ -1,4 +1,8 @@
 ::ng-deep {
+    mat-step-header[ng-reflect-index="3"],
+    mat-step-header[aria-posinset="4"] {
+        display: none !important;
+    }
     .mat-horizontal-content-container {
         padding: 24px 24px 24px 24px !important;
         background: white;
@@ -55,9 +59,6 @@
     .table-header {
         // flex: none;
         width: 100px;
-    }
-    mat-step-header[ng-reflect-index="3"] {
-        display: none;
     }
     @media (min-width: 1200px) {
         .container-xl,

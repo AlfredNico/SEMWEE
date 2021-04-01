@@ -16,7 +16,7 @@
         <div class="example-container" [formGroup]="form">
             <mat-form-field>
                 <mat-select formControlName="selected" [placeholder]="(allprojets$ | async)?.length > 0 ? 'Project' : 'No project'">
-                    <mat-option *ngFor="let project of allprojets$ | async" [value]="project?._id ">
+                    <mat-option *ngFor="let project of allprojets$ | async" [value]="project?._id" [routerLink]="['/user-space/lp-validator', project._id]">
                         {{ project.name_project }}
                     </mat-option>
                 </mat-select>

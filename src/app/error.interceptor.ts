@@ -22,22 +22,24 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(catchError(err => {
       const error = err.error.error || err.statusText;
-
+      // You should first log in !
       console.log('err ', err);
-      console.log('error', error);
 
       if (err instanceof HttpErrorResponse) {
         if (err.status === 401) {
+          console.log('error', error);
+          if (error == 'You should first log in') {
+            this.authService.logout();
+          }
           // auto logout if 401 response returned from api
-          // this.authService.logout();
           // location.reload(true);
           this.notifs.warn(error);
           // window.location.reload();
+          this.router.navigateByUrl('/sign-in');
           return EMPTY;
         }
         // } else if (this.cookieService.check('SEMEWEE') == false) {
         //   this.notifs.warn('Session expired');
-        //   this.router.navigateByUrl('/sign-in')
       } else if (error) {
         this.notifs.warn(error);
         return EMPTY;

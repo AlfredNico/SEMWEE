@@ -14,8 +14,9 @@ import { LpValidatorService } from '../../services/lp-validator.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
 import {
-	ResizableModule
+  ResizableModule
 } from 'angular-resizable-element';
+import { TuneItComponent } from './dialog/tune-it.component';
 
 
 
@@ -27,7 +28,8 @@ import {
     ImportItemComponent,
     CheckRelevancyComponent,
     InferListComponent,
-    GoogleMachingComponent
+    GoogleMachingComponent,
+    TuneItComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,8 @@ import {
     ImportItemComponent,
     CheckRelevancyComponent,
     InferListComponent,
-    GoogleMachingComponent
+    GoogleMachingComponent,
+    TuneItComponent
   ]
 })
 export class LpValidatorModule { }

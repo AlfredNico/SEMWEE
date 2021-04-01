@@ -9,6 +9,19 @@ export interface Projects {
     numberLPVa: string;
     user_id: string;
     product: string;
+
+    image_project_Landscape: string;
+    image_project_Squared: string;
+    domain_project: string;
+    country_project: string;
+    language_project: string;
+    path_project: string;
+    protocol_project: string;
+    letter_thumbnails_project: {
+        letter: string;
+        color: string;
+        background: string;
+    }
 }
 
 

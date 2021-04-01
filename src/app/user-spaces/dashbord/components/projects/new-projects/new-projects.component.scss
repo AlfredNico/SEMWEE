@@ -1,9 +1,24 @@
 ::ng-deep {
     .mat-form-field-appearance-outline .mat-form-field-infix {
-        padding: .5em 0 .7em 0 !important;
+        padding: .5em 0 0.7em 0 !important;
     }
     .mat-form-field-infix {
         // padding: 0.5em 0;
         border-top: 0.55em solid transparent !important;
+    }
+    .upload-button {
+        max-height: 2.5em !important;
+        margin-left: 2em !important;
+        min-width: auto !important;
+    }
+    .letter {
+        width: 70px;
+        height: 70px;
+        margin: auto 5px;
+        font-size: 5vh;
+        justify-content: center;
+        padding: 26px 22px;
+        font-weight: bold;
+        border-radius: 50%;
     }
 }
