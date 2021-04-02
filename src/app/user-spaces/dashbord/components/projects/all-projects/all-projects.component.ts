@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -49,11 +50,19 @@ export class AllProjectsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.common.showSpinner('root');
     this.allProjects$.subscribe(
       (result: any[]) => {
         if (result && result.length == 0) {
           this.router.navigateByUrl('/user-space/new-project');
         }
+        this.common.hideSpinner();
+      },
+      error => {
+        if (error instanceof HttpErrorResponse) {
+          this.notifs.warn(error.message);
+        }
+        this.common.hideSpinner();
       }
     )
   }

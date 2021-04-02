@@ -194,8 +194,8 @@ export class CheckRelevancyComponent implements OnInit, AfterViewInit, OnChanges
 
 
     this.dialog.open(TuneItComponent, {
-      position: { top: `${clientX}px`, left: `${clientY}px` },
-      width: '400px',
+      position: { top: `${clientY}px`, left: `${clientX}px` },
+      width: '300px',
       data: row
     });
   }
