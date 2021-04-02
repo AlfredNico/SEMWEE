@@ -44,15 +44,17 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
 
-  constructor(private auth: AuthService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService) { }
-
-  public dataInferList: DataTypes;
-
-  ngOnInit(): void {
+  constructor(private auth: AuthService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService) {
     this.common.showSpinner('root');
     this.route.paramMap.subscribe(async (params: ParamMap) => {
       this.idProjet = params.get('idProduit');
     })
+  }
+
+  public dataInferList: DataTypes;
+
+  ngOnInit(): void {
+
   }
 
   async ngAfterViewInit(): Promise<void> {
