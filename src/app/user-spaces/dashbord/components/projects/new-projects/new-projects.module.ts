@@ -10,12 +10,16 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
+import {MatRadioModule} from '@angular/material/radio';
+
 
 @NgModule({
   declarations: [
     NewProjectsComponent
   ],
   imports: [
+    MatRadioModule, //import radio button
+
     CommonModule,
     LandingModule,
     SharedModule,

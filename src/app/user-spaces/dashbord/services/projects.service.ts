@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Projects } from '../interfaces/projects';
 
 @Injectable({
@@ -51,10 +51,8 @@ export class ProjectsService {
     return this.http.delete<{ message: string }>(`${environment.baseUrl}/project/delete-project/${project_id}`);
   }
 
-  // sendClickEvent() {
-  //   this.subject.next();
-  // }
-  getClickEvent(): Observable<any> {
-    return this.subject.asObservable();
-  }
+  checkProjectName(name:string = '') {
+    return this.http.post<{message: string}>(`${environment.baseUrl}/project/delete-project`, {name}).pipe(
+        map((res: any) =>{return res })
+    )}
 }

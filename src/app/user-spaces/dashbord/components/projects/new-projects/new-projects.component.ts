@@ -34,18 +34,17 @@ export class NewProjectsComponent implements OnInit {
   }, {
     name: "Français",
     code: "fr"
-  }]
+  }];
+  protocols: string[] = [ 'SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
 
   formInfo: FormGroup;
   formCatg: FormGroup;
   formLicencesPlans: FormGroup;
-  // regex = /^(ftp|http|https):\/\/[^ "]+$/;
   private readonly regex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/;
-  // /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.\d{2}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.\d{2}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.\d{2}|www\.[a-zA-Z0-9]+\.\d{2})/gi)
 
   form = this.fb.group({
-    name_project: ['', [Validators.required, Validators.maxLength(10)]],
+    name_project: ['', [Validators.required, Validators.maxLength(10), this.projectExisteValidation]],
     image_project_Landscape: [''],
     image_project_Squared: [''],
     domain_project: ['', [Validators.required, Validators.pattern(this.regex)]],
@@ -153,44 +152,15 @@ export class NewProjectsComponent implements OnInit {
         throw error;
       }
     }
+  }
 
-
-
-
-    // if (this.form.valid && this.image_project !== undefined) {
-    //   this.common.showSpinner('root');
-    //   this.projetctService.uploadFiles(this.image_project).subscribe(
-    //     async (file: any) => {
-    //       const _id = this.user._id;
-
-    //       if (file && file.message) {
-    //         try {
-    //           const result = await this.projetctService.addProjects(
-    //             { ...this.form.value, 'image_project': file.message }
-    //           )
-    //           if (result && result.message) {
-    //             this.notis.sucess(result.message);
-    //             this.router.navigateByUrl('/user-space/all-project');
-    //             // this.common.hideSpinner();
-    //           }
-    //         } catch (error) {
-    //           if (error instanceof HttpErrorResponse) {
-    //             console.log(error.message);
-    //             this.notis.warn(error.message);
-    //           }
-    //           throw error;
-    //         }
-    //       }
-    //       this.common.hideSpinner();
-    //     },
-    //     (error) => {
-    //       this.notis.warn('Server is not responding');
-    //       this.common.hideSpinner();
-    //     }
-    //   )
-    // } else if (this.image_project === undefined) {
-    //   this.notis.warn('File upload undefined');
-    //}
+  projectExisteValidation(){
+    this.projetctService.checkProjectName(this.form.controls['name_project'].value)
+      .subscribe(data => {
+        if(data != 0)
+          return { "emailExistant": true };
+        })
+        return null;
   }
 
   onImageChanged(event: any) {

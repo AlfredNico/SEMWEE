@@ -109,8 +109,12 @@
 
 
             <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                <mat-label>SSL/TLS*</mat-label>
-                <input matInput placeholder="/fr/*" formControlName="protocol_project">
+                <mat-label>SSL* / TLS*</mat-label>
+                <mat-radio-group aria-label="Select an website" formControlName="protocol_project">
+                    <mat-radio-button color="primary" *ngFor="let protocol of protocols" [value]="protocol">
+                      {{protocol}}
+                    </mat-radio-button>
+                  </mat-radio-group>
                 <mat-hint class="w-100" fxLayout="column">
                     <div>
                         Tell us if your website uses SSL/TLS certificate.
