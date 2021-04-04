@@ -36,7 +36,7 @@
             >Give a name to your project. / Donnez un nom à votre
             projet.</mat-hint
           >
-          <mat-error *ngIf="letter.touched && letter.errors.required">
+          <mat-error *ngIf="letter.touched && letter.errors?.required">
             Letter is required
           </mat-error>
           <mat-error *ngIf="letter.errors?.pattern">
