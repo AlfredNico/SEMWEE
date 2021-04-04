@@ -75,13 +75,13 @@ import { FormControl, FormGroup } from '@angular/forms';
       <mat-dialog-actions class="w-100 p-0" align="end">
         <button
           mat-raised-button
-          color="primary"
+          color="accent"
           [mat-dialog-close]="true"
           cdkFocusInitial
         >
           Apply
         </button>
-        <button mat-raised-button color="primary" mat-dialog-close>
+        <button mat-raised-button color="accent" mat-dialog-close>
           Cancel
         </button>
       </mat-dialog-actions>

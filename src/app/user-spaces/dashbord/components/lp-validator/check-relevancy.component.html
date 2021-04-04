@@ -1,6 +1,6 @@
 <div fxLayout="column" class="w-100">
     <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
-        <!-- <button mat-mini-fab color="primary" aria-label="setting icon">
+        <!-- <button mat-mini-fab color="accent" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
         </button> -->
         <mat-form-field appearance="outline" id="filters">
@@ -11,11 +11,11 @@
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between center">
         <span>Table intef list</span>
-        <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
+        <!-- <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             tableOptions
         </button> -->
-        <a mat-list-item (click)="tableOpons()">
+        <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             <span>Table options </span>
         </a>
@@ -57,11 +57,11 @@
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 
     <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-        <button type="button" mat-raised-button color="primary" class="m-3" (click)="openSettingTable()">
+        <button type="button" mat-raised-button color="accent" class="m-3" (click)="openSettingTable()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             Settings
         </button>
-        <button type="button" mat-raised-button color="primary" class="m-3" (click)="dataMachingReady()">
+        <button type="button" mat-raised-button color="accent" class="m-3" (click)="dataMachingReady()">
             Check Revelancy
         </button>
     </div>

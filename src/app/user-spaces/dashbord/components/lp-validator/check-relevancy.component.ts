@@ -172,6 +172,7 @@ export class CheckRelevancyComponent
           noHiddenRows: this.displayColumns,
           hiddenRows: this.dataView.hideColumns,
         },
+        width: '70%',
       })
       .afterClosed()
       .pipe(

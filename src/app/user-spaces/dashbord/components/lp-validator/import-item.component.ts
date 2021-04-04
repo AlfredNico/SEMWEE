@@ -51,7 +51,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
               <button
                 type="button"
                 mat-raised-button
-                color="primary"
+                color="accent"
                 class="m-3"
                 (click)="fileInput.click()"
               >
@@ -87,7 +87,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
         <button
           style="margin: 25px 0 5px;"
           mat-raised-button
-          color="primary"
+          color="accent"
           (click)="form.valid && onSubmit()"
         >
           Display Items

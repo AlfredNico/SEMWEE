@@ -15,7 +15,7 @@
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             tableOptions
         </button> -->
-        <a mat-list-item (click)="tableOpons()">
+        <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             <span>Table options </span>
         </a>
@@ -75,15 +75,15 @@
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
-        <button mat-raised-button>Updates Items</button>
+        <button mat-raised-button color="accent">Updates Items</button>
 
         <div fxLayoutAlign="end center" class="w-100">
-            <button type="button" mat-raised-button color="primary" class="m-3" (click)="openSettingTable()">
+            <button type="button" mat-raised-button color="accent" class="m-3" (click)="openSettingTable()">
                 <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
                 Settings
             </button>
 
-            <button mat-raised-button (click)="tableReady()">Infer List Pages</button>
+            <button mat-raised-button color="accent" (click)="tableReady()">Infer List Pages</button>
         </div>
     </div>
 
