@@ -180,22 +180,6 @@ export class NewProjectsComponent implements OnInit {
     }
   }
 
-  // projectExisteValidation(){
-  //   // let control = this.form.get('name_project') ? this.form.get('name_project') : null;
-  //   // if (control.dirty && control.valid) {
-  //   //  return { "emailExistant": true };
-  //   // }
-  //   return null
-
-  //   // this.projetctService.checkProjectName(this.form.controls['name_project']?.value)
-  //   //   .subscribe(data => {
-  //   //     // if(data != 0)
-  //   //     if(data)
-  //   //       return { "emailExistant": true };
-  //   //     })
-  //   //     return null;
-  // }
-
   onImageChanged(event: any) {
     if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
