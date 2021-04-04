@@ -48,28 +48,33 @@ export class EditComponent implements OnInit {
   private imageLandscape: File;
   private imageSquared: File;
 
-  countries: any[] = (COUNTRY as any).default;
+    countries: any[] = (COUNTRY as any).default;
   languages: any[] = [{
     name: "English",
     code: "en"
   }, {
     name: "Français",
     code: "fr"
-  }]
+  }];
+  protocols: string[] = [ 'SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
+
   private readonly regex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/;
 
-  // public project!: Projects;
-
   form = this.fb.group({
-    name_project: ['', [Validators.required, Validators.maxLength(10)]],
+    name_project: [
+      '',
+      [Validators.required, Validators.maxLength(10)],
+      [this.projetctService.checkProjectName()],
+      { updateOn: 'blur' }
+    ],
     image_project_Landscape: [''],
     image_project_Squared: [''],
     domain_project: ['', [Validators.required, Validators.pattern(this.regex)]],
-    country_project: [''],
+    country_project: ['', [Validators.required]],
     language_project: ['', [Validators.required]],
-    path_project: [''],
-    protocol_project: [''],
+    path_project: ['', [Validators.required]],
+    protocol_project: ['', [Validators.required]],
     user_id: ['', Validators.required],
     letter_thumbnails_project: this.fb.group({
       letter: ['', [Validators.pattern(/^[A-Z]/), Validators.maxLength(1), this.custumValidator.patternValidator]],
