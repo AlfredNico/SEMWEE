@@ -88,8 +88,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
           style="margin: 25px 0 5px;"
           mat-raised-button
           color="primary"
-          [disabled]="!isExcelFile"
-          (click)="onSubmit()"
+          (click)="form.valid && onSubmit()"
         >
           Display Items
         </button>
@@ -157,29 +156,27 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   }
 
   public async onSubmit() {
-    if (this.form.valid) {
-      this.common.isLoading$.next(true);
-      this.common.showSpinner('root');
+    this.common.isLoading$.next(true);
+    this.common.showSpinner('root');
 
-      try {
-        const result = await this.lpValidatorServices.getUpload(
-          this.idProjet,
-          this.form.get('fileSource')?.value as File
-        );
-        if (result) {
-          this.uploadFiles.emit(result);
-        } else {
-          this.notifs.warn('Server is not responding');
-        }
-        this.common.hideSpinner();
-        this.common.isLoading$.next(false);
-      } catch (error) {
+    try {
+      const result = await this.lpValidatorServices.getUpload(
+        this.idProjet,
+        this.form.get('fileSource')?.value as File
+      );
+      if (result) {
+        this.uploadFiles.emit(result);
+      } else {
         this.notifs.warn('Server is not responding');
-        console.log('error ', error);
-        this.common.hideSpinner();
-        this.common.isLoading$.next(false);
-        throw error;
       }
+      this.common.hideSpinner();
+      this.common.isLoading$.next(false);
+    } catch (error) {
+      this.notifs.warn('Server is not responding');
+      console.log('error ', error);
+      this.common.hideSpinner();
+      this.common.isLoading$.next(false);
+      throw error;
     }
   }
 
