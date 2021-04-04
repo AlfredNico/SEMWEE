@@ -77,7 +77,6 @@ export class NewProjectsComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    @Inject(forwardRef(() => ProjectsService))
     private projetctService: ProjectsService,
     private notis: NotificationService,
     private common: CommonService,
