@@ -41,8 +41,8 @@
                         </div>
                     </th>
 
-                    <td [ngClass]="{'hide-rows': column == '_id' || column == 'select' || column == '__v' || column == 'idProduct', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]"
-                        class="table-container-td" (click)="column == 'ItemType' ? openTuneIt(i+'_'+indexRow, row, $event) : ''" [id]="i +'_'+ indexRow">
+                    <td [ngClass]="{'hide-rows': column.toLowerCase() == '_id' || column.toLowerCase() == 'select' || column.toLowerCase() == '__v' || column.toLowerCase() == 'idproduct', 'pointer_item': column?.toLowerCase() == 'itemtype'  || (column?.toLowerCase().includes('property') && row[column] != ''), 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]"
+                        class="table-container-td" (click)="column?.toLowerCase() == 'itemtype' || (column?.toLowerCase().includes('property') && row[column] != '') ? openTuneIt(i+'_'+indexRow, row, $event, column?.toLowerCase()) : ''" [id]="i +'_'+ indexRow">
                         {{ row[column] }}
                     </td>
                 </ng-container>

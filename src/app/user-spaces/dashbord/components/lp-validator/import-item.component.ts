@@ -15,19 +15,24 @@ import { LpValidatorService } from '../../services/lp-validator.service';
 @Component({
   selector: 'app-import-item',
   template: `
-    <div class="w-100">
+    <!-- fxLayoutAlign="space-around space-between center" -->
+    <div class="w-100 uploaded">
       <form [formGroup]="form">
         <div
+          class="w-100"
           *ngIf="
             fileName !== undefined &&
             fileName?.length > 0 &&
             isExcelFile === true
           "
-          fxLayout="column"
+          fxLayout="row"
           fxLayoutAlign="space-around center"
         >
-          <h1>{{ fileName }}</h1>
-          <h1>Is uploaded !</h1>
+          <div style="width: 100%;text-align: center;">
+            <h1>{{ fileName }}</h1>
+            <h1>Is uploaded !</h1>
+          </div>
+          <img class="img_uploaded" src="assets/images/items.png" />
         </div>
 
         <div *ngIf="fileName?.length >= 0 && isExcelFile === false">
@@ -88,20 +93,38 @@ import { LpValidatorService } from '../../services/lp-validator.service';
           style="margin: 25px 0 5px;"
           mat-raised-button
           color="accent"
+          *ngIf="isNextStep == false"
           (click)="form.valid && onSubmit()"
         >
           Display Items
+        </button>
+        <button
+          style="margin: 25px 0 5px;"
+          mat-raised-button
+          color="accent"
+          (click)="form.valid && onSubmit()"
+          *ngIf="isNextStep == true"
+        >
+          Updates Items
         </button>
       </form>
     </div>
   `,
   styles: [
     `
+      /* .img_uploaded {
+        position: absolute;
+      } */
+      .uploaded {
+        background: #fff !important;
+        padding: 4em 3em;
+      }
       .uploaded_file {
         padding: 10px;
         border: dashed 3px #40425d;
         margin: 10px 0;
         border-radius: 12px;
+        background: #ffffff;
       }
     `,
   ],
@@ -122,6 +145,9 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   //shared data
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() uploadFiles = new EventEmitter<any>();
+
+  // Check if next step is true
+  @Input() isNextStep: boolean;
 
   @Input() idProjet: string;
 

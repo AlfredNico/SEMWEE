@@ -54,6 +54,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     data: any[];
   };
 
+  isNextStepp: boolean = false;
+
   @HostListener('window:scroll') checkScroll() {
     const scrollPosition =
       window.pageYOffset ||
@@ -92,6 +94,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
         this.dataSources = this.inferList(res[0]);
         this.dataInferList = this.mathiing(res[1]);
+        this.isNextStepp = this.stepper?.steps.toArray()[1].completed;
+
         this.common.hideSpinner('root');
         this.common.isLoading$.next(false);
       } else if (res && res[0].length > 0 && res[1].length == 0) {
@@ -104,6 +108,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
         this.selectedStepperIndex = 1;
         this.dataSources = this.inferList(res[0]);
+        this.isNextStepp = this.stepper?.steps.toArray()[1].completed;
+
         this.common.hideSpinner('root');
         this.common.isLoading$.next(false);
       } else {

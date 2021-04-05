@@ -42,6 +42,9 @@ import { TuneItComponent } from './dialog/tune-it.component';
         max-height: 500px;
         overflow-x: auto;
       }
+      .pointer_item {
+        cursor: pointer;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -223,17 +226,18 @@ export class CheckRelevancyComponent
     this.dataMatching.emit(this.dataView);
   }
 
-  openTuneIt(id: string, row: any, event: any) {
+  openTuneIt(id: string, row: any, event: any, itemSeleted: any) {
     const el: HTMLElement = document.getElementById(id);
     // let pos: number = el.offsetTop;
     const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
+    const item = itemSeleted == 'itemtype' ? true : false;
 
     this.dialog.open(TuneItComponent, {
-      position: { top: `${clientY}px`, left: `${clientX}px` },
-      width: '300px',
-      data: row,
+      // position: { top: `${clientY}px`, left: `${clientX}px` },
+      // width: itemSeleted == 'itemtype' ? '400px' : '',
+      data: { row, item },
     });
   }
 }
