@@ -25,8 +25,8 @@ export class NewProjectsComponent implements OnInit {
   private imageSquared: File;
 
   private user: User;
-  countries: any[] = (COUNTRY as any).default;
-  languages: any[] = [
+  readonly countries: any[] = (COUNTRY as any).default;
+  readonly languages: { name: string; code: string }[] = [
     {
       name: 'English',
       code: 'en',
@@ -36,7 +36,7 @@ export class NewProjectsComponent implements OnInit {
       code: 'fr',
     },
   ];
-  protocols: string[] = ['SSL', 'TLS'];
+  readonly protocols: string[] = ['SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
 
   formInfo: FormGroup;
