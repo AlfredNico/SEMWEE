@@ -122,8 +122,8 @@ export class MockInterceptor implements HttpInterceptor {
       //     })
       //   );
 
+      // pass through any requests not handled above
       default:
-        // pass through any requests not handled above
         return next.handle(request);
     }
   }
