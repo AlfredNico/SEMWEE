@@ -12,7 +12,8 @@ import { AuthService } from '@app/authentification/services/auth.service';
 import { Users } from '@app/models/users';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
-import { map } from 'rxjs/operators';
+import { TriggerService } from '@app/user-spaces/services/trigger.service';
+import { map, switchMap } from 'rxjs/operators';
 import { CheckUserInfoService } from '../../services/check-user-info.service';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { CheckRelevancyComponent } from './check-relevancy.component';
@@ -68,7 +69,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private route: ActivatedRoute,
     private infoProduitService: CheckUserInfoService,
-    private common: CommonService
+    private common: CommonService,
+    private triggerServices: TriggerService
   ) {
     this.common.showSpinner('root');
     this.route.paramMap.subscribe(async (params: ParamMap) => {
@@ -80,43 +82,17 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-  async ngAfterViewInit(): Promise<void> {
-    this.common.showSpinner('root');
-    if (this.idProjet) {
-      const res = await this.infoProduitService.checkProject(this.idProjet);
-
-      if (res && res[0].length > 0 && res[1].length > 0) {
-        this.selectedStepperIndex = 2;
-        this.stepper.steps.forEach((step) => {
-          step.completed = true;
-          step.editable = true;
-        });
-
-        this.dataSources = this.inferList(res[0]);
-        this.dataInferList = this.mathiing(res[1]);
-        this.isNextStepp = this.stepper?.steps.toArray()[1].completed;
-
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
-      } else if (res && res[0].length > 0 && res[1].length == 0) {
-        this.stepper.steps.forEach((step, index) => {
-          if (index < 1) {
-            step.completed = true;
-            step.editable = true;
-          }
-        });
-
-        this.selectedStepperIndex = 1;
-        this.dataSources = this.inferList(res[0]);
-        this.isNextStepp = this.stepper?.steps.toArray()[1].completed;
-
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
-      } else {
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
-      }
-    }
+  ngAfterViewInit() {
+    this.triggerServices.switchproject$
+      .pipe(
+        map((idProjet) => {
+          if (idProjet) {
+            this.idProjet = idProjet;
+            this.checkProject();
+          } else this.checkProject();
+        })
+      )
+      .subscribe();
   }
 
   selectionChange(ev: any) {
@@ -182,5 +158,52 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     });
 
     return obj2;
+  }
+
+  private async checkProject(): Promise<void> {
+    this.common.showSpinner('root');
+    if (this.idProjet) {
+      const res = await this.infoProduitService.checkProject(this.idProjet);
+      if (res && res[0].length > 0 && res[1].length > 0) {
+        this.selectedStepperIndex = 2;
+        this.stepper.steps.forEach((step) => {
+          step.completed = true;
+          step.editable = true;
+        });
+
+        this.dataSources = this.inferList(res[0]);
+        this.dataInferList = this.mathiing(res[1]);
+        this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+
+        this.common.hideSpinner('root');
+        this.common.isLoading$.next(false);
+      } else if (res && res[0].length > 0 && res[1].length == 0) {
+        this.selectedStepperIndex = 1;
+        this.stepper.steps.forEach((step, index) => {
+          if (index < 1) {
+            step.completed = true;
+            step.editable = true;
+          } else {
+            step.completed = false;
+            step.editable = true;
+          }
+        });
+
+        this.dataSources = this.inferList(res[0]);
+        this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+
+        this.common.hideSpinner('root');
+        this.common.isLoading$.next(false);
+      } else {
+        this.selectedStepperIndex = 0;
+        this.stepper.steps.forEach((step) => {
+          step.completed = false;
+          step.editable = true;
+        });
+        this.isNextStepp = false;
+        this.common.hideSpinner('root');
+        this.common.isLoading$.next(false);
+      }
+    }
   }
 }

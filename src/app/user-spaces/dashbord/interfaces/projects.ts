@@ -17,9 +17,9 @@ export interface Projects {
   language_project: string;
   path_project: string;
   protocol_project: string;
-  letter_thumbnails_project?: {
+  letter_thumbnails_project?: Array<{
     letter: string;
     color: string;
     background: string;
-  };
+  }>;
 }

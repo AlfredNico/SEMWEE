@@ -30,7 +30,7 @@ import { map, tap } from 'rxjs/operators';
         <!--begin::Text-->
         <div class="d-flex flex-column font-weight-bold mx-5">
           <a
-            (click)="triggerServices.switchUrl$.next(true)"
+            (click)="triggerServices.switchproject$.next(project._id)"
             [routerLink]="['/user-space/lp-validator', project._id]"
             class="text-dark text-hover-primary mb-1 font-size-lg"
             >{{ project.name_project }}</a

@@ -45,9 +45,8 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     private loc: Location,
     private auth: AuthService,
     private projectsServices: ProjectsService,
-    private triggerServices: TriggerService,
-    private route: ActivatedRoute,
-    private router: Router
+    public triggerServices: TriggerService,
+    private route: ActivatedRoute
   ) {
     this.location = this.loc;
     this.user = this.auth.currentUserSubject.value;
@@ -58,12 +57,15 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
       this.allprojets$ = this.projectsServices.getAllProjects(this.user._id);
     });
 
-    this.triggerServices.switchUrl$.subscribe((res) => {
-      console.log('res', res);
-      this.route.paramMap.subscribe(async (params: ParamMap) => {
-        console.log('idProduit => ', params.get('idProduit'));
-        this.idProjet = params.get('idProduit');
-      });
+    this.triggerServices.switchproject$.subscribe((id: any) => {
+      if (id) {
+        console.log('id', id);
+
+        // this.route.paramMap.subscribe(async (params: ParamMap) => {
+        //   console.log('idProduit => ', params);
+        //   this.idProjet = params.get('idProduit');
+        // });
+      }
     });
 
     this.ulCSSClasses = this.layout.getStringCSSClasses('header_menu_nav');
@@ -95,13 +97,5 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     }
 
     return false;
-  }
-
-  public nagivateByProject(itemId: any) {
-    this.router.navigateByUrl(`/user-space/lp-validator/${itemId}`);
-    // this.router.navigate(['/user-space/lp-validator'], {
-    //   queryParams: { itemId },
-    // });
-    // this.projectServices.switchUrl$.next(true);
   }
 }

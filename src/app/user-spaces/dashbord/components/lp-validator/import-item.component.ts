@@ -16,7 +16,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
   selector: 'app-import-item',
   template: `
     <!-- fxLayoutAlign="space-around space-between center" -->
-    <div class="w-100 uploaded">
+    <div class="w-100 bg-white" style="padding: 4em 3em;">
       <form [formGroup]="form">
         <div
           class="w-100"
@@ -93,19 +93,10 @@ import { LpValidatorService } from '../../services/lp-validator.service';
           style="margin: 25px 0 5px;"
           mat-raised-button
           color="accent"
-          *ngIf="isNextStep == false"
           (click)="form.valid && onSubmit()"
         >
-          Display Items
-        </button>
-        <button
-          style="margin: 25px 0 5px;"
-          mat-raised-button
-          color="accent"
-          (click)="form.valid && onSubmit()"
-          *ngIf="isNextStep == true"
-        >
-          Updates Items
+          <span *ngIf="isNextStep == true">Updates Items</span>
+          <span *ngIf="isNextStep == false">Display Items</span>
         </button>
       </form>
     </div>
@@ -115,10 +106,6 @@ import { LpValidatorService } from '../../services/lp-validator.service';
       /* .img_uploaded {
         position: absolute;
       } */
-      .uploaded {
-        background: #fff !important;
-        padding: 4em 3em;
-      }
       .uploaded_file {
         padding: 10px;
         border: dashed 3px #40425d;
