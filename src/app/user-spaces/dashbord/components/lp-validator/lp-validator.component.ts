@@ -13,7 +13,7 @@ import { Users } from '@app/models/users';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { CheckUserInfoService } from '../../services/check-user-info.service';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { CheckRelevancyComponent } from './check-relevancy.component';
@@ -80,19 +80,27 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   public dataInferList: DataTypes;
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit() {
+  ngOnInit(): void {
     this.triggerServices.switchproject$
       .pipe(
-        map((idProjet) => {
+        tap(() => {
+          console.log('selected');
+          this.common.showSpinner('root');
+        }),
+        map(async (idProjet) => {
           if (idProjet) {
             this.idProjet = idProjet;
-            this.checkProject();
-          } else this.checkProject();
+            await this.checkProject();
+          } else await this.checkProject();
+          this.common.hideSpinner('root');
+          this.common.isLoading$.next(false);
         })
       )
       .subscribe();
+  }
+
+  ngAfterViewInit() {
+    // this.checkProject();
   }
 
   selectionChange(ev: any) {
@@ -174,9 +182,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         this.dataSources = this.inferList(res[0]);
         this.dataInferList = this.mathiing(res[1]);
         this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
-
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
       } else if (res && res[0].length > 0 && res[1].length == 0) {
         this.selectedStepperIndex = 1;
         this.stepper.steps.forEach((step, index) => {
@@ -191,9 +196,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
         this.dataSources = this.inferList(res[0]);
         this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
-
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
       } else {
         this.selectedStepperIndex = 0;
         this.stepper.steps.forEach((step) => {
@@ -201,8 +203,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
           step.editable = true;
         });
         this.isNextStepp = false;
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
       }
     }
   }

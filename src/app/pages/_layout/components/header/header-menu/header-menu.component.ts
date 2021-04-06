@@ -59,7 +59,10 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
 
     this.triggerServices.switchproject$.subscribe((id: any) => {
       if (id) {
-        console.log('id', id);
+        this.allprojets$.subscribe((res: any) => {
+          this.selectedProject = res.filter((x) => x._id == id);
+        });
+        console.log('id', this.selectedProject);
 
         // this.route.paramMap.subscribe(async (params: ParamMap) => {
         //   console.log('idProduit => ', params);

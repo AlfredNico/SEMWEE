@@ -43,7 +43,12 @@ import { LpValidatorService } from '../../services/lp-validator.service';
             appDragDrop
             (fileDropped)="onFileChange($event)"
           >
-            <img src="assets/images/cloud.png" height="50" width="50" />
+            <img
+              src="assets/images/cloud.png"
+              height="50"
+              width="50"
+              style="margin: 1em;"
+            />
             <div>
               Drap and drop your item to start list page validation process
             </div>
