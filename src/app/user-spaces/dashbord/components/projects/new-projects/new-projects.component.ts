@@ -42,7 +42,7 @@ export class NewProjectsComponent implements OnInit {
   formInfo: FormGroup;
   formCatg: FormGroup;
   formLicencesPlans: FormGroup;
-  private readonly regex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/;
+  // private readonly regex = /^((ftp|http|https):\/\/){0,1}(w{3,3}\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
 
   form = this.fb.group({
     name_project: [
@@ -53,7 +53,10 @@ export class NewProjectsComponent implements OnInit {
     ],
     image_project_Landscape: [''],
     image_project_Squared: [''],
-    domain_project: ['', [Validators.required, Validators.pattern(this.regex)]],
+    domain_project: [
+      '',
+      [Validators.required, this.custumValidator.domainValidation],
+    ],
     country_project: ['', [Validators.required]],
     language_project: ['', [Validators.required]],
     path_project: ['', [Validators.required]],
@@ -62,11 +65,7 @@ export class NewProjectsComponent implements OnInit {
     letter_thumbnails_project: this.fb.group({
       letter: [
         '',
-        [
-          Validators.pattern(/^[A-Z]/),
-          Validators.maxLength(1),
-          this.custumValidator.patternValidator,
-        ],
+        [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
       ],
       color: ['#015fec'],
       background: ['#eab150'],

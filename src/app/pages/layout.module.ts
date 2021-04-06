@@ -13,7 +13,6 @@ import { HeaderMobileComponent } from './_layout/components/header-mobile/header
 import { AsideComponent } from './_layout/components/aside/aside.component';
 import { FooterComponent } from './_layout/components/footer/footer.component';
 import { HeaderComponent } from './_layout/components/header/header.component';
-import { HeaderMenuComponent } from './_layout/components/header/header-menu/header-menu.component';
 import { TopbarComponent } from './_layout/components/topbar/topbar.component';
 import { ExtrasModule } from '../_metronic/partials/layout/extras/extras.module';
 import { LanguageSelectorComponent } from './_layout/components/topbar/language-selector/language-selector.component';
@@ -33,7 +32,6 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
     AsideComponent,
     FooterComponent,
     HeaderComponent,
-    HeaderMenuComponent,
     TopbarComponent,
     LanguageSelectorComponent,
     AsideDynamicComponent,
@@ -49,10 +47,8 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
     NgbProgressbarModule,
     CoreModule,
     SubheaderModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
-  providers: [
-    ProjectsService
-  ]
+  providers: [ProjectsService],
 })
-export class LayoutModule { }
+export class LayoutModule {}

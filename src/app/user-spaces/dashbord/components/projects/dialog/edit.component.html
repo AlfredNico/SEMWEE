@@ -1,13 +1,6 @@
 <div fxLayout="column" *ngIf="data">
   <h3 mat-dialog-title>Edit project</h3>
   <div mat-dialog-content [formGroup]="form">
-    <!-- <div fxLayout="column" fxLayoutAlign="center center">
-            <img mat-card-image style="height: 100px;
-            width: 100px;" [src]="image_url" alt="project images">
-            <input type="file" accept="image/*" #file (change)="onImageChanged($event)" style="display:none;" />
-            <button mat-raised-button type="button" (click)="file.click()">Change</button>
-        </div> -->
-
     <div
       class="w-100"
       fxLayout="column"
@@ -32,8 +25,8 @@
         <mat-error *ngIf="letter?.touched && letter?.errors?.required">
           Letter is required
         </mat-error>
-        <mat-error *ngIf="letter?.errors?.pattern">
-          Letter is uppercase
+        <mat-error *ngIf="letter.errors?.uppercase">
+          Letter must be uppercase
         </mat-error>
       </mat-form-field>
       <div class="w-100" fxLayout="row" fxLayoutAlign="center">
@@ -98,8 +91,8 @@
       >
         Domain is required
       </mat-error>
-      <mat-error *ngIf="form.get('domain_project').errors?.pattern">
-        Invalid domain name
+      <mat-error *ngIf="form.controls['domain_project'].errors?.domain">
+        Invalid domain name, it sould be like www.kiatoo.com
       </mat-error>
     </mat-form-field>
 
