@@ -130,7 +130,7 @@ export class MockInterceptor implements HttpInterceptor {
     const { url, method, headers, body } = request;
 
     switch (true) {
-      case url.includes('auth/login') && method === 'POST':
+      /* case url.includes('auth/login') && method === 'POST':
         const { email, password } = body;
         const user = usersData.find(
           (x) => x.email === email && x.firstname === password
@@ -201,7 +201,7 @@ export class MockInterceptor implements HttpInterceptor {
               (FILE as any)['default']
             ),
           })
-        );
+        ); */
 
       // pass through any requests not handled above
       default:
