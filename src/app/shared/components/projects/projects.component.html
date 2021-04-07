@@ -1,0 +1,46 @@
+<div
+      class="w-100"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      *ngFor="let project of allProjects$ | async"
+    >
+      <div class="d-flex align-items-center mb-10">
+        <!--begin::Symbol-->
+        <div class="symbol symbol-40 symbol-light-primary mr-5">
+          <app-avatar [projects]="project"></app-avatar>
+        </div>
+        <!--end::Symbol-->
+        <!--begin::Text-->
+        <div class="d-flex flex-column font-weight-bold mx-5">
+          <a
+            (click)="triggerServices.switchproject$.next(project._id)"
+            [routerLink]="['/user-space/lp-validator', project._id]"
+            class="text-dark text-hover-primary mb-1 font-size-lg"
+            >{{ project.name_project }}</a
+          >
+          <span class="text-muted"
+            >created at {{ project.created_project | date: 'medium' }}</span
+          >
+        </div>
+        <!--end::Text-->
+      </div>
+      <button
+        mat-icon-button
+        [style.backgroundColor]="'#e1f0ff'"
+        [matMenuTriggerFor]="menu"
+        class="mr-5"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="onEdit(project)">
+          <mat-icon color="primary">edit</mat-icon> Edit
+        </button>
+        <button mat-menu-item (click)="onDelete(project)">
+          <mat-icon color="warn">delete</mat-icon> Remove
+        </button>
+        <button mat-menu-item (click)="onDeteils(project)">
+          <mat-icon>list</mat-icon> view in detail
+        </button>
+      </mat-menu>
+    </div>
