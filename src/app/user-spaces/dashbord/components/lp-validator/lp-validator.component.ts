@@ -80,7 +80,9 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   public dataInferList: DataTypes;
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit() {
     this.triggerServices.switchproject$
       .pipe(
         tap(() => {
@@ -97,9 +99,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe();
-  }
-
-  ngAfterViewInit() {
     // this.checkProject();
   }
 
