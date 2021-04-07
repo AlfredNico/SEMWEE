@@ -8,17 +8,53 @@
     }
     .upload-button {
         max-height: 2.5em !important;
-        margin-left: 2em !important;
         min-width: auto !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     .letter {
         width: 70px;
         height: 70px;
-        margin: auto 5px;
+        // margin: auto 5px;
+        text-align: center;
         font-size: 5vh;
         justify-content: center;
         padding: 26px 22px;
         font-weight: bold;
         border-radius: 50%;
     }
+    .text-error{
+        color: #F68683!important;
+    }
+
+    input:hover {
+        border-color: #40425D!important;
+    }
+
+    .form-group .form-text, .mat-radio-button, .txt-muted {
+        font-size: 1rem!important;
+        font-weight: 400!important;
+    }
+
+    .mat-radio-button {
+        color: #B5B5C3 !important;
+    }
+
+    .mat-card-header {
+        border-bottom: 1px solid rgba(64, 66, 93,.3);
+        margin-bottom: 10px;
+        color: #40425D !important;
+        font-weight: 600 !important;
+        font-size: 18px!important;
+    }
+
+    // $err: text-error;
+
+    
+    // @if $err {
+    //     input {
+    //         border-color: #F68683!important;
+    //     }
+    // }
 }

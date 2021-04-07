@@ -68,8 +68,8 @@ export class NewProjectsComponent implements OnInit {
           this.custumValidator.patternValidator,
         ],
       ],
-      color: ['#015fec'],
-      background: ['#eab150'],
+      color: ['#66ACFF'],
+      background: ['#40425D'],
     }),
   });
 
