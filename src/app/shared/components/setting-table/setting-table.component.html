@@ -2,7 +2,7 @@
     <h1 mat-dialog-title>Settings tables</h1>
     <div mat-dialog-content>
         <!-- <div *ngFor="let facet of facetLists; let i = index"> -->
-        <mat-selection-list #items color="primary" *ngFor="let facet of facetLists; let i = index">
+        <mat-selection-list #items color="accent" *ngFor="let facet of facetLists; let i = index">
             <mat-list-option #item [disabled]="selectedOptions.length > 4 && onChecked(facet) && !item.selected" [selected]="facet && selectedOptions.includes(facet)" (click)="onNgModelChange(facet)">
                 {{ facet.split('_').join(' ') }}
             </mat-list-option>

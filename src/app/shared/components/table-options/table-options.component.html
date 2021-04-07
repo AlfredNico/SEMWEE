@@ -5,7 +5,7 @@
             <div class="table-columns">
                 <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event) " class="containt-list">
                     <div *ngFor="let item of hidden">
-                        <div *ngIf="!item.includes('Value');" class="box" [ngClass]="{'setItem': itelLabel === item}" cdkDrag (click)="setItemRigth(item)">
+                        <div *ngIf="!item.includes('Value') && !item.includes('ID')" class="box" [ngClass]="{'setItem': itelLabel === item}" cdkDrag (click)="setItemRigth(item)">
                             {{ item.split('_').join(' ') }}
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                 Hide
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
-            <mat-checkbox color="primary">
+            <mat-checkbox color="accent">
                 But keep hiding properties labels
             </mat-checkbox>
         </div>
@@ -32,7 +32,7 @@
             <div class="table-columns">
                 <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
                     <div *ngFor="let item of noHidden">
-                        <div *ngIf="!item.includes('Value');" class="box" cdkDrag (click)="setItemLeft(item)" [ngClass]="{'setItem': itelLabel === item}">
+                        <div *ngIf="!item.includes('Value') && !item.includes('ID')" class="box" cdkDrag (click)="setItemLeft(item)" [ngClass]="{'setItem': itelLabel === item}">
                             {{ item.split('_').join(' ') }}
                         </div>
                     </div>
@@ -41,6 +41,7 @@
         </div>
     </div>
     <div mat-dialog-actions align='center'>
-        <button mat-button (click)="onClick()" mat-raised-button tabindex="-1">CLOSE</button>
+        <button (click)="onClick()" mat-raised-button
+        color="accent" tabindex="-1">CLOSE</button>
     </div>
 </div>

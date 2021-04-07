@@ -1,13 +1,13 @@
+import { NullTemplateVisitor } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { ValidatorFn, AbstractControl, FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomValidationService {
-
-  constructor() { }
+  constructor() {}
 
   public patternValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
@@ -16,11 +16,14 @@ export class CustomValidationService {
       }
       const regex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
       const valid = regex.test(control.value);
-      return valid ? null : { invalidPassword: true } as any;
+      return valid ? null : ({ invalidPassword: true } as any);
     };
   }
 
-  public MatchPassword(password: string, confirmPassword: string): { [key: string]: any } {
+  public MatchPassword(
+    password: string,
+    confirmPassword: string
+  ): { [key: string]: any } {
     return (formGroup: FormGroup) => {
       const passwordControl = formGroup.controls[password];
       const confirmPasswordControl = formGroup.controls[confirmPassword];
@@ -29,7 +32,10 @@ export class CustomValidationService {
         return null;
       }
 
-      if (confirmPasswordControl.errors && !confirmPasswordControl.errors.passwordMismatch) {
+      if (
+        confirmPasswordControl.errors &&
+        !confirmPasswordControl.errors.passwordMismatch
+      ) {
         return null;
       }
 
@@ -38,16 +44,18 @@ export class CustomValidationService {
       } else {
         return confirmPasswordControl.setErrors(null);
       }
-    }
+    };
   }
 
-  lowercaseValidator(c: FormControl) {
-    let regex = /[a-z]/g
-    if (regex.test(c.value)) {
-      return null;
-    } else {
-      return { lowercase: true }
-    }
+  uppercaseValidator(c: FormControl) {
+    const regex = /[A-Z]/g;
+    if (!regex.test(c.value) && c.value) return { uppercase: true };
+    else return null;
   }
 
+  domainValidation(c: FormControl) {
+    const regex = /^((ftp|http|https):\/\/){0,1}(w{3,3}\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
+    if (!regex.test(c.value) && c.value) return { domain: true };
+    else return null;
+  }
 }

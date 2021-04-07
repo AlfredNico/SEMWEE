@@ -1,5 +1,10 @@
 <div fxLayout="column" class="w-100">
-    <!-- <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
+    <div fxLayout="row"
+    fxLayoutAlign="space-between center" class="px-2 m-3">
+      <div class="w-50">
+        <mat-progress-bar mode="buffer" color="accent" [value]="progressBarValue"></mat-progress-bar>
+      </div>
+
         <mat-form-field appearance="outline" id="filters">
             <mat-label>Search</mat-label>
             <input matInput type="search" autocomplete="off" [formControl]="search">
@@ -7,13 +12,13 @@
         </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between center">
-        <span>Table intef list</span>
+        <!-- <span>Table intef list</span> -->
 
-        <a mat-list-item (click)="tableOpons()">
+        <!-- <a mat-list-item (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             <span>Table options </span>
-        </a>
-    </div> -->
+        </a> -->
+    </div>
     <div class="px-2 m-3 table-container">
         <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
@@ -37,12 +42,12 @@
                     <td [ngClass]="{'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" [matTooltip]="row[column]" class="table-container-td" [ngSwitch]="column">
                         <div *ngSwitchCase="'Valid'">
                             <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
-                            <mat-icon color="primary" *ngIf="row[column]===true">done</mat-icon>
-                            <mat-icon color="warn" *ngIf=" row[column]===false">close</mat-icon>
+                            <mat-icon class="m-auto" color="accent" *ngIf="row[column]===true">done</mat-icon>
+                            <mat-icon class="m-auto" color="warn" *ngIf=" row[column]===false">close</mat-icon>
                         </div>
                         <div *ngSwitchCase="'Popular Search Queries'">
                             <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
-                            <div *ngIf="row[column]!=='loadingQuery'">
+                            <div *ngIf="row[column]!=='loadingQuery'" >
                                 {{ row[column] }}
                             </div>
                         </div>
@@ -65,15 +70,15 @@
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
-        <button type="button" mat-raised-button color="primary" class="m-3">
+        <button type="button" mat-raised-button color="accent" class="m-3">
             Display Revelant List Page
         </button>
 
         <div fxLayoutAlign="end center" class="w-100">
-            <button type="button" mat-raised-button color="primary" class="m-3">
+            <button type="button" mat-raised-button color="accent" class="m-3">
             Export
             </button>
-            <button type="button" mat-raised-button color="primary" class="m-3">
+            <button type="button" mat-raised-button color="accent" class="m-3">
                 Send data to ...
             </button>
         </div>

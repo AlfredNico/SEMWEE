@@ -1,185 +1,306 @@
 <mat-card tabindex="-1" class="w-100">
-    <mat-card-header>
-        <mat-card-title>Add new project</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <form [formGroup]="form">
-            <!-- <div fxLayout="column" fxLayoutAlign="center center">
+  <mat-card-header>
+    <mat-card-title>Add new project</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <!-- <div fxLayout="column" fxLayoutAlign="center center">
                 <img mat-card-image style="height: 100px;
                 width: 100px;" [src]="image_url" alt="project images">
                 <input type="file" accept="image/*" #file (change)="onImageChanged($event)" style="display:none;" />
                 <button mat-raised-button type="button" (click)="file.click()">Change</button>
             </div> -->
 
-            <div class="w-100" fxLayout="column" fxLayoutAlign="center center" formGroupName="letter_thumbnails_project">
-                <div class="letter" [style.background]="background" [style.color]="color">
-                    {{ letter.value }}
-                </div>
-                <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
-                    <mat-label>Letter* / Lettre*</mat-label>
-                    <input matInput formControlName="letter" maxlength="1" autocomplete="off">
-                    <mat-hint>Give a name to your project. / Donnez un nom à votre projet.</mat-hint>
-                    <mat-error *ngIf="letter?.touched && letter?.errors?.required">
-                        Letter is required
-                    </mat-error>
-                    <mat-error *ngIf="letter?.errors?.pattern">
-                        Letter is uppercase
-                    </mat-error>
-                </mat-form-field>
-                <div class="w-100" fxLayout="row" fxLayoutAlign="center">
-                    <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
-                        <mat-label>Letter color*</mat-label>
-                        <input matInput type="color" formControlName="color">
-                        <mat-hint>
-                            Letter color
-                        </mat-hint>
-                    </mat-form-field>
-                    <!-- (click)="setBackground(ref2.value)" formControlName="background" -->
-                    <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
-                        <mat-label>Background color*</mat-label>
-                        <input matInput type="color" formControlName="background">
-                        <mat-hint>
-                            Background color
-                        </mat-hint>
-                    </mat-form-field>
-                </div>
+      <div
+        class="w-100"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        formGroupName="letter_thumbnails_project"
+      >
+        <div
+          class="letter"
+          [style.background]="background"
+          [style.color]="color"
+        >
+          {{ letter.value }}
+        </div>
+        <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
+          <mat-label>Letter* / Lettre*</mat-label>
+          <input
+            matInput
+            formControlName="letter"
+            maxlength="1"
+            autocomplete="off"
+          />
+          <mat-hint
+            >Give a name to your project. / Donnez un nom à votre
+            projet.</mat-hint
+          >
+          <mat-error *ngIf="letter.touched && letter.errors?.required">
+            Letter is required
+          </mat-error>
+          <mat-error *ngIf="letter.errors?.uppercase">
+            Letter must be uppercase
+          </mat-error>
+        </mat-form-field>
+        <div class="w-100" fxLayout="row" fxLayoutAlign="center">
+          <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
+            <mat-label>Letter color*</mat-label>
+            <input matInput type="color" formControlName="color" />
+            <mat-hint> Letter color </mat-hint>
+          </mat-form-field>
+          <!-- (click)="setBackground(ref2.value)" formControlName="background" -->
+          <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
+            <mat-label>Background color*</mat-label>
+            <input matInput type="color" formControlName="background" />
+            <mat-hint> Background color </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
+        <mat-label>Name* / Nom*</mat-label>
+        <input
+          matInput
+          placeholder="Kiatoo"
+          formControlName="name_project"
+          autocomplete="off"
+        />
+        <mat-hint
+          >Give a name to your project. / Donnez un nom à votre
+          projet.</mat-hint
+        >
+        <mat-error
+          *ngIf="
+            form.controls['name_project'].touched &&
+            form.controls['name_project'].errors?.required
+          "
+        >
+          Name is required
+        </mat-error>
+        <mat-error *ngIf="form.controls['name_project'].errors?.maxLength">
+          Maximum length name is 10 words
+        </mat-error>
+        <mat-error *ngIf="form.controls['name_project'].errors?.projectName">
+          The Nname is already taken
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
+        <mat-label>Domain* / Domaine*</mat-label>
+        <input
+          matInput
+          placeholder="www.kiatoo.com"
+          formControlName="domain_project"
+          autocomplete="off"
+        />
+        <mat-hint
+          >Fill the field with the domain of the website. / Remplissez le champ
+          avec le nom de domaine de votre site.</mat-hint
+        >
+        <mat-error
+          *ngIf="
+            form.controls['domain_project'].touched &&
+            form.controls['domain_project'].errors?.required
+          "
+        >
+          Domain is required
+        </mat-error>
+        <mat-error *ngIf="form.controls['domain_project'].errors?.domain">
+          Invalid domain name, it sould be like www.kiatoo.com
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
+        <mat-label>Country* / Pays*</mat-label>
+        <input
+          matInput
+          placeholder="France"
+          formControlName="country_project"
+          [matAutocomplete]="autoComplete"
+        />
+        <mat-autocomplete #autoComplete="matAutocomplete">
+          <mat-option
+            *ngFor="let contry of filteredCounrty | async"
+            [value]="contry.name"
+          >
+            {{ contry.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint
+          >Which country is your website targeting ? / Indiquez à quel pays
+          s'adresse votre site web.</mat-hint
+        >
+        <mat-error
+          *ngIf="
+            form.get('country_project')?.touched &&
+            form.get('country_project')?.errors?.required
+          "
+          >Country is required</mat-error
+        >
+        <mat-error *ngIf="form.get('country_project')?.max"
+          >Maximum length name is 40 words</mat-error
+        >
+      </mat-form-field>
+
+      <div class="w-100 my-5" fxLayout="row">
+        <mat-form-field appearance="outline" class="w-100 my-5 mx-1">
+          <mat-label>Language* / Langue*</mat-label>
+          <mat-select placeholder="French" formControlName="language_project">
+            <mat-option
+              *ngFor="let language of languages"
+              [value]="language.code"
+            >
+              {{ language.name }}
+            </mat-option>
+          </mat-select>
+          <mat-hint
+            >Tell us what is the language of your website? / Indiquez la langue
+            de votre site web.</mat-hint
+          >
+          <mat-error
+            *ngIf="
+              form.get('language_project')?.touched &&
+              form.get('language_project')?.errors?.required
+            "
+            >Language is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 my-5 mx-1">
+          <mat-label>Path* / Chemin*</mat-label>
+          <input
+            matInput
+            placeholder="/fr/*"
+            formControlName="path_project"
+          />
+          <mat-hint class="w-100" fxLayout="column">
+            <div>
+              If the language or the geographic localization of the resources is
+              set by a directory, please mention the path (/ if no directory).
             </div>
-
-            <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                <mat-label>Name* / Nom*</mat-label>
-                <input matInput placeholder="Kiatoo" formControlName="name_project" autocomplete="off">
-                <mat-hint>Give a name to your project. / Donnez un nom à votre projet.</mat-hint>
-                <mat-error *ngIf="form.get('name_project')?.touched && form.get('name_project')?.errors?.required">
-                    Name is required
-                </mat-error>
-                <mat-error *ngIf="form.get('name_project')?.errors?.maxLength">
-                    Maximum length name is 10 words
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                <mat-label>Domain* / Domaine*</mat-label>
-                <input matInput placeholder="www.kiatoo.com" formControlName="domain_project" autocomplete="off">
-                <mat-hint>Fill the field with the domain of the website. / Remplissez le champ avec le nom de domaine de votre site.</mat-hint>
-                <mat-error *ngIf="form.get('domain_project')?.touched && form.get('domain_project')?.errors?.required">Domain is required</mat-error>
-                <mat-error *ngIf="form.get('domain_project')?.errors?.pattern">
-                    Invalid domain name
-                </mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                <mat-label>Country* / Pays*</mat-label>
-                <input matInput placeholder="France" formControlName="country_project" [matAutocomplete]="autoComplete">
-                <mat-autocomplete #autoComplete="matAutocomplete">
-                    <mat-option *ngFor="let contry of filteredCounrty | async" [value]="contry.name">
-                        {{contry.name}}
-                    </mat-option>
-                </mat-autocomplete>
-                <mat-hint>Which country is your website targeting ? / Indiquez à quel pays s'adresse votre site web.</mat-hint>
-                <mat-error *ngIf="form.get('country_project')?.touched && form.get('country_project')?.errors?.required">Country is required</mat-error>
-                <mat-error *ngIf="form.get('country_project')?.max">Maximum length name is 40 words</mat-error>
-            </mat-form-field>
-
-            <div class="w-100 my-5" fxLayout="row">
-                <mat-form-field appearance="outline" class="w-100 my-5 mx-1">
-                    <mat-label>Language* / Langue*</mat-label>
-                    <mat-select placeholder="French" formControlName="language_project">
-                        <mat-option *ngFor="let language of languages" [value]="language.code">
-                            {{ language.name }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-hint>Tell us what is the language of your website? / Indiquez la langue de votre site web.</mat-hint>
-                    <mat-error *ngIf="form.get('language_project')?.touched && form.get('language_project')?.errors?.required">Language is required</mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="w-100 my-5 mx-1">
-                    <mat-label>Path* / Chemin*</mat-label>
-                    <input matInput placeholder="/fr/*" formControlName="path_project" [readonly]="true">
-                    <mat-hint class="w-100" fxLayout="column">
-                        <div>
-                            If the language or the geographic localization of the resources is set by a directory, please mention the path (/ if no directory).
-                        </div>
-                        <div>
-                            Si la langue et/ou la localisation géographique des ressources concernées passent pas un répertoire, indiquez le chemin (/* si aucun répertoire).
-                        </div>
-                    </mat-hint>
-                    <mat-error *ngIf="form.get('language_project')?.touched && form.get('language_project')?.errors?.required">Language is required</mat-error>
-                </mat-form-field>
+            <div>
+              Si la langue et/ou la localisation géographique des ressources
+              concernées passent pas un répertoire, indiquez le chemin (/* si
+              aucun répertoire).
             </div>
+          </mat-hint>
+          <mat-error
+            *ngIf="
+              form.get('path_project')?.touched &&
+              form.get('path_project')?.errors?.required
+            "
+            >Path is required</mat-error
+          >
+        </mat-form-field>
+      </div>
 
+      <div class="w-100 my-5 mx-1 pt-4">
+        <mat-label style="margin-right: 20%">SSL* / TLS*</mat-label>
+        <mat-radio-group
+          class="w-50 px-3"
+          aria-label="website"
+          formControlName="protocol_project"
+        >
+          <mat-radio-button
+            color="primary"
+            class="mx-5"
+            *ngFor="let protocol of protocols"
+            [value]="protocol"
+          >
+            {{ protocol }}
+          </mat-radio-button>
+        </mat-radio-group>
+        <mat-hint class="w-100" fxLayout="column">
+          <div>Tell us if your website uses SSL/TLS certificate.</div>
+          <div>Dites-nous si votre site utilise un certificat SSL/TLS.</div>
+        </mat-hint>
+        <mat-error
+          *ngIf="
+            form.get('protocol_project')?.touched &&
+            form.get('protocol_project')?.errors?.required
+          "
+          >Language is required</mat-error
+        >
+      </div>
 
-            <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                <mat-label>SSL/TLS*</mat-label>
-                <input matInput placeholder="/fr/*" formControlName="protocol_project">
-                <mat-hint class="w-100" fxLayout="column">
-                    <div>
-                        Tell us if your website uses SSL/TLS certificate.
-                    </div>
-                    <div>
-                        Dites-nous si votre site utilise un certificat SSL/TLS.
-                    </div>
-                </mat-hint>
-                <mat-error *ngIf="form.get('path_project')?.touched && form.get('path_project')?.errors?.required">Language is required</mat-error>
-            </mat-form-field>
-
-            <div class="w-100" fxLayout="row">
-                <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                    <mat-label>Landscape format* / Format paysage*</mat-label>
-                    <input matInput placeholder="logo-paysage.png" formControlName="image_project_Landscape" [readonly]="true">
-                    <mat-hint class="w-100" fxLayout="column">
-                        <div>
-                            You can choose a landscape format image to illustrate your project.
-                        </div>
-                        <div>
-                            Vous pouvez choisir une image au format paysage pour illustrer votre projet.
-                        </div>
-                    </mat-hint>
-                </mat-form-field>
-
-                <input type="file" accept="image/*" #landscape (change)="uploadLandscape($event)" style="display:none;" />
-
-                <button class="upload-button my-3" mat-raised-button type="button" (click)="landscape.click()">
-                upload landscape image
-            </button>
+      <div class="w-100" fxLayout="row">
+        <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
+          <mat-label>Landscape format* / Format paysage*</mat-label>
+          <input
+            matInput
+            placeholder="logo-paysage.png"
+            formControlName="image_project_Landscape"
+            [readonly]="true"
+          />
+          <mat-hint class="w-100" fxLayout="column">
+            <div>
+              You can choose a landscape format image to illustrate your
+              project.
             </div>
-            <div class="w-100" fxLayout="row">
-                <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-                    <mat-label>Squared* / Format carré*</mat-label>
-                    <input matInput placeholder="logo-carre.png" formControlName="image_project_Squared" [readonly]="true">
-                    <mat-hint class="w-100" fxLayout="column">
-                        <div>
-                            You can choose a square format image to illustrate your project.
-                        </div>
-                        <div>
-                            Vous pouvez choisir une image au format carré pour illustrer votre projet.
-                        </div>
-                    </mat-hint>
-                </mat-form-field>
-
-                <input type="file" accept="image/*" #squared (change)="uploadSquared($event)" style="display:none;" />
-                <button class="upload-button my-3" mat-raised-button type="button" (click)="squared.click()">
-                    upload squared image
-                </button>
+            <div>
+              Vous pouvez choisir une image au format paysage pour illustrer
+              votre projet.
             </div>
+          </mat-hint>
+        </mat-form-field>
 
-        </form>
-    </mat-card-content>
-    <mat-card-actions align="end" class="my-3">
-        <button mat-raised-button color="primary" (click)="onSubmit()">Add</button>
-    </mat-card-actions>
+        <input
+          type="file"
+          accept="image/*"
+          #landscape
+          (change)="uploadLandscape($event)"
+          style="display: none"
+        />
+
+        <button
+          class="upload-button my-3"
+          mat-raised-button
+          type="button"
+          (click)="landscape.click()"
+        >
+          upload landscape image
+        </button>
+      </div>
+      <div class="w-100" fxLayout="row">
+        <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
+          <mat-label>Squared* / Format carré*</mat-label>
+          <input
+            matInput
+            placeholder="logo-carre.png"
+            formControlName="image_project_Squared"
+            [readonly]="true"
+          />
+          <mat-hint class="w-100" fxLayout="column">
+            <div>
+              You can choose a square format image to illustrate your project.
+            </div>
+            <div>
+              Vous pouvez choisir une image au format carré pour illustrer votre
+              projet.
+            </div>
+          </mat-hint>
+        </mat-form-field>
+
+        <input
+          type="file"
+          accept="image/*"
+          #squared
+          (change)="uploadSquared($event)"
+          style="display: none"
+        />
+        <button
+          class="upload-button my-3"
+          mat-raised-button
+          type="button"
+          (click)="squared.click()"
+        >
+          upload squared image
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="end" class="my-3">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Add</button>
+  </mat-card-actions>
 </mat-card>
-
-<!-- <mat-horizontal-stepper linear #stepper>
-    <ng-template matStepLabel>Informations</ng-template>
-    <mat-step [stepControl]="formInfo" [editable]="false">
-        <app-info [user]="user"></app-info>
-    </mat-step>
-    <mat-step [stepControl]="formLicencesPlans" [editable]="false">
-        <ng-template matStepLabel>Licences and Plans</ng-template>
-        <app-licences-plans></app-licences-plans>
-    </mat-step>
-    <mat-step [stepControl]="formCatg" [editable]="false">
-        <ng-template matStepLabel>Catalog</ng-template>
-        <app-catalog></app-catalog>
-    </mat-step>
-</mat-horizontal-stepper> -->
