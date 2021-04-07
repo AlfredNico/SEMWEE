@@ -34,7 +34,7 @@
             <span class="form-text text-muted text-error" mat-error *ngIf="letter.touched && letter.errors?.required">
               Letter is required
             </span>
-            <span class="form-text text-muted text-error" mat-error *ngIf="letter.errors?.pattern">
+            <span class="form-text text-muted text-error" mat-error *ngIf="letter.errors?.uppercase">
               Letter is uppercase
             </span>
         </div>
@@ -87,8 +87,8 @@
           ">
           Domain is required
           </span>
-          <span class="form-text text-muted text-error" mat-error *ngIf="form.get('domain_project').errors?.pattern">
-            Invalid domain name
+          <span class="form-text text-muted text-error" mat-error *ngIf="form.controls['domain_project'].errors?.domain">
+            Invalid domain name, it sould be like www.kiatoo.com
           </span>
       </div>
 

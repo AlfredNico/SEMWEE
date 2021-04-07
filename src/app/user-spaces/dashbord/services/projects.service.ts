@@ -17,7 +17,6 @@ export class ProjectsService {
   public trigrer$ = new BehaviorSubject<boolean>(false);
   public subject = new Subject<any>();
   public currentSubject = this.subject.asObservable();
-  // isVisibleSource: BehaviorSubject<boolean> = new BehaviorSubject(false);
   isProjects = false;
 
   constructor(private http: HttpClient) {}

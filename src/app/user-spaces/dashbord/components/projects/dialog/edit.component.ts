@@ -63,8 +63,6 @@ export class EditComponent implements OnInit {
   protocols: string[] = ['SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
 
-  private readonly regex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/;
-
   form = this.fb.group({
     name_project: [
       '',
@@ -74,7 +72,10 @@ export class EditComponent implements OnInit {
     ],
     image_project_Landscape: [''],
     image_project_Squared: [''],
-    domain_project: ['', [Validators.required, Validators.pattern(this.regex)]],
+    domain_project: [
+      '',
+      [Validators.required, this.custumValidator.domainValidation],
+    ],
     country_project: ['', [Validators.required]],
     language_project: ['', [Validators.required]],
     path_project: ['', [Validators.required]],
@@ -83,11 +84,7 @@ export class EditComponent implements OnInit {
     letter_thumbnails_project: this.fb.group({
       letter: [
         '',
-        [
-          Validators.pattern(/^[A-Z]/),
-          Validators.maxLength(1),
-          this.custumValidator.patternValidator,
-        ],
+        [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
       ],
       color: ['#015fec'],
       background: ['#eab150'],
@@ -103,17 +100,17 @@ export class EditComponent implements OnInit {
     private custumValidator: CustomValidationService,
     private common: CommonService
   ) {
-    // this.project = this.data;
-    this.image_url = environment.baseUrlImg + this.data.image_project;
-
-    this.form.patchValue({
-      ...this.data,
-      letter_thumbnails_project: {
-        letter: this.data.letter_thumbnails_project[0].letter,
-        background: this.data.letter_thumbnails_project[0].background,
-        color: this.data.letter_thumbnails_project[0].color,
-      },
-    });
+    if (this.data) {
+      this.image_url = environment.baseUrlImg + this.data.image_project;
+      this.form.patchValue({
+        ...this.data,
+        letter_thumbnails_project: {
+          letter: this.data.letter_thumbnails_project[0]['letter'],
+          background: this.data.letter_thumbnails_project[0]['background'],
+          color: this.data.letter_thumbnails_project[0]['color'],
+        },
+      });
+    }
   }
 
   get letter() {

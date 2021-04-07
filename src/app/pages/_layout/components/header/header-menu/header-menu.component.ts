@@ -10,6 +10,7 @@ import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 function getCurrentURL(location) {
   return location.split(/[?#]/)[0];
@@ -28,29 +29,47 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
 
   public form = new FormGroup({
     selected: new FormControl(''),
-  })
+  });
 
-  // projects = [
-  //   {_id: 'project-1', name_project: 'Project 1'},
-  //   { value: 'project-2', name_project: 'Project 2'},
-  //   { value: 'project-3', name_project: 'Project 3'}
-  // ];
-
-  // projects: userProject[] = [];
-  projects: BehaviorSubject<userProject[]> = new BehaviorSubject<userProject[]>([]);
+  projects: BehaviorSubject<userProject[]> = new BehaviorSubject<userProject[]>(
+    []
+  );
 
   allprojets$: Observable<Projects[]>;
   user: Users;
-  constructor(private layout: LayoutService, private loc: Location, private auth: AuthService, private projectsServices: ProjectsService, private triggerServices: TriggerService) {
+  idProjet: any = '';
+  selectedProject: Projects;
+
+  constructor(
+    private layout: LayoutService,
+    private loc: Location,
+    private auth: AuthService,
+    private projectsServices: ProjectsService,
+    public triggerServices: TriggerService,
+    private route: ActivatedRoute
+  ) {
     this.location = this.loc;
     this.user = this.auth.currentUserSubject.value;
   }
 
   ngOnInit(): void {
-    this.triggerServices.trigrer$.subscribe(
-      () => {
-        this.allprojets$ = this.projectsServices.getAllProjects(this.user._id);
-      });
+    this.triggerServices.trigrer$.subscribe(() => {
+      this.allprojets$ = this.projectsServices.getAllProjects(this.user._id);
+    });
+
+    this.triggerServices.switchproject$.subscribe((id: any) => {
+      if (id) {
+        this.allprojets$.subscribe((res: any) => {
+          this.selectedProject = res.filter((x) => x._id == id);
+        });
+        console.log('id', this.selectedProject);
+
+        // this.route.paramMap.subscribe(async (params: ParamMap) => {
+        //   console.log('idProduit => ', params);
+        //   this.idProjet = params.get('idProduit');
+        // });
+      }
+    });
 
     this.ulCSSClasses = this.layout.getStringCSSClasses('header_menu_nav');
     this.rootArrowEnabled = this.layout.getProp('header.menu.self.rootArrow');
@@ -59,7 +78,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit(): void {}
 
   getMenuItemActive(url) {
     return this.checkIsActive(url) ? 'menu-item-active' : '';

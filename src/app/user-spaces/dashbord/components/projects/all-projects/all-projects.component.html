@@ -1,21 +1,13 @@
-<mat-list class="w-100" *ngFor="let project of allProjects$ | async">
-    <mat-list-item class="w-100 my-1">
-        <mat-card fxLayout="row" fxLayoutAlign="space-between center" class="w-100 py-1 px-4">
-            <div> {{ project.name_project }} </div>
-            <div>
-                <button mat-icon-button color="primary" (click)="onEdit(project)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="onDelete(project)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button color="primary" (click)="onDeteils(project)">
-                    <mat-icon>list</mat-icon>
-                </button>
-                <button mat-icon-button [routerLink]="['/user-space/lp-validator', project._id]">
-                    <mat-icon>navigate_next</mat-icon>
-                </button>
-            </div>
-        </mat-card>
-    </mat-list-item>
-</mat-list>
+<mat-card>
+  <mat-card-header>
+    <div class="card-header border-0">
+      <h3 class="card-title align-items-start" fxLayout="column" >
+        <span class="card-label font-weight-bolder text-dark">Projects Overview</span>
+        <span class="text-muted mt-0 font-weight-bold font-size-sm">{{ (allProjects$ | async)?.length }} projects</span>
+      </h3>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="mx-5">
+    <app-projects [allProjects$]="allProjects$"></app-projects>
+  </mat-card-content>
+</mat-card>

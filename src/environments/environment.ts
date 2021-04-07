@@ -7,8 +7,8 @@ export const environment = {
   appVersion: 'versionSEMWEE',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  baseUrl: 'http://pp.semwee.app:3000/api',
-  baseUrlImg: 'http://pp.semwee.app:3000',
+  baseUrl: 'http://51.75.255.155:3000/api',
+  baseUrlImg: 'http://51.75.255.155:3000',
 };
 
 /*

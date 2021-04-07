@@ -39,9 +39,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             // window.location.reload();
             this.router.navigateByUrl('/sign-in');
             return EMPTY;
-          } else {
+          } else if (err.status === 0) {
             this.common.hideSpinner('root');
             this.notifs.warn('Server not responding !');
+          } else {
+            console.log('err ', err);
           }
           // } else if (this.cookieService.check('SEMEWEE') == false) {
           //   this.notifs.warn('Session expired');
