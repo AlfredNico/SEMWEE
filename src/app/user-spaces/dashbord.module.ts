@@ -28,8 +28,6 @@ import { DropdownMenu4Component } from '@app/_metronic/partials/content/dropdown
 import { DropdownMenu3Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu3/dropdown-menu3.component';
 import { DropdownMenu2Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu2/dropdown-menu2.component';
 import { DropdownMenu1Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu1/dropdown-menu1.component';
-// import { LayoutModule } from '@app/pages/layout.module';
-// import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
 import { AsideComponent } from '@app/pages/_layout/components/aside/aside.component';
 import { HeaderMobileComponent } from '@app/pages/_layout/components/header-mobile/header-mobile.component';
 import { FooterComponent } from '@app/pages/_layout/components/footer/footer.component';
@@ -131,6 +129,15 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
                 './dashbord/components/projects/new-projects/new-projects.module'
               ).then((m) => m.NewProjectsModule),
           },
+
+          {
+            path: 'resiable',
+            loadChildren: () =>
+              import('../shared/components/resibale.module').then(
+                (m) => m.ResibaleModule
+              ),
+          },
+          // { path: '', redirectTo: 'resiable', pathMatch: 'full' },
           { path: '', redirectTo: 'all-project', pathMatch: 'full' },
         ],
       },
