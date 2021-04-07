@@ -5,6 +5,6 @@ export const environment = {
   isMockEnabled: true,
   // baseUrl: 'http://51.75.255.155:3000/api',
   // baseUrlImg: 'http://51.75.255.155:3000',
-  baseUrl: 'https://pp.semwee.app:3000/api',
-  baseUrlImg: 'https://pp.semwee.app:3000',
+  baseUrl: 'https://api.semwee.app:3000/api',
+  baseUrlImg: 'https://api.semwee.app:3000',
 };
