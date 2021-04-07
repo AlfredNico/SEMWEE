@@ -1,3 +1,4 @@
+import { TuneIt, TuneItVlaue } from './../../../interfaces/tune-it';
 import {
   AfterViewInit,
   Component,
@@ -92,7 +93,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <button
             mat-raised-button
             color="accent"
-            [mat-dialog-close]="true"
+            (click)="onClick()"
             cdkFocusInitial
           >
             Apply
@@ -117,8 +118,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <button
             mat-raised-button
             color="accent"
-            [mat-dialog-close]="true"
             cdkFocusInitial
+            (click)="onClick()"
           >
             Apply on the Table
           </button>
@@ -173,14 +174,32 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     schematic_scope: new FormControl(''),
   });
 
+  tuneIt: TuneIt<TuneItVlaue>;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<TuneItComponent>
   ) {
+    console.log('data ', this.data);
     this.isItem = this.data.item;
   }
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {}
+
+  onClick() {
+    const {
+      edit_spelling,
+      synonymize,
+      edit_synonyms,
+      schematic_scope,
+    } = this.form.controls;
+
+    if (edit_spelling.value || synonymize.value || edit_synonyms.value) {
+      console.log('val ', edit_spelling.value);
+    }
+
+    // this.dialogRef.close(this.form.value);
+  }
 }

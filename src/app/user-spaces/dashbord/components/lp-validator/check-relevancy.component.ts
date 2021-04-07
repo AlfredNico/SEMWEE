@@ -1,3 +1,4 @@
+import { TuneIt, TuneItVlaue } from './../../interfaces/tune-it';
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
@@ -79,6 +80,9 @@ export class CheckRelevancyComponent
   //data after filter
   filterData: any[] = [];
   checklist: string[] = [];
+
+  //Tune it property
+  checkTuneItValue: TuneIt<TuneItVlaue>;
 
   constructor(
     private fb: FormBuilder,
@@ -236,8 +240,8 @@ export class CheckRelevancyComponent
 
     this.dialog.open(TuneItComponent, {
       // position: { top: `${clientY}px`, left: `${clientX}px` },
-      // width: itemSeleted == 'itemtype' ? '400px' : '',
-      data: { row, item },
+      // width: itemSeleted == 'itemtype' ? '400px' : '',,
+      data: { row, item, checkTuneItValue: this.checkTuneItValue },
     });
   }
 }
