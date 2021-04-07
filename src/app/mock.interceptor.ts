@@ -15,7 +15,7 @@ import * as FILE from 'src/app/shared/fake-data/file.json';
 import { Projects } from './user-spaces/dashbord/interfaces/projects';
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
-export const usersData: Users[] = [
+/*export const usersData: Users[] = [
   {
     _id: '1',
     firstname: 'zahoZAHO12',
@@ -117,7 +117,7 @@ export const projects: Projects[] = [
     protocol_project: 'SSL',
     user_id: '1',
   },
-];
+]; */
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
