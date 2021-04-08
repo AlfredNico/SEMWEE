@@ -90,6 +90,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
           this.common.showSpinner('root');
         }),
         map(async (idProjet) => {
+          console.log(idProjet);
+          
           if (idProjet) {
             this.idProjet = idProjet;
             await this.checkProject();
@@ -206,3 +208,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     }
   }
 }
+function startWidth(arg0: {}): import("rxjs").OperatorFunction<any, unknown> {
+  throw new Error('Function not implemented.');
+}
+
