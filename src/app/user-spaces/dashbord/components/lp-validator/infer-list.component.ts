@@ -80,7 +80,7 @@ export class InferListComponent
   @Output() dataInferListReady = new EventEmitter<any>();
 
   @HostListener('window:scroll', ['$event']) onScroll(event: any){
-    console.log(window.pageYOffset);
+    // console.log(window.pageYOffset);
   }
 
   constructor(
@@ -389,7 +389,7 @@ export class InferListComponent
   }
 
   public isColumnDisplay(column: any): boolean{
-    if (column.toLowerCase().includes('d')) return true;
+    if (column.toLowerCase().includes('_id')) return true;
     else false;
   }
 }

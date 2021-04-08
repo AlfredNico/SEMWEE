@@ -244,4 +244,21 @@ export class CheckRelevancyComponent
       data: { row, item, checkTuneItValue: this.checkTuneItValue },
     });
   }
+
+   public isColumnDisplay(column: any): boolean{
+    if (this.toLowerCase(column).includes('_id')
+      || this.toLowerCase(column).includes('idproduct')
+      || this.toLowerCase(column).includes('select')
+      || this.toLowerCase(column).includes('__v')) return true;
+    else false;
+  }
+
+  public toLowerCase(item: string): string{
+    return item.toLowerCase();
+  }
+  isPopTuneIt(column: string, value: string):boolean{
+    if (this.toLowerCase(column).includes('itemtype')
+    || (this.toLowerCase(column).includes('property') && value)) return true;
+    else return false;
+  }
 }

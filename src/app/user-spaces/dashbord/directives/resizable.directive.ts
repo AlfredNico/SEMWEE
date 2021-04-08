@@ -36,8 +36,6 @@ export class ResizableDirective {
       this.renderer.listen(resizer, 'mousedown', this.onMouseDown);
       this.renderer.listen(this.table, 'mousemove', this.onMouseMove);
       this.renderer.listen('document', 'mouseup', this.onMouseUp);
-
-      console.log(resizer);
     }
   }
 
@@ -50,8 +48,6 @@ export class ResizableDirective {
   onMouseMove = (event: MouseEvent) => {
     const offset = 35;
     if (this.pressed && event.buttons) {
-      this.renderer.addClass(this.table, 'resizing');
-
       // Calculate width of column
       let width = this.startWidth + (event.pageX - this.startX - offset);
 
@@ -59,13 +55,25 @@ export class ResizableDirective {
         this.table.querySelectorAll('.mat-row')
       ).map((row: any) => row.querySelectorAll('.mat-cell').item(this.index));
 
+      // console.log(this.column.childNodes[0]);
+
       // Set table header width
       this.renderer.setStyle(this.column, 'width', `${width}px`);
+      
+      // render for input sreach field
+      let div = this.column.childNodes[0] as HTMLElement;
+      div.style.width = `${width}px`;
+
+      let formSearch = this.column.childNodes[1] as HTMLElement;
+      formSearch.style.width = `${width}px`;
 
       // Set table cells width
       for (const cell of tableCells) {
         this.renderer.setStyle(cell, 'width', `${width}px`);
       }
+
+      //triggres services
+      
     }
   };
 
