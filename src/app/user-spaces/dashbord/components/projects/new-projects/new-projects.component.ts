@@ -68,7 +68,7 @@ export class NewProjectsComponent implements OnInit {
         [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
       ],
       color: ['#66ACFF'],
-      background: ['#40425D'],
+      background: ['#F3F6F9'],
     }),
   });
 

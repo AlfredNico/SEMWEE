@@ -15,7 +15,7 @@ import * as FILE from 'src/app/shared/fake-data/file.json';
 import { Projects } from './user-spaces/dashbord/interfaces/projects';
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
-/*export const usersData: Users[] = [
+export const usersData: Users[] = [
   {
     _id: '1',
     firstname: 'zahoZAHO12',
@@ -117,7 +117,7 @@ export const projects: Projects[] = [
     protocol_project: 'SSL',
     user_id: '1',
   },
-]; */
+];
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
@@ -130,78 +130,78 @@ export class MockInterceptor implements HttpInterceptor {
     const { url, method, headers, body } = request;
 
     switch (true) {
-      /* case url.includes('auth/login') && method === 'POST':
-        const { email, password } = body;
-        const user = usersData.find(
-          (x) => x.email === email && x.firstname === password
-        );
-        if (!user)
-          return throwError({
-            error: { error: 'Incorrect email address or password' },
-          });
-        return of(new HttpResponse({ status: 200, body: user as Users }));
+      // case url.includes('auth/login') && method === 'POST':
+      //   const { email, password } = body;
+      //   const user = usersData.find(
+      //     (x) => x.email === email && x.firstname === password
+      //   );
+      //   if (!user)
+      //     return throwError({
+      //       error: { error: 'Incorrect email address or password' },
+      //     });
+      //   return of(new HttpResponse({ status: 200, body: user as Users }));
 
-      case url.includes('/get-project-product/1'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array(
-              (INFERLIST as any)['default'],
-              (FILE as any)['default']
-            ),
-          })
-        );
+      // case url.includes('/get-project-product/1'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: Array(
+      //         (INFERLIST as any)['default'],
+      //         (FILE as any)['default']
+      //       ),
+      //     })
+      //   );
 
-      case url.includes('/get-project-product/2'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array((INFERLIST as any)['default'], []),
-          })
-        );
+      // case url.includes('/get-project-product/2'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: Array((INFERLIST as any)['default'], []),
+      //     })
+      //   );
 
-      case url.includes('/get-project-product/3'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array([], []),
-          })
-        );
+      // case url.includes('/get-project-product/3'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: Array([], []),
+      //     })
+      //   );
 
-      case url.includes('project/get-project'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: projects,
-          })
-        );
+      // case url.includes('project/get-project'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: projects,
+      //     })
+      //   );
 
-      case url.includes('validator/import-csv') && method === 'POST':
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: (INFERLIST as any)['default'],
-          })
-        );
+      // case url.includes('validator/import-csv') && method === 'POST':
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: (INFERLIST as any)['default'],
+      //     })
+      //   );
 
-      case url.includes('validator/post-infer-list') && method === 'POST':
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: (FILE as any)['default'],
-          })
-        );
+      // case url.includes('validator/post-infer-list') && method === 'POST':
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: (FILE as any)['default'],
+      //     })
+      //   );
 
-      case url.includes('/project/get-project-product'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array(
-              (INFERLIST as any)['default'],
-              (FILE as any)['default']
-            ),
-          })
-        ); */
+      // case url.includes('/project/get-project-product'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: Array(
+      //         (INFERLIST as any)['default'],
+      //         (FILE as any)['default']
+      //       ),
+      //     })
+      //   );
 
       // pass through any requests not handled above
       default:

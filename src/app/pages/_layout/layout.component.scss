@@ -13,3 +13,9 @@ app-layout {
     transition: opacity 1s ease-in-out;
   }
 }
+
+::ng-deep .top-position {
+  padding: 0!important;
+  margin-top: -38px!important;
+  margin-bottom: 60px!important;
+}

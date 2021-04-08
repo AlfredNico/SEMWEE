@@ -1,191 +1,126 @@
-<!--begin::Topbar-->
-<ng-container *ngIf="extraSearchDisplay">
-    <ng-container *ngIf="extrasSearchLayout === 'offcanvas'">
-        <!--begin::Search-->
-        <div class="topbar-item">
-            <div class="btn btn-icon btn-clean btn-lg mr-1" id="kt_quick_search_toggle">
-                <span [inlineSVG]="'./assets/media/svg/icons/General/Search.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-            </div>
-        </div>
-        <!--end::Search-->
-    </ng-container>
-
-    <ng-container *ngIf="extrasSearchLayout === 'dropdown'" id="kt_quick_search_toggle">
-        <div class="dropdown" id="kt_quick_search_toggle" autoClose="outside" ngbDropdown>
-            <!--begin::Toggle-->
-            <div class="topbar-item" ngbDropdownToggle>
-                <div class="btn btn-icon btn-clean btn-lg btn-dropdown mr-1">
-                    <span [inlineSVG]="'./assets/media/svg/icons/General/Search.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
+<nav class="navbar navbar-expand navbar-light my-navbar" style="box-shadow: none;">
+    <ul class="navbar-nav ml-auto">
+    
+        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+        <li class="nav-item dropdown  d-sm-none">
+     
+          <!-- Dropdown - Messages -->
+          <div class="dropdown-menu dropdown-menu-right p-3">
+            <form class="form-inline mr-auto w-100 navbar-search">
+              <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small"
+                placeholder="Search for..." >
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
                 </div>
-            </div>
-            <!--end::Toggle-->
-
-            <!--begin::Dropdown-->
-            <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg" ngbDropdownMenu>
-                <app-search-dropdown-inner></app-search-dropdown-inner>
-            </div>
-            <!--end::Dropdown-->
-        </div>
-    </ng-container>
-</ng-container>
-
-<ng-container *ngIf="extrasNotificationsDisplay">
-    <ng-container *ngIf="extrasNotificationsLayout === 'offcanvas'">
-        <!--begin::Notifications-->
-        <div class="topbar-item">
-            <div class="btn btn-icon btn-icon-mobile btn-clean btn-lg mr-1 pulse pulse-primary" id="kt_quick_notifications_toggle">
-                <span [inlineSVG]="'./assets/media/svg/icons/Code/Compiling.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-                <span class="pulse-ring"></span>
-            </div>
-        </div>
-        <!--end::Notifications-->
-    </ng-container>
-
-    <ng-container *ngIf="extrasNotificationsLayout === 'dropdown'">
-        <!--begin::Notifications-->
-        <div class="dropdown" ngbDropdown placement="bottom">
-            <!--begin::Toggle-->
-            <!-- <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" ngbDropdownToggle>
-        <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 pulse pulse-primary">
-          <span [inlineSVG]="'./assets/media/svg/icons/Code/Notification.svg'" cacheSVG="true"
-            class="svg-icon svg-icon-xl svg-icon-primary"></span>
-          <span class="pulse-ring"></span>
-        </div>
-      </div> -->
-            <!--end::Toggle-->
-
-            <!--begin::Dropdown-->
-            <div ngbDropdownMenu class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-lg">
-                <form>
-                    <app-notifications-dropdown-inner></app-notifications-dropdown-inner>
-                </form>
-            </div>
-            <!--end::Dropdown-->
-        </div>
-        <!--end::Notifications-->
-    </ng-container>
-</ng-container>
-
-<ng-container *ngIf="extrasQuickActionsDisplay">
-    <ng-container *ngIf="extrasQuickActionsLayout === 'offcanvas'">
-        <!--begin::Quick Actions-->
-        <div class="topbar-item">
-            <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1" id="kt_quick_actions_toggle">
-                <span [inlineSVG]="'./assets/media/svg/icons/General/Notifications1.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-            </div>
-        </div>
-        <!--end::Quick Actions-->
-    </ng-container>
-    <ng-container *ngIf="extrasQuickActionsLayout === 'dropdown'">
-        <!--begin::Quick Actions-->
-        <div class="dropdown" ngbDropdown placement="bottom">
-            <!--begin::Toggle-->
-            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" ngbDropdownToggle>
-                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
-                    <span [inlineSVG]="'./assets/media/svg/icons/General/Notifications1.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-                </div>
-            </div>
-            <!--end::Toggle-->
-            <!--begin::Dropdown-->
-            <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-lg" ngbDropdownMenu>
-                <app-quick-actions-dropdown-inner></app-quick-actions-dropdown-inner>
-            </div>
-            <!--end::Dropdown-->
-        </div>
-        <!--end::Quick Actions-->
-    </ng-container>
-</ng-container>
-
-<ng-container *ngIf="extrasCartDisplay">
-    <ng-container *ngIf="extrasCartLayout === 'offcanvas'">
-        <!--begin::Cart-->
-        <div class="topbar-item">
-            <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1" id="kt_quick_cart_toggle">
-                <span [inlineSVG]="'./assets/media/svg/icons/Code/Question-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-            </div>
-        </div>
-        <!--end::Cart-->
-    </ng-container>
-    <ng-container *ngIf="extrasCartLayout === 'dropdown'">
-        <!--begin::Cart-->
-        <div class="dropdown" ngbDropdown placement="bottom">
-            <!--begin::Toggle-->
-            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" ngbDropdownToggle>
-                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
-                    <span [inlineSVG]="'./assets/media/svg/icons/Code/Question-circle.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-                </div>
-            </div>
-            <!--end::Toggle-->
-            <!--begin::Dropdown-->
-            <div ngbDropdownMenu class="dropdown-menu p-0 m-0 dropdown-menu-xl dropdown-menu-anim-up">
-                <form>
-                    <app-cart-dropdown-inner></app-cart-dropdown-inner>
-                </form>
-            </div>
-            <!--end::Dropdown-->
-        </div>
-        <!--end::Cart-->
-    </ng-container>
-</ng-container>
-
-<ng-container *ngIf="extrasQuickPanelDisplay">
-    <!--begin::Quick panel-->
-    <div class="topbar-item">
-        <div class="btn btn-icon btn-clean btn-lg mr-1" id="kt_quick_panel_toggle">
-            <span [inlineSVG]="'./assets/media/svg/icons/Layout/Layout-4-blocks.svg'" cacheSVG="true" class="svg-icon svg-icon-xl svg-icon-primary"></span>
-        </div>
-    </div>
-    <!--end::Quick panel-->
-</ng-container>
-
-<ng-container *ngIf="extrasLanguagesDisplay">
-    <app-language-selector style="margin-top: 10px;"></app-language-selector>
-</ng-container>
-
-<!-- User -->
-<ng-container *ngIf="extrasUserDisplay">
-    <ng-container *ngIf="extrasUserLayout === 'offcanvas'">
+              </div>
+            </form>
+          </div>
+        </li>
+    
+        <!-- Nav Item - Alerts -->
+       <!-- <li class="nav-item dropdown">
+                        <a class="nav-icon dropdown" href="#" id="alertsDropdown" data-toggle="dropdown" aria-expanded="false">
+                            <div class="position-relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell align-middle"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                                <span class="indicator">4</span>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+                            <div class="dropdown-menu-header">
+                                4 New Notifications
+                            </div>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle text-danger"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="text-dark">Update completed</div>
+                                            <div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
+                                            <div class="text-muted small mt-1">30m ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                            </div>
+                            <div class="dropdown-menu-footer">
+                                <a href="#" class="text-muted">Show all notifications</a>
+                            </div>
+                        </div>
+                    </li> -->
+        <!-- Nav Item - Messages -->
+        <li class="nav-item">
+            <a class="nav-link " href="#"
+           role="button">
+           <i class="far fa-life-ring size-icon"></i>
+              <!-- Counter - Messages -->
+              <!-- <span class="badge badge-danger badge-counter">7</span> -->
+            </a>
+          </li>
+          <!-- Nav Item - Messages -->
+        <li class="nav-item">
+            <a class="nav-link" href="#"
+           role="button">
+           <i class="fas fa-comments size-icon"></i>
+              <!-- Counter - Messages -->
+              <!-- <span class="badge badge-danger badge-counter">7</span> -->
+            </a>
+          </li>
+        <!-- Nav Item - Messages -->
+    
+        <li class="nav-item">
+          <a class="nav-link" href="#"
+         role="button">
+         <i class="fas fa-bell size-icon"></i>
+            <!-- Counter - Messages -->
+            <!-- <span class="indicator">4</span> -->
+          </a>
+        </li>
+        <div class="divider"></div>
+    
+        <!-- Nav Item - User Information -->
         <ng-container *ngIf="user">
-            <!--begin::User-->
-            <div class="topbar-item">
-                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
-                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
-                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ (user | async).firstname }}</span>
-                    <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
-            <span class="symbol-label font-size-h5 font-weight-bold" *ngIf="(user | async)?.firstname">{{
-              (user | async)?.firstname[0]
-            }}</span>
-                    </span>
-                </div>
-            </div>
-            <!--end::User-->
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" [matMenuTriggerFor]="clickmenu">
+                <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{ (user | async).firstname }} {{ (user | async).lastname }}</span>
+                <i class="fas fa-chevron-down"></i>
+                <img class="img-profile rounded-circle" [src]="'./assets/images/top_bar/image.png'">
+            </a>
+              <mat-menu #clickmenu="matMenu" xPosition="before">
+                <ul class="menu">
+                    <li mat-menu-item>
+                      <img [src]="'./assets/images/top_bar/user.png'" alt=".">
+                      <a href="#">My Profile</a>
+                  </li>
+                  <li mat-menu-item>
+                      <img [src]="'./assets/images/top_bar/edit.png'" alt=".">
+                      <a href="#">Edit Profile</a>
+                  </li>
+                  <li mat-menu-item>
+                      <img [src]="'./assets/images/top_bar/envelope.png'" alt=".">
+                      <a href="#">Inbox</a>
+                  </li>
+                  <li mat-menu-item>
+                      <img [src]="'./assets/images/top_bar/settings.png'" alt=".">
+                      <a href="#">Settings</a>
+                  </li>
+                  <li mat-menu-item>
+                      <img [src]="'./assets/images/top_bar/question.png'" alt=".">
+                      <a href="#">Help</a>
+                  </li>
+                  <li mat-menu-item (click)="logout()">
+                      <img [src]="'./assets/images/top_bar/log-out.png'" alt=".">
+                      <a href="#">Logout</a>
+                  </li>
+                </ul>
+            </mat-menu>
+            <!-- <app-user-dropdown></app-user-dropdown> -->
+            </li>
         </ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="extrasUserLayout === 'dropdown'">
-        <!--begin::User-->
-        <ng-container *ngIf="user">
-            <div class="dropdown" ngbDropdown placement="bottom-right">
-                <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px" ngbDropdownToggle>
-                    <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2">
-                        <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
-                        <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ (user | async).firstname }}</span>
-                        <span class="symbol symbol-35 symbol-light-success">
-              <span class="symbol-label font-size-h5 font-weight-bold">{{
-                (user | async).firstname | firstLetter
-              }}</span>
-                        </span>
-                    </div>
-                </div>
-                <!--end::Toggle-->
-                <!--begin::Dropdown-->
-                <div ngbDropdownMenu class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg p-0">
-                    <app-user-dropdown-inner></app-user-dropdown-inner>
-                </div>
-            </div>
-            <!--end::Dropdown-->
-        </ng-container>
-        <!--end::User-->
-    </ng-container>
-</ng-container>
-<!--end::Topbar-->
+    
+      </ul>
+    </nav>
