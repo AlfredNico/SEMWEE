@@ -6,7 +6,9 @@
         "start": "node server.js",
         "test": "ng test",
         "lint": "ng lint",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "fix-memory-limit": "cross-env LIMIT=1900 increase-memory-limit",
+        "build-prod": "node --max_old_space_size=1900 ./node_modules/@angular/cli/bin/ng build --prod --base-href /"
     },
     "private": true,
     "dependencies": {
