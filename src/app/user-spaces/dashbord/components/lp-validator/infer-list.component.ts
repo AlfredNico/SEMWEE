@@ -81,6 +81,7 @@ export class InferListComponent
 
   // filter icon
   public icon = 'asc';
+  rowIndex: number[] = [];
 
   @HostListener('window:scroll', ['$event']) onScroll(event: any){
     // console.log(window.pageYOffset);
@@ -105,6 +106,7 @@ export class InferListComponent
         this.displayColumns = ['select']; //display columns tables
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
+        this.rowIndex = [];
       }
       Object.assign(this.dataView, this.data);
     }
@@ -399,5 +401,9 @@ export class InferListComponent
   sortData($e: any){
     console.log($e);
     $e.direction === 'asc'? (this.icon = 'myIcon') : (this.icon= 'myDescIcon');
+  }
+
+  hideTooltip(event: number){
+    this.rowIndex.push(event);
   }
 }

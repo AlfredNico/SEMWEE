@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -6,6 +6,7 @@ import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 export class ResizableDirective {
   @Input('resizeColumn') resizable: boolean;
   @Input() index: number;
+   @Output() tabIndex = new EventEmitter<any>();
   private startX: number;
 
   private startWidth: number;
@@ -76,7 +77,7 @@ export class ResizableDirective {
       }
 
       //triggres services
-      
+      this.tabIndex.emit(this.index);
     }
   };
 

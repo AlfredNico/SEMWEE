@@ -36,15 +36,7 @@ import { TuneItComponent } from './dialog/tune-it.component';
         display: revert;
       }
       .drag_n_drop {
-        cursor: move;
-      }
-      .table-container {
-        position: relative;
-        max-height: 500px;
-        overflow-x: auto;
-      }
-      .pointer_item {
-        cursor: pointer;
+        cursor: move !important;
       }
     `,
   ],
@@ -84,6 +76,8 @@ export class CheckRelevancyComponent
   //Tune it property
   checkTuneItValue: TuneIt<TuneItVlaue>;
 
+  rowIndex: number[] = [];// disable matTooltips
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
@@ -97,6 +91,7 @@ export class CheckRelevancyComponent
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
+        this.rowIndex = [];
         // this.dataView.displayColumns = [];
       }
       Object.assign(this.dataView, this.dataInferList);
@@ -247,9 +242,10 @@ export class CheckRelevancyComponent
 
    public isColumnDisplay(column: any): boolean{
     if (this.toLowerCase(column).includes('_id')
+      || this.toLowerCase(column).includes('id')
       || this.toLowerCase(column).includes('idproduct')
       || this.toLowerCase(column).includes('select')
-      || this.toLowerCase(column).includes('__v')) return true;
+      || this.toLowerCase(column).includes('_v')) return true;
     else false;
   }
 
@@ -260,5 +256,9 @@ export class CheckRelevancyComponent
     if (this.toLowerCase(column).includes('itemtype')
     || (this.toLowerCase(column).includes('property') && value)) return true;
     else return false;
+  }
+
+  hideTooltip(event: number){
+    this.rowIndex.push(event);
   }
 }

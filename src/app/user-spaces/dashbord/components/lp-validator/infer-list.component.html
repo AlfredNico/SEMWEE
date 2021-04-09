@@ -39,7 +39,7 @@
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
                     <th mat-header-cell [ngClass]="{'hide-rows': column === 'ID'}"  *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i">
+                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
                             <div fxLayout="column" class="w-100">
                                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
@@ -50,16 +50,13 @@
                                         <!-- <i class="fas fa-sort"></i> -->
                                     </div>
                                 </div>
-                                <!-- <div cdkDragHandle class="drag_n_drop ">
-                                    <mat-icon>api</mat-icon>
-                                </div> id="filter-table" -->
                             </div>
                             <mat-form-field appearance="outline">
                                 <input matInput type="search" placeholder="Smart or quick query ..." [formControlName]="column" autocomplete="off">
                             </mat-form-field>
                         </span>
                     </th>
-                    <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd" [class.even]="even" mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
+                    <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd" [class.even]="even" mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" (click)="selectRow(row)" [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)" class="table-container-td">{{ row[column] }} </td>
                 </ng-container>
             </div>
 
