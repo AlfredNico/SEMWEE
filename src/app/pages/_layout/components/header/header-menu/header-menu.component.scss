@@ -1,0 +1,36 @@
+.card-project {
+    padding: 0!important;
+}
+.list-project:not(:last-child) {
+    padding: 0.8rem 2rem !important;
+    border-bottom: 1px solid #F3F3F3;
+    width: 300px;
+}
+.show-all {
+    margin-top: 12px;
+    text-align: center;
+    color: #6382D7;
+    font-size: 14px;
+    font-weight: 500;
+}
+.font-project {
+    color: #4D4D55!important;
+    font-weight: 800;
+    font-size: 14px;
+}
+.list-project .text-muted {
+    color: #DEDEDE!important;
+}
+::ng-deep.mat-menu-panel.dropdown-project {
+    max-width: none !important;
+    margin-top: 25px!important;
+}
+.font-project:hover{
+    color: #4D4D55!important;
+}
+.list-project:hover{
+    cursor: pointer;
+}
+.show-all:hover {
+    cursor: pointer;
+}

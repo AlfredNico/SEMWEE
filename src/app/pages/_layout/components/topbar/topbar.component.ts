@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
+
 export class TopbarComponent implements OnInit, AfterViewInit {
   // user$: Observable<UserModel>;
   user: Subject<User> = new Subject<User>();
@@ -36,6 +37,7 @@ export class TopbarComponent implements OnInit, AfterViewInit {
   extrasLanguagesDisplay: boolean;
   extrasUserDisplay: boolean;
   extrasUserLayout: 'offcanvas' | 'dropdown';
+  menuListItems : any;
 
   constructor(private layout: LayoutService, public auth: AuthService) {
     // this.user$ = this.auth.currentUserSubject.asObservable();
@@ -68,6 +70,20 @@ export class TopbarComponent implements OnInit, AfterViewInit {
     this.extrasQuickPanelDisplay = this.layout.getProp(
       'extras.quickPanel.display'
     );
+    this.menuListItems = [
+        {menuLinkText: 'Settings', 
+        menuIcon: '<img [src]="./assets/images/top_bar/user.png" alt=".">',
+        isDisabled:false},
+        {menuLinkText: 'AboutUs',
+        menuIcon: 'people',
+        isDisabled:false},
+        {menuLinkText: 'Help', 
+        menuIcon: 'help',
+        isDisabled:false},
+        {menuLinkText:'Contact',
+        menuIcon:'contact',
+        isDisabled:true }
+    ];
   }
 
   ngAfterViewInit(): void {
@@ -113,4 +129,10 @@ export class TopbarComponent implements OnInit, AfterViewInit {
       KTLayoutHeaderTopbar.init('kt_header_mobile_topbar_toggle');
     });
   }
+
+  logout() {
+    this.auth.logout();
+    // document.location.reload();
+  }
+
 }

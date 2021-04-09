@@ -10,7 +10,6 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-
 @NgModule({
   declarations: [
     NewProjectsComponent

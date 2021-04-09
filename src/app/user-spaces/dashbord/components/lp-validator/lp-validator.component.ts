@@ -1,11 +1,19 @@
-import { AfterViewInit, Component, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { Users } from '@app/models/users';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
-import { map } from 'rxjs/operators';
+import { TriggerService } from '@app/user-spaces/services/trigger.service';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { CheckUserInfoService } from '../../services/check-user-info.service';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { CheckRelevancyComponent } from './check-relevancy.component';
@@ -15,125 +23,132 @@ import { InferListComponent } from './infer-list.component';
 @Component({
   selector: 'app-lp-validator',
   templateUrl: './lp-validator.component.html',
-  styleUrls: ['./lp-validator.component.scss'],
+  styleUrls: ['material-sort-icon.scss', './lp-validator.component.scss'],
   // encapsulation: ViewEncapsulation.None,
 })
 export class LpValidatorComponent implements OnInit, AfterViewInit {
-  isEditable = "false"
+  isEditable = 'false';
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   // @ViewChild('stepper', { static: true }) private myStepper: MatStepper;
 
   //Access content on cheild
-  @ViewChild(InferListComponent, { static: false }) importFile!: InferListComponent;
+  @ViewChild(InferListComponent, { static: false })
+  importFile!: InferListComponent;
 
   //Access content on cheild
-  @ViewChild(CheckRelevancyComponent, { static: false }) checkRevelancey!: CheckRelevancyComponent;
-  @ViewChild(GoogleMachingComponent, { static: false }) googleMatching!: GoogleMachingComponent;
+  @ViewChild(CheckRelevancyComponent, { static: false })
+  checkRevelancey!: CheckRelevancyComponent;
+  @ViewChild(GoogleMachingComponent, { static: false })
+  googleMatching!: GoogleMachingComponent;
   childRevelancy = { displayColumns: [], hideColumns: [], data: [] };
 
-  @ViewChild("matTabGroup", { static: true }) tab: any;
+  @ViewChild('matTabGroup', { static: true }) tab: any;
 
   selectedStepperIndex = 0;
 
-  isImportItem: boolean = false;
-  isUserProject: boolean = false;
-  isCheckRevelancy: boolean = false;
-
   public idProjet: string;
 
-  public dataSources!: { displayColumns: string[], hideColumns: string[], data: any[] };
+  public dataSources!: {
+    displayColumns: string[];
+    hideColumns: string[];
+    data: any[];
+  };
 
-  constructor(private auth: AuthService, private route: ActivatedRoute, private infoProduitService: CheckUserInfoService, private common: CommonService) { }
+  isNextStepp: boolean = false;
 
-  public dataInferList: DataTypes;
+  @HostListener('window:scroll') checkScroll() {
+    const scrollPosition =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+  }
 
-  ngOnInit(): void {
+  constructor(
+    private auth: AuthService,
+    private route: ActivatedRoute,
+    private infoProduitService: CheckUserInfoService,
+    private common: CommonService,
+    private triggerServices: TriggerService
+  ) {
     this.common.showSpinner('root');
     this.route.paramMap.subscribe(async (params: ParamMap) => {
       this.idProjet = params.get('idProduit');
-    })
+    });
   }
 
-  async ngAfterViewInit(): Promise<void> {
-    this.common.showSpinner('root');
-    if (this.idProjet) {
-      const res = await this.infoProduitService.checkProject(this.idProjet);
+  public dataInferList: DataTypes;
 
-      if (res[0] && res[1]) {
-        this.selectedStepperIndex = 2;
-        this.isImportItem = true;
-        this.isUserProject = true;
+  ngOnInit(): void {}
 
-        this.dataSources = this.inferList(res[0]);
-        this.dataInferList = this.mathiing(res[1]);
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
-
-      } else if (res[0]) {
-        this.selectedStepperIndex = 1;
-        this.isImportItem = true;
-        this.isUserProject = true;
-        this.isCheckRevelancy = true
-        this.dataSources = this.inferList(res[0]);
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
-      }
-      else {
-        this.common.hideSpinner('root');
-        this.common.isLoading$.next(false);
-      }
-    }
+  ngAfterViewInit() {
+    this.triggerServices.switchproject$
+      .pipe(
+        tap(() => {
+          console.log('selected');
+          this.common.showSpinner('root');
+        }),
+        map(async (idProjet) => {
+          console.log(idProjet);
+          
+          if (idProjet) {
+            this.idProjet = idProjet;
+            await this.checkProject();
+          } else await this.checkProject();
+          this.common.hideSpinner('root');
+          this.common.isLoading$.next(false);
+        })
+      )
+      .subscribe();
+    // this.checkProject();
   }
-
-
 
   selectionChange(ev: any) {
-    if (ev.selectedIndex == 3) {
-      this.googleMatching.checkValid();
-    }
+    // if (ev.selectedIndex == 3) {
+    //   this.googleMatching.checkValid();
+    // }
   }
 
   // Upload file ok
-  public UploadFileReady(event: any) {
+  public nextInfterList(event: any) {
     // this.isUserProject = true;
     this.dataSources = event;
 
     this.stepper.selected.completed = true;
+    this.stepper.selected.editable = true;
+
     this.stepper.next();
   }
 
-  public inferListReady(event: any) {
+  public nextCheckRevelancy(event: any) {
     // this.isCheckRevelancy = true;
     this.dataInferList = event;
 
     this.stepper.selected.completed = true;
+    this.stepper.selected.editable = true;
     this.stepper.next();
   }
 
   public nextMatching(event: any) {
-
     this.childRevelancy = event;
 
     this.stepper.selected.completed = true;
+    this.stepper.selected.editable = true;
     this.stepper.next();
-  }
-
-  @HostListener('window:scroll') checkScroll() {
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
   }
 
   inferList(res: any[]) {
     let obj1 = {
       displayColumns: [] as string[],
       data: [] as any[],
-      hideColumns: [] as string[]
+      hideColumns: [] as string[],
     };
 
     obj1.displayColumns = Object.keys(res[0]);
     obj1.displayColumns.unshift('select');
-    res.reduce((tbObj: any, td: any, index: number) => {
-      obj1.data[index - 1] = { ...td, 'select': true };
+    res.map((tbObj: any, index: number) => {
+      obj1.data[index] = { ...tbObj, select: true };
     });
 
     return obj1;
@@ -143,14 +158,57 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     let obj2 = {
       displayColumns: [] as string[],
       data: [] as any[],
-      hideColumns: [] as string[]
+      hideColumns: [] as string[],
     };
 
     obj2.displayColumns = Object.keys(rest[0]);
-    rest.reduce((tbObj: any, td: any, index: number) => {
-      obj2.data[index - 1] = td;
+    rest.map((tbObj: any, index: number) => {
+      obj2.data[index] = tbObj;
     });
 
     return obj2;
   }
+
+  private async checkProject(): Promise<void> {
+    this.common.showSpinner('root');
+    if (this.idProjet) {
+      const res = await this.infoProduitService.checkProject(this.idProjet);
+      if (res && res[0].length > 0 && res[1].length > 0) {
+        this.selectedStepperIndex = 2;
+        this.stepper.steps.forEach((step) => {
+          step.completed = true;
+          step.editable = true;
+        });
+
+        this.dataSources = this.inferList(res[0]);
+        this.dataInferList = this.mathiing(res[1]);
+        this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+      } else if (res && res[0].length > 0 && res[1].length == 0) {
+        this.selectedStepperIndex = 1;
+        this.stepper.steps.forEach((step, index) => {
+          if (index < 1) {
+            step.completed = true;
+            step.editable = true;
+          } else {
+            step.completed = false;
+            step.editable = true;
+          }
+        });
+
+        this.dataSources = this.inferList(res[0]);
+        this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+      } else {
+        this.selectedStepperIndex = 0;
+        this.stepper.steps.forEach((step) => {
+          step.completed = false;
+          step.editable = true;
+        });
+        this.isNextStepp = false;
+      }
+    }
+  }
 }
+function startWidth(arg0: {}): import("rxjs").OperatorFunction<any, unknown> {
+  throw new Error('Function not implemented.');
+}
+

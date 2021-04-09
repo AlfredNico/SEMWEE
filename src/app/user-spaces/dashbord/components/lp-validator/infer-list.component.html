@@ -2,8 +2,8 @@
     <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
         <!-- <button mat-mini-fab color="primary" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
-        </button> -->
-        <mat-form-field appearance="outline" id="filters">
+        </button> id="filters" -->
+        <mat-form-field appearance="outline">
             <mat-label>Search</mat-label>
             <input matInput type="search" autocomplete="off" [formControl]="search">
             <mat-icon matPrefix>search</mat-icon>
@@ -15,76 +15,99 @@
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             tableOptions
         </button> -->
-        <a mat-list-item (click)="tableOpons()">
+        <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             <span>Table options </span>
         </a>
     </div>
-    <div class="px-2 m-3 table-container" style="overflow: auto;">
-        <table *ngIf="displayColumns.length > 0" mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
+    <div class="px-2 m-3 table-container" style="overflow-y: auto;">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <!-- SELECT Column -->
                 <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef style="padding-left: 24px!important;
-                    padding-top: 28px!important;">
+                    padding-top: 28px!important;" class="px-5"> 
                         <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
                     </th>
-                    <td mat-cell *matCellDef="let row; let index = index" [ngClass]="{'tr-inpaire': index % 2 == 0, 'tr-paire': index % 2 != 0}">
-                        <mat-checkbox color="accent" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()"></mat-checkbox>
+                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5">
+                        <mat-checkbox color="accent" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()">
+                        </mat-checkbox>
                     </td>
                 </ng-container>
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                        <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
-                                <div class="text-capitalize custom-text">
-                                    {{ column.split('_').join(' ') }}
+                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x">
+                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
+                                <div class="custom-text">
+                                    {{ column.split('_').join(' ') | uppercase }}
                                 </div>
                                 <div mat-sort-header class="pl-3">
                                     <i class="fas fa-sort"></i>
                                 </div>
                                 <!-- <div cdkDragHandle class="drag_n_drop ">
                                     <mat-icon>api</mat-icon>
-                                </div> -->
+                                </div> id="filter-table" -->
                             </div>
-                            <mat-form-field appearance="outline" id="filter-table">
+                            <mat-form-field appearance="outline">
                                 <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
                             </mat-form-field>
-                        </div>
+                        </span>
                     </th>
-                    <td [ngClass]="{'hide-rows': column === 'ID', 'tr-inpaire': indexRow % 2 == 0, 'tr-paire': indexRow % 2 != 0}" mat-cell *matCellDef="let row; let indexRow = index" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
+                    <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd" [class.even]="even" mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
                 </ng-container>
             </div>
 
-            <div *ngIf="dataSource.data.length === 0">
-                No Records Found !
-            </div>
-
-            <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="dataView.displayColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
-        </table>
-    </div>
 
-    <div *ngIf="displayColumns.length === 0">
-        No data !
+            <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
+            <!-- <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" [attr.rowspan]="dataSource.data.length">No data</td>
+            </tr> -->
+        </table>
     </div>
 
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
-        <button mat-raised-button>Updates Items</button>
+        <button mat-raised-button color="accent">Updates Items</button>
 
         <div fxLayoutAlign="end center" class="w-100">
-            <button type="button" mat-raised-button color="primary" class="m-3" (click)="openSettingTable()">
+            <button type="button" mat-raised-button color="accent" class="m-3" (click)="openSettingTable()">
                 <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
                 Settings
             </button>
 
-            <button mat-raised-button (click)="tableReady()">Infer List Pages</button>
+            <button mat-raised-button color="accent" (click)="tableReady()">Infer List Pages</button>
         </div>
     </div>
 
 </div>
+
+
+
+<!-- <div class="example-container mat-elevation-z8 table" style="padding-top: 150px;">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container *ngFor="let column of displayColumns; let i = index" [matColumnDef]="column">
+            <th mat-header-cell [resizeColumn]="true" [index]="i" *matHeaderCellDef>
+                <span>{{column}} </span>
+                <input class="input" type="text" name="text" id="text">
+            </th>
+            <td  mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let element; let odd = odd; let even = even"> {{element[column]}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="dataView.displayColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" rowspan="4">No data</td>
+        </tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">></mat-paginator>
+</div> -->
+
+<!-- sticky: true -->

@@ -22,7 +22,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { MatRadioModule } from '@angular/material/radio';
 
 
 
@@ -32,6 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTabsModule
   ],
   exports: [
+    MatRadioModule,
     MatSidenavModule,
     MatToolbarModule,
     MatTabsModule,

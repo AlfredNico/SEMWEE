@@ -13,12 +13,10 @@ import { InferListComponent } from './infer-list.component';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
-import {
-  ResizableModule
-} from 'angular-resizable-element';
+import { ResizableModule } from 'angular-resizable-element';
 import { TuneItComponent } from './dialog/tune-it.component';
-
-
+import { DragDropDirective } from '../../directives/drag-drop.directive';
+import { ResizableDirective } from '../../directives/resizable.directive';
 
 @NgModule({
   declarations: [
@@ -29,7 +27,9 @@ import { TuneItComponent } from './dialog/tune-it.component';
     CheckRelevancyComponent,
     InferListComponent,
     GoogleMachingComponent,
-    TuneItComponent
+    TuneItComponent,
+    DragDropDirective,
+    ResizableDirective,
   ],
   imports: [
     CommonModule,
@@ -38,24 +38,18 @@ import { TuneItComponent } from './dialog/tune-it.component';
     MatStepperModule, // stepper module
     LandingPageModule,
     ResizableModule,
-    RouterModule.forChild([
-      { path: '', component: LpValidatorComponent }
-    ])
+    RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
   ],
-  exports: [
-    RouterModule
-  ],
-  providers: [
-    LpValidatorService,
-  ],
+  exports: [RouterModule],
+  providers: [LpValidatorService],
   entryComponents: [
     TableOptionsComponent,
     SettingTableComponent,
-    ImportItemComponent,
-    CheckRelevancyComponent,
-    InferListComponent,
+    // ImportItemComponent,
+    // CheckRelevancyComponent,
+    // InferListComponent,
     GoogleMachingComponent,
-    TuneItComponent
-  ]
+    TuneItComponent,
+  ],
 })
-export class LpValidatorModule { }
+export class LpValidatorModule {}

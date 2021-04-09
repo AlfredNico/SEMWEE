@@ -9,35 +9,33 @@ import { RemoveComponent } from '../dialog/remove.component';
 import { EditComponent } from '../dialog/edit.component';
 import { DetailsComponent } from '../dialog/details.component';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
-
-
+import { AvatarComponent } from '@app/shared/components/projects/avatar.component';
+import { ProjectsComponent } from '@app/shared/components/projects/projects.component';
 
 @NgModule({
   declarations: [
     AllProjectsComponent,
     RemoveComponent,
     EditComponent,
-    DetailsComponent
+    DetailsComponent,
+    AvatarComponent,
+    ProjectsComponent,
   ],
   imports: [
     CommonModule,
     LandingModule,
     SharedModule,
     LandingPageModule,
-    RouterModule.forChild([
-      { path: '', component: AllProjectsComponent }
-    ]),
+    RouterModule.forChild([{ path: '', component: AllProjectsComponent }]),
   ],
-  exports: [
-    RouterModule
-  ],
-  providers: [
-    ProjectsService
-  ],
+  exports: [RouterModule],
+  providers: [ProjectsService],
   entryComponents: [
     RemoveComponent,
     EditComponent,
-    DetailsComponent
-  ]
+    DetailsComponent,
+    AvatarComponent,
+    ProjectsComponent,
+  ],
 })
-export class AllProjectsModule { }
+export class AllProjectsModule {}

@@ -1,23 +1,60 @@
-<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange($event)">
-    <mat-step label="Import Items" [completed]="true" [editable]="isEditable">
-        <!-- <ng-template matStepperIcon="home">
+<mat-horizontal-stepper
+  labelPosition="bottom"
+  [linear]="true"
+  #stepper
+  [selectedIndex]="selectedStepperIndex"
+  (selectionChange)="selectionChange($event)"
+>
+  <mat-step
+    label="Import Items"
+    completed="false"
+    editable="false"
+  >
+    <!-- [editable]="isEditable" -->
+    <!--  <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
-        <app-import-item #form [idProjet]="idProjet" (uploadFiles)="UploadFileReady($event)"></app-import-item>
-    </mat-step>
-    <mat-step label="Infer List Pages" state="text_snippet" [completed]="true">
-        <!-- <ng-template matStepperIcon="home">
+    <app-import-item
+      #form
+      [idProjet]="idProjet"
+      [isNextStep]="isNextStepp"
+      (uploadFiles)="nextInfterList($event)"
+    ></app-import-item>
+  </mat-step>
+  <mat-step
+    label="Infer List Pages"
+    state="text_snippet"
+    completed="false"
+    editable="false"
+  >
+    <!-- <ng-template matStepperIcon="home">
             <mat-icon>home</mat-icon>
         </ng-template> -->
-        <app-infer-list [data]="dataSources" (dataInferListReady)="inferListReady($event)"></app-infer-list>
-        <!-- <app-files></app-files> -->
-    </mat-step>
-    <mat-step label="Check Relevancy" state="download_done" [completed]="true">
-        <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)"></app-check-relevancy>
-    </mat-step>
+    <app-infer-list
+      [data]="dataSources"
+      (dataInferListReady)="nextCheckRevelancy($event)"
+    ></app-infer-list>
+    <!-- <app-files></app-files> -->
+  </mat-step>
+  <mat-step
+    label="Check Relevancy"
+    state="download_done"
+    completed="false"
+    editable="false"
+  >
+    <app-check-relevancy
+      [dataInferList]="dataInferList"
+      (dataMatching)="nextMatching($event)"
+    ></app-check-relevancy>
+  </mat-step>
 
-    <mat-step class="hide-stepper" label="Check Relevancy" state="download_done" [completed]="isCheckRevelancy === true">
-        <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
-    </mat-step>
-
+  <mat-step
+    class="hide-stepper"
+    label="Check Relevancy"
+    state="download_done"
+    completed="false"
+    editable="false"
+  >
+    <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
+  </mat-step>
 </mat-horizontal-stepper>

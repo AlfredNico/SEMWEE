@@ -3,15 +3,8 @@ import { Injectable, NgModule } from '@angular/core';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { LandingModule } from '@app/shared/modules/landing.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
-import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
 import { SideMenuComponent } from '@app/shared/components/side-menu/side-menu.component';
-import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
-import { ConvertUploadFileService } from './dashbord/services/convert-upload-file.service';
-import { ImportItemComponent } from './dashbord/components/lp-validator/import-item.component';
-import { CheckRelevancyComponent } from './dashbord/components/lp-validator/check-relevancy.component';
-import { InferListComponent } from './dashbord/components/lp-validator/infer-list.component';
-import { LpValidatorService } from './dashbord/services/lp-validator.service';
 import { LayoutComponent } from '../pages/_layout/layout.component';
 import { SubheaderWrapperComponent } from '@app/_metronic/partials/layout/subheader/subheader-wrapper/subheader-wrapper.component';
 import { SearchOffcanvasComponent } from '@app/_metronic/partials/layout/extras/offcanvas/search-offcanvas/search-offcanvas.component';
@@ -34,8 +27,6 @@ import { DropdownMenu4Component } from '@app/_metronic/partials/content/dropdown
 import { DropdownMenu3Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu3/dropdown-menu3.component';
 import { DropdownMenu2Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu2/dropdown-menu2.component';
 import { DropdownMenu1Component } from '@app/_metronic/partials/content/dropdown-menus/dropdown-menu1/dropdown-menu1.component';
-// import { LayoutModule } from '@app/pages/layout.module';
-// import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
 import { AsideComponent } from '@app/pages/_layout/components/aside/aside.component';
 import { HeaderMobileComponent } from '@app/pages/_layout/components/header-mobile/header-mobile.component';
 import { FooterComponent } from '@app/pages/_layout/components/footer/footer.component';
@@ -57,9 +48,8 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 @NgModule({
   declarations: [
     // DashbordComponent,
@@ -114,19 +104,39 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
     InlineSVGModule,
     RouterModule.forChild([
       {
-        path: '', component: LayoutComponent, children: [
+        path: '',
+        component: LayoutComponent,
+        children: [
           {
             path: 'lp-validator/:idProduit',
-            loadChildren: () => import('./dashbord/components/lp-validator/lp-validator.module').then(m => m.LpValidatorModule)
-          }, {
-            path: 'all-project',
-            loadChildren: () => import('./dashbord/components/projects/all-projects/all-projects.module').then(m => m.AllProjectsModule)
-          }, {
-            path: 'new-project',
-            loadChildren: () => import('./dashbord/components/projects/new-projects/new-projects.module').then(m => m.NewProjectsModule)
+            loadChildren: () =>
+              import(
+                './dashbord/components/lp-validator/lp-validator.module'
+              ).then((m) => m.LpValidatorModule),
           },
-          { path: '', redirectTo: 'all-project', pathMatch: 'full' }
-        ]
+          {
+            path: 'all-project',
+            loadChildren: () =>
+              import(
+                './dashbord/components/projects/all-projects/all-projects.module'
+              ).then((m) => m.AllProjectsModule),
+          },
+          {
+            path: 'new-project',
+            loadChildren: () =>
+              import(
+                './dashbord/components/projects/new-projects/new-projects.module'
+              ).then((m) => m.NewProjectsModule),
+          },
+           {
+            path: 'profile',
+            loadChildren: () =>
+              import(
+                './profiles/profiles.module'
+              ).then((m) => m.ProfilesModule),
+          },
+          { path: '', redirectTo: 'all-project', pathMatch: 'full' },
+        ],
       },
     ]),
   ],
@@ -144,6 +154,5 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
   //   CheckRelevancyComponent,
   //   InferListComponent
   // ]
-
 })
-export class DashbordModule { }
+export class DashbordModule {}

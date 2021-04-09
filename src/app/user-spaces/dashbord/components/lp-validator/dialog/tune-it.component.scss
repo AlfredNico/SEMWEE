@@ -1,0 +1,18 @@
+mat-dialog-container.mat-dialog-container {
+    margin: 0 !important;
+    padding: 10px 15px 0 !important;
+    overflow-y: hidden;
+}
+
+mat-dialog-content.mat-dialog-content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.panel{
+  width: 400px !important;
+}
+
+mat-form-field-appearance-outline .mat-form-field-outline-end {
+    border-radius: 15px 15px 15px 15px;
+}

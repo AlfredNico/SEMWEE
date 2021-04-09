@@ -1,92 +1,122 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { resetFakeAsyncZone } from '@angular/core/testing';
-import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ConvertUploadFileService } from './convert-upload-file.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LpValidatorService {
+  public matching: DataTypes = {
+    displayColumns: [],
+    hideColumns: [],
+    data: [],
+  };
 
-  public matching: DataTypes = { displayColumns: [], hideColumns: [], data: [] };
+  public progressBarValue: number = 0;
+  public trigger$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
     formData.append('files', files);
 
-    return this.http.post<DataTypes>(`${environment.baseUrl}/validator/import-csv/${idProjet}`, formData).pipe(
-      map((results: any) => {
-        let obj = {
-          displayColumns: [] as string[],
-          data: [] as any[],
-          hideColumns: [] as string[]
-        };
+    return this.http
+      .post<DataTypes>(
+        `${environment.baseUrl}/validator/import-csv/${idProjet}`,
+        formData
+      )
+      .pipe(
+        map((results: any) => {
+          let obj = {
+            displayColumns: [] as string[],
+            data: [] as any[],
+            hideColumns: [] as string[],
+          };
 
-        obj.displayColumns = Object.keys(results[0]);
-        obj.displayColumns.unshift('select');
-        results.reduce((tbObj: any, td: any, index: number) => {
-          obj.data[index - 1] = { ...td, 'select': true };
-        });
-        return obj;
-      }),
-      catchError((err) => {
-        return this.handleError(err);
-      })
-    ).toPromise();
+          obj.displayColumns = Object.keys(results[0]);
+          obj.displayColumns.unshift('select');
+          results.map((tbObj: any, index: number) => {
+            obj.data[index] = { ...tbObj, select: true };
+          });
+          return obj;
+        }),
+        catchError((err) => {
+          return this.handleError(err);
+        })
+      )
+      .toPromise();
   }
 
-  private searchItem(_id: any, dataSources: any[], data: any, assign: Function) {
-    return this.http.get<any>(`${environment.baseUrl}/validator/search-item/${_id}`).pipe(
-      map((result: any) => {
-        if (result) {
-          const tmp = { 'Valid': result.valid, 'Popular Search Queries': result.psq, 'Website Browser': result.webSitePosition };
-          data[result._id] = tmp;
-          assign(this.converDataMatching(dataSources, data, true));
-        }
-      }),
-      catchError((err) => {
-        return this.handleError(err);
-      })
-    ).toPromise();
+  private searchItem(
+    _id: any,
+    dataSources: any[],
+    data: any,
+    assign: Function
+  ) {
+    return this.http
+      .get<any>(`${environment.baseUrl}/validator/search-item/${_id}`)
+      .pipe(
+        map((result: any) => {
+          if (result) {
+            const tmp = {
+              Valid: result.valid,
+              'Popular Search Queries': result.psq,
+              'Website Browser': result.webSitePosition,
+            };
+            data[result._id] = tmp;
+            assign(this.converDataMatching(dataSources, data, true));
+          }
+        }),
+        catchError((err) => {
+          return this.handleError(err);
+        })
+      )
+      .toPromise();
   }
 
   public searchAllItem(dataSources: any[], data: any, assign: Function) {
-    return dataSources.map((value: any) => {
+    return dataSources.map((value: any, index: number) => {
       if (value.Valid == undefined || value.Valid == 'loadingQuery') {
-        this.searchItem(value._id, dataSources, data, assign)
+        this.searchItem(value._id, dataSources, data, assign);
+
+        /*  progress bar value */
+        this.progressBarValue =
+          (((index + 1) as number) * 100) / dataSources.length - 1;
+        this.trigger$.next(true);
       }
-      return { ...value }
+      return { ...value };
     });
   }
 
   public postInferList(value: any) {
-    return this.http.post<{ displayColumns: string[], hideColumns: string[], data: [] }>(`${environment.baseUrl}/validator/post-infer-list`, value)
+    return this.http
+      .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
+        `${environment.baseUrl}/validator/post-infer-list`,
+        value
+      )
       .pipe(
         map((results: any) => {
           let infer = {
             displayColumns: [] as string[],
             data: [] as any[],
-            hideColumns: [] as string[]
+            hideColumns: [] as string[],
           };
 
           infer.displayColumns = Object.keys(results[0]);
-          results.reduce((tbObj: any, td: any, index: number) => {
-            infer.data[index - 1] = td;
+          results.map((tbObj: any, index: number) => {
+            infer.data[index] = tbObj;
           });
           return infer;
-
         }),
         catchError((err) => {
           return this.handleError(err);
         })
-      ).toPromise()
+      )
+      .toPromise();
   }
 
   public handleError(error) {
@@ -94,8 +124,17 @@ export class LpValidatorService {
     return throwError(error);
   }
 
-  public converDataMatching(dataSurces: any[], obj: any = {}, afterSearch: boolean = false): DataTypes {
-    const columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
+  public converDataMatching(
+    dataSurces: any[],
+    obj: any = {},
+    afterSearch: boolean = false
+  ): DataTypes {
+    const columnAdd: string[] = [
+      'Valid',
+      'Popular Search Queries',
+      'Website Browser',
+    ];
+
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
       Object.keys(values).map((key: string, index: number) => {
@@ -114,7 +153,14 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
-      var tmp = obj[values['_id']] != undefined ? obj[values['_id']] : { 'Valid': 'loadingQuery', 'Popular Search Queries': 'loadingQuery', 'Website Browser': 'loadingQuery' }
+      var tmp =
+        obj[values['_id']] != undefined
+          ? obj[values['_id']]
+          : {
+              Valid: 'loadingQuery',
+              'Popular Search Queries': 'loadingQuery',
+              'Website Browser': 'loadingQuery',
+            };
       // if (afterSearch && obj[values['_id']] == undefined) {
       //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
       // }
@@ -122,12 +168,10 @@ export class LpValidatorService {
       dataValue.push({ ...values, ...tmp });
     });
 
-    return this.matching = {
+    return (this.matching = {
       displayColumns: this.matching.displayColumns,
       hideColumns: [],
-      data: dataValue
-    };
+      data: dataValue,
+    });
   }
-
-
 }
