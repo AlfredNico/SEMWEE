@@ -22,10 +22,10 @@
         }
         .mat-header-cell {
           position: relative;      
-          /* position: -webkit-sticky;
+          position: -webkit-sticky;
           position: sticky !important;
-          top: 120px !important;  */
-          z-index: 1 !important;
+          top: 65px !important;
+          z-index: 2 !important;
           span > div{
             background: #42425E;
             color: #A1A2B5;

@@ -3,7 +3,7 @@
 /* this makes it so that sort header arrow is always shown: */
 .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
     opacity: 1 !important;
-    color: blue;
+    color: #fff;
     
   }
 /* Hide the default sort arrow display: */
@@ -16,18 +16,22 @@
 .mat-sort-header-pointer-middle{
     width: 0px !important;
     height: 0px !important;
+    top: -1.2em !important;
 }
 /* show two carets on top of each other when not sorted takes place: */
 .mat-sort-header-arrow {
     .mat-sort-header-indicator {
       &::before {
-        content: "<>"; 
+        // content: "<>"; 
+        content: "ᐊᐅ";
         position: absolute;
         opacity: 1 !important;
-        color:  blue !important;
-        font-size: 1.2em;
+        color:  rgb(255, 255, 255) !important;
+        // font-size: 1.2em;
         font-weight: bold;
         transform: translate(-10%, 20%)   rotate(90deg) !important;
+        top: -1.2em !important;
+        font-size: .8em;
       }
     }
   }
@@ -37,13 +41,16 @@
     .mat-sort-header-arrow {
          .mat-sort-header-indicator {
            &::before {
-             content: "<"; 
+            //  content: "<"; 
+             content: "ᐊ";
              position: absolute;
-             color:  blue !important;
+             color:  #fff !important;
              opacity: 1 !important;
-             font-size: 1.2em;
+            //  font-size: 1.2em;
              font-weight: bold;
              transform: translate(0,0) rotate(90deg) !important;
+             top: -0.9rem !important;
+             font-size: .8em;
            }
          }
        }
@@ -53,16 +60,92 @@
   [aria-sort="descending"] {
     .mat-sort-header-arrow {
           .mat-sort-header-indicator {
-            &::before {
-              content: ">";
+            &::before  {
+              // content: ">";
+              content: "ᐅ";
               position: absolute;
-              color:  blue !important;
+              color:  #fff !important;
               opacity: 1 !important;
               font-size: 1.2em;
               font-weight: bold;
               transform: translate(0,-10%) rotate(90deg) !important;
+              top: -0.5rem !important;
+              font-size: .8em
             }
           }
         }
       }
 }
+
+/*
+[aria-sort='ascending'] {
+  ::ng-deep .mat-sort-header-arrow{
+    .mat-sort-header-indicator {
+      &::before{
+        font: normal normal normal 1.1rem/1 FontAwesome;
+        content: "\f0d7";
+        position: absolute;
+        top: .2rem;
+      }
+    }
+  }
+}
+
+[aria-sort='descending'] {
+  ::ng-deep .mat-sort-header-arrow { 
+    .mat-sort-header-indicator {
+      &::before{
+        font: normal normal normal 1.1rem/1 FontAwesome;
+        content: "\f0d8";
+        position: absolute;
+        top: -.9rem;
+      }
+    }
+  }
+}
+
+
+22
+::ng-deep .mat-sort-header-arrow[style] {
+
+  // Hide default arrow stem
+  .mat-sort-header-stem {
+    display: none;
+  }
+  .mat-sort-header-indicator {
+    opacity: 1;
+    color: black;
+    font-weight: bold;
+
+    // Hide default arrow as its composed of left, right and middle
+    .mat-sort-header-pointer-left, .mat-sort-header-pointer-right, .mat-sort-header-pointer-middle  {
+      display: none;
+    }
+  }
+}
+
+// My custom ascending arrow
+[aria-sort="ascending"] {
+  ::ng-deep .mat-sort-header-arrow {
+    .mat-sort-header-indicator {
+      &::before {
+        content: "\2191";
+        top: -1.6em;
+        position: absolute;
+      }
+    }
+  }
+}
+
+// My custom descending arrow
+[aria-sort="descending"] {
+  ::ng-deep .mat-sort-header-arrow {
+    .mat-sort-header-indicator {
+      &::before {
+        content: "\2193";
+        top: -2.4em;
+        position: absolute;
+      }
+    }
+  }
+} */
