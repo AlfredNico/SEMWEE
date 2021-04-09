@@ -23,7 +23,7 @@ import { InferListComponent } from './infer-list.component';
 @Component({
   selector: 'app-lp-validator',
   templateUrl: './lp-validator.component.html',
-  styleUrls: ['./lp-validator.component.scss'],
+  styleUrls: ['material-sort-icon.scss', './lp-validator.component.scss'],
   // encapsulation: ViewEncapsulation.None,
 })
 export class LpValidatorComponent implements OnInit, AfterViewInit {

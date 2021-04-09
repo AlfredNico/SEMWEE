@@ -92,9 +92,9 @@
             </a>
               <mat-menu #clickmenu="matMenu" xPosition="before">
                 <div class="menu">
-                    <li mat-menu-item>
+                    <li mat-menu-item [routerLink]="'/user-space/profile'" >
                       <img [src]="'./assets/images/top_bar/user.png'" alt=".">
-                      <a href="#">My Profile</a>
+                      <a>My Profile</a>
                   </li>
                   <li mat-menu-item>
                       <img [src]="'./assets/images/top_bar/edit.png'" alt=".">

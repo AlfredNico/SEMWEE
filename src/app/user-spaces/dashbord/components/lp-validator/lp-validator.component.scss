@@ -1,50 +1,5 @@
 
 ::ng-deep {
-    ::ng-deep .mat-sort-header-arrow[style] {
-
-  // Hide default arrow stem
-  .mat-sort-header-stem {
-    display: none;
-  }
-  .mat-sort-header-indicator {
-    opacity: 1;
-    color: black;
-    font-weight: bold;
-
-    // Hide default arrow as its composed of left, right and middle
-    .mat-sort-header-pointer-left, .mat-sort-header-pointer-right, .mat-sort-header-pointer-middle  {
-      display: none;
-    }
-  }
-}
-
-// My custom ascending arrow
-[aria-sort="ascending"] {
-  ::ng-deep .mat-sort-header-arrow {
-    .mat-sort-header-indicator {
-      &::before {
-        content: "\2191";
-        top: -1.6em;
-        position: absolute;
-      }
-    }
-  }
-}
-
-// My custom descending arrow
-[aria-sort="descending"] {
-  ::ng-deep .mat-sort-header-arrow {
-    .mat-sort-header-indicator {
-      &::before {
-        content: "\2193";
-        top: -2.4em;
-        position: absolute;
-      }
-    }
-  }
-}
-
-
     .mat-table {
         .odd{background: #fff;}
         .even{background: #F5F6FA;}
