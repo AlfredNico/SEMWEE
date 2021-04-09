@@ -79,6 +79,9 @@ export class InferListComponent
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
+  // filter icon
+  public icon = 'asc';
+
   @HostListener('window:scroll', ['$event']) onScroll(event: any){
     // console.log(window.pageYOffset);
   }
@@ -391,5 +394,10 @@ export class InferListComponent
   public isColumnDisplay(column: any): boolean{
     if (column.toLowerCase().includes('_id')) return true;
     else false;
+  }
+
+  sortData($e: any){
+    console.log($e);
+    $e.direction === 'asc'? (this.icon = 'myIcon') : (this.icon= 'myDescIcon');
   }
 }
