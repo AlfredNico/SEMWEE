@@ -101,16 +101,16 @@
 
       <div class="w-100 my-5" fxLayout="row">
         <div mat-form-field class="form-group w-50 mr-5">
-          <select [ngClass]="{'err': (form.get('language_project')?.touched &&
+          <mat-select placeholder="Language* / Langue*" [ngClass]="{'err': (form.get('language_project')?.touched &&
           form.get('language_project')?.errors?.required)}"
-          mat-select placeholder="Language* / Langue*" formControlName="language_project" class="form-control">
-            <option mat-option
+            formControlName="language_project" class="form-control">
+            <mat-option
               *ngFor="let language of languages"
               [value]="language.code"
             >
               {{ language.name }}
-            </option>
-          </select>
+            </mat-option>
+          </mat-select>
           
             <div *ngIf="(form.get('language_project')?.touched &&
             form.get('language_project')?.errors?.required); else showInstrLang">
