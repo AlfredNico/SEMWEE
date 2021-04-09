@@ -178,7 +178,8 @@ export class GoogleMachingComponent
     );
   }
 
-   hideTooltip(event: number){
-     this.rowIndex.push(event);
+  hideTooltip(event: number){
+    if (!this.rowIndex.includes(event))
+      this.rowIndex.push(event);
   }
 }

@@ -404,6 +404,8 @@ export class InferListComponent
   }
 
   hideTooltip(event: number){
-    this.rowIndex.push(event);
+    if (!this.rowIndex.includes(event))
+      this.rowIndex.push(event);
+
   }
 }
