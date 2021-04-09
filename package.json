@@ -7,8 +7,8 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "fix-memory-limit": "cross-env LIMIT=1800 increase-memory-limit",
-        "build-prod": "node --max_old_space_size=1900 ./node_modules/@angular/cli/bin/ng build --prod --base-href /"
+        "fix-memory-limit": "cross-env LIMIT=2048 increase-memory-limit",
+        "build-prod": "node --max_old_space_size=2048 ./node_modules/@angular/cli/bin/ng build --prod --base-href /"
     },
     "private": true,
     "dependencies": {
