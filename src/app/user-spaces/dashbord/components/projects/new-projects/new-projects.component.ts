@@ -46,7 +46,7 @@ export class NewProjectsComponent implements OnInit {
   form = this.fb.group({
     name_project: [
       '',
-      [Validators.required, Validators.maxLength(10)],
+      [Validators.required, this.custumValidator.maxLength],
       [this.projetctService.checkProjectName()],
       { updateOn: 'blur' },
     ],
@@ -130,6 +130,7 @@ export class NewProjectsComponent implements OnInit {
       this.letter.setValidators([Validators.required]);
       this.form.get('image_project_Landscape').clearValidators();
       this.form.get('image_project_Squared').clearValidators();
+      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     } else if (
       this.imageLandscape != undefined ||
       this.imageSquared != undefined
