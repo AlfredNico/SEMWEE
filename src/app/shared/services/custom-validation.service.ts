@@ -58,4 +58,9 @@ export class CustomValidationService {
     if (!regex.test(c.value) && c.value) return { domain: true };
     else return null;
   }
+
+  maxLength(c: FormControl) {
+    if (c.value.length > 40) return { maxLength: true };
+    else return null;
+  }
 }

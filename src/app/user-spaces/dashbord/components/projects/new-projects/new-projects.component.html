@@ -4,59 +4,6 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form">
-      <!-- <div fxLayout="column" fxLayoutAlign="center center">
-                <img mat-card-image style="height: 100px;
-                width: 100px;" [src]="image_url" alt="project images">
-                <input type="file" accept="image/*" #file (change)="onImageChanged($event)" style="display:none;" />
-                <button mat-raised-button type="button" (click)="file.click()">Change</button>
-            </div> -->
-
-      <div
-        class="w-100"
-        fxLayout="column"
-        fxLayoutAlign="center center"
-        formGroupName="letter_thumbnails_project"
-      >
-        <div
-          class="letter"
-          [style.background]="background"
-          [style.color]="color"
-        >
-          {{ letter?.value }}
-        </div>
-        <div mat-form-field class="form-group my-3 w-50">
-          <input [ngClass]="{'err': letter?.touched && letter?.errors?.required || letter?.errors?.uppercase}"
-          formControlName="letter"
-          maxlength="1"
-          autocomplete="off" class="form-control" placeholder="Letter* / Lettre*"/>
-            
-              <div *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase; else showInstrLogo">
-                <span class="form-text text-muted text-error" mat-error *ngIf="letter.touched && letter.errors?.required">
-                  Letter is required
-                </span>
-                <span class="form-text text-muted text-error" mat-error *ngIf="letter.errors?.uppercase">
-                  Letter is uppercase
-                </span>
-              </div>
-              <ng-template #showInstrLogo>
-                <span class="form-text text-muted">Give a logo to your project. / Donnez un logo à votre projet.</span>
-              </ng-template>
-            
-        </div>
-        <div class="w-100" fxLayout="row" fxLayoutAlign="center">
-          <div mat-form-field class="form-group my-3 w-25 mr-5">
-            <input
-            type="color" formControlName="color" class="form-control"/>
-            <span class="form-text text-muted">Letter color</span>
-          </div>
-          <!-- (click)="setBackground(ref2.value)" formControlName="background" -->
-          <div mat-form-field class="form-group my-3 w-25">
-            <input
-            type="color" formControlName="background" class="form-control"/>
-            <span class="form-text text-muted">Background color</span>
-          </div>
-        </div>
-      </div>
 
       <div mat-form-field class="form-group my-3">
         <input [ngClass]="{'err': (form.controls['name_project'].touched &&
@@ -75,8 +22,9 @@
             ">
             Name is required
             </span>
-            <span class="form-text text-muted text-error" mat-error *ngIf="form.controls['name_project'].errors?.maxLength">
-              Maximum length name is 10 words
+            <span class="form-text text-muted text-error" mat-error 
+            *ngIf="form.controls['name_project'].errors?.maxLength">
+              Maximum length name is 40 words
             </span>
             <span class="form-text text-muted text-error" mat-error *ngIf="form.controls['name_project'].errors?.projectName">
               The name is already taken
@@ -239,8 +187,9 @@
           </ng-template>
       </div>
 
+      <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
       <div class="w-100 row">
-        <div mat-form-field class="form-group col-9">
+        <div mat-form-field class="form-group col-7">
           <input
           formControlName="image_project_Landscape"
             [readonly]="true" class="form-control" placeholder="Landscape format* / Format paysage*" />
@@ -260,7 +209,7 @@
 
         <button
           color="accent"
-          class="upload-button col-3"
+          class="upload-button col-4"
           mat-raised-button
           type="button"
           (click)="landscape.click()"
@@ -270,7 +219,7 @@
       </div>
       <div class="w-100 row">
 
-        <div mat-form-field class="form-group col-9">
+        <div mat-form-field class="form-group col-7">
           <input
           formControlName="image_project_Squared"
             [readonly]="true" class="form-control" placeholder="Squared* / Format carré*" />
@@ -288,13 +237,67 @@
         />
         <button
           color="accent"
-          class="upload-button col-3"
+          class="upload-button col-4"
           mat-raised-button
           type="button"
           (click)="squared.click()"
         >
           Upload Squared Image
         </button>
+      
+      </div>
+      </div>
+
+      <hr />
+      
+      <div
+        class="w-100"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        formGroupName="letter_thumbnails_project"
+      >
+      <h3 color="accent" class="text-muted">
+        If you do not upload landscape or squard image, you must complete this field below !
+      </h3>
+        <div
+          class="letter"
+          [style.background]="background"
+          [style.color]="color"
+        >
+          {{ letter?.value }}
+        </div>
+        <div mat-form-field class="form-group my-3 w-50">
+          <input [ngClass]="{'err': letter?.touched && letter?.errors?.required || letter?.errors?.uppercase}"
+          formControlName="letter"
+          maxlength="1"
+          autocomplete="off" class="form-control" placeholder="Letter* / Lettre*"/>
+            
+              <div *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase; else showInstrLogo">
+                <span class="form-text text-muted text-error" mat-error *ngIf="letter.touched && letter.errors?.required">
+                  Letter is required
+                </span>
+                <span class="form-text text-muted text-error" mat-error *ngIf="letter.errors?.uppercase">
+                  Letter is uppercase
+                </span>
+              </div>
+              <ng-template #showInstrLogo>
+                <span class="form-text text-muted">Give a logo to your project. / Donnez un logo à votre projet.</span>
+              </ng-template>
+            
+        </div>
+        <div class="w-100" fxLayout="row" fxLayoutAlign="center">
+          <div mat-form-field class="form-group my-3 w-25 mr-5">
+            <input
+            type="color" formControlName="color" class="form-control"/>
+            <span class="form-text text-muted">Letter color</span>
+          </div>
+          <!-- (click)="setBackground(ref2.value)" formControlName="background" -->
+          <div mat-form-field class="form-group my-3 w-25">
+            <input
+            type="color" formControlName="background" class="form-control"/>
+            <span class="form-text text-muted">Background color</span>
+          </div>
+        </div>
       </div>
     </form>
   </mat-card-content>
