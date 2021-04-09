@@ -64,8 +64,11 @@ export class ResizableDirective {
       let div = this.column.childNodes[0] as HTMLElement;
       div.style.width = `${width}px`;
 
+      let chiled = div.childNodes[1] as HTMLElement;
+      chiled.style.width = `${width}px`;
+      
       let formSearch = this.column.childNodes[1] as HTMLElement;
-      formSearch.style.width = `${width}px`;
+      if (width > 30) formSearch.style.width = `${width}px`;
 
       // Set table cells width
       for (const cell of tableCells) {

@@ -41,7 +41,7 @@ import { NotificationService } from '@app/services/notification.service';
         display: revert;
       }
       .drag_n_drop {
-        cursor: move;
+        cursor: move !important;
       }
     `,
   ],

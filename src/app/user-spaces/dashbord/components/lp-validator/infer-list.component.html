@@ -38,15 +38,17 @@
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x">
+                    <th mat-header-cell [ngClass]="{'hide-rows': column === 'ID'}"  *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                         <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
-                                <div class="clap"></div>
-                                <div>
-                                    {{ column.split('_').join(' ') | uppercase }}
-                                </div>
-                                <div mat-sort-header class="pl-3">
-                                    <!-- <i class="fas fa-sort"></i> -->
+                            <div fxLayout="column" class="w-100">
+                                <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
+                                    <div>
+                                        {{ column.split('_').join(' ') | uppercase }}
+                                    </div>
+                                    <div mat-sort-header class="pl-3">
+                                        <!-- <i class="fas fa-sort"></i> -->
+                                    </div>
                                 </div>
                                 <!-- <div cdkDragHandle class="drag_n_drop ">
                                     <mat-icon>api</mat-icon>

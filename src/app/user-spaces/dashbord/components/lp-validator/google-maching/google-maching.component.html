@@ -26,17 +26,19 @@
                 <ng-container [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                         <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100" [resizeColumn]="true" [index]="i">
-                            <div class="clip-path"></div>
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2 table-container-th">
-                                <div>
-                                    {{ column.split('_').join(' ') | uppercase }}
+                            <div fxLayout="column" class="w-100">
+                                <div class="clip-path">.</div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
+                                    <div>
+                                        {{ column.split('_').join(' ') | uppercase }}
+                                    </div>
+                                    <div mat-sort-header class="pl-3">
+                                        <!-- <i class="fas fa-sort"></i> -->
+                                    </div>
                                 </div>
-                                <div mat-sort-header class="pl-3">
-                                    <!-- <i class="fas fa-sort"></i> -->
-                                </div>
-                                <!-- <div cdkDragHandle class="drag_n_drop pl-3">
+                                <!-- <div cdkDragHandle class="drag_n_drop ">
                                     <mat-icon>api</mat-icon>
-                                </div> -->
+                                </div> id="filter-table" -->
                             </div>
                             <mat-form-field appearance="outline" id="filter-table ">
                                 <input matInput type="search" placeholder="Smart or quick query ..." [formControlName]="column" autocomplete="off">

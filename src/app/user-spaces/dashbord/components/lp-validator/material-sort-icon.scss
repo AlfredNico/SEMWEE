@@ -1,4 +1,12 @@
 ::ng-deep{
+  .clip-path{
+    margin-left: auto;
+    margin-right: 0;
+    background: #f05858;
+    width: 20px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    top: 0;
+  }
     /* in global css document: */
 /* this makes it so that sort header arrow is always shown: */
 .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
