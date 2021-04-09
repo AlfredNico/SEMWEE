@@ -2,8 +2,8 @@
     <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
         <!-- <button mat-mini-fab color="primary" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
-        </button> -->
-        <mat-form-field appearance="outline" id="filters">
+        </button> id="filters" -->
+        <mat-form-field appearance="outline">
             <mat-label>Search</mat-label>
             <input matInput type="search" autocomplete="off" [formControl]="search">
             <mat-icon matPrefix>search</mat-icon>
@@ -49,9 +49,9 @@
                                 </div>
                                 <!-- <div cdkDragHandle class="drag_n_drop ">
                                     <mat-icon>api</mat-icon>
-                                </div> -->
+                                </div> id="filter-table" -->
                             </div>
-                            <mat-form-field appearance="outline" id="filter-table">
+                            <mat-form-field appearance="outline">
                                 <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
                             </mat-form-field>
                         </span>

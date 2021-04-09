@@ -128,6 +128,13 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
                 './dashbord/components/projects/new-projects/new-projects.module'
               ).then((m) => m.NewProjectsModule),
           },
+           {
+            path: 'profil',
+            loadChildren: () =>
+              import(
+                './profiles/profiles.module'
+              ).then((m) => m.ProfilesModule),
+          },
           { path: '', redirectTo: 'all-project', pathMatch: 'full' },
         ],
       },

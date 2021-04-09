@@ -23,5 +23,13 @@
         height: 100%;
       }
     }
+
+    .shad {
+      -webkit-box-shadow: 0 10px 30px 0 rgba(82,63,105,.08)!important;
+      box-shadow: 0 10px 30px 0 rgba(82,63,105,.08)!important;
+      -webkit-transition: top .3s ease!important;
+      transition: top .3s ease!important;
+      z-index: 95!important;
+    }
   }
 }
