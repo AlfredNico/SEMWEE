@@ -23,7 +23,7 @@ import { InferListComponent } from './infer-list.component';
 @Component({
   selector: 'app-lp-validator',
   templateUrl: './lp-validator.component.html',
-  styleUrls: ['./lp-validator.component.scss'],
+  styleUrls: ['material-sort-icon.scss', './lp-validator.component.scss'],
   // encapsulation: ViewEncapsulation.None,
 })
 export class LpValidatorComponent implements OnInit, AfterViewInit {
@@ -80,7 +80,9 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   public dataInferList: DataTypes;
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit() {
     this.triggerServices.switchproject$
       .pipe(
         tap(() => {
@@ -88,6 +90,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
           this.common.showSpinner('root');
         }),
         map(async (idProjet) => {
+          console.log(idProjet);
+          
           if (idProjet) {
             this.idProjet = idProjet;
             await this.checkProject();
@@ -97,9 +101,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe();
-  }
-
-  ngAfterViewInit() {
     // this.checkProject();
   }
 
@@ -207,3 +208,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     }
   }
 }
+function startWidth(arg0: {}): import("rxjs").OperatorFunction<any, unknown> {
+  throw new Error('Function not implemented.');
+}
+

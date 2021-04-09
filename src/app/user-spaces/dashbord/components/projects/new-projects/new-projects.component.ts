@@ -42,12 +42,11 @@ export class NewProjectsComponent implements OnInit {
   formInfo: FormGroup;
   formCatg: FormGroup;
   formLicencesPlans: FormGroup;
-  // private readonly regex = /^((ftp|http|https):\/\/){0,1}(w{3,3}\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
 
   form = this.fb.group({
     name_project: [
       '',
-      [Validators.required, Validators.maxLength(10)],
+      [Validators.required, this.custumValidator.maxLength],
       [this.projetctService.checkProjectName()],
       { updateOn: 'blur' },
     ],
@@ -68,7 +67,7 @@ export class NewProjectsComponent implements OnInit {
         [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
       ],
       color: ['#66ACFF'],
-      background: ['#40425D'],
+      background: ['#F3F6F9'],
     }),
   });
 
@@ -131,6 +130,7 @@ export class NewProjectsComponent implements OnInit {
       this.letter.setValidators([Validators.required]);
       this.form.get('image_project_Landscape').clearValidators();
       this.form.get('image_project_Squared').clearValidators();
+      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     } else if (
       this.imageLandscape != undefined ||
       this.imageSquared != undefined
@@ -171,7 +171,7 @@ export class NewProjectsComponent implements OnInit {
       } catch (error) {
         if (error instanceof HttpErrorResponse) {
           console.log(error.message);
-          this.notis.warn(error.message);
+          this.notis.info(error.message);
         }
         this.common.hideSpinner();
         throw error;
@@ -212,7 +212,7 @@ export class NewProjectsComponent implements OnInit {
             this.form.get('image_project_Landscape').setValue(file.name);
             this.imageLandscape = file;
           } else {
-            this.notis.warn(
+            this.notis.info(
               `this is not landscape image:  ${width} * ${height}`
             );
             this.form.get('image_project_Landscape').setValue('');
@@ -243,7 +243,7 @@ export class NewProjectsComponent implements OnInit {
             this.form.get('image_project_Squared').setValue(file.name);
             this.imageSquared = file;
           } else {
-            this.notis.warn(`this is not squared image:  ${width} * ${height}`);
+            this.notis.info(`this is not squared image:  ${width} * ${height}`);
             this.form.get('image_project_Squared').setValue('');
             this.imageSquared = undefined;
           }

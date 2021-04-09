@@ -16,6 +16,7 @@ import { GoogleMachingComponent } from './google-maching/google-maching.componen
 import { ResizableModule } from 'angular-resizable-element';
 import { TuneItComponent } from './dialog/tune-it.component';
 import { DragDropDirective } from '../../directives/drag-drop.directive';
+import { ResizableDirective } from '../../directives/resizable.directive';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DragDropDirective } from '../../directives/drag-drop.directive';
     GoogleMachingComponent,
     TuneItComponent,
     DragDropDirective,
+    ResizableDirective,
   ],
   imports: [
     CommonModule,
@@ -43,9 +45,9 @@ import { DragDropDirective } from '../../directives/drag-drop.directive';
   entryComponents: [
     TableOptionsComponent,
     SettingTableComponent,
-    ImportItemComponent,
-    CheckRelevancyComponent,
-    InferListComponent,
+    // ImportItemComponent,
+    // CheckRelevancyComponent,
+    // InferListComponent,
     GoogleMachingComponent,
     TuneItComponent,
   ],

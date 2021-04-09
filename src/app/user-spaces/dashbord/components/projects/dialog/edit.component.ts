@@ -66,7 +66,7 @@ export class EditComponent implements OnInit {
   form = this.fb.group({
     name_project: [
       '',
-      [Validators.required, Validators.maxLength(10)],
+      [Validators.required, this.custumValidator.maxLength],
       [this.projetctService.checkProjectName()],
       { updateOn: 'blur' },
     ],

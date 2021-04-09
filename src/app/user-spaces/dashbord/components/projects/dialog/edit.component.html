@@ -8,7 +8,7 @@
       formGroupName="letter_thumbnails_project"
     >
       <div class="letter" [style.background]="background" [style.color]="color">
-        {{ letter.value }}
+        {{ letter?.value }}
       </div>
       <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
         <mat-label>Letter* / Lettre*</mat-label>
@@ -64,7 +64,7 @@
         Name is required
       </mat-error>
       <mat-error *ngIf="form.controls['name_project'].errors?.maxLength">
-        Maximum length name is 10 words
+        Maximum length name is 40 words
       </mat-error>
       <mat-error *ngIf="form.controls['name_project'].errors?.projectName">
         The Nname is already taken

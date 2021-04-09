@@ -6,6 +6,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -77,6 +78,13 @@ export class InferListComponent
   selectedOptions: string[] = [];
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
+
+  // filter icon
+  public icon = 'asc';
+
+  @HostListener('window:scroll', ['$event']) onScroll(event: any){
+    // console.log(window.pageYOffset);
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -381,5 +389,15 @@ export class InferListComponent
         currentEl.style.width = cssValue;
       }
     }
+  }
+
+  public isColumnDisplay(column: any): boolean{
+    if (column.toLowerCase().includes('_id')) return true;
+    else false;
+  }
+
+  sortData($e: any){
+    console.log($e);
+    $e.direction === 'asc'? (this.icon = 'myIcon') : (this.icon= 'myDescIcon');
   }
 }

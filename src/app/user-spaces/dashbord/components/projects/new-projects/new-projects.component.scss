@@ -42,19 +42,44 @@
     }
 
     .mat-card-header {
-        border-bottom: 1px solid rgba(64, 66, 93,.3);
-        margin-bottom: 10px;
-        color: #40425D !important;
-        font-weight: 600 !important;
-        font-size: 18px!important;
+        border-bottom: 1px solid #ebedf2;
+        padding: 1rem;
+    }
+
+    .mat-card-header .mat-card-title {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #575962;
+    }
+
+    .mat-card {
+        padding: 0!important;
     }
 
     // $err: text-error;
 
-    
-    // @if $err {
-    //     input {
-    //         border-color: #F68683!important;
-    //     }
-    // }
+    .err {
+        border-color: #F68683!important;
+    }
+
+    input[type="color"] {
+        -webkit-appearance: none;
+    }
+    input[type="color"]::-webkit-color-swatch {
+        border: none;
+    }
+
+    .mat-card-header-text {
+        margin: 0 16px;
+        padding-top: 10px;
+    }
+
+    .mat-card-subtitle, .mat-card-content {
+        padding: 2.2rem;
+    }
+
+    .add-project {
+        right: 2.2rem;
+        bottom: 2rem;
+    }
 }

@@ -3,7 +3,6 @@ import { Injectable, NgModule } from '@angular/core';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { LandingModule } from '@app/shared/modules/landing.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
-import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
 import { SideMenuComponent } from '@app/shared/components/side-menu/side-menu.component';
 import { LayoutComponent } from '../pages/_layout/layout.component';
@@ -129,15 +128,13 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
                 './dashbord/components/projects/new-projects/new-projects.module'
               ).then((m) => m.NewProjectsModule),
           },
-
-          {
-            path: 'resiable',
+           {
+            path: 'profile',
             loadChildren: () =>
-              import('../shared/components/resibale.module').then(
-                (m) => m.ResibaleModule
-              ),
+              import(
+                './profiles/profiles.module'
+              ).then((m) => m.ProfilesModule),
           },
-          // { path: '', redirectTo: 'resiable', pathMatch: 'full' },
           { path: '', redirectTo: 'all-project', pathMatch: 'full' },
         ],
       },

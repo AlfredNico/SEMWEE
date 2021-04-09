@@ -2,10 +2,10 @@
     <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
         <!-- <button mat-mini-fab color="primary" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
-        </button> id="filters" -->
-        <mat-form-field appearance="outline">
+        </button> -->
+        <mat-form-field appearance="outline" id="filters">
             <mat-label>Search</mat-label>
-            <input matInput type="search" placeholder="Quick Search ..." autocomplete="off" [formControl]="search">
+            <input matInput type="search" autocomplete="off" [formControl]="search">
             <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
     </div>
@@ -20,41 +20,47 @@
             <span>Table options </span>
         </a>
     </div>
-    <div class="px-2 m-3 table-container" style="overflow-y: auto;">
-        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
+    <div class="px-2 m-3 table-container" style="overflow: auto;">
+        <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <!-- SELECT Column -->
                 <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef style="padding-left: 24px!important;
-                    padding-top: 28px!important;" class="px-5"> 
+                    padding-top: 28px!important;">
                         <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
                     </th>
-                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5">
-                        <mat-checkbox color="accent" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()">
-                        </mat-checkbox>
+                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd">
+                        <mat-checkbox color="accent" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()"></mat-checkbox>
                     </td>
                 </ng-container>
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x">
-                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
-                                <div class="clap"></div>
-                                <div>
-                                    {{ column.split('_').join(' ') | uppercase }}
+                    <th [ngClass]="{'hide-rows': column === 'ID'}" mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" [resizeColumn]="true" [index]="i">
+                        <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters">
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="text-capitalize custom-text">
+                                    {{ column.split('_').join(' ') }}
                                 </div>
                                 <div mat-sort-header class="pl-3">
-                                    <!-- <i class="fas fa-sort"></i> -->
+                                    <i class="fas fa-sort"></i>
+                                </div>
+                            </div>
+                            <!--<div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 px-4 py-2 table-container-th">
+                                <div class="text-capitalize custom-text">
+                                    {{ column.split('_').join(' ') }}
+                                </div>
+                                <div mat-sort-header class="pl-3">
+                                    <i class="fas fa-sort"></i>
                                 </div>
                                 <!-- <div cdkDragHandle class="drag_n_drop ">
-                                    <mat-icon>api</mat-icon>
-                                </div> id="filter-table" -->
-                            </div>
-                            <mat-form-field appearance="outline">
-                                <input matInput type="search" placeholder="Smart or quick query ..." [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
+                                    <mat-icon>api</mat-icon> cdkDrag
+                                </div>
+                            </div> -->
+                            <!-- <mat-form-field appearance="outline" id="filter-table">
+                                <input matInput type="search" [placeholder]="column + ' ...'" [formControlName]="column" autocomplete="off">
+                            </mat-form-field> -->
                         </span>
                     </th>
                     <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd" [class.even]="even" mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" (click)="selectRow(row)" [matTooltip]="row[column]" class="table-container-td">{{ row[column] }} </td>
@@ -87,28 +93,3 @@
     </div>
 
 </div>
-
-
-
-<!-- <div class="example-container mat-elevation-z8 table" style="padding-top: 150px;">
-    <table mat-table [dataSource]="dataSource" matSort>
-
-        <ng-container *ngFor="let column of displayColumns; let i = index" [matColumnDef]="column">
-            <th mat-header-cell [resizeColumn]="true" [index]="i" *matHeaderCellDef>
-                <span>{{column}} </span>
-                <input class="input" type="text" name="text" id="text">
-            </th>
-            <td  mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let element; let odd = odd; let even = even"> {{element[column]}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="dataView.displayColumns;"></tr>
-        <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
-
-        <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" rowspan="4">No data</td>
-        </tr>
-    </table>
-    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">></mat-paginator>
-</div> -->
-
-<!-- sticky: true -->
