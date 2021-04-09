@@ -3,7 +3,7 @@
 /* this makes it so that sort header arrow is always shown: */
 .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
     opacity: 1 !important;
-    color: blue;
+    color: #fff;
     
   }
 /* Hide the default sort arrow display: */
@@ -16,6 +16,7 @@
 .mat-sort-header-pointer-middle{
     width: 0px !important;
     height: 0px !important;
+    top: -1.2em !important;
 }
 /* show two carets on top of each other when not sorted takes place: */
 .mat-sort-header-arrow {
@@ -48,7 +49,7 @@
             //  font-size: 1.2em;
              font-weight: bold;
              transform: translate(0,0) rotate(90deg) !important;
-             top: -0.7em !important;
+             top: -0.9rem !important;
              font-size: .8em;
            }
          }
@@ -59,7 +60,7 @@
   [aria-sort="descending"] {
     .mat-sort-header-arrow {
           .mat-sort-header-indicator {
-            &::before {
+            &::before  {
               // content: ">";
               content: "ᐅ";
               position: absolute;
@@ -68,6 +69,8 @@
               font-size: 1.2em;
               font-weight: bold;
               transform: translate(0,-10%) rotate(90deg) !important;
+              top: -0.5rem !important;
+              font-size: .8em
             }
           }
         }
