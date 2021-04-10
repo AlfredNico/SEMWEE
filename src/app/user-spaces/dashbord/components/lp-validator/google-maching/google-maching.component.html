@@ -25,7 +25,7 @@
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <ng-container [matColumnDef]="column">
-                    <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
+                    <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag [ngClass]="{'hide-rows': isColumnDisplay(column)}">
                         <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
                             <div fxLayout="column" class="w-100">
                                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
