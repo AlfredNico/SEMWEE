@@ -30,7 +30,7 @@
                         <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
                             <div fxLayout="column" class="w-100">
                                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
-                                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
+                                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
                                     <div>
                                         {{ column.split('_').join(' ') | uppercase }}
                                     </div>
