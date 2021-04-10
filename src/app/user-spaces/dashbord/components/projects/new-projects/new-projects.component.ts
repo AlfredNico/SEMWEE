@@ -130,7 +130,6 @@ export class NewProjectsComponent implements OnInit {
       this.letter.setValidators([Validators.required]);
       this.form.get('image_project_Landscape').clearValidators();
       this.form.get('image_project_Squared').clearValidators();
-      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     } else if (
       this.imageLandscape != undefined ||
       this.imageSquared != undefined
@@ -176,6 +175,8 @@ export class NewProjectsComponent implements OnInit {
         this.common.hideSpinner();
         throw error;
       }
+    }else{
+      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
   }
 
