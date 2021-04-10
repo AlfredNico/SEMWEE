@@ -192,7 +192,10 @@ export class InferListComponent
       event.currentIndex
     );
     this.displayColumns.forEach((column, index) => {
-      this.dataView.displayColumns[index] = column;
+      if (column == 'select')
+        this.dataView.displayColumns[0] = column;
+      else
+        this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
       if (column != 'select') {
         this.filters.addControl(column, new FormControl(''));

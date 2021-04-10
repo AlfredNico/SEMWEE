@@ -2,7 +2,7 @@
   .clip-path{
     margin-left: auto;
     margin-right: 0;
-    background: #f05858;
+    background: #faa8a8;
     width: 20px;
     clip-path: polygon(0 0, 100% 0, 100% 100%);
     top: 0;
@@ -12,7 +12,7 @@
 .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
     opacity: 1 !important;
     color: #fff;
-    
+
   }
 /* Hide the default sort arrow display: */
 .mat-sort-header-stem {
@@ -30,7 +30,7 @@
 .mat-sort-header-arrow {
     .mat-sort-header-indicator {
       &::before {
-        // content: "<>"; 
+        // content: "<>";
         content: "ᐊᐅ";
         position: absolute;
         opacity: 1 !important;
@@ -49,7 +49,7 @@
     .mat-sort-header-arrow {
          .mat-sort-header-indicator {
            &::before {
-            //  content: "<"; 
+            //  content: "<";
              content: "ᐊ";
              position: absolute;
              color:  #fff !important;
@@ -100,7 +100,7 @@
 }
 
 [aria-sort='descending'] {
-  ::ng-deep .mat-sort-header-arrow { 
+  ::ng-deep .mat-sort-header-arrow {
     .mat-sort-header-indicator {
       &::before{
         font: normal normal normal 1.1rem/1 FontAwesome;

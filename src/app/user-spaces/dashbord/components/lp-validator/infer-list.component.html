@@ -4,8 +4,8 @@
             <mat-icon>settings</mat-icon>
         </button> id="filters" -->
         <mat-form-field appearance="outline">
-            <mat-label>Search</mat-label>
-            <input matInput type="search" placeholder="Quick Search ..." autocomplete="off" [formControl]="search">
+          <mat-label>Quick Search</mat-label>
+          <input matInput type="search" placeholder="Quick Search" autocomplete="off" [formControl]="search">
             <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
     </div>
@@ -14,23 +14,23 @@
         <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             tableOptions
-        </button> -->
+        </button>  style="overflow-y: auto;" -->
         <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             <span>Table options </span>
         </a>
     </div>
-    <div class="px-2 m-3 table-container" style="overflow-y: auto;">
+    <div class="px-2 m-3 table-container">
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <!-- SELECT Column -->
                 <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef style="padding-left: 24px!important;
-                    padding-top: 28px!important;" class="px-5"> 
+                    padding-top: 28px!important;" class="px-4">
                         <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
                     </th>
-                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5">
+                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-4">
                         <mat-checkbox color="accent" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()">
                         </mat-checkbox>
                     </td>
@@ -39,7 +39,7 @@
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
                     <th mat-header-cell [ngClass]="{'hide-rows': column === 'ID'}"  *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
+                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
                             <div fxLayout="column" class="w-100">
                                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <mat-form-field appearance="outline">
-                                <input matInput type="search" placeholder="Smart or quick query ..." [formControlName]="column" autocomplete="off">
+                                <input matInput type="search" placeholder="Smart Query or Regex ready" [formControlName]="column" autocomplete="off">
                             </mat-form-field>
                         </span>
                     </th>

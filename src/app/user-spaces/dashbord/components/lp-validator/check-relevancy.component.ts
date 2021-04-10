@@ -241,14 +241,18 @@ export class CheckRelevancyComponent
   }
 
    public isColumnDisplay(column: any): boolean{
-    if (this.toLowerCase(column).includes('_id')
-      || this.toLowerCase(column).includes('id')
-      || this.toLowerCase(column).includes('idproduct')
-      || this.toLowerCase(column).includes('select')
-      || this.toLowerCase(column).includes('_v')) return true;
-    else false;
+    switch(true){
+      case this.toLowerCase(column) == '_id':
+      case this.toLowerCase(column) == 'id':
+      case this.toLowerCase(column) == 'idproduct':
+      case this.toLowerCase(column) == '__v':
+      case this.toLowerCase(column) == 'select':
+      case this.toLowerCase(column) == 'ID':
+        return true;
+      default:
+        return false;
+    }
   }
-
   public toLowerCase(item: string): string{
     return item.toLowerCase();
   }
