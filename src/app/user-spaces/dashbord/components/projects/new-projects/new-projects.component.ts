@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, forwardRef, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -117,7 +117,7 @@ export class NewProjectsComponent implements OnInit {
       .valueChanges.pipe(
         map((value) => {
           this.form.patchValue({
-            path_project: `/${value}/*`,
+            path_project: `/`,
           });
         })
       )
@@ -130,7 +130,6 @@ export class NewProjectsComponent implements OnInit {
       this.letter.setValidators([Validators.required]);
       this.form.get('image_project_Landscape').clearValidators();
       this.form.get('image_project_Squared').clearValidators();
-      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     } else if (
       this.imageLandscape != undefined ||
       this.imageSquared != undefined
@@ -176,6 +175,8 @@ export class NewProjectsComponent implements OnInit {
         this.common.hideSpinner();
         throw error;
       }
+    }else{
+      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
   }
 
@@ -212,7 +213,7 @@ export class NewProjectsComponent implements OnInit {
             this.form.get('image_project_Landscape').setValue(file.name);
             this.imageLandscape = file;
           } else {
-            this.notis.info(
+            this.notis.warn(
               `this is not landscape image:  ${width} * ${height}`
             );
             this.form.get('image_project_Landscape').setValue('');
@@ -243,7 +244,7 @@ export class NewProjectsComponent implements OnInit {
             this.form.get('image_project_Squared').setValue(file.name);
             this.imageSquared = file;
           } else {
-            this.notis.info(`this is not squared image:  ${width} * ${height}`);
+            this.notis.warn(`this is not squared image:  ${width} * ${height}`);
             this.form.get('image_project_Squared').setValue('');
             this.imageSquared = undefined;
           }
