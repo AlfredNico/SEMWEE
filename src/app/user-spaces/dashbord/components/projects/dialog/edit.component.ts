@@ -206,6 +206,8 @@ export class EditComponent implements OnInit {
           this.common.hideSpinner();
           throw error;
         }
+      }else{
+        this.notifs.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
       }
     } else {
       const value = {
