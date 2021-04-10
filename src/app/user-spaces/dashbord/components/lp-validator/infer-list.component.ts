@@ -158,6 +158,14 @@ export class InferListComponent
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
+                  // for (const [key, value] of Object.entries(query)) {
+                  //   if (value) {
+                  //     // console.log(`${key}: ${value}`);
+                  //     return item[property]
+                  //           .toLowerCase()
+                  //           .includes((value as any).toLowerCase());
+                  //   }
+                  // }
                   return item[property]
                     .toLowerCase()
                     .includes(query[property].toLowerCase());

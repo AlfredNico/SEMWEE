@@ -65,7 +65,7 @@
                                 {{ row[column] }}
                             </div>
                         </div>
-                        <div *ngSwitchDefault [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)">{{ row[column] }}</div>
+                        <div *ngSwitchDefault [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)" [ngClass]="{'hide-rows': isColumnDisplay(column)}">{{ row[column] }}</div>
                     </td>
                 </ng-container>
             </div>

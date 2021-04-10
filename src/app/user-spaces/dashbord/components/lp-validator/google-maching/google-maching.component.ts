@@ -178,6 +178,28 @@ export class GoogleMachingComponent
     );
   }
 
+  public isColumnDisplay(column: any): boolean{
+    switch(true){
+      case this.toLowerCase(column) == '_id':
+      case this.toLowerCase(column) == 'id':
+      case this.toLowerCase(column) == 'idproduct':
+      case this.toLowerCase(column) == '__v':
+      case this.toLowerCase(column) == 'select':
+      case this.toLowerCase(column) == 'ID':
+        return true;
+      default:
+        return false;
+    }
+  }
+  public toLowerCase(item: string): string{
+    return item.toLowerCase();
+  }
+  isPopTuneIt(column: string, value: string):boolean{
+    if (this.toLowerCase(column).includes('itemtype')
+    || (this.toLowerCase(column).includes('property') && value)) return true;
+    else return false;
+  }
+
   hideTooltip(event: number){
     if (!this.rowIndex.includes(event))
       this.rowIndex.push(event);
