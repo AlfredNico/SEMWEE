@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -6,6 +6,7 @@ import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 export class ResizableDirective {
   @Input('resizeColumn') resizable: boolean;
   @Input() index: number;
+   @Output() tabIndex = new EventEmitter<any>();
   private startX: number;
 
   private startWidth: number;
@@ -64,8 +65,11 @@ export class ResizableDirective {
       let div = this.column.childNodes[0] as HTMLElement;
       div.style.width = `${width}px`;
 
+      let chiled = div.childNodes[1] as HTMLElement;
+      chiled.style.width = `${width}px`;
+      
       let formSearch = this.column.childNodes[1] as HTMLElement;
-      formSearch.style.width = `${width}px`;
+      if (width > 30) formSearch.style.width = `${width}px`;
 
       // Set table cells width
       for (const cell of tableCells) {
@@ -73,7 +77,7 @@ export class ResizableDirective {
       }
 
       //triggres services
-      
+      this.tabIndex.emit(this.index);
     }
   };
 

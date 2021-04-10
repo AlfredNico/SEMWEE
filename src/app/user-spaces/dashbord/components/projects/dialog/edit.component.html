@@ -1,137 +1,101 @@
 <div fxLayout="column" *ngIf="data">
   <h3 mat-dialog-title>Edit project</h3>
   <div mat-dialog-content [formGroup]="form">
-    <div
-      class="w-100"
-      fxLayout="column"
-      fxLayoutAlign="center center"
-      formGroupName="letter_thumbnails_project"
-    >
-      <div class="letter" [style.background]="background" [style.color]="color">
-        {{ letter?.value }}
+    <div mat-form-field class="form-group my-3">
+      <input [ngClass]="{'err': (form.controls['name_project'].touched &&
+      form.controls['name_project'].errors?.required) || form.controls['name_project'].errors?.maxLength || form.controls['name_project'].errors?.projectName}"
+      formControlName="name_project"
+        autocomplete="off" class="form-control" placeholder="Name*" />
+
+
+      <div *ngIf="(form.controls['name_project'].touched &&
+      form.controls['name_project'].errors?.required) || form.controls['name_project'].errors?.maxLength || form.controls['name_project'].errors?.projectName; else showInstrName">
+          <span class="form-text text-muted text-error" mat-error
+          *ngIf="
+            form.controls['name_project'].touched &&
+            form.controls['name_project'].errors?.required
+          ">
+          Name is required
+          </span>
+          <span class="form-text text-muted text-error" mat-error
+          *ngIf="form.controls['name_project'].errors?.maxLength">
+            Maximum length name is 40 words
+          </span>
+          <span class="form-text text-muted text-error" mat-error *ngIf="form.controls['name_project'].errors?.projectName">
+            The name is already taken
+          </span>
       </div>
-      <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
-        <mat-label>Letter* / Lettre*</mat-label>
-        <input
-          matInput
-          formControlName="letter"
-          maxlength="1"
-          autocomplete="off"
-        />
-        <mat-hint
-          >Give a name to your project. / Donnez un nom à votre
-          projet.</mat-hint
-        >
-        <mat-error *ngIf="letter?.touched && letter?.errors?.required">
-          Letter is required
-        </mat-error>
-        <mat-error *ngIf="letter.errors?.uppercase">
-          Letter must be uppercase
-        </mat-error>
-      </mat-form-field>
-      <div class="w-100" fxLayout="row" fxLayoutAlign="center">
-        <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
-          <mat-label>Letter color*</mat-label>
-          <input matInput type="color" formControlName="color" />
-          <mat-hint> Letter color </mat-hint>
-        </mat-form-field>
-        <!-- (click)="setBackground(ref2.value)" formControlName="background" -->
-        <mat-form-field appearance="outline" class="w-25 my-3 mx-1">
-          <mat-label>Background color*</mat-label>
-          <input matInput type="color" formControlName="background" />
-          <mat-hint> Background color </mat-hint>
-        </mat-form-field>
-      </div>
+      <ng-template #showInstrName>
+        <span class="form-text text-muted">Give a name to your project.</span>
+      </ng-template>
+
     </div>
 
-    <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-      <mat-label>Name* / Nom*</mat-label>
-      <input
-        matInput
-        placeholder="Kiatoo"
-        formControlName="name_project"
-        autocomplete="off"
-      />
-      <mat-hint
-        >Give a name to your project. / Donnez un nom à votre projet.</mat-hint
-      >
-      <mat-error
-        *ngIf="
-          form.controls['name_project'].touched &&
-          form.controls['name_project'].errors?.required
-        "
-      >
-        Name is required
-      </mat-error>
-      <mat-error *ngIf="form.controls['name_project'].errors?.maxLength">
-        Maximum length name is 40 words
-      </mat-error>
-      <mat-error *ngIf="form.controls['name_project'].errors?.projectName">
-        The Nname is already taken
-      </mat-error>
-    </mat-form-field>
+    <div mat-form-field class="form-group my-3">
+      <input [ngClass]="{'err': (form.controls['domain_project'].touched &&
+      form.controls['domain_project'].errors?.required) || form.controls['domain_project'].errors?.domain}"
+      formControlName="domain_project"
+        autocomplete="off" class="form-control" placeholder="Domain*" />
 
-    <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-      <mat-label>Domain* / Domaine*</mat-label>
-      <input
-        matInput
-        placeholder="www.kiatoo.com"
-        formControlName="domain_project"
-        autocomplete="off"
-      />
-      <mat-hint
-        >Fill the field with the domain of the website. / Remplissez le champ
-        avec le nom de domaine de votre site.</mat-hint
-      >
-      <mat-error
+
+        <div *ngIf="(form.controls['domain_project'].touched &&
+        form.controls['domain_project'].errors?.required) || form.controls['domain_project'].errors?.domain; else showInstrDomain">
+        <span class="form-text text-muted text-error" mat-error
         *ngIf="
           form.controls['domain_project'].touched &&
           form.controls['domain_project'].errors?.required
-        "
-      >
+        ">
         Domain is required
-      </mat-error>
-      <mat-error *ngIf="form.controls['domain_project'].errors?.domain">
-        Invalid domain name, it sould be like www.kiatoo.com
-      </mat-error>
-    </mat-form-field>
+        </span>
+        <span class="form-text text-muted text-error" mat-error *ngIf="form.controls['domain_project'].errors?.domain">
+          Invalid domain name, it sould be like www.kiatoo.com
+        </span>
+      </div>
+      <ng-template #showInstrDomain>
+        <span class="form-text text-muted">Fill the field with the domain of the website.</span>
+      </ng-template>
 
-    <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-      <mat-label>Country* / Pays*</mat-label>
-      <input
-        matInput
-        placeholder="France"
-        formControlName="country_project"
-        [matAutocomplete]="autoComplete"
-      />
-      <mat-autocomplete #autoComplete="matAutocomplete">
-        <mat-option
-          *ngFor="let contry of filteredCounrty | async"
-          [value]="contry.name"
-        >
-          {{ contry.name }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-hint
-        >Which country is your website targeting ? / Indiquez à quel pays
-        s'adresse votre site web.</mat-hint
-      >
-      <mat-error
+    </div>
+
+    <div mat-form-field class="form-group my-3">
+      <input [ngClass]="{'err': (form.get('country_project')?.touched &&
+      form.get('country_project')?.errors?.required) || form.get('country_project')?.max}"
+      formControlName="country_project"
+        [matAutocomplete]="autoComplete" class="form-control" placeholder="Country*" />
+
+        <mat-autocomplete #autoComplete="matAutocomplete">
+          <mat-option
+            *ngFor="let contry of filteredCounrty | async"
+            [value]="contry.name"
+          >
+            {{ contry.name }}
+          </mat-option>
+        </mat-autocomplete>
+
+        <div *ngIf="(form.get('country_project')?.touched &&
+        form.get('country_project')?.errors?.required) || form.get('country_project')?.max; else showInstrCountry">
+        <span class="form-text text-muted text-error" mat-error
         *ngIf="
           form.get('country_project')?.touched &&
           form.get('country_project')?.errors?.required
-        "
-        >Country is required</mat-error
-      >
-      <mat-error *ngIf="form.get('country_project')?.max"
-        >Maximum length name is 40 words</mat-error
-      >
-    </mat-form-field>
+        ">
+        Country is required
+        </span>
+        <span class="form-text text-muted text-error" mat-error *ngIf="form.get('country_project')?.max">
+          Maximum length name is 40 words
+        </span>
+      </div>
+      <ng-template #showInstrCountry>
+        <span class="form-text text-muted">Which country is your website targeting ?</span>
+      </ng-template>
+
+    </div>
 
     <div class="w-100 my-5" fxLayout="row">
-      <mat-form-field appearance="outline" class="w-100 my-5 mx-1">
-        <mat-label>Language* / Langue*</mat-label>
-        <mat-select placeholder="French" formControlName="language_project">
+      <div mat-form-field class="form-group w-50 mr-5">
+        <mat-select placeholder="Language*" [ngClass]="{'err': (form.get('language_project')?.touched &&
+        form.get('language_project')?.errors?.required)}"
+          formControlName="language_project" class="form-control">
           <mat-option
             *ngFor="let language of languages"
             [value]="language.code"
@@ -139,49 +103,47 @@
             {{ language.name }}
           </mat-option>
         </mat-select>
-        <mat-hint
-          >Tell us what is the language of your website? / Indiquez la langue de
-          votre site web.</mat-hint
-        >
-        <mat-error
-          *ngIf="
-            form.get('language_project')?.touched &&
-            form.get('language_project')?.errors?.required
-          "
-          >Language is required</mat-error
-        >
-      </mat-form-field>
 
-      <mat-form-field appearance="outline" class="w-100 my-5 mx-1">
-        <mat-label>Path* / Chemin*</mat-label>
-        <input
-          matInput
-          placeholder="/fr/*"
-          formControlName="path_project"
-        />
-        <mat-hint class="w-100" fxLayout="column">
-          <div>
-            If the language or the geographic localization of the resources is
-            set by a directory, please mention the path (/ if no directory).
-          </div>
-          <div>
-            Si la langue et/ou la localisation géographique des ressources
-            concernées passent pas un répertoire, indiquez le chemin (/* si
-            aucun répertoire).
-          </div>
-        </mat-hint>
-        <mat-error
+          <div *ngIf="(form.get('language_project')?.touched &&
+          form.get('language_project')?.errors?.required); else showInstrLang">
+          <span class="form-text text-muted text-error" mat-error *ngIf="
+          form.get('language_project')?.touched &&
+          form.get('language_project')?.errors?.required
+        "
+        >Language is required
+          </span>
+        </div>
+        <ng-template #showInstrLang>
+          <span class="form-text text-muted">Tell us what is the language of your website?</span>
+        </ng-template>
+
+      </div>
+
+      <div mat-form-field class="form-group w-50">
+        <input [ngClass]="{'err': (form.get('path_project')?.touched &&
+        form.get('path_project')?.errors?.required)}"
+        formControlName="path_project" class="form-control" placeholder="Path*" />
+
+            <div *ngIf="(form.get('path_project')?.touched &&
+            form.get('path_project')?.errors?.required); else showInstrPath">
+          <span class="form-text text-muted text-error" mat-error
           *ngIf="
             form.get('path_project')?.touched &&
             form.get('path_project')?.errors?.required
           "
-          >Path is required</mat-error
-        >
-      </mat-form-field>
+          >Path is required
+          </span>
+        </div>
+        <ng-template #showInstrPath>
+          <span class="form-text text-muted">If the language or the geographic localization of the resources is
+            set by a directory, please mention the path (/ if no directory).</span>
+        </ng-template>
+
+      </div>
     </div>
 
     <div class="w-100 my-5 mx-1 pt-4">
-      <mat-label style="margin-right: 20%">SSL* / TLS*</mat-label>
+      <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">SSL* / TLS*</mat-label>
       <mat-radio-group
         class="w-50 px-3"
         aria-label="website"
@@ -196,38 +158,30 @@
           {{ protocol }}
         </mat-radio-button>
       </mat-radio-group>
-      <mat-hint class="w-100" fxLayout="column">
-        <div>Tell us if your website uses SSL/TLS certificate.</div>
-        <div>Dites-nous si votre site utilise un certificat SSL/TLS.</div>
-      </mat-hint>
-      <mat-error
-        *ngIf="
-          form.get('protocol_project')?.touched &&
-          form.get('protocol_project')?.errors?.required
-        "
-        >Language is required</mat-error
-      >
+
+          <div *ngIf="(form.get('protocol_project')?.touched &&
+          form.get('protocol_project')?.errors?.required); else showInstrProt">
+      <span class="form-text text-muted text-error" mat-error
+      *ngIf="
+      form.get('protocol_project')?.touched &&
+      form.get('protocol_project')?.errors?.required
+    "
+    >Protocol is required
+          </span>
+        </div>
+        <ng-template #showInstrProt>
+          <span class="form-text text-muted txt-muted">Tell us if your website uses SSL/TLS certificate.</span>
+        </ng-template>
     </div>
 
-    <div class="w-100" fxLayout="row">
-      <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-        <mat-label>Landscape format* / Format paysage*</mat-label>
+    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="w-100 row">
+      <div mat-form-field class="form-group col-7">
         <input
-          matInput
-          placeholder="logo-paysage.png"
-          formControlName="image_project_Landscape"
-          [readonly]="true"
-        />
-        <mat-hint class="w-100" fxLayout="column">
-          <div>
-            You can choose a landscape format image to illustrate your project.
-          </div>
-          <div>
-            Vous pouvez choisir une image au format paysage pour illustrer votre
-            projet.
-          </div>
-        </mat-hint>
-      </mat-form-field>
+        formControlName="image_project_Landscape"
+          [readonly]="true" class="form-control" placeholder="Landscape format*" />
+        <span class="form-text text-muted">You can choose a landscape format image to illustrate your project.</span>
+      </div>
 
       <input
         type="file"
@@ -238,33 +192,23 @@
       />
 
       <button
-        class="upload-button my-3"
+        color="accent"
+        class="upload-button col-4"
         mat-raised-button
         type="button"
         (click)="landscape.click()"
       >
-        upload landscape image
+        Upload Landscape Image
       </button>
     </div>
-    <div class="w-100" fxLayout="row">
-      <mat-form-field appearance="outline" class="w-100 my-3 mx-1">
-        <mat-label>Squared* / Format carré*</mat-label>
+    <div class="w-100 row">
+
+      <div mat-form-field class="form-group col-7">
         <input
-          matInput
-          placeholder="logo-carre.png"
-          formControlName="image_project_Squared"
-          [readonly]="true"
-        />
-        <mat-hint class="w-100" fxLayout="column">
-          <div>
-            You can choose a square format image to illustrate your project.
-          </div>
-          <div>
-            Vous pouvez choisir une image au format carré pour illustrer votre
-            projet.
-          </div>
-        </mat-hint>
-      </mat-form-field>
+        formControlName="image_project_Squared"
+          [readonly]="true" class="form-control" placeholder="Squared*" />
+        <span class="form-text text-muted">You can choose a square format image to illustrate your project.</span>
+      </div>
 
       <input
         type="file"
@@ -274,13 +218,68 @@
         style="display: none"
       />
       <button
-        class="upload-button my-3"
+        color="accent"
+        class="upload-button col-4"
         mat-raised-button
         type="button"
         (click)="squared.click()"
       >
-        upload squared image
+        Upload Squared Image
       </button>
+
+    </div>
+    </div>
+
+    <hr />
+
+    <div
+      class="w-100"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      formGroupName="letter_thumbnails_project"
+    >
+    <h3 color="accent" class="text-muted">
+      If you do not upload landscape or squard image, you must complete this field below !
+    </h3>
+      <div
+        class="letter"
+        [style.background]="background"
+        [style.color]="color"
+      >
+        {{ letter?.value }}
+      </div>
+      <div mat-form-field class="form-group my-3 w-50">
+        <input [ngClass]="{'err': letter?.touched && letter?.errors?.required || letter?.errors?.uppercase}"
+        formControlName="letter"
+        maxlength="1"
+        autocomplete="off" class="form-control" placeholder="Letter*"/>
+
+            <div *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase; else showInstrLogo">
+              <span class="form-text text-muted text-error" mat-error *ngIf="letter.touched && letter.errors?.required">
+                Letter is required
+              </span>
+              <span class="form-text text-muted text-error" mat-error *ngIf="letter.errors?.uppercase">
+                Letter is uppercase
+              </span>
+            </div>
+            <ng-template #showInstrLogo>
+              <span class="form-text text-muted">Give a logo to your project.</span>
+            </ng-template>
+
+      </div>
+      <div class="w-100" fxLayout="row" fxLayoutAlign="center">
+        <div mat-form-field class="form-group my-3 w-25 mr-5">
+          <input
+          type="color" formControlName="color" class="form-control"/>
+          <span class="form-text text-muted">Letter color</span>
+        </div>
+        <!-- (click)="setBackground(ref2.value)" formControlName="background" -->
+        <div mat-form-field class="form-group my-3 w-25">
+          <input
+          type="color" formControlName="background" class="form-control"/>
+          <span class="form-text text-muted">Background color</span>
+        </div>
+      </div>
     </div>
   </div>
   <div mat-dialog-actions align="end">

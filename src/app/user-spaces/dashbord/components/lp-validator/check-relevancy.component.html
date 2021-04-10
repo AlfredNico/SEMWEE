@@ -3,9 +3,9 @@
         <!-- <button mat-mini-fab color="accent" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
         </button> -->
-        <mat-form-field appearance="outline" id="filters">
-            <mat-label>Search</mat-label>
-            <input matInput type="search" placeholder="Quick Search ..." autocomplete="off" [formControl]="search">
+        <mat-form-field appearance="outline">
+          <mat-label>Quick Search</mat-label>
+          <input matInput type="search" placeholder="Quick Search" autocomplete="off" [formControl]="search">
             <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
     </div>
@@ -20,31 +20,32 @@
             <span>Table options </span>
         </a>
     </div>
+    <!-- style="overflow-y: auto;" -->
     <div class="px-2 m-3 table-container">
         <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
                 <ng-container [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag [ngClass]="{'hide-rows': isColumnDisplay(column)}">
-                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100" [formGroup]="filters" [resizeColumn]="true" [index]="i">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
-                                <div>
-                                    {{ column.split('_').join(' ') | uppercase }}
+                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
+                            <div fxLayout="column" class="w-100">
+                                <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-2">
+                                    <div>
+                                        {{ column.split('_').join(' ') | uppercase }}
+                                    </div>
+                                    <div mat-sort-header class="pl-3">
+                                        <!-- <i class="fas fa-sort"></i> -->
+                                    </div>
                                 </div>
-                                <div mat-sort-header class="pl-3">
-                                    <!-- <i class="fas fa-sort"></i> -->
-                                </div>
-                                <!-- <div cdkDragHandle class="drag_n_drop pl-3">
-                                    <mat-icon>api</mat-icon>
-                                </div> -->
                             </div>
-                            <mat-form-field appearance="outline" id="filter-table">
-                                <input matInput type="search" placeholder="Smart or quick query ..." [formControlName]="column" autocomplete="off">
+                            <mat-form-field appearance="outline">
+                              <input matInput type="search" placeholder="Smart Query or Regex ready" [formControlName]="column" autocomplete="off">
                             </mat-form-field>
                         </span>
                     </th>
 
-                    <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" [ngClass]="{'hide-rows': isColumnDisplay(column), 'pointer_item': isPopTuneIt(column, row[column])}" [matTooltip]="row[column]" [id]="i +'_'+ indexRow" (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column?.toLowerCase()) : ''">
+                    <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" [ngClass]="{'hide-rows': isColumnDisplay(column), 'pointer_item': isPopTuneIt(column, row[column])}" [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)" [id]="i +'_'+ indexRow" (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column?.toLowerCase()) : ''">
                         {{ row[column] }}
                     </td>
                 </ng-container>

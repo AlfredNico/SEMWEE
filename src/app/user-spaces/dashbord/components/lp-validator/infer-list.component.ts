@@ -41,7 +41,7 @@ import { NotificationService } from '@app/services/notification.service';
         display: revert;
       }
       .drag_n_drop {
-        cursor: move;
+        cursor: move !important;
       }
     `,
   ],
@@ -81,6 +81,7 @@ export class InferListComponent
 
   // filter icon
   public icon = 'asc';
+  rowIndex: number[] = [];
 
   @HostListener('window:scroll', ['$event']) onScroll(event: any){
     // console.log(window.pageYOffset);
@@ -105,6 +106,7 @@ export class InferListComponent
         this.displayColumns = ['select']; //display columns tables
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
+        this.rowIndex = [];
       }
       Object.assign(this.dataView, this.data);
     }
@@ -190,7 +192,10 @@ export class InferListComponent
       event.currentIndex
     );
     this.displayColumns.forEach((column, index) => {
-      this.dataView.displayColumns[index] = column;
+      if (column == 'select')
+        this.dataView.displayColumns[0] = column;
+      else
+        this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
       if (column != 'select') {
         this.filters.addControl(column, new FormControl(''));
@@ -399,5 +404,11 @@ export class InferListComponent
   sortData($e: any){
     console.log($e);
     $e.direction === 'asc'? (this.icon = 'myIcon') : (this.icon= 'myDescIcon');
+  }
+
+  hideTooltip(event: number){
+    if (!this.rowIndex.includes(event))
+      this.rowIndex.push(event);
+
   }
 }

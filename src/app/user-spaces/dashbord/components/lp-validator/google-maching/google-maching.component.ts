@@ -68,6 +68,8 @@ export class GoogleMachingComponent
   public displayColumns: string[] = [];
   columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
 
+  rowIndex: number[] = []; // disable matTooltips
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
@@ -81,6 +83,7 @@ export class GoogleMachingComponent
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
+        this.rowIndex = [];
         // this.dataView.displayColumns = [];
       }
       const value = this.lpValidator.converDataMatching(
@@ -173,5 +176,10 @@ export class GoogleMachingComponent
       this.resultData,
       this.sCallback
     );
+  }
+
+  hideTooltip(event: number){
+    if (!this.rowIndex.includes(event))
+      this.rowIndex.push(event);
   }
 }
