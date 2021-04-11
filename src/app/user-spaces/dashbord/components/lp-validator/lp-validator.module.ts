@@ -1,3 +1,4 @@
+import { TuniItDirective } from './../../directives/tuni-it.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from '@app/shared/modules/landing.module';
@@ -30,6 +31,7 @@ import { ResizableDirective } from '../../directives/resizable.directive';
     TuneItComponent,
     DragDropDirective,
     ResizableDirective,
+    TuniItDirective
   ],
   imports: [
     CommonModule,

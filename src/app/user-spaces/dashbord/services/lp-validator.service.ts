@@ -36,7 +36,6 @@ export class LpValidatorService {
             data: [] as any[],
             hideColumns: [] as string[],
           };
-
           obj.displayColumns = Object.keys(results[0]);
           obj.displayColumns.unshift('select');
           results.map((tbObj: any, index: number) => {

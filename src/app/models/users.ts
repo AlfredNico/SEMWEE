@@ -7,7 +7,7 @@ export interface Users {
     firstname: string;
     email: string;
     token: string;
-    projet: userProject[];
+    // projet: userProject[];
     role: getRoles[];
 }
 export interface userProject {

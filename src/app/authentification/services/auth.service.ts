@@ -102,15 +102,15 @@ export class AuthService {
             false,
             'Strict'
           );
-          this.cookieService.set(
-            'projet',
-            JSON.stringify(user.projet),
-            0.2,
-            '/',
-            undefined,
-            false,
-            'Strict'
-          );
+          // this.cookieService.set(
+          //   'projet',
+          //   JSON.stringify(user.projet),
+          //   0.2,
+          //   '/',
+          //   undefined,
+          //   false,
+          //   'Strict'
+          // );
 
           // this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);

@@ -39,6 +39,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
   user: Users;
   idProjet: any = '';
   selectedProject: Projects;
+  ProjectName!: string;
 
   constructor(
     private layout: LayoutService,
@@ -61,13 +62,8 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
       if (id) {
         this.allprojets$.subscribe((res: any) => {
           this.selectedProject = res.filter((x) => x._id == id);
+          this.ProjectName = this.selectedProject[0]['name_project'];
         });
-        console.log('id', this.selectedProject);
-
-        // this.route.paramMap.subscribe(async (params: ParamMap) => {
-        //   console.log('idProduit => ', params);
-        //   this.idProjet = params.get('idProduit');
-        // });
       }
     });
 
@@ -100,5 +96,9 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     }
 
     return false;
+  }
+
+  public selectedItemProjects():string{
+    return this.ProjectName ? this.ProjectName : 'Project';
   }
 }

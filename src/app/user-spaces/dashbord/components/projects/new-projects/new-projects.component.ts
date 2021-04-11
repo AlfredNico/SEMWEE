@@ -212,6 +212,10 @@ export class NewProjectsComponent implements OnInit {
           if (width > height) {
             this.form.get('image_project_Landscape').setValue(file.name);
             this.imageLandscape = file;
+            //updates forms
+            this.letter.clearValidators();
+            this.letter.updateValueAndValidity();
+            this.form.updateValueAndValidity();
           } else {
             this.notis.warn(
               `this is not landscape image:  ${width} * ${height}`
@@ -243,6 +247,10 @@ export class NewProjectsComponent implements OnInit {
           if (width == height) {
             this.form.get('image_project_Squared').setValue(file.name);
             this.imageSquared = file;
+            //updates forms
+            this.letter.clearValidators();
+            this.letter.updateValueAndValidity();
+            this.form.updateValueAndValidity();
           } else {
             this.notis.warn(`this is not squared image:  ${width} * ${height}`);
             this.form.get('image_project_Squared').setValue('');

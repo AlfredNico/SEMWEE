@@ -1,6 +1,6 @@
 import { TuneIt, TuneItVlaue } from './../../interfaces/tune-it';
 import { SelectionModel } from '@angular/cdk/collections';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDragStart, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
   AfterViewInit,
@@ -101,10 +101,10 @@ export class CheckRelevancyComponent
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    this.dataView.displayColumns.map((key: string, index: number) => {
+    this.dataView.displayColumns.map((key: any, index: number) => {
       //création formControl Dynamics
-      this.displayColumns.push(key);
-      this.filters.addControl(key, new FormControl(''));
+        this.displayColumns[index] = key;
+        this.filters.addControl(key, new FormControl(''));
     });
     this.commonServices.hideSpinner();
   }
@@ -154,12 +154,11 @@ export class CheckRelevancyComponent
   onClick(item: any) {}
 
   //Deop item list
-  public drop(event: CdkDragDrop<any>) {
-    moveItemInArray(
-      this.displayColumns,
-      event.previousIndex,
-      event.currentIndex
-    );
+  public drop(event: CdkDragDrop<string[]>) {
+    const previousIndex= event.previousIndex - 3;
+    const currentIndex= event.currentIndex - 3;
+    moveItemInArray(this.displayColumns, previousIndex, currentIndex);
+
     this.displayColumns.forEach((column, index) => {
       this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
@@ -258,7 +257,7 @@ export class CheckRelevancyComponent
   }
   isPopTuneIt(column: string, value: string):boolean{
     if (this.toLowerCase(column).includes('itemtype')
-    || (this.toLowerCase(column).includes('property') && value)) return true;
+    || (this.toLowerCase(column).includes('value') && value)) return true;
     else return false;
   }
 

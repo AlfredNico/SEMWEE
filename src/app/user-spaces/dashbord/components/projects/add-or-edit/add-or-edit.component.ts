@@ -1,56 +1,34 @@
+import value from '*.json';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '@app/authentification/services/auth.service';
+import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { CustomValidationService } from '@app/shared/services/custom-validation.service';
-import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.service';
-import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as COUNTRY from 'src/app/shared/fake-data/countries.json';
 
+
 @Component({
-  selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styles: [
-    `
-      .mat-form-field-appearance-outline .mat-form-field-infix {
-        padding: 0.5em 0 0.7em 0 !important;
-      }
-      .mat-form-field-infix {
-        // padding: 0.5em 0;
-        border-top: 0.55em solid transparent !important;
-      }
-      .upload-button {
-        max-height: 2.5em !important;
-        margin-left: 0 !important;
-        min-width: auto !important;
-      }
-      .letter {
-        width: 70px;
-        height: 70px;
-        margin: auto 5px;
-        font-size: 5vh;
-        justify-content: center;
-        padding: 26px 22px;
-        font-weight: bold;
-        border-radius: 50%;
-      }
-    `,
-  ],
+  selector: 'app-add-or-edit',
+  templateUrl: './add-or-edit.component.html',
+  styleUrls: ['./add-or-edit.component.scss']
 })
-export class EditComponent implements OnInit {
-  public image_url: any;
-  setLetters: string;
+export class AddOrEditComponent implements OnInit {
+
+  public image_url: string = 'assets/images/png/project_img.png';
   image_project!: File;
   private imageLandscape: File;
   private imageSquared: File;
 
-  countries: any[] = (COUNTRY as any).default;
-  languages: any[] = [
+  private user: User;
+  readonly countries: any[] = (COUNTRY as any).default;
+  readonly languages: { name: string; code: string }[] = [
     {
       name: 'English',
       code: 'en',
@@ -60,10 +38,10 @@ export class EditComponent implements OnInit {
       code: 'fr',
     },
   ];
-  protocols: string[] = ['SSL', 'TLS'];
+  readonly protocols: string[] = ['SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
 
-  form = this.fb.group({
+  @Output() public form = this.fb.group({
     name_project: [
       '',
       [Validators.required, this.custumValidator.maxLength],
@@ -86,31 +64,24 @@ export class EditComponent implements OnInit {
         '',
         [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
       ],
-      color: ['#015fec'],
-      background: ['#eab150'],
+      color: ['#66ACFF'],
+      background: ['#F3F6F9'],
     }),
   });
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: Projects,
-    public dialogRef: MatDialogRef<EditComponent>,
+    private auth: AuthService,
     private projetctService: ProjectsService,
-    private notifs: NotificationService,
-    private custumValidator: CustomValidationService,
-    private common: CommonService
+    private notis: NotificationService,
+    private common: CommonService,
+    private custumValidator: CustomValidationService
   ) {
-    if (this.data) {
-      this.image_url = environment.baseUrlImg + this.data.image_project;
-      this.form.patchValue({
-        ...this.data,
-        letter_thumbnails_project: {
-          letter: this.data.letter_thumbnails_project[0]['letter'],
-          background: this.data.letter_thumbnails_project[0]['background'],
-          color: this.data.letter_thumbnails_project[0]['color'],
-        },
-      });
-    }
+    this.auth.currentUserSubject.subscribe((user) => (this.user = user));
+  }
+
+  get name_project() {
+    return this.form.get('name_project');
   }
 
   get letter() {
@@ -125,6 +96,10 @@ export class EditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.form.patchValue({
+      user_id: this.user._id,
+    });
+
     this.filteredCounrty = this.form.get('country_project').valueChanges.pipe(
       startWith(''),
       map((value) => {
@@ -139,15 +114,11 @@ export class EditComponent implements OnInit {
       .valueChanges.pipe(
         map((value) => {
           this.form.patchValue({
-            path_project: `/${value}/*`,
+            path_project: `/`,
           });
         })
       )
       .subscribe();
-  }
-
-  onClick(): void {
-    this.dialogRef.close(this.form.value);
   }
 
   async onSubmit() {
@@ -167,66 +138,14 @@ export class EditComponent implements OnInit {
     this.form.updateValueAndValidity();
     this.letter.updateValueAndValidity();
 
-    if (
-      this.imageLandscape instanceof File ||
-      this.imageSquared instanceof File
-    ) {
-      if (this.form.valid) {
-        this.common.showSpinner('root');
-        try {
-          const img1 = this.imageLandscape
-            ? await this.projetctService.uploadImages(this.imageLandscape)
-            : undefined;
-          const img2 = this.imageSquared
-            ? await this.projetctService.uploadImages(this.imageSquared)
-            : undefined;
-
-          const values = {
-            _id: this.data._id,
-            ...this.form.value,
-            image_project_Landscape: img1 ? img1.img : '',
-            image_project_Squared: img2 ? img2.img : '',
-          };
-
-          this.projetctService.editProjects(values).subscribe(
-            (result) => {
-              this.notifs.sucess(result.message);
-              this.dialogRef.close(true);
-              this.common.hideSpinner();
-            },
-            (error) => {
-              this.common.hideSpinner();
-            }
-          );
-        } catch (error) {
-          if (error instanceof HttpErrorResponse) {
-            console.log(error.message);
-            this.notifs.warn(error.message);
-          }
-          this.common.hideSpinner();
-          throw error;
-        }
-      }else{
-        this.notifs.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
-      }
-    } else {
-      const value = {
-        _id: this.data._id,
-        ...this.form.value,
-        image_project: this.data.image_project,
-      };
-
-      const valus = {
-        ...this.form.value,
-        image_project_Landscape: this.data.image_project_Landscape,
-        image_project_Squared: this.data.image_project_Squared,
-      };
-      this.projetctService.editProjects(value).subscribe((result) => {
-        this.notifs.sucess(result.message);
-        this.dialogRef.close(true);
-      });
+    if (this.form.valid) {
+      console.log('value', this.form.valid);
+    }else{
+      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
   }
+
+
 
   onImageChanged(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -237,9 +156,6 @@ export class EditComponent implements OnInit {
       };
       reader.readAsDataURL(event.target.files[0]);
 
-      // this.form.patchValue({
-      //   image_project: file,
-      // });
       this.image_project = file;
     }
   }
@@ -263,12 +179,12 @@ export class EditComponent implements OnInit {
           if (width > height) {
             this.form.get('image_project_Landscape').setValue(file.name);
             this.imageLandscape = file;
-             //updates forms
+            //updates forms
             this.letter.clearValidators();
             this.letter.updateValueAndValidity();
             this.form.updateValueAndValidity();
           } else {
-            this.notifs.warn(
+            this.notis.warn(
               `this is not landscape image:  ${width} * ${height}`
             );
             this.form.get('image_project_Landscape').setValue('');
@@ -298,14 +214,12 @@ export class EditComponent implements OnInit {
           if (width == height) {
             this.form.get('image_project_Squared').setValue(file.name);
             this.imageSquared = file;
-             //updates forms
+            //updates forms
             this.letter.clearValidators();
             this.letter.updateValueAndValidity();
             this.form.updateValueAndValidity();
           } else {
-            this.notifs.warn(
-              `this is not squared image:  ${width} * ${height}`
-            );
+            this.notis.warn(`this is not squared image:  ${width} * ${height}`);
             this.form.get('image_project_Squared').setValue('');
             this.imageSquared = undefined;
           }
@@ -313,4 +227,5 @@ export class EditComponent implements OnInit {
       };
     }
   }
+
 }

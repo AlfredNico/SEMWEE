@@ -1,3 +1,4 @@
+import { AddOrEditComponent } from './../add-or-edit/add-or-edit.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from '@app/shared/modules/landing.module';
@@ -12,7 +13,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
-    NewProjectsComponent
+    NewProjectsComponent,
+    AddOrEditComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   ],
   providers: [
     ProjectsService
+  ],
+  entryComponents: [
+    AddOrEditComponent
   ]
 
 })

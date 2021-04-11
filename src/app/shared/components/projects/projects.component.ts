@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { DetailsComponent } from '@app/user-spaces/dashbord/components/projects/dialog/details.component';
@@ -35,7 +34,7 @@ export class ProjectsComponent implements OnInit {
     this.dialog
       .open(DetailsComponent, {
         data: item,
-        width: '600px',
+        width: '60%',
       })
       .afterClosed()
       .pipe(
@@ -82,7 +81,7 @@ export class ProjectsComponent implements OnInit {
     this.dialog
       .open(EditComponent, {
         data: item,
-        width: '65%',
+        width: '75%',
         autoFocus: false,
       })
       .afterClosed()

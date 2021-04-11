@@ -91,7 +91,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         }),
         map(async (idProjet) => {
           console.log(idProjet);
-          
+
           if (idProjet) {
             this.idProjet = idProjet;
             await this.checkProject();
@@ -144,7 +144,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       data: [] as any[],
       hideColumns: [] as string[],
     };
-
     obj1.displayColumns = Object.keys(res[0]);
     obj1.displayColumns.unshift('select');
     res.map((tbObj: any, index: number) => {
@@ -160,7 +159,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       data: [] as any[],
       hideColumns: [] as string[],
     };
-
     obj2.displayColumns = Object.keys(rest[0]);
     rest.map((tbObj: any, index: number) => {
       obj2.data[index] = tbObj;

@@ -14,7 +14,7 @@
     <!-- begin::1 Level -->
     <li class="menu-item menu-item-rel">
     <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" [matMenuTriggerFor]="projectmenu">
-      <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{(allprojets$ | async)?.length > 0 ? 'Project' : 'No project'}}</span>
+      <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{(allprojets$ | async)?.length > 0 ? selectedItemProjects() : 'No project'}}</span>
       <i class="fas fa-chevron-down"></i>
     </a>
     <mat-menu #projectmenu="matMenu" xPosition="after" class="dropdown-project">

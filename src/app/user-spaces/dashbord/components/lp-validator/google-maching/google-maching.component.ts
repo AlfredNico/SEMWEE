@@ -103,6 +103,8 @@ export class GoogleMachingComponent
       this.displayColumns.push(key);
       this.filters.addControl(key, new FormControl(''));
     });
+    console.log(this.displayColumns)
+
     this.checkValid();
     this.commonServices.hideSpinner();
   }
@@ -158,11 +160,10 @@ export class GoogleMachingComponent
 
   //Drop item list
   public drop(event: CdkDragDrop<any>) {
-    moveItemInArray(
-      this.displayColumns,
-      event.previousIndex,
-      event.currentIndex
-    );
+    const previousIndex= event.previousIndex - 3;
+    const currentIndex= event.currentIndex - 3;
+    moveItemInArray(this.displayColumns, previousIndex, currentIndex);
+
     this.displayColumns.forEach((column, index) => {
       this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
