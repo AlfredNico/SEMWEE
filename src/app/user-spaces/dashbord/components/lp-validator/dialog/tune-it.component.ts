@@ -1,3 +1,4 @@
+import { TuneItService } from './../../../services/tune-it.service';
 import { TuneIt, TuneItVlaue } from './../../../interfaces/tune-it';
 import {
   AfterViewInit,
@@ -19,12 +20,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       class="w-100"
       [formGroup]="form"
       fxLayout="row"
-      [ngClass]="{ panel: isItem == true }"
+      [ngClass]="{ panel: itemType == 'ItemType' }"
     >
       <div
         fxLayout="column"
         fxLayoutAlign="space-between center"
-        [ngClass]="{ 'w-100': isItem == true }"
+        [ngClass]="{ 'w-100': itemType == 'ItemType' }"
       >
         <mat-dialog-content class="w-100">
           <div
@@ -88,7 +89,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
         <mat-dialog-actions
           class="w-100 p-0"
           align="end"
-          *ngIf="isItem == true"
+          *ngIf="itemType == 'ItemType'"
         >
           <button
             mat-raised-button
@@ -105,7 +106,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
         <mat-dialog-actions
           class="w-100 p-0"
           align="center"
-          *ngIf="isItem == false"
+          *ngIf="itemType != 'ItemType'"
         >
           <button
             mat-raised-button
@@ -130,7 +131,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       </div>
       <div
         fxLayout="column"
-        *ngIf="isItem == false"
+       *ngIf="itemType != 'ItemType'"
         style="width: 250px; margin-left: 2em;"
       >
         <mat-label class="w-100 px-1 py-2">
@@ -171,24 +172,26 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     edit_spelling: new FormControl(''),
     synonymize: new FormControl(''),
     edit_synonyms: new FormControl(''),
-    schematic_scope: new FormControl(''),
+    schematic_scope: new FormControl(false),
   });
 
   tuneIt: TuneIt<TuneItVlaue>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<TuneItComponent>
+    public dialogRef: MatDialogRef<TuneItComponent>,
+    private tuneItService: TuneItService
   ) {
     console.log('data ', this.data);
-    this.isItem = this.data.item;
+    this.itemType = this.data.itemSeleted;
+
   }
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {}
 
-  onClick() {
+  async onClick() {
     const {
       edit_spelling,
       synonymize,
@@ -197,7 +200,39 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     } = this.form.controls;
 
     if (edit_spelling.value || synonymize.value || edit_synonyms.value) {
-      console.log('val ', edit_spelling.value);
+      if (this.itemType == 'ItemType') {
+        if (!this.data.checkTuneIt) {
+          const data = {
+            ...this.form.value,
+            'idinferlist': this.data.row['_id']
+          }
+          const res = await this.tuneItService.appy(data, this.data.checkTuneIt);
+          console.log(res);
+        } else {
+          const data = {
+            ...this.form.value,
+            'idinferlist': this.data.row['_id']
+          }
+          console.log(data)
+          const res = await this.tuneItService.appy(data);
+          console.log(res);
+        }
+      } else {
+          if (!this.data.checkTuneIt) {
+          const data = {
+            ...this.form.value,
+            'idinferlist': this.data.row['_id']
+          }
+          this.tuneItService.appy(data, this.data.checkTuneIt);
+        } else {
+          const data = {
+            ...this.form.value,
+            'idinferlist': this.data.row['_id']
+          }
+          console.log(data)
+          this.tuneItService.appy(data);
+        }
+      }
     }
 
     // this.dialogRef.close(this.form.value);

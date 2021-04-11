@@ -15,13 +15,23 @@ import * as COUNTRY from 'src/app/shared/fake-data/countries.json';
 
 @Component({
   selector: 'app-new-projects',
-  templateUrl: './new-projects.component.html',
-  styleUrls: ['./new-projects.component.scss'],
+  template: `
+    <mat-card tabindex="-1" class="w-100">
+      <mat-card-header>
+        <mat-card-title>Add New Project</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-add-or-edit [userId]="userId" [isAddItem]="true" (formProject)="onSubmit($event)"></app-add-or-edit>
+      </mat-card-content>
+    </mat-card>
+  `,
+  styleUrls: [],
   providers: [ProjectsService],
 })
 export class NewProjectsComponent implements OnInit {
 
   public user: User;
+  public userId: any;
   private form: FormGroup;
 
   private imageLandscape: File;
@@ -35,13 +45,18 @@ export class NewProjectsComponent implements OnInit {
     private common: CommonService,
     private custumValidator: CustomValidationService
   ) {
-    this.auth.currentUserSubject.subscribe((user) => (this.user = user));
+    this.auth.currentUserSubject.subscribe((user: User) => (this.userId= user._id));
   }
 
   ngOnInit(): void {}
 
-  async onSubmit(formGroup: FormGroup) {
-      this.form = formGroup;
+  async onSubmit(value: {
+    form: FormGroup,
+    imageLandscape: File,
+    imageSquared: File}) {
+      this.form = value.form;
+      this.imageLandscape = value.imageLandscape;
+      this.imageSquared = value.imageSquared;
       if (this.form.valid) {
 
         this.common.showSpinner('root');

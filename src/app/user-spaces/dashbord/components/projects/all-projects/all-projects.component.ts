@@ -55,6 +55,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
         if (error instanceof HttpErrorResponse) {
           this.notifs.warn(error.message);
         }
+        this.router.navigateByUrl('/user-space/new-project');
         this.common.hideSpinner();
       }
     );

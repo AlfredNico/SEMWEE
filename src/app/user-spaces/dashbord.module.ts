@@ -1,3 +1,4 @@
+import { AvatarModule } from './../shared/modules/avatar.module';
 import { Injectable, NgModule } from '@angular/core';
 // import { DashbordComponent } from './dashbord/dashbord.component';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
@@ -102,6 +103,7 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
     NgbNavModule,
     NgbTooltipModule,
     InlineSVGModule,
+    AvatarModule,
     RouterModule.forChild([
       {
         path: '',

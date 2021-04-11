@@ -4,18 +4,15 @@ import {
   HostListener,
   OnInit,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
-import { MatHorizontalStepper, MatStepper } from '@angular/material/stepper';
+import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
-import { Users } from '@app/models/users';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { CheckUserInfoService } from '../../services/check-user-info.service';
-import { LpValidatorService } from '../../services/lp-validator.service';
 import { CheckRelevancyComponent } from './check-relevancy.component';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
 import { InferListComponent } from './infer-list.component';
@@ -82,11 +79,10 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-  ngAfterViewInit() {
+   ngAfterViewInit() {
     this.triggerServices.switchproject$
       .pipe(
         tap(() => {
-          console.log('selected');
           this.common.showSpinner('root');
         }),
         map(async (idProjet) => {
@@ -168,7 +164,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   private async checkProject(): Promise<void> {
-    this.common.showSpinner('root');
     if (this.idProjet) {
       const res = await this.infoProduitService.checkProject(this.idProjet);
       if (res && res[0].length > 0 && res[1].length > 0) {
@@ -205,8 +200,5 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       }
     }
   }
-}
-function startWidth(arg0: {}): import("rxjs").OperatorFunction<any, unknown> {
-  throw new Error('Function not implemented.');
 }
 
