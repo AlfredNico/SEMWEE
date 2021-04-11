@@ -179,59 +179,59 @@
       </div>
 
       <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
-      <div class="w-100 row">
-        <div mat-form-field class="form-group col-7">
+        <div class="w-100 row">
+          <div mat-form-field class="form-group col-7">
+            <input
+            formControlName="image_project_Landscape"
+              [readonly]="true" class="form-control" placeholder="Landscape format*" />
+            <span class="form-text text-muted">You can choose a landscape format image to illustrate your project.</span>
+          </div>
+
           <input
-          formControlName="image_project_Landscape"
-            [readonly]="true" class="form-control" placeholder="Landscape format*" />
-          <span class="form-text text-muted">You can choose a landscape format image to illustrate your project.</span>
+            type="file"
+            accept="image/*"
+            #landscape
+            (change)="uploadLandscape($event)"
+            style="display: none"
+          />
+
+          <button
+            color="accent"
+            class="upload-button col-4"
+            mat-raised-button
+            type="button"
+            (click)="landscape.click()"
+          >
+            Upload Landscape Image
+          </button>
         </div>
+        <div class="w-100 row">
 
-        <input
-          type="file"
-          accept="image/*"
-          #landscape
-          (change)="uploadLandscape($event)"
-          style="display: none"
-        />
+          <div mat-form-field class="form-group col-7">
+            <input
+            formControlName="image_project_Squared"
+              [readonly]="true" class="form-control" placeholder="Squared*" />
+            <span class="form-text text-muted">You can choose a square format image to illustrate your project.</span>
+          </div>
 
-        <button
-          color="accent"
-          class="upload-button col-4"
-          mat-raised-button
-          type="button"
-          (click)="landscape.click()"
-        >
-          Upload Landscape Image
-        </button>
-      </div>
-      <div class="w-100 row">
-
-        <div mat-form-field class="form-group col-7">
           <input
-          formControlName="image_project_Squared"
-            [readonly]="true" class="form-control" placeholder="Squared*" />
-          <span class="form-text text-muted">You can choose a square format image to illustrate your project.</span>
+            type="file"
+            accept="image/*"
+            #squared
+            (change)="uploadSquared($event)"
+            style="display: none"
+          />
+          <button
+            color="accent"
+            class="upload-button col-4"
+            mat-raised-button
+            type="button"
+            (click)="squared.click()"
+          >
+            Upload Squared Image
+          </button>
+
         </div>
-
-        <input
-          type="file"
-          accept="image/*"
-          #squared
-          (change)="uploadSquared($event)"
-          style="display: none"
-        />
-        <button
-          color="accent"
-          class="upload-button col-4"
-          mat-raised-button
-          type="button"
-          (click)="squared.click()"
-        >
-          Upload Squared Image
-        </button>
-
-      </div>
       </div>
 
       <hr />

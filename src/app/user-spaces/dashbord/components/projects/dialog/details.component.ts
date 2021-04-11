@@ -33,7 +33,7 @@ import { EditComponent } from './edit.component';
       </div>
     </div>
   `,
-  styleUrls: [],
+  styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit {
   public image_url: any;
