@@ -1,0 +1,96 @@
+<div class="pb-5">
+  <!--begin::Header-->
+  <div class="d-flex flex-column flex-center"
+  [style.background]="data.letter_thumbnails_project[0]['background']">
+    <!--begin::Symbol-->
+    <div *ngIf="data['image_project_Squared']; else thumbnails" style="width: 120px; height: 120px;">
+      <img [src]="image_url" class="h-100 align-self-end" style="border-radius: 50%;" alt="logo">
+    </div>
+
+    <ng-template  #thumbnails>
+      <div class="circle-span"
+      [style.background]="data.letter_thumbnails_project[0]['background']"
+      [style.color]="data.letter_thumbnails_project[0]['color']">
+          {{ data['letter_thumbnails_project'][0]['letter'] }}
+      </div>
+    </ng-template>
+
+    <div class="font-weight-bold text-dark-50 font-size-sm pb-0 pt-6"> Project Name </div>
+    <a [routerLink]="['/user-space/lp-validator', data._id]" class="card-title font-weight-bolder text-dark-75 text-hover-primary font-size-h4 m-0 pt-0 pb-5"> {{ data['name_project'] }} </a>
+
+  </div>
+  <!--end::Header-->
+  <!--begin::Body-->
+  <div class="pt-1">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <!--begin::Item-->
+      <div class="d-flex align-items-center pt-4 pb-2 px-5 w-100">
+        <div class="d-flex flex-column flex-grow-1">
+          <span class="text-muted font-weight-bold">created at</span>
+          <div class="text-dark-75 text-hover-primary mb-1 font-size-lg font-weight-bolder py-2">
+            {{ data.created_project | date: 'medium' }}
+          </div>
+        </div>
+      </div>
+
+      <!--begin::Item-->
+      <div class="d-flex align-items-center pt-4 pb-2 px-5 w-100">
+       <div class="d-flex flex-column flex-grow-1">
+         <span class="text-muted font-weight-bold">updated at</span>
+         <div class="text-dark-75 text-hover-primary mb-1 font-size-lg font-weight-bolder py-2">
+           {{ data.created_project | date: 'medium' }}
+         </div>
+       </div>
+     </div>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <!--begin::Item-->
+      <div class="d-flex align-items-center pt-4 pb-2 px-5 w-100">
+        <div class="d-flex flex-column flex-grow-1">
+          <span class="text-muted font-weight-bold">Number of items</span>
+          <div class="text-dark-75 text-hover-primary mb-1 font-size-lg font-weight-bolder py-2">
+            {{ data.number_of_item }}
+          </div>
+        </div>
+      </div>
+
+      <!--begin::Item-->
+      <div class="d-flex align-items-center pt-4 pb-2 px-5 w-100">
+       <div class="d-flex flex-column flex-grow-1">
+         <span class="text-muted font-weight-bold">Number of inferred list pages</span>
+         <div class="text-dark-75 text-hover-primary mb-1 font-size-lg font-weight-bolder py-2">
+           {{ data.numberPLI }}
+         </div>
+       </div>
+     </div>
+
+      <!--begin::Item-->
+      <div class="d-flex align-items-center pt-4 pb-2 px-5 w-100">
+        <div class="d-flex flex-column flex-grow-1">
+          <span class="text-muted font-weight-bold">Number of validated list pages (LPVa)</span>
+          <div class="text-dark-75 text-hover-primary mb-1 font-size-lg font-weight-bolder py-2">
+            {{ data.numberLPVa }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end::Body-->
+
+  <div mat-dialog-actions align="center">
+    <button mat-raised-button tabindex="-1" mat-dialog-close>Close</button>
+    <button
+      mat-raised-button
+      tabindex="-1"
+      color="accent"
+      mat-dialog-close
+      (click)="onEdit(data)"
+    >
+      Edit
+    </button>
+  </div>
+</div>
+
+

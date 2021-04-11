@@ -257,7 +257,7 @@ export class CheckRelevancyComponent
   }
   isPopTuneIt(column: string, value: string):boolean{
     if (this.toLowerCase(column).includes('itemtype')
-    || (this.toLowerCase(column).includes('property') && value)) return true;
+    || (this.toLowerCase(column).includes('value') && value)) return true;
     else return false;
   }
 

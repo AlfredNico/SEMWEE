@@ -1,3 +1,12 @@
+.circle-span{
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  padding: 26px;
+  font-size: 7em;
+  align-items: center;
+  padding-top: .5em;
+}
 ::ng-deep {
   .mat-form-field-appearance-outline .mat-form-field-infix {
       padding: .5em 0 0.7em 0 !important;
@@ -17,7 +26,7 @@
       width: 70px;
       height: 70px;
       // margin: auto 5px;
-      text-align: center;
+      text-align: center !important;
       font-size: 5vh;
       justify-content: center;
       padding: 26px 22px;
