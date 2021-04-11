@@ -31,9 +31,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   ],
   providers: [
     ProjectsService
-  ],
-  entryComponents: [
-    AddOrEditComponent
   ]
 
 })

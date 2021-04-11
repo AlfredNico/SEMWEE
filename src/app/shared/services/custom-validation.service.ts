@@ -53,7 +53,8 @@ export class CustomValidationService {
   }
 
   domainValidation(c: FormControl) {
-    const regex = /^((ftp|http|https):\/\/){0,1}(w{3,3}\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
+    // const regex = /^((ftp|http|https):\/\/){0,1}(w{3,3}\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
+     const regex = /^((ftp|http|https):\/\/){0,1}([A-z]{3,3}\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/;
     if (!regex.test(c.value) && c.value) return { domain: true };
     else return null;
   }

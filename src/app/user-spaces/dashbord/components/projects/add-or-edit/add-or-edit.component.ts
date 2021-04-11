@@ -1,9 +1,5 @@
-import value from '*.json';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
@@ -26,7 +22,7 @@ export class AddOrEditComponent implements OnInit {
   private imageLandscape: File;
   private imageSquared: File;
 
-  private user: User;
+  @Input() public user: User;
   readonly countries: any[] = (COUNTRY as any).default;
   readonly languages: { name: string; code: string }[] = [
     {
@@ -41,7 +37,10 @@ export class AddOrEditComponent implements OnInit {
   readonly protocols: string[] = ['SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
 
-  @Output() public form = this.fb.group({
+  @Input() isAddItem: boolean = true;
+  @Output() public formProject = new EventEmitter<FormGroup>(null);
+
+  public form = this.fb.group({
     name_project: [
       '',
       [Validators.required, this.custumValidator.maxLength],
@@ -71,14 +70,11 @@ export class AddOrEditComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService,
     private projetctService: ProjectsService,
     private notis: NotificationService,
     private common: CommonService,
     private custumValidator: CustomValidationService
-  ) {
-    this.auth.currentUserSubject.subscribe((user) => (this.user = user));
-  }
+  ) {}
 
   get name_project() {
     return this.form.get('name_project');
@@ -121,7 +117,9 @@ export class AddOrEditComponent implements OnInit {
       .subscribe();
   }
 
-  async onSubmit() {
+  async onClickButton() {
+    console.log('value', this.form.value);
+    // this.f1.emit(this.form);
     if (this.imageLandscape == undefined && this.imageSquared == undefined) {
       // this.form.get('letter_thumbnails_project')['controls']
       this.letter.setValidators([Validators.required]);
@@ -139,7 +137,7 @@ export class AddOrEditComponent implements OnInit {
     this.letter.updateValueAndValidity();
 
     if (this.form.valid) {
-      console.log('value', this.form.valid);
+      this.formProject.emit(this.form);
     }else{
       this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
