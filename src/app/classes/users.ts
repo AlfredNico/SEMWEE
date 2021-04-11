@@ -24,9 +24,9 @@ export class User {
         }
     }
 
-    get projets() {
-        return JSON.parse(this.projet as any);
-    }
+    // get projets() {
+    //     return JSON.parse(this.projet as any);
+    // }
 
     get roles() {
         switch (true) {

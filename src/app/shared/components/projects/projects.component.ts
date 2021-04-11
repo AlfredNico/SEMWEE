@@ -82,7 +82,7 @@ export class ProjectsComponent implements OnInit {
     this.dialog
       .open(EditComponent, {
         data: item,
-        width: '80%',
+        width: '75%',
         autoFocus: false,
       })
       .afterClosed()

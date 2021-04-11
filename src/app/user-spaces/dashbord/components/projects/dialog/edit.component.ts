@@ -26,7 +26,7 @@ import * as COUNTRY from 'src/app/shared/fake-data/countries.json';
       }
       .upload-button {
         max-height: 2.5em !important;
-        margin-left: 2em !important;
+        margin-left: 0 !important;
         min-width: auto !important;
       }
       .letter {
@@ -263,6 +263,10 @@ export class EditComponent implements OnInit {
           if (width > height) {
             this.form.get('image_project_Landscape').setValue(file.name);
             this.imageLandscape = file;
+             //updates forms
+            this.letter.clearValidators();
+            this.letter.updateValueAndValidity();
+            this.form.updateValueAndValidity();
           } else {
             this.notifs.warn(
               `this is not landscape image:  ${width} * ${height}`
@@ -294,6 +298,10 @@ export class EditComponent implements OnInit {
           if (width == height) {
             this.form.get('image_project_Squared').setValue(file.name);
             this.imageSquared = file;
+             //updates forms
+            this.letter.clearValidators();
+            this.letter.updateValueAndValidity();
+            this.form.updateValueAndValidity();
           } else {
             this.notifs.warn(
               `this is not squared image:  ${width} * ${height}`

@@ -71,13 +71,13 @@ export class TopbarComponent implements OnInit, AfterViewInit {
       'extras.quickPanel.display'
     );
     this.menuListItems = [
-        {menuLinkText: 'Settings', 
+        {menuLinkText: 'Settings',
         menuIcon: '<img [src]="./assets/images/top_bar/user.png" alt=".">',
         isDisabled:false},
         {menuLinkText: 'AboutUs',
         menuIcon: 'people',
         isDisabled:false},
-        {menuLinkText: 'Help', 
+        {menuLinkText: 'Help',
         menuIcon: 'help',
         isDisabled:false},
         {menuLinkText:'Contact',
