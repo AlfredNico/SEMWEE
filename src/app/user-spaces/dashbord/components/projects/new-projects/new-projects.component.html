@@ -6,6 +6,7 @@
     <form [formGroup]="form">
 
       <div mat-form-field class="form-group my-3">
+        <label>Name<span class="text-danger">*</span></label>
         <input [ngClass]="{'err': (form.controls['name_project'].touched &&
         form.controls['name_project'].errors?.required) || form.controls['name_project'].errors?.maxLength || form.controls['name_project'].errors?.projectName}"
         formControlName="name_project"
