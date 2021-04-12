@@ -24,7 +24,6 @@ import { Projects } from './user-spaces/dashbord/interfaces/projects';
     image: 'images',
     token: 'fesfefefieh283hcecugeé33',
     role: ['FREEMIUM'],
-    projet: [{ _id: 'ekfeisifie', name_project: 'Projet 1' }],
   },
   {
     _id: '2',
@@ -34,7 +33,6 @@ import { Projects } from './user-spaces/dashbord/interfaces/projects';
     image: 'images',
     token: 'fesfefefieh283hcecugeé33',
     role: ['FREEMIUM'],
-    projet: [],
   },
 ];
 
@@ -117,7 +115,7 @@ export const projects: Projects[] = [
     protocol_project: 'SSL',
     user_id: '1',
   },
-]; */
+];*/
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {

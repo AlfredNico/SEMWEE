@@ -17,15 +17,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
   template: `
     <div
-      class="w-100"
+      class="w-100 panel"
       [formGroup]="form"
       fxLayout="row"
-      [ngClass]="{ panel: itemType == 'ItemType' }"
+      [ngClass]="{'panel1': itemType == 'ItemType', 'panel2': itemType != 'ItemType'}"
     >
       <div
         fxLayout="column"
         fxLayoutAlign="space-between center"
-        [ngClass]="{ 'w-100': itemType == 'ItemType' }"
+        class="w-100"
       >
         <mat-dialog-content class="w-100">
           <div
@@ -89,7 +89,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
         <mat-dialog-actions
           class="w-100 p-0"
           align="end"
-          *ngIf="itemType == 'ItemType'"
         >
           <button
             mat-raised-button
@@ -97,32 +96,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
             (click)="onClick()"
             cdkFocusInitial
           >
-            Apply
-          </button>
-          <button mat-raised-button color="accent" mat-dialog-close>
-            Cancel
-          </button>
-        </mat-dialog-actions>
-        <mat-dialog-actions
-          class="w-100 p-0"
-          align="center"
-          *ngIf="itemType != 'ItemType'"
-        >
-          <button
-            mat-raised-button
-            color="accent"
-            [mat-dialog-close]="true"
-            cdkFocusInitial
-          >
-            Apply on the Column
-          </button>
-          <button
-            mat-raised-button
-            color="accent"
-            cdkFocusInitial
-            (click)="onClick()"
-          >
-            Apply on the Table
+          <span *ngIf="itemType == 'ItemType'">Apply</span>
+          <span *ngIf="itemType != 'ItemType'">Apply on the Table</span>
           </button>
           <button mat-raised-button color="accent" mat-dialog-close>
             Cancel
@@ -132,7 +107,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       <div
         fxLayout="column"
        *ngIf="itemType != 'ItemType'"
-        style="width: 250px; margin-left: 2em;"
+        style="width: 350px; margin-left: 3em;"
       >
         <mat-label class="w-100 px-1 py-2">
           <h4 class="m-0">Semantic Scope</h4>

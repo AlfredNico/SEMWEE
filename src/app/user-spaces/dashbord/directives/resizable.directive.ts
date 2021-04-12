@@ -1,4 +1,5 @@
-import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
+import { style } from '@angular/animations';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -6,7 +7,11 @@ import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@
 export class ResizableDirective {
   @Input('resizeColumn') resizable: boolean;
   @Input() index: number;
-   @Output() tabIndex = new EventEmitter<any>();
+  @Output() tabIndex = new EventEmitter<any>();
+
+  @Input() minWidth: number;
+  @Input() maxWidth: number;
+
   private startX: number;
 
   private startWidth: number;
@@ -72,6 +77,7 @@ export class ResizableDirective {
 
       // Set table cells width
       for (const cell of tableCells) {
+        console.log('xx');
         this.renderer.setStyle(cell, 'width', `${width}px`);
       }
 
@@ -86,4 +92,8 @@ export class ResizableDirective {
       this.renderer.removeClass(this.table, 'resizing');
     }
   };
+
+  @HostListener('dblclick', ['$event']) onLeave( e: MouseEvent ) {
+    console.log('min: ', this.minWidth, '  max: ', this.maxWidth);
+  }
 }

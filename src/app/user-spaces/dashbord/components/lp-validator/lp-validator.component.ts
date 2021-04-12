@@ -149,19 +149,19 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     return obj1;
   }
 
-  mathiing(rest: any[]) {
-    let obj2 = {
-      displayColumns: [] as string[],
-      data: [] as any[],
-      hideColumns: [] as string[],
-    };
-    obj2.displayColumns = Object.keys(rest[0]);
-    rest.map((tbObj: any, index: number) => {
-      obj2.data[index] = tbObj;
-    });
+  // mathiing(rest: any[]) {
+  //   let obj2 = {
+  //     displayColumns: [] as string[],
+  //     data: [] as any[],
+  //     hideColumns: [] as string[],
+  //   };
+  //   obj2.displayColumns = Object.keys(rest[0]);
+  //   rest.map((tbObj: any, index: number) => {
+  //     obj2.data[index] = tbObj;
+  //   });
 
-    return obj2;
-  }
+  //   return obj2;
+  // }
 
   private async checkProject(): Promise<void> {
     if (this.idProjet) {
@@ -174,7 +174,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         });
 
         this.dataSources = this.inferList(res[0]);
-        this.dataInferList = this.mathiing(res[1]);
+        this.dataInferList = this.inferList(res[1]);
         this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
       } else if (res && res[0].length > 0 && res[1].length == 0) {
         this.selectedStepperIndex = 1;
