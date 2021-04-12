@@ -1,12 +1,13 @@
+import { NotificationService } from '@app/services/notification.service';
+import { Projects } from './../../interfaces/projects';
+import { TuneItService } from './../../services/tune-it.service';
 import { TuneIt, TuneItVlaue } from './../../interfaces/tune-it';
-import { SelectionModel } from '@angular/cdk/collections';
-import { CdkDragDrop, CdkDragStart, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -26,6 +27,7 @@ import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { map } from 'rxjs/operators';
 import { TuneItComponent } from './dialog/tune-it.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-check-relevancy',
@@ -81,7 +83,9 @@ export class CheckRelevancyComponent
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private tuneItService: TuneItService,
+    private notifs: NotificationService
   ) {}
 
   ngOnChanges() {
@@ -127,9 +131,19 @@ export class CheckRelevancyComponent
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  return item[property]
-                    .toLowerCase()
-                    .includes(query[property].toLowerCase());
+                  let i = 0, s = '';
+                  Object.entries(query).map(val => {
+                    if (val[1]) {
+                      i++;
+                      const lower = (val[1] as any).toLowerCase();
+                      if (i == 1) {
+                        s = s + `item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      }else{
+                        s = s + `&& item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      }
+                    }
+                  })
+                  return eval(s);
                 }
               });
             }
@@ -224,19 +238,32 @@ export class CheckRelevancyComponent
     this.dataMatching.emit(this.dataView);
   }
 
-  openTuneIt(id: string, row: any, event: any, itemSeleted: any) {
+  async openTuneIt(id: string, row: Projects, event: any, itemSeleted: any) {
+    this.commonServices.showSpinner('root');
     const el: HTMLElement = document.getElementById(id);
     // let pos: number = el.offsetTop;
     const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
-    const item = itemSeleted == 'itemtype' ? true : false;
+    // const item = itemSeleted == 'itemtype' ? true : false;
+    console.log(row['_id']);
 
-    this.dialog.open(TuneItComponent, {
-      // position: { top: `${clientY}px`, left: `${clientX}px` },
-      // width: itemSeleted == 'itemtype' ? '400px' : '',,
-      data: { row, item, checkTuneItValue: this.checkTuneItValue },
-    });
+    try {
+      const editTuneIt = await this.tuneItService.getTuneIt(row['_id']);
+      this.commonServices.hideSpinner();
+      this.dialog.open(TuneItComponent, {
+        // position: { top: `${clientY}px`, left: `${clientX}px` },
+        // width: itemSeleted == 'itemtype' ? '400px' : '',,
+        data: { row, itemSeleted, checkTuneIt: editTuneIt },
+      });
+    } catch (error) {
+      if (error instanceof HttpErrorResponse) {
+        throw error;
+      }
+      this.notifs.warn('Server error !');
+      this.commonServices.hideSpinner();
+    }
+
   }
 
    public isColumnDisplay(column: any): boolean{

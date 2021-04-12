@@ -61,8 +61,10 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     this.triggerServices.switchproject$.subscribe((id: any) => {
       if (id) {
         this.allprojets$.subscribe((res: any) => {
-          this.selectedProject = res.filter((x) => x._id == id);
-          this.ProjectName = this.selectedProject[0]['name_project'];
+          if (res) {
+            this.selectedProject = res.filter((x) => x._id == id);
+            this.ProjectName = this.selectedProject[0]['name_project'];
+          }
         });
       }
     });
@@ -100,5 +102,9 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
 
   public selectedItemProjects():string{
     return this.ProjectName ? this.ProjectName : 'Project';
+  }
+
+  public triggres(_id: any){
+    this.triggerServices.switchproject$.next(_id);
   }
 }

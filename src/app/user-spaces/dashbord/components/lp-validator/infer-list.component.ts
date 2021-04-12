@@ -1,4 +1,3 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
@@ -6,7 +5,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -20,7 +18,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@app/authentification/services/auth.service';
-import { User } from '@app/classes/users';
 import { SettingRowsTable } from '@app/models/setting-table';
 import { Users } from '@app/models/users';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
@@ -28,9 +25,9 @@ import { TableOptionsComponent } from '@app/shared/components/table-options/tabl
 import { CommonService } from '@app/shared/services/common.service';
 import { map } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
-import { ResizeEvent } from 'angular-resizable-element';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { NotificationService } from '@app/services/notification.service';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-infer-list',
@@ -82,10 +79,6 @@ export class InferListComponent
   // filter icon
   public icon = 'asc';
   rowIndex: number[] = [];
-
-  @HostListener('window:scroll', ['$event']) onScroll(event: any){
-    // console.log(window.pageYOffset);
-  }
 
   constructor(
     private fb: FormBuilder,
@@ -151,24 +144,26 @@ export class InferListComponent
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
-              return Object.keys(item).some((property) => {
+             return Object.keys(item).some((property) => {
                 if (
                   query[property] != '' &&
                   typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  for (const [key, value] of Object.entries(query)) {
-                    if (value) {
-                      console.log(`${key}`);
-                      // return item[property]
-                      //       .toLowerCase()
-                      //       .includes((value as any).toLowerCase());
+                  let i = 0, s = '';
+                  Object.entries(query).map(val => {
+                    if (val[1]) {
+                      i++;
+                      const lower = (val[1] as any).toLowerCase();
+                      if (i == 1) {
+                        s = s + `item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      }else{
+                        s = s + `&& item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      }
                     }
-                  }
-                  // return item[property]
-                  //   .toLowerCase()
-                  //   .includes(query[property].toLowerCase());
+                  })
+                  return eval(s);
                 }
               });
             }
@@ -391,22 +386,28 @@ export class InferListComponent
     this.dataSource.data = [];
   }
 
-  onResizeEnd(event: ResizeEvent, columnName): void {
-    if (event.edges.right) {
-      const cssValue = event.rectangle.width + 'px';
-      const columnElts = document.getElementsByClassName(
-        'mat-column-' + columnName
-      );
-      for (let i = 0; i < columnElts.length; i++) {
-        const currentEl = columnElts[i] as HTMLDivElement;
-        currentEl.style.width = cssValue;
-      }
-    }
-  }
+  // onResizeEnd(event: ResizeEvent, columnName): void {
+  //   if (event.edges.right) {
+  //     const cssValue = event.rectangle.width + 'px';
+  //     const columnElts = document.getElementsByClassName(
+  //       'mat-column-' + columnName
+  //     );
+  //     for (let i = 0; i < columnElts.length; i++) {
+  //       const currentEl = columnElts[i] as HTMLDivElement;
+  //       currentEl.style.width = cssValue;
+  //     }
+  //   }
+  // }
 
   public isColumnDisplay(column: any): boolean{
-    if (column.toLowerCase().includes('_id')) return true;
-    else false;
+    switch (true) {
+      case column.toLowerCase().includes('_id'):
+      case column.toLowerCase().includes('id'):
+        return true;
+
+      default:
+        return false;
+    }
   }
 
   sortData($e: any){
@@ -420,3 +421,30 @@ export class InferListComponent
 
   }
 }
+
+         // return Object.entries(query).map(val => {
+                  //   if (val[1]) {
+                  //     console.log('val ', val[0])
+                  //     return this.dataView.data.filter = (val[1] as any).toLowerCase();
+
+                  //     // return item[val[0]]
+                  //     // .toLowerCase()
+                  //     // .includes((val[0] as any).toLowerCase())
+                  //   }
+                  // })
+            //       // for (const [key, value] of Object.entries(query)) {
+            //       //   if (key) {
+            //       //     console.log(`${key} : ${value}`);
+            //       //     return item[property]
+            //       //           .toLowerCase()
+            //       //           .includes((value as any).toLowerCase())
+            //       //           // &&
+            //       //           // item['Facet_3']
+            //       //           // .toLowerCase()
+            //       //           // .includes('ssd'.toLowerCase());
+            //       //   }
+            //       // }
+
+                  // return item[property]
+                  //   .toLowerCase()
+                  //   .includes(query[property].toLowerCase());
