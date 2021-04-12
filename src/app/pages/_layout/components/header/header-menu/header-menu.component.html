@@ -1,7 +1,7 @@
 <!-- begin::Header Nav -->
 <ul class="menu-nav" [ngClass]="ulCSSClasses">
-    <!-- begin::1 Level -->
-    <!-- <li class="menu-item menu-item-rel" routerLinkActive="menu-item-active">
+  <!-- begin::1 Level -->
+  <!-- <li class="menu-item menu-item-rel" routerLinkActive="menu-item-active">
     <a class="menu-link" routerLink="/dashboard" routerLinkActive="active">
       <span class="menu-text" translate="MENU.DASHBOARD"></span>
       <ng-container *ngIf="rootArrowEnabled">
@@ -9,41 +9,44 @@
       </ng-container>
     </a>
   </li> -->
-    <!-- end::1 Level -->
+  <!-- end::1 Level -->
 
-    <!-- begin::1 Level -->
-    <li class="menu-item menu-item-rel">
-    <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" [matMenuTriggerFor]="projectmenu">
-      <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{(allprojets$ | async)?.length > 0 ? selectedItemProjects() : 'No project'}}</span>
+  <!-- begin::1 Level -->
+  <li class="menu-item menu-item-rel">
+    <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+      [matMenuTriggerFor]="projectmenu">
+      <span
+        class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{(allprojets$ | async)?.length > 0 ? selectedItemProjects() : 'No project'}}</span>
       <i class="fas fa-chevron-down"></i>
     </a>
     <mat-menu #projectmenu="matMenu" xPosition="after" class="dropdown-project">
       <div class="card-body card-project">
         <!--begin::Item-->
-        <a class="d-flex align-items-center list-project"  *ngFor="let project of allprojets$ | async" (click)="triggres(project._id)">
-           <!--begin::Symbol-->
-        <div class="mr-5">
-          <span class="symbol-label">
-            <!-- <img src="assets/media/svg/avatars/009-boy-4.svg" class="h-75 align-self-end" alt="" /> -->
-              <app-avatar [projects]="project"></app-avatar>
-          </span>
-        </div>
-        <!-- <a  [routerLink]="['/user-space/lp-validator', project._id]" (click)="triggres(project._id)"> {{ project.name_project }} </a> -->
-        <!--end::Symbol-->
+        <div class="d-flex align-items-center list-project"
+          *ngFor="let project of allprojets$ | async">
+            <!--begin::Symbol-->
+            <div class="mr-5">
+              <span class="symbol-label">
+                <!-- <img src="assets/media/svg/avatars/009-boy-4.svg" class="h-75 align-self-end" alt="" /> -->
+                <app-avatar [projects]="project"></app-avatar>
+              </span>
+            </div>
+            <!--end::Symbol-->
           <!--begin::Text-->
           <div class="d-flex flex-column font-weight-bold">
-            <a class="text-dark text-hover-primary mb-1 font-project">{{ project.name_project }}</a>
+            <a class="text-dark text-hover-primary mb-1 font-project" [routerLink]="['/user-space/lp-validator', project._id]"
+            (click)="triggres(project._id)">{{ project.name_project }}</a>
             <span class="text-muted">Project Manager</span>
           </div>
           <!--end::Text-->
-        </a>
+        </div>
         <!--end::Item-->
         <div class="show-all" [routerLink]="'/user-space/all-project'">
           <p class="link">See All</p>
         </div>
       </div>
-  </mat-menu>
-        <!-- <div class="example-container" [formGroup]="form">
+    </mat-menu>
+    <!-- <div class="example-container" [formGroup]="form">
             <mat-form-field>
                 <mat-select formControlName="selected" [placeholder]="(allprojets$ | async)?.length > 0 ? 'Project' : 'No project'">
                     <mat-option *ngFor="let project of allprojets$ | async" [routerLink]="['/user-space/lp-validator', project._id]" (click)="triggerServices.switchproject$.next(project?._id);" [value]="project?._id">
@@ -52,8 +55,8 @@
                 </mat-select>
             </mat-form-field>
         </div> -->
-    </li>
-    <!-- end::1 Level -->
+  </li>
+  <!-- end::1 Level -->
 
 </ul>
 <!-- end::Header Nav -->

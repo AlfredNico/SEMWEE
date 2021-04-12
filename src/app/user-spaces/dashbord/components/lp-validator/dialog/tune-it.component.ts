@@ -178,10 +178,15 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   tuneIt: TuneIt<TuneItVlaue>;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: {checkTuneIt: Array<any>, itemSeleted: string, row: any},
     public dialogRef: MatDialogRef<TuneItComponent>,
     private tuneItService: TuneItService
   ) {
+    if (this.data.checkTuneIt.length != 0) {
+      const value = this.data.checkTuneIt[`${this.data.itemSeleted}`];
+      console.log(value);
+
+    }
     console.log('data ', this.data);
     this.itemType = this.data.itemSeleted;
 
@@ -201,7 +206,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
 
     if (edit_spelling.value || synonymize.value || edit_synonyms.value) {
       if (this.itemType == 'ItemType') {
-        if (!this.data.checkTuneIt) {
+        if (this.data.checkTuneIt.length == 0) {
           const data = {
             ...this.form.value,
             'idinferlist': this.data.row['_id']
@@ -215,7 +220,8 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           }
           console.log(data)
           const res = await this.tuneItService.appy(data);
-          console.log(res);
+          if (res && (res as any).message)
+            this.dialogRef.close();
         }
       } else {
           if (!this.data.checkTuneIt) {

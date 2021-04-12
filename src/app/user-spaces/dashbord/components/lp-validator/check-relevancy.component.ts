@@ -254,7 +254,7 @@ export class CheckRelevancyComponent
       this.dialog.open(TuneItComponent, {
         // position: { top: `${clientY}px`, left: `${clientX}px` },
         // width: itemSeleted == 'itemtype' ? '400px' : '',,
-        data: { row, itemSeleted, checkTuneIt: 'editTuneIt' },
+        data: { row, itemSeleted, checkTuneIt: editTuneIt },
       });
     } catch (error) {
       if (error instanceof HttpErrorResponse) {

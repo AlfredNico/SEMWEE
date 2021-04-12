@@ -13,12 +13,12 @@ export class TuneItService {
      if (!_id) {
        return this.http
          .post(
-           `${environment.baseUrl}/post-item-type`,data
+           `${environment.baseUrl}/validator/post-item-type`,data
          ).toPromise();
      }else {
         return this.http
          .put(
-           `${environment.baseUrl}/put-item-type/${_id}`,data
+           `${environment.baseUrl}/validator/put-item-type/${_id}`,data
          ).toPromise();
      }
   }
@@ -26,14 +26,14 @@ export class TuneItService {
   public getTuneIt(_id){
       return this.http
          .get(
-           `${environment.baseUrl}/get-item-type/${_id}`,
+           `${environment.baseUrl}/validator/get-item-type/${_id}`,
          ).toPromise();
   }
 
    public deleteTuneIt(_id){
       return this.http
          .get<{ message: string }>(
-           `${environment.baseUrl}/delete-item-type/${_id}`,
+           `${environment.baseUrl}/validator/delete-item-type/${_id}`,
          ).toPromise();
   }
 
