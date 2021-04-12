@@ -136,9 +136,22 @@ export class GoogleMachingComponent
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  return item[property]
-                    .toLowerCase()
-                    .includes(query[property].toLowerCase());
+                  let i = 0, s = '';
+                  Object.entries(query).map(val => {
+                    if (val[1]) {
+                      i++;
+                      const lower = (val[1] as any).toLowerCase();
+                       if (i == 1) {
+                        s = s + `item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      }else{
+                        s = s + `&& item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      }
+                    }
+                  })
+                  return eval(s);
+                  // return item[property]
+                  //   .toLowerCase()
+                  //   .includes(query[property].toLowerCase());
                 }
               });
             }

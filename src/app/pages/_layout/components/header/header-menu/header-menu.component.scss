@@ -34,3 +34,14 @@
 .show-all:hover {
     cursor: pointer;
 }
+
+.letter {
+  width: 70px;
+  height: 70px;
+  margin: auto 5px;
+  font-size: 5vh;
+  justify-content: center;
+  padding: 26px 22px;
+  font-weight: bold;
+  border-radius: 50%;
+}
