@@ -34,6 +34,7 @@
     </div>
 
     <div mat-form-field class="form-group my-3">
+      <label>Domain<span class="text-danger">*</span></label>
       <input
         [ngClass]="{'err': (form.controls['domain_project'].touched &&
       form.controls['domain_project'].errors?.required) || form.controls['domain_project'].errors?.domain}"
@@ -62,6 +63,7 @@
     </div>
 
     <div mat-form-field class="form-group my-3">
+      <label>Country<span class="text-danger">*</span></label>
       <input [ngClass]="{'err': (form.get('country_project')?.touched &&
       form.get('country_project')?.errors?.required) || form.get('country_project')?.max}"
         formControlName="country_project" [matAutocomplete]="autoComplete" class="form-control"
@@ -95,6 +97,7 @@
 
     <div class="w-100 my-5" fxLayout="row">
       <div mat-form-field class="form-group w-50 mr-5">
+        <label>Language<span class="text-danger">*</span></label>
         <mat-select placeholder="Language*" [ngClass]="{'err': (form.get('language_project')?.touched &&
         form.get('language_project')?.errors?.required)}" formControlName="language_project"
           class="form-control">
@@ -166,6 +169,7 @@
     <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
       <div class="w-100 row">
         <div mat-form-field class="form-group col-7">
+          <label>Landscape format<span class="text-danger">*</span></label>
           <input formControlName="image_project_Landscape" class="form-control"
             placeholder="Landscape format*" #image1 />
           <span class="form-text text-muted">You can choose a landscape format image to illustrate

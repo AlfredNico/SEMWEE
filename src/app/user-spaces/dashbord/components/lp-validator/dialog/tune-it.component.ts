@@ -187,7 +187,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
       console.log(value);
 
     }
-    console.log('data ', this.data);
+    console.log('data ', this.data.checkTuneIt);
     this.itemType = this.data.itemSeleted;
 
   }
@@ -206,7 +206,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
 
     if (edit_spelling.value || synonymize.value || edit_synonyms.value) {
       if (this.itemType == 'ItemType') {
-        if (this.data.checkTuneIt.length == 0) {
+        if (this.data.checkTuneIt && this.data.checkTuneIt.length != 0) {
           const data = {
             ...this.form.value,
             'idinferlist': this.data.row['_id']
