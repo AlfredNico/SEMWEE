@@ -121,6 +121,7 @@
       </div>
 
       <div mat-form-field class="form-group w-50">
+        <label>Path<span class="text-danger">*</span></label>
         <input [ngClass]="{'err': (form.get('path_project')?.touched &&
         form.get('path_project')?.errors?.required)}" formControlName="path_project"
           class="form-control" placeholder="Path*" />

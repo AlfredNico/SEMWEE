@@ -19,9 +19,8 @@ export class ResizableDirective {
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
     this.column = this.el.nativeElement;
-    
   }
-  
+
   ngOnInit() {
     if (this.resizable) {
       const row = this.renderer.parentNode(this.column);
@@ -60,14 +59,14 @@ export class ResizableDirective {
 
       // Set table header width
       this.renderer.setStyle(this.column, 'width', `${width}px`);
-      
+
       // render for input sreach field
       let div = this.column.childNodes[0] as HTMLElement;
       div.style.width = `${width}px`;
 
       let chiled = div.childNodes[1] as HTMLElement;
       chiled.style.width = `${width}px`;
-      
+
       let formSearch = this.column.childNodes[1] as HTMLElement;
       if (width > 30) formSearch.style.width = `${width}px`;
 

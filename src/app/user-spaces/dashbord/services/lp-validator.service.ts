@@ -31,6 +31,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          // console.log('upload', results)
           let obj = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -99,6 +100,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          //  console.log('inferlist', results)
           let infer = {
             displayColumns: [] as string[],
             data: [] as any[],
