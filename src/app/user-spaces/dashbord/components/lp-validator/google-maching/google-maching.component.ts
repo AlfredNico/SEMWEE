@@ -115,7 +115,6 @@ export class GoogleMachingComponent
       this.displayColumns.push(key);
       this.filters.addControl(key, new FormControl(''));
     });
-    console.log(this.displayColumns)
 
     this.checkValid();
     this.commonServices.hideSpinner();

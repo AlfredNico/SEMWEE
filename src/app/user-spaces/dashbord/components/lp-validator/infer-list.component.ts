@@ -470,8 +470,9 @@ export class InferListComponent
     }
   }
 
-   width(id: any, min: number, max: number){
-     console.log(id, min, max);
+   getWidth(id: any){
+     const elem = document.getElementById(id);
+     console.log(elem);
     //  let m = 0;
     //  if (max > m) {
     //    m = max;

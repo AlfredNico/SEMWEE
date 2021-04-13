@@ -106,7 +106,6 @@ export class CheckRelevancyComponent
         this.rowIndex = [];
         // this.dataView.displayColumns = [];
       }
-      console.log(this.dataInferList);
       Object.assign(this.dataView, this.dataInferList);
     }
 
