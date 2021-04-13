@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   selector: 'app-avatar',
   template: `
     <div *ngIf="projects.image_project_Squared != ''; else avater">
-      <img [style.margin]="'auto 5px'" [src]="urlImg" height="50" width="50" style="border-radius: 15%;"/>
+      <img [style.margin]="'auto'" [src]="urlImg" height="50" width="50" style="border-radius: 15%;"/>
     </div>
     <ng-template #avater>
       <div

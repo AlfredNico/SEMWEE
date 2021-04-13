@@ -11,6 +11,10 @@
   .menu-text {
     white-space: nowrap;
   }
+
+  a.menu-link.active {
+    border-radius: 0;
+  }
 }
 
 .sous-aside img {
