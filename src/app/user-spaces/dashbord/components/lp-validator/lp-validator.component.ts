@@ -86,8 +86,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
           this.common.showSpinner('root');
         }),
         map(async (idProjet) => {
-          console.log(idProjet);
-
           if (idProjet) {
             this.idProjet = idProjet;
             await this.checkProject();

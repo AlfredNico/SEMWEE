@@ -42,7 +42,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           } else if (err.status === 0) {
             this.common.hideSpinner('root');
             this.notifs.warn('Server not responding !');
-            this.authService.logout();
+            // this.authService.logout();
           } else {
             console.log('err ', err);
           }

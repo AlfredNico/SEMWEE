@@ -48,6 +48,9 @@ import { NotificationService } from '@app/services/notification.service';
           width: auto;
           white-space: nowrap; /* Thanks to Herb Caudill comment */
       }
+    .active {
+      background: #b6e1ff !important;
+    }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -96,7 +99,7 @@ export class InferListComponent
   selectedRowsArray = [];
 
   //resizable
-  elemnInfo: {i: any, min:number, max:number}[] = []
+  mawWidth: number = 0;
 
 
 
@@ -282,9 +285,9 @@ export class InferListComponent
     const header = [
       'select',
       'ID',
-      'Category',
-      'Subcategory',
-      'Subcategory_2',
+      'category',
+      'subcategory',
+      'subcategory_2',
       'Facet_1',
       'Facet_1_Value',
       'Facet_2',
@@ -358,9 +361,7 @@ export class InferListComponent
       }
       this.commonServices.isLoading$.next(false);
       this.commonServices.hideSpinner();
-      // console.log(this.filterData);
     } catch (error) {
-      // console.log(this.filterData);
       this.commonServices.isLoading$.next(false);
       this.commonServices.hideSpinner();
       throw error;
@@ -470,28 +471,12 @@ export class InferListComponent
     }
   }
 
-   getWidth(id: any){
-     const elem = document.getElementById(id);
-     console.log(elem);
-    //  let m = 0;
-    //  if (max > m) {
-    //    m = max;
-    //    if (this.elemnInfo.filter(x => x.i == id)) {
-    //      this.elemnInfo.push({i: id, min: min, max: m})
-    //    }else
-    //    {
-    //      this.elemnInfo[id] = id;
-    //      this.elemnInfo[id] = id;
-    //      this.elemnInfo[id] = id;
-    //    }
-    //     this.elemnInfo[id] = id; ({i: id, min: min, max: m})
-    //  }
-    // console.log(id);
-    // var test = document.getElementById(id);
-    // var height = (test.clientHeight + 1) + "px";
-    // var width = (test.clientWidth + 1) + "px"
-
-    // console.log(height, width);
+  public getWidth(id: any){
+     for (let index = 0; index < this.dataView.data.length; index++) {
+      const elem = document.getElementById(`${id}${index}`);
+      if (this.mawWidth < elem.offsetWidth)
+        this.mawWidth =  elem.offsetWidth;
+    }
   }
 
   sortData($e: any){
@@ -504,30 +489,3 @@ export class InferListComponent
       this.rowIndex.push(event);
   }
 }
-
-         // return Object.entries(query).map(val => {
-                  //   if (val[1]) {
-                  //     console.log('val ', val[0])
-                  //     return this.dataView.data.filter = (val[1] as any).toLowerCase();
-
-                  //     // return item[val[0]]
-                  //     // .toLowerCase()
-                  //     // .includes((val[0] as any).toLowerCase())
-                  //   }
-                  // })
-            //       // for (const [key, value] of Object.entries(query)) {
-            //       //   if (key) {
-            //       //     console.log(`${key} : ${value}`);
-            //       //     return item[property]
-            //       //           .toLowerCase()
-            //       //           .includes((value as any).toLowerCase())
-            //       //           // &&
-            //       //           // item['Facet_3']
-            //       //           // .toLowerCase()
-            //       //           // .includes('ssd'.toLowerCase());
-            //       //   }
-            //       // }
-
-                  // return item[property]
-                  //   .toLowerCase()
-                  //   .includes(query[property].toLowerCase());

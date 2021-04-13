@@ -31,7 +31,6 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log(results)
           console.log('upload', results)
           let obj = {
             displayColumns: [] as string[],
@@ -65,8 +64,8 @@ export class LpValidatorService {
           if (result) {
             const tmp = {
               Valid: result.valid,
-              'Popular Search Queries': result.psq,
-              'Website Browser': result.webSitePosition,
+              'Popular_Search_Queries': result.psq,
+              'Website_Browser': result.webSitePosition,
             };
             data[result._id] = tmp;
             assign(this.converDataMatching(dataSources, data, true));
@@ -94,6 +93,7 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any) {
+    console.log('lasa: ', value)
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -101,6 +101,8 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          console.log('azoko', results);
+
           let infer = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -110,7 +112,7 @@ export class LpValidatorService {
           infer.displayColumns = Object.keys(results[0]);
           infer.displayColumns.unshift('select');
           results.map((tbObj: any, index: number) => {
-            infer.data[index] = { ...tbObj, select: true };
+            infer.data[index] = {...tbObj, 'select': true};
           });
           return infer;
         }),
@@ -133,8 +135,8 @@ export class LpValidatorService {
   ): DataTypes {
     const columnAdd: string[] = [
       'Valid',
-      'Popular Search Queries',
-      'Website Browser',
+      'Popular_Search_Queries',
+      'Website_Browser',
     ];
 
     let dataValue: any[] = [];
@@ -157,8 +159,8 @@ export class LpValidatorService {
           ? obj[values['_id']]
           : {
               Valid: 'loadingQuery',
-              'Popular Search Queries': 'loadingQuery',
-              'Website Browser': 'loadingQuery',
+              'Popular_Search_Queries': 'loadingQuery',
+              'Website_Browser': 'loadingQuery',
             };
       // if (afterSearch && obj[values['_id']] == undefined) {
       //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }

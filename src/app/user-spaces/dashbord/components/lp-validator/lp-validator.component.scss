@@ -10,17 +10,6 @@
           user-select: none;
           cursor: col-resize;
         }
-        /* .mat-cell {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-             max-width: 2em;
-          span {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        } */
         .mat-cell {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -303,7 +292,4 @@
 }
 
 
-// select row table
-.active {
-    background: #b6e1ff !important;
-    }
+

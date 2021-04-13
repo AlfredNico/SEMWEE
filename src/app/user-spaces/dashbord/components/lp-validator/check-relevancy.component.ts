@@ -41,6 +41,16 @@ import { HttpErrorResponse } from '@angular/common/http';
       .drag_n_drop {
         cursor: move !important;
       }
+      .Test {
+        position: absolute;
+        visibility: hidden;
+        height: auto;
+        width: auto;
+        white-space: nowrap; /* Thanks to Herb Caudill comment */
+      }
+      .active {
+        background: #b6e1ff !important;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -87,6 +97,9 @@ export class CheckRelevancyComponent
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
+
+   //resizable
+  mawWidth: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -313,8 +326,6 @@ export class CheckRelevancyComponent
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
     // const item = itemSeleted == 'itemtype' ? true : false;
-    console.log(row['_id']);
-
     try {
       const editTuneIt = await this.tuneItService.getTuneIt(row['_id']);
       this.commonServices.hideSpinner();
@@ -358,5 +369,13 @@ export class CheckRelevancyComponent
   hideTooltip(event: number){
     if (!this.rowIndex.includes(event))
       this.rowIndex.push(event);
+  }
+
+   public getWidth(id: any){
+     for (let index = 0; index < this.dataView.data.length; index++) {
+      const elem = document.getElementById(`${id}${index}`);
+      if (elem && this.mawWidth < elem.offsetWidth)
+        this.mawWidth =  elem.offsetWidth;
+    }
   }
 }

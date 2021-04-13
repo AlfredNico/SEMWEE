@@ -67,7 +67,6 @@ export class GoogleMachingComponent
   public search = new FormControl('');
 
   public displayColumns: string[] = [];
-  columnAdd: string[] = ['Valid', 'Popular Search Queries', 'Website Browser'];
 
   rowIndex: number[] = []; // disable matTooltips
 
@@ -81,6 +80,9 @@ export class GoogleMachingComponent
 
     // selection toggle
   allSelect: boolean = true;
+
+  //resizable
+  mawWidth: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -98,14 +100,13 @@ export class GoogleMachingComponent
         this.rowIndex = [];
         // this.dataView.displayColumns = [];
       }
+
       const value = this.lpValidator.converDataMatching(
         this.dataSources.data,
         this.resultData
       );
       Object.assign(this.dataView, value);
     }
-
-    // console.log(this.dataView);
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
@@ -296,5 +297,13 @@ export class GoogleMachingComponent
   hideTooltip(event: number){
     if (!this.rowIndex.includes(event))
       this.rowIndex.push(event);
+  }
+
+  public getWidth(id: any){
+     for (let index = 0; index < this.dataView.data.length; index++) {
+      const elem = document.getElementById(`${id}${index}`);
+      if (this.mawWidth < elem.offsetWidth)
+        this.mawWidth =  elem.offsetWidth;
+    }
   }
 }

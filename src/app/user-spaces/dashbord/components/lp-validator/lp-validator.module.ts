@@ -1,4 +1,3 @@
-import { DbClickresizableDirective } from './../../directives/db-clickresizable.directive';
 import { TuniItDirective } from './../../directives/tuni-it.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -34,8 +33,7 @@ import { ResizableDirective } from '../../directives/resizable.directive';
     TuneItComponent,
     DragDropDirective,
     ResizableDirective,
-    TuniItDirective,
-    DbClickresizableDirective
+    TuniItDirective
   ],
   imports: [
     CommonModule,

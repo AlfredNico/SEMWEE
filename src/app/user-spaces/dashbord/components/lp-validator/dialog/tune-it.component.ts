@@ -113,7 +113,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <h4 class="m-0">Semantic Scope</h4>
           <i>Even hidden columns and lines are concerned !</i>
         </mat-label>
-        <mat-radio-group aria-label="items" formControlName="SemanticScope">
+        <mat-radio-group [value]="itemsType[0].value" aria-label="items" formControlName="SemanticScope">
           <mat-radio-button
             color="accent"
             class="mx-5"
@@ -136,9 +136,9 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     { value: 'Editsynonimize', viewValue: 'Edit synonyms' },
   ];
   readonly itemsType: { value: string; label: string }[] = [
-    { value: 'item type only', label: 'This Item Type only' },
-    { value: 'all item', label: 'All Item Types' },
-    { value: 'related item', label: 'Related item Types' },
+    { value: 'item_type_only', label: 'This Item Type only' },
+    { value: 'all_item', label: 'All Item Types' },
+    { value: 'related_item', label: 'Related item Types' },
   ];
   itemType: any = '';
   isItem: boolean;
@@ -168,7 +168,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         })
         console.log('v', value)
       }else{
-        const value = this.data.checkTuneIt[`${this.data.itemSeleted}`];
+        const value = this.data.checkTuneIt;
         console.log(value);
       }
 
@@ -216,14 +216,19 @@ export class TuneItComponent implements OnInit, AfterViewInit {
             ...this.form.value,
             'idinferlist': this.data.row['_id']
           }
-          this.tuneItService.appy(data, this.data.checkTuneIt);
+          const res = await  this.tuneItService.appy(data, this.data.checkTuneIt);
+          if(res && (res as any).message)
+            this.dialogRef.close();
         } else {
-          const data = {
+          const value = {
             ...this.form.value,
+            'Apply_on_the_table': true,
             'idinferlist': this.data.row['_id']
           }
-          console.log(data)
-          this.tuneItService.appy(data);
+          console.log(value)
+          const res = await this.tuneItService.appy(value);
+          if(res && (res as any).message)
+            this.dialogRef.close();
         }
       }
     }

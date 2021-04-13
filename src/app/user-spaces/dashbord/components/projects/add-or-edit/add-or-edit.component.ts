@@ -167,7 +167,8 @@ export class AddOrEditComponent implements OnInit {
         imageSquared: this.imageSquared
       });
     }else{
-      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
+      this.notis.warn('invalid field !');
+      // this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
   }
 
