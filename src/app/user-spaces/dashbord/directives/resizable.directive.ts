@@ -1,4 +1,5 @@
-import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
+import { style } from '@angular/animations';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -6,7 +7,11 @@ import { Directive, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@
 export class ResizableDirective {
   @Input('resizeColumn') resizable: boolean;
   @Input() index: number;
-   @Output() tabIndex = new EventEmitter<any>();
+  @Output() tabIndex = new EventEmitter<any>();
+
+  @Input() minWidth: number;
+  @Input() maxWidth: number;
+
   private startX: number;
 
   private startWidth: number;
@@ -19,9 +24,8 @@ export class ResizableDirective {
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
     this.column = this.el.nativeElement;
-    
   }
-  
+
   ngOnInit() {
     if (this.resizable) {
       const row = this.renderer.parentNode(this.column);
@@ -60,19 +64,20 @@ export class ResizableDirective {
 
       // Set table header width
       this.renderer.setStyle(this.column, 'width', `${width}px`);
-      
+
       // render for input sreach field
       let div = this.column.childNodes[0] as HTMLElement;
       div.style.width = `${width}px`;
 
       let chiled = div.childNodes[1] as HTMLElement;
       chiled.style.width = `${width}px`;
-      
+
       let formSearch = this.column.childNodes[1] as HTMLElement;
       if (width > 30) formSearch.style.width = `${width}px`;
 
       // Set table cells width
       for (const cell of tableCells) {
+        console.log('xx');
         this.renderer.setStyle(cell, 'width', `${width}px`);
       }
 
@@ -87,4 +92,8 @@ export class ResizableDirective {
       this.renderer.removeClass(this.table, 'resizing');
     }
   };
+
+  @HostListener('dblclick', ['$event']) onLeave( e: MouseEvent ) {
+    console.log('min: ', this.minWidth, '  max: ', this.maxWidth);
+  }
 }

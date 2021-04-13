@@ -17,15 +17,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
   template: `
     <div
-      class="w-100"
+      class="w-100 panel"
       [formGroup]="form"
       fxLayout="row"
-      [ngClass]="{ panel: itemType == 'ItemType' }"
+      [ngClass]="{'panel1': itemType == 'ItemType', 'panel2': itemType != 'ItemType'}"
     >
       <div
         fxLayout="column"
         fxLayoutAlign="space-between center"
-        [ngClass]="{ 'w-100': itemType == 'ItemType' }"
+        class="w-100"
       >
         <mat-dialog-content class="w-100">
           <div
@@ -46,42 +46,42 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <mat-form-field
             appearance="outline"
             class="w-100"
-            *ngIf="item.value == 'edit_spelling'"
+            *ngIf="item.value == 'Editspelling'"
           >
             <textarea
               matInput
               rows="3"
               cols="30"
               placeholder="Edit spelling..."
-              formControlName="edit_spelling"
+              formControlName="Editspelling"
             ></textarea>
           </mat-form-field>
 
           <mat-form-field
             appearance="outline"
             class="w-100"
-            *ngIf="item.value == 'synonymize'"
+            *ngIf="item.value == 'Synonimyze'"
           >
             <textarea
               matInput
               rows="3"
               cols="30"
-              placeholder="Synonymize..."
-              formControlName="synonymize"
+              placeholder="Synonimyze..."
+              formControlName="Synonimyze"
             ></textarea>
           </mat-form-field>
 
           <mat-form-field
             appearance="outline"
             class="w-100"
-            *ngIf="item.value == 'edit_synonyms'"
+            *ngIf="item.value == 'Editsynonimize'"
           >
             <textarea
               matInput
               rows="3"
               cols="30"
               placeholder="Edit synonyms..."
-              formControlName="edit_synonyms"
+              formControlName="Editsynonimize"
             ></textarea>
           </mat-form-field>
         </mat-dialog-content>
@@ -89,7 +89,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
         <mat-dialog-actions
           class="w-100 p-0"
           align="end"
-          *ngIf="itemType == 'ItemType'"
         >
           <button
             mat-raised-button
@@ -97,32 +96,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
             (click)="onClick()"
             cdkFocusInitial
           >
-            Apply
-          </button>
-          <button mat-raised-button color="accent" mat-dialog-close>
-            Cancel
-          </button>
-        </mat-dialog-actions>
-        <mat-dialog-actions
-          class="w-100 p-0"
-          align="center"
-          *ngIf="itemType != 'ItemType'"
-        >
-          <button
-            mat-raised-button
-            color="accent"
-            [mat-dialog-close]="true"
-            cdkFocusInitial
-          >
-            Apply on the Column
-          </button>
-          <button
-            mat-raised-button
-            color="accent"
-            cdkFocusInitial
-            (click)="onClick()"
-          >
-            Apply on the Table
+          <span *ngIf="itemType == 'ItemType'">Apply</span>
+          <span *ngIf="itemType != 'ItemType'">Apply on the Table</span>
           </button>
           <button mat-raised-button color="accent" mat-dialog-close>
             Cancel
@@ -132,13 +107,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       <div
         fxLayout="column"
        *ngIf="itemType != 'ItemType'"
-        style="width: 250px; margin-left: 2em;"
+        style="width: 350px; margin-left: 3em;"
       >
         <mat-label class="w-100 px-1 py-2">
           <h4 class="m-0">Semantic Scope</h4>
           <i>Even hidden columns and lines are concerned !</i>
         </mat-label>
-        <mat-radio-group aria-label="items" formControlName="schematic_scope">
+        <mat-radio-group aria-label="items" formControlName="SemanticScope">
           <mat-radio-button
             color="accent"
             class="mx-5"
@@ -156,9 +131,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class TuneItComponent implements OnInit, AfterViewInit {
   readonly items: any[] = [
-    { value: 'edit_spelling', viewValue: 'Edit spelling' },
-    { value: 'synonymize', viewValue: 'Synonymize' },
-    { value: 'edit_synonyms', viewValue: 'Edit synonyms' },
+    { value: 'Editspelling', viewValue: 'Edit spelling' },
+    { value: 'Synonimyze', viewValue: 'Synonimyze' },
+    { value: 'Editsynonimize', viewValue: 'Edit synonyms' },
   ];
   readonly itemsType: { value: string; label: string }[] = [
     { value: 'item type only', label: 'This Item Type only' },
@@ -169,10 +144,12 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   isItem: boolean;
 
   form = new FormGroup({
-    edit_spelling: new FormControl(''),
-    synonymize: new FormControl(''),
-    edit_synonyms: new FormControl(''),
-    schematic_scope: new FormControl(false),
+    Editspelling: new FormControl(''),
+    Synonimyze: new FormControl(''),
+    Editsynonimize: new FormControl(''),
+    SemanticScope: new FormControl(false),
+    Apply_on_the_colum : new FormControl(false),
+    Apply_on_the_table : new FormControl(false),
   });
 
   tuneIt: TuneIt<TuneItVlaue>;
@@ -183,8 +160,17 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     private tuneItService: TuneItService
   ) {
     if (this.data.checkTuneIt.length != 0) {
-      const value = this.data.checkTuneIt[`${this.data.itemSeleted}`];
-      console.log(value);
+      console.log(this.data.itemSeleted)
+      if (this.data.itemSeleted == 'ItemType') {
+        const value = this.data.checkTuneIt[0];
+        this.form.patchValue({
+          ...value
+        })
+        console.log('v', value)
+      }else{
+        const value = this.data.checkTuneIt[`${this.data.itemSeleted}`];
+        console.log(value);
+      }
 
     }
     console.log('data ', this.data.checkTuneIt);
@@ -198,21 +184,22 @@ export class TuneItComponent implements OnInit, AfterViewInit {
 
   async onClick() {
     const {
-      edit_spelling,
-      synonymize,
-      edit_synonyms,
-      schematic_scope,
+      Editspelling,
+      Synonimyze,
+      Editsynonimize,
+      SemanticScope,
     } = this.form.controls;
 
-    if (edit_spelling.value || synonymize.value || edit_synonyms.value) {
+    if (Editspelling.value || Synonimyze.value || Editsynonimize.value) {
       if (this.itemType == 'ItemType') {
         if (this.data.checkTuneIt && this.data.checkTuneIt.length != 0) {
           const data = {
             ...this.form.value,
             'idinferlist': this.data.row['_id']
           }
-          const res = await this.tuneItService.appy(data, this.data.checkTuneIt);
-          console.log(res);
+          const res = await this.tuneItService.appy(data, this.data.checkTuneIt[0]['_id']);
+          if (res && (res as any).message)
+            this.dialogRef.close();
         } else {
           const data = {
             ...this.form.value,

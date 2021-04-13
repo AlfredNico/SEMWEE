@@ -1,3 +1,4 @@
+import { DbClickresizableDirective } from './../../directives/db-clickresizable.directive';
 import { TuniItDirective } from './../../directives/tuni-it.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -19,6 +20,8 @@ import { TuneItComponent } from './dialog/tune-it.component';
 import { DragDropDirective } from '../../directives/drag-drop.directive';
 import { ResizableDirective } from '../../directives/resizable.directive';
 
+
+
 @NgModule({
   declarations: [
     LpValidatorComponent,
@@ -31,7 +34,8 @@ import { ResizableDirective } from '../../directives/resizable.directive';
     TuneItComponent,
     DragDropDirective,
     ResizableDirective,
-    TuniItDirective
+    TuniItDirective,
+    DbClickresizableDirective
   ],
   imports: [
     CommonModule,

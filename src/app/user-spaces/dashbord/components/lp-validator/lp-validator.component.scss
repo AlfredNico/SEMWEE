@@ -1,5 +1,6 @@
 
 ::ng-deep {
+     // table
     .mat-table {
         .odd{background: #fff;}
         .even{background: #F5F6FA;}
@@ -9,6 +10,17 @@
           user-select: none;
           cursor: col-resize;
         }
+        /* .mat-cell {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+             max-width: 2em;
+          span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        } */
         .mat-cell {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -289,3 +301,9 @@
     //         background-color: #72addc;
     //     }
 }
+
+
+// select row table
+.active {
+    background: #b6e1ff !important;
+    }

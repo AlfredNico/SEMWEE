@@ -10,7 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class LpValidatorService {
   public matching: DataTypes = {
-    displayColumns: [],
+    displayColumns: ['select'],
     hideColumns: [],
     data: [],
   };
@@ -31,6 +31,8 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          console.log(results)
+          console.log('upload', results)
           let obj = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -106,8 +108,9 @@ export class LpValidatorService {
           };
 
           infer.displayColumns = Object.keys(results[0]);
+          infer.displayColumns.unshift('select');
           results.map((tbObj: any, index: number) => {
-            infer.data[index] = tbObj;
+            infer.data[index] = { ...tbObj, select: true };
           });
           return infer;
         }),
@@ -139,15 +142,12 @@ export class LpValidatorService {
       Object.keys(values).map((key: string, index: number) => {
         //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0) {
+          if (index === 0)
             this.matching.displayColumns.push(columnAdd[0]);
-          }
-          if (index === 2) {
+          if (index === 2)
             this.matching.displayColumns.push(columnAdd[1]);
-          }
-          if (index === 3) {
+          if (index === 3)
             this.matching.displayColumns.push(columnAdd[2]);
-          }
 
           this.matching.displayColumns.push(key);
         }

@@ -3,12 +3,12 @@
   <div class="d-flex flex-column flex-center"
   [style.background]="data.letter_thumbnails_project[0]['background']">
     <!--begin::Symbol-->
-    <div *ngIf="data['image_project_Squared']; else thumbnails" style="width: 120px; height: 120px;">
+    <div *ngIf="data['image_project_Squared']; else thumbnail" style="width: 120px; height: 120px;">
       <img [src]="image_url" class="h-100 align-self-end" style="border-radius: 50%;" alt="logo">
     </div>
 
-    <ng-template  #thumbnails>
-      <div class="circle-span"
+    <ng-template  #thumbnail>
+      <div class="circle-span-letter"
       [style.background]="data.letter_thumbnails_project[0]['background']"
       [style.color]="data.letter_thumbnails_project[0]['color']">
           {{ data['letter_thumbnails_project'][0]['letter'] }}

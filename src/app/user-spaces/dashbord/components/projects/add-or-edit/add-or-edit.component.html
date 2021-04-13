@@ -6,7 +6,7 @@
         [ngClass]="{'err': (form.controls['name_project'].touched &&
       form.controls['name_project'].errors?.required) || form.controls['name_project'].errors?.maxLength || form.controls['name_project'].errors?.projectName}"
         formControlName="name_project" autocomplete="off" class="form-control"
-        placeholder="Name*" />
+        placeholder="Example" />
 
 
       <div
@@ -39,7 +39,7 @@
         [ngClass]="{'err': (form.controls['domain_project'].touched &&
       form.controls['domain_project'].errors?.required) || form.controls['domain_project'].errors?.domain}"
         formControlName="domain_project" autocomplete="off" class="form-control"
-        placeholder="Domain*" />
+        placeholder="www.example.com" />
 
 
       <div
@@ -67,7 +67,7 @@
       <input [ngClass]="{'err': (form.get('country_project')?.touched &&
       form.get('country_project')?.errors?.required) || form.get('country_project')?.max}"
         formControlName="country_project" [matAutocomplete]="autoComplete" class="form-control"
-        placeholder="Country*" />
+         />
 
       <mat-autocomplete #autoComplete="matAutocomplete">
         <mat-option *ngFor="let contry of filteredCounrty | async" [value]="contry.name">
@@ -98,7 +98,7 @@
     <div class="w-100 my-5" fxLayout="row">
       <div mat-form-field class="form-group w-50 mr-5">
         <label>Language<span class="text-danger">*</span></label>
-        <mat-select placeholder="Language*" [ngClass]="{'err': (form.get('language_project')?.touched &&
+        <mat-select [ngClass]="{'err': (form.get('language_project')?.touched &&
         form.get('language_project')?.errors?.required)}" formControlName="language_project"
           class="form-control">
           <mat-option *ngFor="let language of languages" [value]="language.code">
@@ -121,9 +121,10 @@
       </div>
 
       <div mat-form-field class="form-group w-50">
+        <label>Path<span class="text-danger">*</span></label>
         <input [ngClass]="{'err': (form.get('path_project')?.touched &&
         form.get('path_project')?.errors?.required)}" formControlName="path_project"
-          class="form-control" placeholder="Path*" />
+          class="form-control" />
 
         <div *ngIf="(form.get('path_project')?.touched &&
             form.get('path_project')?.errors?.required); else showInstrPath">
@@ -143,7 +144,7 @@
     </div>
 
     <div class="w-100 my-5 mx-1 pt-4">
-      <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">SSL* / TLS*</mat-label>
+      <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">SSL<span class="text-danger">*</span> / TLS<span class="text-danger">*</span></mat-label>
       <mat-radio-group class="w-50 px-3" aria-label="website" formControlName="protocol_project">
         <mat-radio-button color="accent" class="mx-5" *ngFor="let protocol of protocols"
           [value]="protocol">
@@ -171,7 +172,7 @@
         <div mat-form-field class="form-group col-7">
           <label>Landscape image<span class="text-danger">*</span></label>
           <input formControlName="image_project_Landscape" class="form-control"
-            placeholder="Landscape format*" #image1 />
+            placeholder="-" #image1 />
           <span class="form-text text-muted">You can choose a landscape format image to illustrate
             your project.</span>
         </div>
@@ -179,7 +180,7 @@
         <input type="file" accept="image/*" #landscape (change)="uploadLandscape($event)"
           style="display: none" />
 
-        <button style="margin-top: 25px" color="accent" class="upload-button col-4" mat-raised-button type="button"
+        <button style="margin-top: 27px" color="accent" class="upload-button col-4" mat-raised-button type="button"
           (click)="landscape.click()">
           Upload Landscape Image
         </button>
@@ -188,14 +189,14 @@
         <div mat-form-field class="form-group col-7">
           <label>Squared image<span class="text-danger">*</span></label>
           <input formControlName="image_project_Squared" class="form-control"
-            placeholder="Squared*" #image2/>
+            placeholder="-" #image2/>
           <span class="form-text text-muted">You can choose a square format image to illustrate your
             project.</span>
         </div>
 
         <input type="file" accept="image/*" #squared (change)="uploadSquared($event)"
           style="display: none" />
-        <button style="margin-top: 25px" color="accent" class="upload-button col-4" mat-raised-button type="button"
+        <button style="margin-top: 27px" color="accent" class="upload-button col-4" mat-raised-button type="button"
           (click)="squared.click()">
           Upload Squared Image
         </button>
@@ -211,14 +212,14 @@
         <h3 color="accent" class="text-muted">
           If you do not upload landscape or squard image, you must complete this field below !
         </h3>
-        <div class="letter" [style.background]="background" [style.color]="color">
+        <div class="letter-add-edit" [style.background]="background" [style.color]="color">
           {{ letter?.value }}
         </div>
         <div mat-form-field class="form-group my-3 w-50">
           <input
             [ngClass]="{'err': letter?.touched && letter?.errors?.required || letter?.errors?.uppercase}"
             formControlName="letter" maxlength="1" autocomplete="off" class="form-control"
-            placeholder="Letter*" />
+            />
 
           <div
             *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase; else showInstrLogo">
@@ -252,7 +253,7 @@
   </div>
 
   <div align="end" class="my-3">
-    <button class="add-project mx-3" mat-raised-button mat-dialog-close>
+    <button  *ngIf="isAddItem == false" class="add-project mx-3" mat-raised-button mat-dialog-close>
       Close
     </button>
     <button class="add-project mx-3" mat-raised-button color="primary" (click)="onClickButton()">

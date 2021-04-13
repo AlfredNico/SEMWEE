@@ -24,8 +24,23 @@
         <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
 
             <div *ngFor="let column of displayColumns; let i = index">
-                <ng-container
-                [matColumnDef]="column">
+               <!-- SELECT Column -->
+               <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
+                <th mat-header-cell *matHeaderCellDef style="padding-left: 24px!important;
+                padding-top: 28px!important;" class="px-5">
+                    <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
+                </th>
+                <!-- (ngModelChange)="updateAllComplete()" -->
+                <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
+                [class.active]="isRowSelected(row)">
+                    <mat-checkbox color="accent" [(ngModel)]="row[column]"
+                    (ngModelChange)="updateAllComplete()">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+              <!-- DYNAMICS Column -->
+              <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
                     <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag [ngClass]="{'hide-rows': isColumnDisplay(column)}">
                         <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
                             <div fxLayout="column" class="w-100">

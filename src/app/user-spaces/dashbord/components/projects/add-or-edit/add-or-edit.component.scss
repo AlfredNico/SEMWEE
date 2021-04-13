@@ -13,14 +13,13 @@
       overflow: hidden !important;
       text-overflow: ellipsis !important;
   }
-  .letter {
+  .letter-add-edit {
+      display: flex;
       width: 70px;
       height: 70px;
-      // margin: auto 5px;
-      text-align: center;
-      font-size: 5vh;
+      align-items: center;
+      font-size: 40px;
       justify-content: center;
-      padding: 26px 22px;
       font-weight: bold;
       border-radius: 50%;
   }

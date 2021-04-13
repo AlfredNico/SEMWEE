@@ -30,7 +30,8 @@
                     padding-top: 28px!important;" class="px-4">
                         <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
                     </th>
-                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-4">
+                    <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-4"
+                    [class.active]="isRowSelected(row)">
                         <mat-checkbox color="accent" [(ngModel)]="row[column]" (ngModelChange)="updateAllComplete()">
                         </mat-checkbox>
                     </td>
@@ -38,8 +39,9 @@
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
-                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
+                    <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag (click)="getWidth(i)">
+                        <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i"
+                        (tabIndex)="hideTooltip($event)">
                             <div fxLayout="column" class="w-100">
                                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
@@ -56,16 +58,22 @@
                             </mat-form-field>
                         </span>
                     </th>
-                    <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd" [class.even]="even" mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" (click)="selectRow(row)" [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)" class="table-container-td">{{ row[column] }} </td>
+                    <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd" [class.even]="even" mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" (click)="selectRow(row)" [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)" class="table-container-td"
+                    #containerMin [class.active]="isRowSelected(row)">
+                    {{ row[column] }}
+                    <div style="padding: 0 20px;" class="Test" #containerMax [id]="i">
+                      {{ row[column] }}
+                    </div>
+                   </td>
                 </ng-container>
             </div>
 
             <tr mat-header-row *matHeaderRowDef="dataView.displayColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
 
-            <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
+            <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->  <!-- width(i, containerMin.offsetWidth, containerMax.offsetWidth) -->
             <!-- <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" [attr.rowspan]="dataSource.data.length">No data</td>
+              <td class="mat-cell" [colSpan]="1 + 1" colspan="{{1 + 1}}" [attr.rowspan]="dataSource.data.length">No data</td>
             </tr> -->
         </table>
     </div>

@@ -5,6 +5,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -27,7 +28,6 @@ import { map } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { NotificationService } from '@app/services/notification.service';
-import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-infer-list',
@@ -39,6 +39,14 @@ import { ResizeEvent } from 'angular-resizable-element';
       }
       .drag_n_drop {
         cursor: move !important;
+      }
+
+      .Test {
+          position: absolute;
+          visibility: hidden;
+          height: auto;
+          width: auto;
+          white-space: nowrap; /* Thanks to Herb Caudill comment */
       }
     `,
   ],
@@ -76,9 +84,21 @@ export class InferListComponent
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
-  // filter icon
+  // filter icon && and tooltips
   public icon = 'asc';
   rowIndex: number[] = [];
+
+  // multipleSelect tables
+  isKeyPressed:boolean = false;
+  selectedRow: any;
+  indexSelectedRow: any;
+  selectedItem = true;
+  selectedRowsArray = [];
+
+  //resizable
+  elemnInfo: {i: any, min:number, max:number}[] = []
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -356,15 +376,43 @@ export class InferListComponent
   }
 
   public selectRow(row: any) {
-    // let data, indexData;
-    // this.allSelect = this.dataView.data.includes(t => t.select === false);
     let index = this.dataView.data.findIndex((x) => x.ID == row.ID);
-    this.dataView.data[index] = {
-      ...row,
-      select: row['select'] == true ? false : true,
-    };
 
+    if(this.isKeyPressed ==  true && this.indexSelectedRow){
+      if (this.indexSelectedRow > index)
+        this.dataView.data.forEach((t, i) => {
+          if (this.indexSelectedRow >= i && i >= index) {
+            this.selectedRowsArray.push(this.dataView.data[i]);
+            return (t.select = this.selectedItem)
+          }
+        });
+      else
+        this.dataView.data.forEach((t, i) => {
+          if (this.indexSelectedRow <= i && i <= index) {
+            this.selectedRowsArray.push(this.dataView.data[i]);
+            return (t.select = this.selectedItem)
+          }
+        });
+    }else {
+      this.selectedRowsArray = [];
+      this.dataView.data[index] = {
+        ...row,
+        select: row['select'] == true ? false : true,
+      };
+      this.selectedRowsArray.push(this.dataView.data[index]);
+    }
+
+    this.selectedRow = row;
+    this.indexSelectedRow = index;
+    this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
     this.dataSource.data = this.dataView.data;
+  }
+
+  isRowSelected(row: any){
+    if(this.selectedRowsArray.indexOf(row) != -1) {
+      return true;
+    }
+    return false;
   }
 
   someComplete(): boolean {
@@ -380,6 +428,18 @@ export class InferListComponent
     this.allSelect =
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
+
+@HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    this.isKeyPressed= false;
+}
+
+ @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  if (event.keyCode === 17 || event.ctrlKey)
+    this.isKeyPressed= true;
+  else
+    this.isKeyPressed= false;
+}
 
   ngOnDestroy() {
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
@@ -410,6 +470,30 @@ export class InferListComponent
     }
   }
 
+   getWidth(id: any){
+     const elem = document.getElementById(id);
+     console.log(elem);
+    //  let m = 0;
+    //  if (max > m) {
+    //    m = max;
+    //    if (this.elemnInfo.filter(x => x.i == id)) {
+    //      this.elemnInfo.push({i: id, min: min, max: m})
+    //    }else
+    //    {
+    //      this.elemnInfo[id] = id;
+    //      this.elemnInfo[id] = id;
+    //      this.elemnInfo[id] = id;
+    //    }
+    //     this.elemnInfo[id] = id; ({i: id, min: min, max: m})
+    //  }
+    // console.log(id);
+    // var test = document.getElementById(id);
+    // var height = (test.clientHeight + 1) + "px";
+    // var width = (test.clientWidth + 1) + "px"
+
+    // console.log(height, width);
+  }
+
   sortData($e: any){
     console.log($e);
     $e.direction === 'asc'? (this.icon = 'myIcon') : (this.icon= 'myDescIcon');
@@ -418,7 +502,6 @@ export class InferListComponent
   hideTooltip(event: number){
     if (!this.rowIndex.includes(event))
       this.rowIndex.push(event);
-
   }
 }
 

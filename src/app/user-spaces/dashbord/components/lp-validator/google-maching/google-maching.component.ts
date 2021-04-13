@@ -8,6 +8,7 @@ import {
   OnInit,
   ViewChild,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -70,6 +71,17 @@ export class GoogleMachingComponent
 
   rowIndex: number[] = []; // disable matTooltips
 
+
+  // multipleSelect tables
+  isKeyPressed:boolean = false;
+  selectedRow: any;
+  indexSelectedRow: any;
+  selectedItem = true;
+  selectedRowsArray = [];
+
+    // selection toggle
+  allSelect: boolean = true;
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
@@ -103,7 +115,6 @@ export class GoogleMachingComponent
       this.displayColumns.push(key);
       this.filters.addControl(key, new FormControl(''));
     });
-    console.log(this.displayColumns)
 
     this.checkValid();
     this.commonServices.hideSpinner();
@@ -191,6 +202,74 @@ export class GoogleMachingComponent
       this.sCallback
     );
   }
+
+  setAll(completed: boolean) {
+    this.allSelect = completed;
+    if (this.dataView.data == null) {
+      return;
+    }
+    this.dataView.data.forEach((t) => (t.select = completed));
+  }
+
+  public selectRow(row: any) {
+    let index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+
+    if(this.isKeyPressed ==  true && this.indexSelectedRow){
+      if (this.indexSelectedRow > index)
+        this.dataView.data.forEach((t, i) => {
+          if (this.indexSelectedRow >= i && i >= index) {
+            this.selectedRowsArray.push(this.dataView.data[i]);
+            return (t.select = this.selectedItem)
+          }
+        });
+      else
+        this.dataView.data.forEach((t, i) => {
+          if (this.indexSelectedRow <= i && i <= index) {
+            this.selectedRowsArray.push(this.dataView.data[i]);
+            return (t.select = this.selectedItem)
+          }
+        });
+    }else {
+      this.selectedRowsArray = [];
+      this.dataView.data[index] = {
+        ...row,
+        select: row['select'] == true ? false : true,
+      };
+      this.selectedRowsArray.push(this.dataView.data[index]);
+    }
+
+    this.selectedRow = row;
+    this.indexSelectedRow = index;
+    this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
+    this.dataSource.data = this.dataView.data;
+  }
+
+  isRowSelected(row: any){
+    if(this.selectedRowsArray.indexOf(row) != -1) {
+      return true;
+    }
+    return false;
+  }
+
+  someComplete(): boolean {
+    if (this.dataView.data == null) {
+      return false;
+    }
+    return (
+      this.dataView.data.filter((t) => t.select).length > 0 && !this.allSelect
+    );
+  }
+
+  updateAllComplete() {
+    this.allSelect =
+      this.dataView.data != null && this.dataView.data.every((t) => t.select);
+  }
+
+@HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    this.isKeyPressed= false;
+}
+
 
   public isColumnDisplay(column: any): boolean{
     switch(true){
