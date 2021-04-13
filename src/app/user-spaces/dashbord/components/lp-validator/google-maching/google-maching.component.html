@@ -85,7 +85,7 @@
           </th>
           <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
             [class.odd]="odd" [class.even]="even" class="table-container-td" [ngSwitch]="column"
-            [ngClass]="{'hide-rows': isColumnDisplay(column)}">
+            [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.active]="isRowSelected(row)">
             <div *ngSwitchCase="'Valid'">
               <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
               </mat-spinner>
