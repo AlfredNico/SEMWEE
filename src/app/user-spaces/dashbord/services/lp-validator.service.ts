@@ -31,6 +31,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          console.log(results)
           console.log('upload', results)
           let obj = {
             displayColumns: [] as string[],
