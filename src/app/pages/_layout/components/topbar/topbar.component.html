@@ -53,8 +53,8 @@
                         </div>
                     </li> -->
         <!-- Nav Item - Messages -->
-        <li class="nav-item">
-            <a class="nav-link " href="#"
+        <li class="nav-item nav-item-topbar">
+            <a class="nav-link nav-link-topbar" data-title="Help"
            role="button">
            <i class="far fa-life-ring size-icon"></i>
               <!-- Counter - Messages -->
@@ -62,8 +62,8 @@
             </a>
           </li>
           <!-- Nav Item - Messages -->
-        <li class="nav-item">
-            <a class="nav-link" href="#"
+        <li class="nav-item nav-item-topbar">
+            <a class="nav-link nav-link-topbar" data-title="Chat"
            role="button">
            <i class="fas fa-comments size-icon"></i>
               <!-- Counter - Messages -->
@@ -72,8 +72,8 @@
           </li>
         <!-- Nav Item - Messages -->
     
-        <li class="nav-item">
-          <a class="nav-link" href="#"
+        <li class="nav-item nav-item-topbar">
+          <a class="nav-link nav-link-topbar" data-title="Notification"
          role="button">
          <i class="fas fa-bell size-icon"></i>
             <!-- Counter - Messages -->
@@ -84,8 +84,8 @@
     
         <!-- Nav Item - User Information -->
         <ng-container *ngIf="user">
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" [matMenuTriggerFor]="clickmenu">
+            <li class="nav-item dropdown nav-item-dropdown-topbar">
+            <a class="nav-link dropdown-toggle dropdown-topbar" id="userDropdown" role="button" data-toggle="dropdown" [ngClass]="z.menuOpen ? 'activate':'inActivate'" #z="matMenuTrigger" [matMenuTriggerFor]="clickmenu">
                 <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{ (user | async).firstname }} {{ (user | async).lastname }}</span>
                 <i class="fas fa-chevron-down"></i>
                 <img class="img-profile rounded-circle" [src]="'./assets/images/top_bar/image.png'">

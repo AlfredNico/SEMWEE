@@ -1,11 +1,11 @@
-.circle-span{
+.circle-span-letter {
+    display: flex;
   border-radius: 50%;
   width: 120px;
   height: 120px;
-  padding: 26px;
   font-size: 7em;
   align-items: center;
-  padding-top: .5em;
+  justify-content: center;
 }
 ::ng-deep {
   .mat-form-field-appearance-outline .mat-form-field-infix {

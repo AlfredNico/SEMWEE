@@ -15,15 +15,15 @@
 }
 .font-project {
     color: #4D4D55!important;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 14px;
 }
 .list-project .text-muted {
-    color: #DEDEDE!important;
+    color: #b5b5c3!important;
 }
 ::ng-deep.mat-menu-panel.dropdown-project {
     max-width: none !important;
-    margin-top: 25px!important;
+    margin-top: 13px!important;
 }
 .font-project:hover{
     color: #4D4D55!important;
@@ -44,4 +44,39 @@ align-items: center;
   justify-content: center;
   font-weight: bold;
   border-radius: 15%;
+}
+
+.project-link:hover, .project-link:focus {
+    text-decoration: none;
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.position-center {
+    display: flex;
+    align-items: center;
+    padding: 15px 14px;
+}
+
+.project-link {
+    color: #030303;
+}
+
+.text-style {
+    color: #030303;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.project-link i {
+    margin: 2px 0 0 5px;
+}
+
+::ng-deep .active{
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+   
+::ng-deep .inActive{
+    background: transparent;
 }

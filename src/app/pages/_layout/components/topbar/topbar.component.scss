@@ -1,8 +1,8 @@
 .navbar-nav > li > a ,.submenu-box ul li a{
     color:gray!important;
     text-transform: capitalize;
-    font-size: 14px;
-	  padding:10px 10px 10px 20px!important;
+    font-size: 15px;
+	//   padding:10px 10px 10px 20px!important;
     display: block;
     font-weight: 400;
     position: relative;
@@ -70,12 +70,6 @@
     transition: all 0.5s ease;
 }
 
-.navbar-nav li{
-  display:block!important;
-  margin:2px 0px;
-}
-
-
 .nav-item .nav-link{
     display:block;
     color:white!important;
@@ -86,8 +80,8 @@
 }
 
 .navbar-nav > li > a i:before{
-  margin:0px 5px 0px 0px;
-  font-size:14px;
+//   margin:0px 5px 0px 0px;
+  font-size:16px;
 }
 
 
@@ -224,7 +218,7 @@ header navbar design
 .navbar-nav > li > a >i{
     font-size: 18px;
     color:#BCBBC8;
-	margin:8px 0px 0px 0px;
+	margin: 1px 7px 0px 7px;
 	padding:0px;
 }
 
@@ -463,7 +457,7 @@ footer.footer ul {
 footer
 ----------------------*/
 .size-icon::before {
-    font-size: 17px!important;
+    font-size: 21px!important;
 }
 
 .text-fullname {
@@ -484,7 +478,7 @@ footer
 //...
 ::ng-deep.mat-menu-panel {
     max-width: none !important;
-    margin-top: 10px;
+    margin-top: 11px;
 }
 
 .menu {
@@ -519,4 +513,74 @@ footer
 ::ng-deep.mat-menu-content {
     padding-top: 0px!important;
     padding-bottom: 0px!important;
+}
+
+[data-title]:hover::before {
+    content: attr(data-title);
+    position: absolute;
+    bottom: -50px;
+    left: 12px;
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 2px;
+    background: rgba(0,0,0,.9);
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: all .6ms;
+  }
+
+
+
+.nav-item-topbar {
+    display: flex !important;
+    align-items: center;
+    margin: 0 !important;
+    justify-content: center;
+    // padding: 10px 10px !important;
+    width: 60px;
+    height: 50px;
+}
+
+.nav-item-topbar:hover {
+    background: rgba(0,0,0,.05);
+    border-radius: 5px;
+}
+
+.nav-link-topbar {
+    display: flex!important;
+    align-items: center;
+    margin: 0!important;
+    padding: 0 10px 0 6px!important;
+}
+
+.nav-item-topbar .nav-link-topbar i{
+    display: flex!important;
+    align-items: center;
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.dropdown-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item-dropdown-topbar {
+    margin-left: 12px;
+}
+
+.nav-item-dropdown-topbar:hover {
+    background: rgba(0,0,0,.05);
+    border-radius: 5px;
+}
+
+.activate{
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+   
+.inActivate{
+    background: transparent;
 }
