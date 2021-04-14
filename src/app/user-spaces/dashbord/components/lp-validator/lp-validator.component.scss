@@ -1,3 +1,11 @@
+ //to remove the forth step
+:host ::ng-deep .mat-step-header:nth-of-type(4){
+  display: none !important;
+  // mat-step-header[ng-reflect-index="3"],
+  // mat-step-header[aria-posinset="4"] {
+  //     display: none !important;
+  // }
+}
 
 ::ng-deep {
      // table
@@ -55,10 +63,7 @@
           }
         }
       }
-    mat-step-header[ng-reflect-index="3"],
-    mat-step-header[aria-posinset="4"] {
-        display: none !important;
-    }
+
     .mat-horizontal-content-container {
         overflow: unset !important; // pour le tableau position: sticky;
         padding: 24px 24px 24px 24px !important;

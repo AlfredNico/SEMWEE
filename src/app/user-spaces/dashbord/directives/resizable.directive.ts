@@ -1,5 +1,13 @@
 import { style } from '@angular/animations';
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  Renderer2,
+} from '@angular/core';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -92,7 +100,9 @@ export class ResizableDirective {
     }
   };
 
-  @HostListener('dblclick', ['$event']) onLeave( e: MouseEvent ) {
+  @HostListener('dblclick', ['$event']) onLeave(e: MouseEvent) {
+    //triggres services
+    this.tabIndex.emit(this.index);
 
     this.isDbClicked = !this.isDbClicked;
     if (this.isDbClicked == true) {
@@ -115,7 +125,6 @@ export class ResizableDirective {
       // Set table cells width
       for (const cell of tableCells)
         this.renderer.setStyle(cell, 'width', `${this.maxWidth}px`);
-
     } else {
       // render for input sreach field
       const tableCells = Array.from(
@@ -137,7 +146,6 @@ export class ResizableDirective {
       // Set table cells width
       for (const cell of tableCells)
         this.renderer.setStyle(cell, 'width', `${this.minWidth}px`);
-
     }
   }
 }

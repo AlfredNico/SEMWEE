@@ -319,4 +319,9 @@ export class GoogleMachingComponent
       if (this.mawWidth < elem.offsetWidth) this.mawWidth = elem.offsetWidth;
     }
   }
+
+  public isNumberOrString(itemValue: any) {
+    if (typeof itemValue === 'number' || parseInt(itemValue)) return true;
+    else return false;
+  }
 }

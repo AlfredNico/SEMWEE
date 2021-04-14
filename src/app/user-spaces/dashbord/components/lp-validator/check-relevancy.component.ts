@@ -393,4 +393,9 @@ export class CheckRelevancyComponent
         this.mawWidth = elem.offsetWidth;
     }
   }
+
+  public isNumberOrString(itemValue: any) {
+    if (parseInt(itemValue)) return true;
+    else return false;
+  }
 }

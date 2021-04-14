@@ -72,7 +72,7 @@
                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
                   <div>
-                    {{ column.split('_').join(' ') | uppercase }}
+                    {{ column | removeUnderscore | capitalizeFirstPipe }}
                   </div>
                   <div mat-sort-header class="pl-3">
                     <!-- <i class="fas fa-sort"></i> -->
@@ -91,7 +91,9 @@
             (click)="selectRow(row)" [matTooltip]="row[column]"
             [matTooltipDisabled]="rowIndex.includes(i)" class="table-container-td"
             [class.active]="isRowSelected(row)">
-            {{ row[column] }}
+            <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
+              {{ row[column] }}
+            </span>
             <div style="padding: 0 20px;" class="Test" [id]="i+''+indexRow">
               {{ row[column] }}
             </div>

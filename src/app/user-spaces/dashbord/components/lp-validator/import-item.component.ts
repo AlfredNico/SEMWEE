@@ -171,6 +171,18 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         fileName: file?.name,
       });
     }
+
+    // const f: File = event.target ? target.files[0] : event[0]?.name;
+    // const reader = new FileReader();
+    // reader.onload = function (e) {
+    //   // var texto = reader.result;
+    //   // var temp = texto.toString().split(',')[1];
+    //   // console.log(temp);
+    //   console.log('texto1: ', reader.result.toString());
+    //   // var temp = texto.toString().split(',')[1];
+    //   console.log('texto2: ', reader.result.toString().split(',')[1]);
+    // };
+    // reader.readAsDataURL(f);
   }
 
   public async onSubmit() {

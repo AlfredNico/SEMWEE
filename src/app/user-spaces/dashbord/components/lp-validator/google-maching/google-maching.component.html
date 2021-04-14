@@ -70,7 +70,7 @@
                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
                   <div>
-                    {{ column.split('_').join(' ') | uppercase }}
+                    {{ column.split('_').join(' ') | capitalizeFirstPipe }}
                   </div>
                   <div mat-sort-header class="pl-3">
                     <!-- <i class="fas fa-sort"></i> -->
@@ -106,12 +106,16 @@
             <div *ngSwitchCase="'Website Browser'">
               <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
               </mat-spinner>
-              <div *ngIf="row[column]!=='loadingQuery'">
+              <div *ngIf="row[column]!=='loadingQuery'"
+              [ngClass]="{'m-auto': isNumberOrString(row[column])}">
                 {{ row[column] }}
               </div>
             </div>
             <div *ngSwitchDefault [matTooltip]="row[column]"
-              [matTooltipDisabled]="rowIndex.includes(i)">{{ row[column] }}</div>
+              [matTooltipDisabled]="rowIndex.includes(i)"
+              [ngClass]="{'m-auto': isNumberOrString(row[column])}">
+              {{ row[column] }
+            }</div>
           </td>
         </ng-container>
       </div>
