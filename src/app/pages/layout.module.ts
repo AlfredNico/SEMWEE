@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { PagesRoutingModule } from './pages-routing.module';
 import {
-  NgbDropdownModule,
   NgbProgressbarModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslationModule } from '../modules/i18n/translation.module';
@@ -39,7 +38,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
     TranslationModule,
     InlineSVGModule,
     ExtrasModule,
-    NgbDropdownModule,
+    // NgbDropdownModule,
     NgbProgressbarModule,
     CoreModule,
     SubheaderModule,

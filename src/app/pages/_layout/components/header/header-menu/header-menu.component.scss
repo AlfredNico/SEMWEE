@@ -12,6 +12,8 @@
     color: #6382D7;
     font-size: 14px;
     font-weight: 500;
+    border: none!important;
+    outline: none!important;
 }
 .font-project {
     color: #4D4D55!important;
@@ -59,11 +61,11 @@ align-items: center;
 }
 
 .project-link {
-    color: #030303;
+    color: #4D4D55;
 }
 
 .text-style {
-    color: #030303;
+    color: #4D4D55;
     font-size: 15px;
     font-weight: 500;
 }
