@@ -73,13 +73,20 @@
         <!-- Nav Item - Messages -->
     
         <li class="nav-item nav-item-topbar">
-          <a class="nav-link nav-link-topbar" data-title="Notification"
-         role="button">
+          <a class="nav-link nav-link-topbar" data-title="Notifications"
+         role="button" [ngClass]="n.menuOpen ? 'activateNotif':'inActivateNotif'" #n="matMenuTrigger" [matMenuTriggerFor]="clicknotif">
          <i class="fas fa-bell size-icon"></i>
             <!-- Counter - Messages -->
-            <!-- <span class="indicator">4</span> -->
+            <span class="indicator notif"></span>
+            <!-- <i class="symbol-badge bg-success"></i> -->
+            <!-- <span class="badge badge-danger badge-counter">7</span> -->
           </a>
         </li>
+        <mat-menu #clicknotif="matMenu" xPosition="before" class="menu-panel-notif">
+          <div class="menu-notif">
+              <p style="font-size: 24px; font-weight: 700; color: #DCDCDE;">No Notification</p>
+          </div>
+      </mat-menu>
         <div class="divider"></div>
     
         <!-- Nav Item - User Information -->
@@ -87,8 +94,8 @@
             <li class="nav-item dropdown nav-item-dropdown-topbar">
             <a class="nav-link dropdown-toggle dropdown-topbar" id="userDropdown" role="button" data-toggle="dropdown" [ngClass]="z.menuOpen ? 'activate':'inActivate'" #z="matMenuTrigger" [matMenuTriggerFor]="clickmenu">
                 <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{ (user | async).firstname }} {{ (user | async).lastname }}</span>
-                <i class="fas fa-chevron-down"></i>
-                <img class="img-profile rounded-circle" [src]="'./assets/images/top_bar/image.png'">
+                <i class="fas fa-chevron-down marge-top"></i>
+                <img class="img-profile rounded-circle" [src]="'./assets/images/top_bar/blank.png'">
             </a>
               <mat-menu #clickmenu="matMenu" xPosition="before">
                 <div class="menu">
@@ -98,23 +105,23 @@
                   </li>
                   <li mat-menu-item>
                       <img [src]="'./assets/images/top_bar/edit.png'" alt=".">
-                      <a href="#">Edit Profile</a>
+                      <a>Edit Profile</a>
                   </li>
                   <li mat-menu-item>
                       <img [src]="'./assets/images/top_bar/envelope.png'" alt=".">
-                      <a href="#">Inbox</a>
+                      <a>Inbox</a>
                   </li>
                   <li mat-menu-item>
                       <img [src]="'./assets/images/top_bar/settings.png'" alt=".">
-                      <a href="#">Settings</a>
+                      <a>Settings</a>
                   </li>
                   <li mat-menu-item>
                       <img [src]="'./assets/images/top_bar/question.png'" alt=".">
-                      <a href="#">Help</a>
+                      <a>Help</a>
                   </li>
                   <li mat-menu-item (click)="logout()">
                       <img [src]="'./assets/images/top_bar/log-out.png'" alt=".">
-                      <a href="#">Logout</a>
+                      <a>Logout</a>
                   </li>
                 </div>
             </mat-menu>
