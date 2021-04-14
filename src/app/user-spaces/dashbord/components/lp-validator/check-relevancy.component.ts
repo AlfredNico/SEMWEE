@@ -1,7 +1,7 @@
+import { PropertyValueService } from './../../services/property-value.service';
+import { ItemTypeService } from './../../services/item-type.service';
 import { NotificationService } from '@app/services/notification.service';
 import { Projects } from './../../interfaces/projects';
-import { TuneItService } from './../../services/tune-it.service';
-import { TuneIt, TuneItVlaue } from './../../interfaces/tune-it';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
@@ -86,9 +86,6 @@ export class CheckRelevancyComponent
   filterData: any[] = [];
   checklist: string[] = [];
 
-  //Tune it property
-  checkTuneItValue: TuneIt<TuneItVlaue>;
-
   rowIndex: number[] = []; // disable matTooltips
 
   // multipleSelect tables
@@ -105,7 +102,8 @@ export class CheckRelevancyComponent
     private fb: FormBuilder,
     private commonServices: CommonService,
     public dialog: MatDialog,
-    private tuneItService: TuneItService,
+    private itemService: ItemTypeService,
+    private propertyService: PropertyValueService,
     private notifs: NotificationService
   ) {}
 
@@ -330,7 +328,7 @@ export class CheckRelevancyComponent
     this.dataMatching.emit(this.dataView);
   }
 
-  async openTuneIt(id: string, row: Projects, event: any, itemSeleted: any) {
+  async openTuneIt(id: string, row: Projects, event: any, itemSeleted: string) {
     this.commonServices.showSpinner('root');
     const el: HTMLElement = document.getElementById(id);
     // let pos: number = el.offsetTop;
@@ -338,14 +336,31 @@ export class CheckRelevancyComponent
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
 
+    let val: any = '';
+
     try {
-      const editTuneIt = await this.tuneItService.getTuneIt(row['_id']);
+      if (itemSeleted.includes('ItemType'))
+        val = await this.itemService.getItemType(row['_id']);
+      else
+        val = await this.propertyService.getPropertyValue(
+          row['_id'],
+          itemSeleted
+        );
+
       this.commonServices.hideSpinner();
       this.dialog.open(TuneItComponent, {
         // position: { top: `${clientY}px`, left: `${clientX}px` },
         // width: itemSeleted == 'itemtype' ? '400px' : '',,
-        data: { row, itemSeleted, checkTuneIt: editTuneIt },
+        data: { row, itemSeleted, checkTuneIt: val },
       });
+      // .afterClosed()
+      // .pipe(
+      //   map((result: any) => {
+      //     console.log(result);
+      //     if (result) {}
+      //   })
+      // )
+      // .subscribe();
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         throw error;
@@ -388,14 +403,14 @@ export class CheckRelevancyComponent
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
-      const elem = document.getElementById(`${id}${index}`);
-      if (elem && this.mawWidth < elem.offsetWidth)
+      const elem = document.getElementById(`${id}width${index}`);
+      if (elem && this.mawWidth < elem?.offsetWidth)
         this.mawWidth = elem.offsetWidth;
     }
   }
 
   public isNumberOrString(itemValue: any) {
-    if (parseInt(itemValue)) return true;
+    if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
   }
 }

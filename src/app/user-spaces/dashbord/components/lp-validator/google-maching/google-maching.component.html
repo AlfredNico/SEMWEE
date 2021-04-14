@@ -114,8 +114,11 @@
             <div *ngSwitchDefault [matTooltip]="row[column]"
               [matTooltipDisabled]="rowIndex.includes(i)"
               [ngClass]="{'m-auto': isNumberOrString(row[column])}">
-              {{ row[column] }
-            }</div>
+              {{ row[column] }}
+            </div>
+            <div #content style="padding: 0 20px;" class="Test" [id]="i+'width'+indexRow">
+              {{ row[column] }}
+            </div>
           </td>
         </ng-container>
       </div>

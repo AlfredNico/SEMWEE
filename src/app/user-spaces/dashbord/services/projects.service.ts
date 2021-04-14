@@ -78,10 +78,11 @@ export class ProjectsService {
         catchError(() => of(null))
       );
 
-      // return this.http.post(`${environment.baseUrl}/project/delete-project`, {control}).pipe(
+      // return this.http.post(`${environment.baseUrl}/api/project/checkProject/:idUser/:`, {control}).pipe(
       //    map(res => (res ? { projectName : true} : null)),
       //    catchError(()=> of(null))
       // )
+      // /api/project/checkProject/:idUser/:nameProject
     };
   }
 }

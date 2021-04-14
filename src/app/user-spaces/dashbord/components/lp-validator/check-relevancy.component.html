@@ -93,20 +93,20 @@
             [id]="i +'_'+ indexRow" appTuniIt [appTuniIt]="isPopTuneIt(column, row[column])"
             [class.active]="isRowSelected(row)">
             <!-- [ngClass]="{'pointer_item': isPopTuneIt(column, row[column])}"  -->
-            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"
-              style="padding-right: 10px;">
-              <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
-                {{ row[column] }}
-              </span>
-              <button #button style="display: none" mat-stroked-button
-                *ngIf="isPopTuneIt(column, row[column])"
-                (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column) : ''">
-                Tune it!
-              </button>
-              <div style="padding: 0 20px;" class="Test" [id]="i+''+indexRow">
-                {{ row[column] }}
+              <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"
+                style="padding-right: 10px;">
+                <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
+                  {{ row[column] }}
+                </span>
+                <button #button style="display: none" mat-stroked-button
+                  *ngIf="isPopTuneIt(column, row[column])"
+                  (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column) : ''">
+                  Tune it!
+                </button>
+                <div #content style="padding: 0 20px;" class="Test" [id]="i+'width'+indexRow">
+                  {{ row[column] }}
+                </div>
               </div>
-            </div>
           </td>
         </ng-container>
       </div>
@@ -114,6 +114,11 @@
 
       <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <!-- [colSpan]="1 + 1" colSpan="{{1 + 1}}" -->
+        <td class="mat-cell" [rowSpan]="dataSource.data.length">No data</td>
+      </tr>
     </table>
   </div>
 

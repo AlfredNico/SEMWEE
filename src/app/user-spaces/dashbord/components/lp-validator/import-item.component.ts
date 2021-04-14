@@ -74,6 +74,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
                 hidden
               />
             </div>
+            <!-- (change)="onFileChange($event)" -->
 
             <div
               *ngIf="
@@ -146,6 +147,10 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   //subscription
   public subscription$ = new Subscription();
 
+  //////////////
+  csvContent: string;
+  parsedCsv: string[][];
+
   constructor(
     private lpValidatorServices: LpValidatorService,
     private common: CommonService,
@@ -170,19 +175,13 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         fileSource: file,
         fileName: file?.name,
       });
-    }
 
-    // const f: File = event.target ? target.files[0] : event[0]?.name;
-    // const reader = new FileReader();
-    // reader.onload = function (e) {
-    //   // var texto = reader.result;
-    //   // var temp = texto.toString().split(',')[1];
-    //   // console.log(temp);
-    //   console.log('texto1: ', reader.result.toString());
-    //   // var temp = texto.toString().split(',')[1];
-    //   console.log('texto2: ', reader.result.toString().split(',')[1]);
-    // };
-    // reader.readAsDataURL(f);
+      //Read CSV file
+      const fileToRead = file;
+      const fileReader = new FileReader();
+      fileReader.onload = this.onFileLoad;
+      fileReader.readAsText(fileToRead, 'UTF-8');
+    }
   }
 
   public async onSubmit() {
@@ -212,5 +211,34 @@ export class ImportItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription$.unsubscribe();
+  }
+
+  private onFileLoad(fileLoadedEvent): void {
+    console.log('file', fileLoadedEvent);
+    const csvSeparator = ';';
+    const textFromFileLoaded = fileLoadedEvent.target.result;
+    this.csvContent = textFromFileLoaded;
+
+    const txt = textFromFileLoaded;
+    const csv = [];
+    const lines = txt.split('\n');
+    lines.forEach((element) => {
+      const cols: string[] = element.split(csvSeparator);
+      csv.push(cols);
+    });
+    this.parsedCsv = csv;
+
+    // demo output as alert
+    var output: string = '';
+    csv.forEach((row) => {
+      output += '\n';
+      var colNo = 0;
+      row.forEach((col) => {
+        if (colNo > 0) output += '; ';
+        output += col;
+        colNo++;
+      });
+    });
+    console.log('output', csv);
   }
 }

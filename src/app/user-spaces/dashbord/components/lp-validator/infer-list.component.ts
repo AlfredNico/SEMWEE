@@ -474,13 +474,14 @@ export class InferListComponent
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
-      const elem = document.getElementById(`${id}${index}`);
-      if (this.mawWidth < elem.offsetWidth) this.mawWidth = elem.offsetWidth;
+      const elem = document.getElementById(`${id}width${index}`);
+      if (elem && this.mawWidth < elem?.offsetWidth)
+        this.mawWidth = elem.offsetWidth;
     }
   }
 
   public isNumberOrString(itemValue: any) {
-    if (typeof itemValue === 'number' || parseInt(itemValue)) return true;
+    if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
   }
 }

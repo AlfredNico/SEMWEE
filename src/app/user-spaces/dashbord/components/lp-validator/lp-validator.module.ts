@@ -1,3 +1,5 @@
+import { PropertyValueService } from './../../services/property-value.service';
+import { ItemTypeService } from './../../services/item-type.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from '@app/shared/modules/landing.module';
@@ -54,7 +56,7 @@ import { RemoveUnderscorePipe } from 'src/app/user-spaces/dashbord/pipe/remove-u
     RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
   ],
   exports: [RouterModule, CapitalizeFirstPipePipe],
-  providers: [LpValidatorService],
+  providers: [LpValidatorService, ItemTypeService, PropertyValueService],
   entryComponents: [
     TableOptionsComponent,
     SettingTableComponent,
