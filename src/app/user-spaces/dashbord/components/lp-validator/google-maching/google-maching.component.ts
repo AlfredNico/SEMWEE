@@ -70,15 +70,14 @@ export class GoogleMachingComponent
 
   rowIndex: number[] = []; // disable matTooltips
 
-
   // multipleSelect tables
-  isKeyPressed:boolean = false;
+  isKeyPressed: boolean = false;
   selectedRow: any;
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
 
-    // selection toggle
+  // selection toggle
   allSelect: boolean = true;
 
   //resizable
@@ -148,18 +147,23 @@ export class GoogleMachingComponent
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let i = 0, s = '';
-                  Object.entries(query).map(val => {
+                  let i = 0,
+                    s = '';
+                  Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
                       const lower = (val[1] as any).toLowerCase();
-                       if (i == 1) {
-                        s = s + `item["${val[0]}"].toLowerCase().includes("${lower}")`
-                      }else{
-                        s = s + `&& item["${val[0]}"].toLowerCase().includes("${lower}")`
+                      if (i == 1) {
+                        s =
+                          s +
+                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                      } else {
+                        s =
+                          s +
+                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
                       }
                     }
-                  })
+                  });
                   return eval(s);
                   // return item[property]
                   //   .toLowerCase()
@@ -185,8 +189,8 @@ export class GoogleMachingComponent
 
   //Drop item list
   public drop(event: CdkDragDrop<any>) {
-    const previousIndex= event.previousIndex - 3;
-    const currentIndex= event.currentIndex - 3;
+    const previousIndex = event.previousIndex - 3;
+    const currentIndex = event.currentIndex - 3;
     moveItemInArray(this.displayColumns, previousIndex, currentIndex);
 
     this.displayColumns.forEach((column, index) => {
@@ -213,24 +217,24 @@ export class GoogleMachingComponent
   }
 
   public selectRow(row: any) {
-    let index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
-    if(this.isKeyPressed ==  true && this.indexSelectedRow){
+    if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem)
+            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem)
+            return (t.select = this.selectedItem);
           }
         });
-    }else {
+    } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
         ...row,
@@ -245,8 +249,8 @@ export class GoogleMachingComponent
     this.dataSource.data = this.dataView.data;
   }
 
-  isRowSelected(row: any){
-    if(this.selectedRowsArray.indexOf(row) != -1) {
+  isRowSelected(row: any) {
+    if (this.selectedRowsArray.indexOf(row) != -1) {
       return true;
     }
     return false;
@@ -266,14 +270,20 @@ export class GoogleMachingComponent
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
-@HostListener('window:keyup', ['$event'])
+  @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed= false;
-}
+    this.isKeyPressed = false;
+  }
 
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    else this.isKeyPressed = false;
+  }
 
-  public isColumnDisplay(column: any): boolean{
-    switch(true){
+  public isColumnDisplay(column: any): boolean {
+    switch (true) {
       case this.toLowerCase(column) == '_id':
       case this.toLowerCase(column) == 'id':
       case this.toLowerCase(column) == 'idproduct':
@@ -285,25 +295,33 @@ export class GoogleMachingComponent
         return false;
     }
   }
-  public toLowerCase(item: string): string{
+  public toLowerCase(item: string): string {
     return item.toLowerCase();
   }
-  isPopTuneIt(column: string, value: string):boolean{
-    if (this.toLowerCase(column).includes('itemtype')
-    || (this.toLowerCase(column).includes('property') && value)) return true;
+  isPopTuneIt(column: string, value: string): boolean {
+    if (
+      this.toLowerCase(column).includes('itemtype') ||
+      (this.toLowerCase(column).includes('property') && value)
+    )
+      return true;
     else return false;
   }
 
-  hideTooltip(event: number){
-    if (!this.rowIndex.includes(event))
-      this.rowIndex.push(event);
+  hideTooltip(event: number) {
+    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
   }
 
-  public getWidth(id: any){
-     for (let index = 0; index < this.dataView.data.length; index++) {
+  public getWidth(id: any) {
+    this.mawWidth = 0;
+
+    for (let index = 0; index < this.dataView.data.length; index++) {
       const elem = document.getElementById(`${id}${index}`);
-      if (this.mawWidth < elem.offsetWidth)
-        this.mawWidth =  elem.offsetWidth;
+      if (this.mawWidth < elem.offsetWidth) this.mawWidth = elem.offsetWidth;
     }
+  }
+
+  public isNumberOrString(itemValue: any) {
+    if (typeof itemValue === 'number' || parseInt(itemValue)) return true;
+    else return false;
   }
 }

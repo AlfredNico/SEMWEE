@@ -42,7 +42,7 @@
                   </div>
                 </div>
               </div>
-              <div style="padding: 17px;" class="text-center bg-white">
+              <div style="padding: 15px;" class="text-center bg-white">
                 <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
                   [indeterminate]="someComplete()"></mat-checkbox>
               </div>
@@ -73,7 +73,7 @@
                 <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
                   <div>
-                    {{ column.split('_').join(' ') | uppercase }}
+                    {{ column | removeUnderscore | capitalizeFirstPipe }}
                   </div>
                   <div mat-sort-header class="pl-3">
                     <!-- <i class="fas fa-sort"></i> -->
@@ -95,7 +95,9 @@
             <!-- [ngClass]="{'pointer_item': isPopTuneIt(column, row[column])}"  -->
             <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"
               style="padding-right: 10px;">
-              <span>{{ row[column] }}</span>
+              <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
+                {{ row[column] }}
+              </span>
               <button #button style="display: none" mat-stroked-button
                 *ngIf="isPopTuneIt(column, row[column])"
                 (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column) : ''">
