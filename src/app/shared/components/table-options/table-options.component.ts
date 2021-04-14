@@ -1,17 +1,20 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SettingRowsTable } from '@app/models/setting-table';
-import { CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-table-options',
   templateUrl: './table-options.component.html',
-  styleUrls: ['./table-options.component.scss']
+  styleUrls: ['./table-options.component.scss'],
 })
 export class TableOptionsComponent implements OnInit {
-
-
   public hidden: string[] = [];
   public noHidden: string[] = [];
   // Generate form builder rows
@@ -25,7 +28,11 @@ export class TableOptionsComponent implements OnInit {
   private isDrop = false;
 
   public displayRows: SettingRowsTable = { hiddenRows: [], noHiddenRows: [] };
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any, public dialogRef: MatDialogRef<SettingRowsTable>, private fb: FormBuilder) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    public dialogRef: MatDialogRef<SettingRowsTable>,
+    private fb: FormBuilder
+  ) {
     this.displayRows = this.data;
     // console.log(data);
     if (this.data.noHiddenRows.includes('select')) {
@@ -36,26 +43,29 @@ export class TableOptionsComponent implements OnInit {
     this.noHidden = this.data.noHiddenRows;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   drop(event: CdkDragDrop<string[]>) {
     // const previousIndex = event.previousIndex;
     const previousIndex = event.previousIndex;
-    const currentIndex = event.currentIndex % 2 == 0 ? event.currentIndex : event.currentIndex + 1;
+    const currentIndex = event.currentIndex;
+    // event.currentIndex % 2 == 0 ? event.currentIndex : event.currentIndex + 1;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, previousIndex, currentIndex);
 
       if (event.container.data[previousIndex]?.includes('Facet')) {
-        moveItemInArray(event.container.data, previousIndex + 1, currentIndex + 1);
+        moveItemInArray(
+          event.container.data,
+          previousIndex + 1,
+          currentIndex + 1
+        );
       }
     }
 
     this.displayRows = {
       noHiddenRows: this.noHidden,
       hiddenRows: this.hidden,
-    }
-
+    };
   }
 
   canDrop() {
@@ -80,7 +90,9 @@ export class TableOptionsComponent implements OnInit {
     );
 
     if (this.infItems.isFacet === true) {
-      const facetIndex = this.noHidden.indexOf(this.noHidden[this.infItems.previewIndex]);
+      const facetIndex = this.noHidden.indexOf(
+        this.noHidden[this.infItems.previewIndex]
+      );
       transferArrayItem(
         this.noHidden,
         this.hidden,
@@ -90,7 +102,7 @@ export class TableOptionsComponent implements OnInit {
     }
 
     this.itelLabel = '';
-    this.infItems ={ previewIndex: 0, currentIndex: 0, isFacet: false };
+    this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
   moveToRigth() {
@@ -102,7 +114,9 @@ export class TableOptionsComponent implements OnInit {
       this.infItems.currentIndex
     );
     if (this.infItems.isFacet === true) {
-      const facetIndex = this.noHidden.indexOf(this.noHidden[this.infItems.previewIndex]);
+      const facetIndex = this.noHidden.indexOf(
+        this.noHidden[this.infItems.previewIndex]
+      );
       transferArrayItem(
         this.hidden,
         this.noHidden,
@@ -111,7 +125,7 @@ export class TableOptionsComponent implements OnInit {
       );
     }
     this.itelLabel = '';
-    this.infItems ={ previewIndex: 0, currentIndex: 0, isFacet: false };
+    this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
   setItemLeft(item: string) {
@@ -152,6 +166,4 @@ export class TableOptionsComponent implements OnInit {
     }
     return { previewIndex, currentIndex, isFacet };
   }
-
 }
-

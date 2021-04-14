@@ -5,7 +5,7 @@
             <div class="table-columns">
                 <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event) " class="containt-list">
                     <div *ngFor="let item of hidden">
-                        <div *ngIf="!item.includes('Value') && !item.includes('ID')" class="box" [ngClass]="{'setItem': itelLabel === item}" cdkDrag (click)="setItemRigth(item)">
+                        <div *ngIf="!item.includes('Value')" class="box" [ngClass]="{'setItem': itelLabel === item}" cdkDrag (click)="setItemRigth(item)">
                             {{ item.split('_').join(' ') }}
                         </div>
                     </div>
@@ -29,10 +29,11 @@
 
         <div class="container-box" class="w-50 h-100">
             <h2>Table columns</h2>
+           <!--  && !item.includes('ID') -->
             <div class="table-columns">
                 <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
                     <div *ngFor="let item of noHidden">
-                        <div *ngIf="!item.includes('Value') && !item.includes('ID')" class="box" cdkDrag (click)="setItemLeft(item)" [ngClass]="{'setItem': itelLabel === item}">
+                        <div *ngIf="!item.includes('Value')" class="box" cdkDrag (click)="setItemLeft(item)" [ngClass]="{'setItem': itelLabel === item}">
                             {{ item.split('_').join(' ') }}
                         </div>
                     </div>

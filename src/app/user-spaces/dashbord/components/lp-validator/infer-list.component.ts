@@ -42,15 +42,15 @@ import { NotificationService } from '@app/services/notification.service';
       }
 
       .Test {
-          position: absolute;
-          visibility: hidden;
-          height: auto;
-          width: auto;
-          white-space: nowrap; /* Thanks to Herb Caudill comment */
+        position: absolute;
+        visibility: hidden;
+        height: auto;
+        width: auto;
+        white-space: nowrap; /* Thanks to Herb Caudill comment */
       }
-    .active {
-      background: #b6e1ff !important;
-    }
+      .active {
+        background: #b6e1ff !important;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -92,16 +92,14 @@ export class InferListComponent
   rowIndex: number[] = [];
 
   // multipleSelect tables
-  isKeyPressed:boolean = false;
+  isKeyPressed: boolean = false;
   selectedRow: any;
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
 
   //resizable
-  mawWidth: number = 0;
-
-
+  public mawWidth: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -167,25 +165,30 @@ export class InferListComponent
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
-             return Object.keys(item).some((property) => {
+              return Object.keys(item).some((property) => {
                 if (
                   query[property] != '' &&
                   typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let i = 0, s = '';
-                  Object.entries(query).map(val => {
+                  let i = 0,
+                    s = '';
+                  Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
                       const lower = (val[1] as any).toLowerCase();
                       if (i == 1) {
-                        s = s + `item["${val[0]}"].toLowerCase().includes("${lower}")`
-                      }else{
-                        s = s + `&& item["${val[0]}"].toLowerCase().includes("${lower}")`
+                        s =
+                          s +
+                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                      } else {
+                        s =
+                          s +
+                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
                       }
                     }
-                  })
+                  });
                   return eval(s);
                 }
               });
@@ -218,10 +221,8 @@ export class InferListComponent
       event.currentIndex
     );
     this.displayColumns.forEach((column, index) => {
-      if (column == 'select')
-        this.dataView.displayColumns[0] = column;
-      else
-        this.dataView.displayColumns[index] = column;
+      if (column == 'select') this.dataView.displayColumns[0] = column;
+      else this.dataView.displayColumns[index] = column;
       //création formControl Dynamics
       if (column != 'select') {
         this.filters.addControl(column, new FormControl(''));
@@ -379,22 +380,22 @@ export class InferListComponent
   public selectRow(row: any) {
     let index = this.dataView.data.findIndex((x) => x.ID == row.ID);
 
-    if(this.isKeyPressed ==  true && this.indexSelectedRow){
+    if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem)
+            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem)
+            return (t.select = this.selectedItem);
           }
         });
-    }else {
+    } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
         ...row,
@@ -409,8 +410,8 @@ export class InferListComponent
     this.dataSource.data = this.dataView.data;
   }
 
-  isRowSelected(row: any){
-    if(this.selectedRowsArray.indexOf(row) != -1) {
+  isRowSelected(row: any) {
+    if (this.selectedRowsArray.indexOf(row) != -1) {
       return true;
     }
     return false;
@@ -430,37 +431,24 @@ export class InferListComponent
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
-@HostListener('window:keyup', ['$event'])
+  @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed= false;
-}
+    this.isKeyPressed = false;
+  }
 
- @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-  if (event.keyCode === 17 || event.ctrlKey)
-    this.isKeyPressed= true;
-  else
-    this.isKeyPressed= false;
-}
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    else this.isKeyPressed = false;
+  }
 
   ngOnDestroy() {
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
     this.dataSource.data = [];
   }
 
-  // onResizeEnd(event: ResizeEvent, columnName): void {
-  //   if (event.edges.right) {
-  //     const cssValue = event.rectangle.width + 'px';
-  //     const columnElts = document.getElementsByClassName(
-  //       'mat-column-' + columnName
-  //     );
-  //     for (let i = 0; i < columnElts.length; i++) {
-  //       const currentEl = columnElts[i] as HTMLDivElement;
-  //       currentEl.style.width = cssValue;
-  //     }
-  //   }
-  // }
-
-  public isColumnDisplay(column: any): boolean{
+  public isColumnDisplay(column: any): boolean {
     switch (true) {
       case column.toLowerCase().includes('_id'):
       case column.toLowerCase().includes('id'):
@@ -471,21 +459,36 @@ export class InferListComponent
     }
   }
 
-  public getWidth(id: any){
-     for (let index = 0; index < this.dataView.data.length; index++) {
+  sortData($e: any) {
+    console.log($e);
+    $e.direction === 'asc'
+      ? (this.icon = 'myIcon')
+      : (this.icon = 'myDescIcon');
+  }
+
+  hideTooltip(event: number) {
+    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  }
+
+  public getWidth(id: any) {
+    this.mawWidth = 0;
+
+    for (let index = 0; index < this.dataView.data.length; index++) {
       const elem = document.getElementById(`${id}${index}`);
-      if (this.mawWidth < elem.offsetWidth)
-        this.mawWidth =  elem.offsetWidth;
+      if (this.mawWidth < elem.offsetWidth) this.mawWidth = elem.offsetWidth;
     }
   }
-
-  sortData($e: any){
-    console.log($e);
-    $e.direction === 'asc'? (this.icon = 'myIcon') : (this.icon= 'myDescIcon');
-  }
-
-  hideTooltip(event: number){
-    if (!this.rowIndex.includes(event))
-      this.rowIndex.push(event);
-  }
 }
+
+// onResizeEnd(event: ResizeEvent, columnName): void {
+//   if (event.edges.right) {
+//     const cssValue = event.rectangle.width + 'px';
+//     const columnElts = document.getElementsByClassName(
+//       'mat-column-' + columnName
+//     );
+//     for (let i = 0; i < columnElts.length; i++) {
+//       const currentEl = columnElts[i] as HTMLDivElement;
+//       currentEl.style.width = cssValue;
+//     }
+//   }
+// }
