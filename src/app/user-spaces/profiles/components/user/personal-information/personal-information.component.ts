@@ -1,87 +1,158 @@
+import { NotificationService } from '@app/services/notification.service';
+import { ProfilesService } from './../../../services/profiles.service';
+import { Users } from './../../../../../models/users';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { User } from '@app/classes/users';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from '@app/authentification/services/auth.service';
 
 @Component({
   selector: 'app-personal-information',
   templateUrl: './personal-information.component.html',
-  styleUrls: ['./personal-information.component.scss']
+  styleUrls: ['./personal-information.component.scss'],
 })
 export class PersonalInformationComponent implements OnInit, OnDestroy {
-  // formGroup: FormGroup;
+  formGroup = new FormGroup({
+    firstname: new FormControl('', [Validators.required]),
+    lastname: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    id: new FormControl(''),
+    image: new FormControl(''),
+  });
+
+  pdp: any = '';
+  isPdp: boolean = false;
+  isUploaded: boolean = false;
+  pdpSource: File;
+  public user: Users;
+  isLoading$ = new BehaviorSubject<boolean>(false);
   // user: UserModel;
   // firstUserState: UserModel;
   // subscriptions: Subscription[] = [];
   // avatarPic = 'none';
   // isLoading$: Observable<boolean>;
+  // projet: userProject[];
 
-  constructor(private userService: AuthService, private fb: FormBuilder) {
-    // this.isLoading$ = this.userService.isLoadingSubject.asObservable();
+  constructor(
+    private userService: AuthService,
+    private profileService: ProfilesService,
+    private notifs: NotificationService
+  ) {
+    this.userService.currentUserSubject
+      .pipe(
+        map((user: Users) => {
+          if (user) {
+            this.user = user;
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  get firstname() {
+    return this.formGroup.get('firstname');
+  }
+  get lastname() {
+    return this.formGroup.get('lastname');
+  }
+  get email() {
+    return this.formGroup.get('email');
   }
 
   ngOnInit(): void {
-    // const sb = this.userService.currentUserSubject.asObservable().pipe(
-    //   first(user => !!user)
-    // ).subscribe(user => {
-    //   this.user = Object.assign({}, user);
-    //   this.firstUserState = Object.assign({}, user);
-    //   this.loadForm();
-    // });
-    // this.subscriptions.push(sb);
+    if (this.user) {
+      this.formGroup.patchValue({
+        ...this.user,
+        id: this.user['_id'],
+      });
+    }
   }
 
-  ngOnDestroy() {
-    // this.subscriptions.forEach(sb => sb.unsubscribe());
+  ngOnDestroy(): void {}
+
+  uploadPdp(e: any) {}
+
+  public uploadChanged(event: any): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = (event.target as HTMLInputElement).files[0] as any;
+      const reader = new FileReader();
+      reader.onload = (e) => (this.pdp = reader.result);
+      reader.readAsDataURL(file);
+      this.pdpSource = file;
+      this.isUploaded = true;
+    }
   }
 
-  // loadForm() {
-  //   this.formGroup = this.fb.group({
-  //     image: [this.user.image],
-  //     firstname: [this.user.firstname, Validators.required],
-  //     lastname: [this.user.lastname, Validators.required],
-  //     companyName: [this.user.companyName, Validators.required],
-  //     phone: [this.user.phone, Validators.required],
-  //     email: [this.user.email, Validators.compose([Validators.required, Validators.email])],
-  //     website: [this.user.website, Validators.required]
-  //   });
-  // }
+  public getPic(): string {
+    if (this.user.image !== 'not image' && this.isUploaded === false) {
+      this.isPdp = true;
+      return `url('${this.user.image}')`;
+    } else if (this.isUploaded === true) {
+      this.isPdp = true;
+      return `url('${this.pdp}')`;
+    }
+    return 'none';
+  }
 
-  // save() {
-  //   this.formGroup.markAllAsTouched();
-  //   if (!this.formGroup.valid) {
-  //     return;
-  //   }
+  public deletePic() {
+    this.pdpSource = undefined;
+    this.isUploaded = false;
+    this.formGroup.patchValue({
+      image: '',
+    });
+  }
 
-  //   const formValues = this.formGroup.value;
-  //   this.user = Object.assign(this.user, formValues);
+  public async save() {
+    this.isLoading$.next(true);
+    if (!this.formGroup.valid) {
+      this.isLoading$.next(false);
+      return;
+    }
+    if (this.pdpSource instanceof File) {
+      try {
+        const urlPdp = await this.profileService.uploadedPdp(this.pdpSource);
+        if (urlPdp && urlPdp.message) {
+          const value = {
+            ...this.formGroup.value,
+            image: urlPdp.message,
+          };
+          this.profileService
+            .editUser(this.user['_id'], value)
+            .subscribe((res: any) => {
+              if (res && res.message) {
+                this.notifs.sucess(res.message);
+              }
+              this.isLoading$.next(false);
+            });
+        }
 
-  //   // Do request to your server for user update, we just imitate user update there
-  //   this.userService.isLoadingSubject.next(true);
-  //   setTimeout(() => {
-  //     this.userService.currentUserSubject.next(Object.assign({}, this.user));
-  //     this.userService.isLoadingSubject.next(false);
-  //   }, 2000);
-  // }
+        this.isLoading$.next(false);
+      } catch (error) {
+        this.notifs.warn('Error upload file');
+        this.isLoading$.next(false);
+      }
+    } else {
+      console.log('form', this.formGroup.value);
+      this.profileService
+        .editUser(this.user['_id'], this.formGroup.value)
+        .subscribe((res: any) => {
+          if (res && res.message) {
+            this.notifs.sucess(res.message);
+          }
+          this.isLoading$.next(false);
+        });
+    }
+  }
 
-  // cancel() {
-  //   this.user = Object.assign({}, this.firstUserState);
-  //   this.loadForm();
-  // }
-
-  // getPic() {
-  //   if (!this.user.image) {
-  //     return 'none';
-  //   }
-
-  //   return `url('${this.user.image}')`;
-  // }
-
-  // deletePic() {
-  //   this.user.image = '';
-  // }
+  public cancel() {
+    this.isLoading$.next(false);
+  }
 
   // helpers for View
   // isControlValid(controlName: string): boolean {

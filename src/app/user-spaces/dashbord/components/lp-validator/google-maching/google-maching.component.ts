@@ -68,6 +68,10 @@ export class GoogleMachingComponent
 
   public displayColumns: string[] = [];
 
+  // filter icon && and tooltips
+  public icon = '';
+  public active: any = '';
+
   rowIndex: number[] = []; // disable matTooltips
 
   // multipleSelect tables
@@ -280,6 +284,15 @@ export class GoogleMachingComponent
   ) {
     if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
+  }
+
+  sortData($e: any) {
+    $e.direction === 'asc'
+      ? (this.icon = 'asc')
+      : $e.direction === 'desc'
+      ? (this.icon = 'desc')
+      : (this.icon = '');
+    this.active = $e.active;
   }
 
   public isColumnDisplay(column: any): boolean {

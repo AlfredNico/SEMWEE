@@ -33,8 +33,8 @@
             <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
               class="w-100 bg-white">
               <div fxLayout="column" class="w-100">
-                <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
+                <div class="drag_n_drop" cdkDragHandle></div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
                   <div style="color: #42425e;">.</div>
                   <div mat-sort-header class="p-0">
                     <!-- <i class="fas fa-sort"></i> -->
@@ -69,13 +69,15 @@
               [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth"
               (tabIndex)="hideTooltip($event)">
               <div fxLayout="column" class="w-100">
-                <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
-                  <div>
+                <div class="drag_n_drop" cdkDragHandle></div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3"  >
+                  <div mat-sort-header>
                     {{ column | removeUnderscore | capitalizeFirstPipe }}
                   </div>
-                  <div mat-sort-header class="pl-3">
-                    <!-- <i class="fas fa-sort"></i> -->
+                  <div class="pl-3">
+                    <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
+                    <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>
+                    <i *ngIf="icon === 'desc' && active === column" class="fas fa-sort-down"></i>
                   </div>
                 </div>
               </div>
@@ -106,9 +108,9 @@
 
       <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
       <!-- width(i, containerMin.offsetWidth, containerMax.offsetWidth) -->
-      <!-- <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell" [colSpan]="1 + 1" colspan="{{1 + 1}}" [attr.rowspan]="dataSource.data.length">No data</td>
-            </tr> -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="text-center" [colSpan]="dataView.displayColumns.length">No data</td>
+      </tr>
     </table>
   </div>
 

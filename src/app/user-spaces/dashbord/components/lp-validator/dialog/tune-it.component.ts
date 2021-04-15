@@ -69,7 +69,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
             ></textarea>
           </mat-form-field>
 
-          <mat-form-field
+          <!-- <mat-form-field
             appearance="outline"
             class="w-100"
             *ngIf="item.value == 'Editsynonimize'"
@@ -81,7 +81,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
               placeholder="Edit synonyms..."
               formControlName="Editsynonimize"
             ></textarea>
-          </mat-form-field>
+          </mat-form-field> -->
         </mat-dialog-content>
 
         <mat-dialog-actions class="w-100 p-0" align="end">
@@ -129,7 +129,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   readonly items: any[] = [
     { value: 'Editspelling', viewValue: 'Edit spelling' },
     { value: 'Synonimyze', viewValue: 'Synonimyze' },
-    { value: 'Editsynonimize', viewValue: 'Edit synonyms' },
+    // { value: 'Editsynonimize', viewValue: 'Edit synonyms' },
   ];
   readonly itemsType: { value: string; label: string }[] = [
     { value: 'item_type_only', label: 'This Item Type only' },
@@ -142,7 +142,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   form = new FormGroup({
     Editspelling: new FormControl(''),
     Synonimyze: new FormControl(''),
-    Editsynonimize: new FormControl(''),
+    // Editsynonimize: new FormControl(''),
     SemanticScope: new FormControl(false),
     Apply_on_the_colum: new FormControl(false),
     Apply_on_the_table: new FormControl(false),
@@ -160,7 +160,6 @@ export class TuneItComponent implements OnInit, AfterViewInit {
       this.itemType = this.data.itemSeleted;
 
       if (this.data.checkTuneIt.length !== 0) {
-        console.log(this.data.itemSeleted);
         if (this.data.itemSeleted === 'ItemType') {
           const value = this.data.checkTuneIt[0];
           this.form.patchValue({
@@ -177,11 +176,9 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         //updares formValue
         this.form.patchValue({
           Editspelling: this.data.row[`${this.data.itemSeleted}`],
-          SemanticScope: this.itemsType[2].value,
+          SemanticScope: this.itemsType[0].value,
         });
       }
-
-      console.log('data ', this.data);
     }
   }
 
@@ -190,14 +187,9 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   async onClick() {
-    const {
-      Editspelling,
-      Synonimyze,
-      Editsynonimize,
-      SemanticScope,
-    } = this.form.controls;
+    const { Editspelling, Synonimyze, SemanticScope } = this.form.controls;
 
-    if (Editspelling.value || Synonimyze.value || Editsynonimize.value) {
+    if (Editspelling.value || Synonimyze.value) {
       if (this.itemType == 'ItemType') {
         if (this.data.checkTuneIt && this.data.checkTuneIt.length !== 0) {
           const data = {
@@ -210,7 +202,6 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           );
           if (res && res.message) this.dialogRef.close(this.form.value);
           this.notifs.sucess(res.message);
-          console.log(res);
         } else {
           const data = {
             ...this.form.value,
@@ -230,7 +221,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           };
           const res = await this.propertyService.appyPropertyValue(
             value,
-            this.data.checkTuneIt[0]
+            this.data.checkTuneIt[0]['_id']
           );
 
           if (res && res.message) this.dialogRef.close(this.form.value);

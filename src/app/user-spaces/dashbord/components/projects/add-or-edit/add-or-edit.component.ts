@@ -9,20 +9,18 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as COUNTRY from 'src/app/shared/fake-data/countries.json';
 
-
 @Component({
   selector: 'app-add-or-edit',
   templateUrl: './add-or-edit.component.html',
-  styleUrls: ['./add-or-edit.component.scss']
+  styleUrls: ['./add-or-edit.component.scss'],
 })
 export class AddOrEditComponent implements OnInit {
-
   public image_url: string = 'assets/images/png/project_img.png';
   image_project!: File;
   private imageLandscape: File;
   private imageSquared: File;
 
-  @Input() private userId: any;
+  @Input() private userId: any = undefined;
   readonly countries: any[] = (COUNTRY as any).default;
   readonly languages: { name: string; code: string }[] = [
     {
@@ -40,9 +38,9 @@ export class AddOrEditComponent implements OnInit {
   @Input() isAddItem: boolean = true;
   @Input() public dataSources: Projects = undefined;
   @Output() public formProject = new EventEmitter<{
-    form: FormGroup,
-    imageLandscape: File,
-    imageSquared: File
+    form: FormGroup;
+    imageLandscape: File;
+    imageSquared: File;
   }>(undefined);
 
   public form = this.fb.group({
@@ -78,7 +76,7 @@ export class AddOrEditComponent implements OnInit {
     private projetctService: ProjectsService,
     private notis: NotificationService,
     private custumValidator: CustomValidationService
-  ) { }
+  ) {}
 
   get name_project() {
     return this.form.get('name_project');
@@ -104,14 +102,16 @@ export class AddOrEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      if (this.dataSources) {
+    if (this.dataSources) {
       this.image_url = environment.baseUrlImg + this.dataSources.image_project;
 
       this.form.patchValue({
         ...this.dataSources,
         letter_thumbnails_project: {
           letter: this.dataSources.letter_thumbnails_project[0]['letter'],
-          background: this.dataSources.letter_thumbnails_project[0]['background'],
+          background: this.dataSources.letter_thumbnails_project[0][
+            'background'
+          ],
           color: this.dataSources.letter_thumbnails_project[0]['color'],
         },
       });
@@ -164,15 +164,13 @@ export class AddOrEditComponent implements OnInit {
       this.formProject.emit({
         form: this.form,
         imageLandscape: this.imageLandscape,
-        imageSquared: this.imageSquared
+        imageSquared: this.imageSquared,
       });
-    }else{
+    } else {
       this.notis.warn('invalid field !');
       // this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
   }
-
-
 
   onImageChanged(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -254,5 +252,4 @@ export class AddOrEditComponent implements OnInit {
       };
     }
   }
-
 }

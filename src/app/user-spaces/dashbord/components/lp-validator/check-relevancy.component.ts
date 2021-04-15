@@ -86,6 +86,10 @@ export class CheckRelevancyComponent
   filterData: any[] = [];
   checklist: string[] = [];
 
+  // filter icon && and tooltips
+  public icon = '';
+  public active: any = '';
+
   rowIndex: number[] = []; // disable matTooltips
 
   // multipleSelect tables
@@ -368,6 +372,15 @@ export class CheckRelevancyComponent
       this.notifs.warn('Server error !');
       this.commonServices.hideSpinner();
     }
+  }
+
+  sortData($e: any) {
+    $e.direction === 'asc'
+      ? (this.icon = 'asc')
+      : $e.direction === 'desc'
+      ? (this.icon = 'desc')
+      : (this.icon = '');
+    this.active = $e.active;
   }
 
   public isColumnDisplay(column: any): boolean {

@@ -27,6 +27,11 @@
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
+            .mat-form-field-appearance-outline .mat-form-field-infix {
+              padding: 1em 0 1em 0 !important;
+              width: 100%;
+              margin: 0;
+            }
           }
         }
         .mat-header-cell {

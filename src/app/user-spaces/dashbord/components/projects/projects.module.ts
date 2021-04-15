@@ -5,24 +5,15 @@ import { LandingModule } from '@app/shared/modules/landing.module';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 
-
-
 @NgModule({
-  declarations: [
-    AddOrEditComponent
-  ],
-  imports: [
-    CommonModule,
-    LandingModule,
-    SharedModule,
-    LandingPageModule,
-  ],
+  declarations: [AddOrEditComponent],
+  imports: [CommonModule, LandingModule, SharedModule, LandingPageModule],
   exports: [
     CommonModule,
     LandingModule,
     SharedModule,
     LandingPageModule,
-    AddOrEditComponent
-  ]
+    AddOrEditComponent,
+  ],
 })
-export class ProjectsModule { }
+export class ProjectsModule {}

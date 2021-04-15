@@ -1,3 +1,5 @@
+import { Users } from '@app/models/users';
+import { AuthService } from './../../../authentification/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
@@ -19,7 +21,7 @@ export class ProjectsService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   public getAllProjects(_idUsers): Observable<Projects[]> {
     return this.http.get<Projects[]>(
@@ -73,16 +75,22 @@ export class ProjectsService {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
-      return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
-        map((res) => (res ? { projectName: true } : null)),
-        catchError(() => of(null))
-      );
+      const _id = this.auth.currentUserSubject.value['_id'];
+      // return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
+      //   map((res) => (res ? { projectName: true } : null)),
+      //   catchError(() => of(null))
+      // );
 
-      // return this.http.post(`${environment.baseUrl}/api/project/checkProject/:idUser/:`, {control}).pipe(
-      //    map(res => (res ? { projectName : true} : null)),
-      //    catchError(()=> of(null))
-      // )
-      // /api/project/checkProject/:idUser/:nameProject
+      return this.http
+        .get(
+          `${environment.baseUrl}/project/checkProject/${_id}/${control.value}`
+        )
+        .pipe(
+          map((res: any) =>
+            res.message === true ? { projectName: true } : null
+          ),
+          catchError(() => of(null))
+        );
     };
   }
 }

@@ -1,8 +1,8 @@
 <ng-container>
   <!-- [formGroup]="formGroup" -->
-  <div class="card card-custom card-stretch" > 
+  <div class="card card-custom card-stretch">
     <!-- begin::Loading -->
-    <!-- <ng-container *ngIf="isLoading$ | async">
+    <ng-container *ngIf="isLoading$ | async">
       <div class="progress progress-modal">
         <div
           class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
@@ -13,10 +13,10 @@
           aria-valuemax="100"
         ></div>
       </div>
-    </ng-container> -->
+    </ng-container>
     <!-- end::Loading -->
     <!--begin::Header-->
-    <!-- <div class="card-header py-3">
+    <div class="card-header py-3 px-4">
       <div class="card-title align-items-start flex-column">
         <h3 class="card-label font-weight-bolder text-dark">Personal Information</h3>
         <span class="text-muted font-weight-bold font-size-sm mt-1">Update your personal informaiton</span>
@@ -25,12 +25,12 @@
         <button type="submit" [disabled]="formGroup.invalid" class="btn btn-success mr-2" (click)="save()">Save Changes</button>
         <button type="reset" class="btn btn-secondary" (click)="cancel()">Cancel</button>
       </div>
-    </div> -->
+    </div>
     <!--end::Header-->
     <!--begin::Form-->
-    <div class="form">
+    <div class="form" [formGroup]="formGroup">
       <!--begin::Body-->
-      <!-- <div class="card-body">
+      <div class="card-body">
         <div class="row">
           <label class="col-xl-3"></label>
           <div class="col-lg-9 col-xl-6">
@@ -40,30 +40,29 @@
         <div class="form-group row">
           <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
           <div class="col-lg-9 col-xl-6">
-            <div class="image-input image-input-outline"
-              id="kt_profile_avatar"
-              [class.image-input-empty]="!user.pic"
-              [style.backgroundImage]="'url(./assets/media/users/blank.png)'"
-            >
+            <div class="image-input image-input-outline" id="kt_profile_avatar"
+              [class.image-input-empty]="!user?.image"
+              [style.backgroundImage]="'url(./assets/media/users/blank.png)'">
               <div class="image-input-wrapper" [style.backgroundImage]="getPic()"></div>
-              <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                data-action="change"
-                data-toggle="tooltip"
-                title=""
-                data-original-title="Change avatar"
-              >
+              <label
+                class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                data-action="change" data-toggle="tooltip" title=""
+                data-original-title="Change avatar">
                 <i class="fa fa-pen icon-sm text-muted"></i>
-                <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg"  />
-                <input type="hidden" name="profile_avatar_remove" formControlName="pic" />
+                <input type="file" #fileInput name="profile_avatar" accept=".png, .jpg, .jpeg"
+                (change)="uploadChanged($event)" />
+                <input type="hidden" name="profile_avatar_remove" formControlName="image" />
               </label>
-              <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                data-action="cancel" data-toggle="tooltip" title="" data-original-title="Cancel avatar">
+              <span
+                class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                data-action="cancel" data-toggle="tooltip" title=""
+                data-original-title="Cancel avatar">
                 <i class="ki ki-bold-close icon-xs text-muted"></i>
               </span>
-              <span *ngIf="user.pic"
+              <span *ngIf="isPdp === true"
                 class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-                (click)="deletePic()"
-                data-action="remove" data-toggle="tooltip" title="" data-original-title="Remove avatar">
+                (click)="deletePic()" data-action="remove" data-toggle="tooltip" title=""
+                data-original-title="Remove avatar">
                 <i class="ki ki-bold-close icon-xs text-muted"></i>
               </span>
             </div>
@@ -73,40 +72,35 @@
         <div class="form-group row">
           <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
           <div class="col-lg-9 col-xl-6">
-            <input class="form-control form-control-lg form-control-solid"
-              type="text"
+            <input class="form-control form-control-lg form-control-solid" type="text"
               formControlName="firstname"
-              [class.is-invalid]="isControlInvalid('firstname')"
-              [class.is-valid]="isControlValid('firstname')"
-            />
+              [class.is-invalid]="(firstname.touched || firstname.dirty) && (firstname.errors?.required && firstname?.invalid)"
+              [class.is-valid]="firstname.dirty && !firstname.errors?.required" />
           </div>
         </div>
         <div class="form-group row">
           <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
           <div class="col-lg-9 col-xl-6">
-            <input class="form-control form-control-lg form-control-solid"
-              type="text"
-              value="Bold"
+            <input class="form-control form-control-lg form-control-solid" type="text" value="Bold"
               formControlName="lastname"
-              [class.is-invalid]="isControlInvalid('lastname')"
-              [class.is-valid]="isControlValid('lastname')"
-            />
+              [class.is-invalid]="lastname.touched && lastname.errors?.required"
+              [class.is-valid]="lastname.dirty && !lastname?.errors?.required" />
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-xl-3 col-lg-3 col-form-label">Company Name</label>
+          <label class="col-xl-3 col-lg-3 col-form-label">E-mail adress</label>
           <div class="col-lg-9 col-xl-6">
-            <input class="form-control form-control-lg form-control-solid"
-              type="text"
-              formControlName="companyName"
-              [class.is-invalid]="isControlInvalid('companyName')"
-              [class.is-valid]="isControlValid('companyName')"
-            />
-            <span class="form-text text-muted">If you want your invoices addressed to a company. Leave blank to use your
+            <input class="form-control form-control-lg form-control-solid" type="text"
+              [class.is-invalid]="(email.touched || email.dirty) && (email.errors?.required || email?.invalid || email.errors?.email)"
+              [class.is-valid]="email.touched && !email?.errors?.required"
+              formControlName="email" />
+            <span class="form-text text-muted">If you want your invoices addressed to a company.
+              Leave blank to use your
               full name.</span>
           </div>
         </div>
-        <div class="row">
+
+        <!-- <div class="row">
           <label class="col-xl-3"></label>
           <div class="col-lg-9 col-xl-6">
             <h5 class="font-weight-bold mt-10 mb-6">Contact Info</h5>
@@ -122,7 +116,7 @@
                 </span>
               </div>
               <input type="text"
-                class="form-control form-control-lg form-control-solid" 
+                class="form-control form-control-lg form-control-solid"
                 placeholder="Phone"
                 formControlName="phone"
                 [class.is-invalid]="isControlInvalid('phone')"
@@ -166,8 +160,9 @@
           </div>
         </div>
       </div> -->
-      <!--end::Body-->
+        <!--end::Body-->
+      </div>
+      <!--end::Form-->
     </div>
-    <!--end::Form-->
   </div>
 </ng-container>

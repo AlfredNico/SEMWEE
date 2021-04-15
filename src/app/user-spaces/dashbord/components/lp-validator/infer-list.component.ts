@@ -88,7 +88,9 @@ export class InferListComponent
   @Output() dataInferListReady = new EventEmitter<any>();
 
   // filter icon && and tooltips
-  public icon = 'asc';
+  public icon = '';
+  public active: any = '';
+
   rowIndex: number[] = [];
 
   // multipleSelect tables
@@ -460,10 +462,12 @@ export class InferListComponent
   }
 
   sortData($e: any) {
-    console.log($e);
     $e.direction === 'asc'
-      ? (this.icon = 'myIcon')
-      : (this.icon = 'myDescIcon');
+      ? (this.icon = 'asc')
+      : $e.direction === 'desc'
+      ? (this.icon = 'desc')
+      : (this.icon = '');
+    this.active = $e.active;
   }
 
   hideTooltip(event: number) {

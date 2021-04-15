@@ -64,6 +64,9 @@ export class ResizableDirective {
       // Calculate width of column
       let width = this.startWidth + (event.pageX - this.startX - offset);
 
+      // console.log('elem ', this.column);
+      // console.log('elem ', this.column.childNodes);
+
       const tableCells = Array.from(
         this.table.querySelectorAll('.mat-row')
       ).map((row: any) => row.querySelectorAll('.mat-cell').item(this.index));

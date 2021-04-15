@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import { PropertyValue } from '../interfaces/property-value';
 
 @Injectable({
@@ -23,7 +21,7 @@ export class PropertyValueService {
         )
         .toPromise();
     } else {
-      console.log('edit');
+      console.log('edit', _id, ' //  ', data);
       return this.http
         .put<{ message: string }>(
           `${environment.baseUrl}/validator/put-item-property/${_id}`,
