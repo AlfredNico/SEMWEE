@@ -32,17 +32,17 @@ export class TokenInterceptor implements HttpInterceptor {
       this.notifs.warn('Session expiré');
       this.router.navigateByUrl('/sign-in');
     } else if (this.cookieService.check('SEMEWEE') === true) {
-      // request = request.clone({
-      //   setHeaders: {
-      //     Authorization: `Bearer ${this.cookieService.get('SEMEWEE')}`,
-      //   },
-      // });
       request = request.clone({
-        headers: request.headers.set(
-          'Authorization',
-          'Bearer ' + this.cookieService.get('SEMEWEE')
-        ),
+        setHeaders: {
+          Authorization: `Bearer ${this.cookieService.get('SEMEWEE')}`,
+        },
       });
+      // request = request.clone({
+      //   headers: request.headers.set(
+      //     'Authorization',
+      //     'Bearer ' + this.cookieService.get('SEMEWEE')
+      //   ),
+      // });
     }
     // // default --> json
     // if (!request.headers.has('Content-Type')) {

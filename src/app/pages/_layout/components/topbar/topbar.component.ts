@@ -46,7 +46,6 @@ export class TopbarComponent implements OnInit, AfterViewInit {
     // this.user$ = this.auth.currentUserSubject.asObservable();
     this.user = this.auth.currentUserSubject;
     this.auth.currentUserSubject.subscribe((user: Users) => {
-      console.log('user', user);
       if (user['image'] !== 'not image')
         this.pdp = `${environment.baseUrlImg}${user['image']}`;
     });

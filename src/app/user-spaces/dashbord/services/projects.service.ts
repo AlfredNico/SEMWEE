@@ -80,27 +80,30 @@ export class ProjectsService {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
-      // const _id = this.auth.currentUserSubject.value['_id'];
+      const _id = this.auth.currentUserSubject.value['_id'];
+
       // const headers = new HttpHeaders().set(
       //   'Authorization',
       //   `Bearer ${this.cookieService.get('SEMEWEE')}`
       // );
-      return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
-        map((res) => (res ? { projectName: true } : null)),
-        catchError(() => of(null))
-      );
-
-      // return this.http
-      //   .get(
-      //     `${environment.baseUrl}/project/checkProject/${_id}/${control.value}`,
-      //     { headers: headers }
-      //   )
-      //   .pipe(
-      //     map((res: any) =>
-      //       res.message === true ? { projectName: true } : null
-      //     ),
-      //     catchError(() => of(null))
+      // return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
+      //   map((res) => (res ? { projectName: true } : null)),
+      //   catchError(() => of(null))
       //   );
+      // { headers: headers }
+      const val = {
+        nameProject: control.value,
+        idUser: _id,
+      };
+
+      return this.http
+        .post(`${environment.baseUrl}/project/checkProject`, val)
+        .pipe(
+          map((res: any) =>
+            res.message === true ? { projectName: true } : null
+          ),
+          catchError(() => of(null))
+        );
     };
   }
 }

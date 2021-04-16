@@ -31,13 +31,13 @@ export class ErrorInterceptor implements HttpInterceptor {
           if (err.status === 401) {
             console.log('error', error);
             if (error === 'You should first log in') {
-              this.authService.logout();
+              // this.authService.logout();
             }
             // auto logout if 401 response returned from api
             // location.reload(true);
             this.notifs.warn(error);
             // window.location.reload();
-            this.router.navigateByUrl('/sign-in');
+            // this.router.navigateByUrl('/sign-in');
             return EMPTY;
           } else if (err.status === 0) {
             this.common.hideSpinner('root');

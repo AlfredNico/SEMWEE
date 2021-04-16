@@ -49,7 +49,8 @@ export class ProfilesService {
 
   public checkUserInfo(user: Users): void {
     if (localStorage.getItem('currentUser') !== null) {
-      console.log('localStorage');
+      localStorage.removeItem('currentUser');
+      localStorage.setItem('currentUser', JSON.stringify(user));
     } else if (this.cookieService.check('SEMEWEE') === true) {
       this.cookieService.set('_id', user._id);
 

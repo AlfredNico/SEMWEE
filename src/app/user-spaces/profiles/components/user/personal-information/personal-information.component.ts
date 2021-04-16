@@ -67,7 +67,6 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.user);
     if (this.user) {
       this.formGroup.patchValue({
         ...this.user,
@@ -118,11 +117,6 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const newUser = {
-      ...this.user,
-      ...this.formGroup.value,
-    } as Users;
-
     if (this.pdpSource instanceof File) {
       try {
         const urlPdp = await this.profileService.uploadedPdp(this.pdpSource);
@@ -135,6 +129,12 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
             .editUser(this.user['_id'], value)
             .subscribe((res: any) => {
               if (res && res.message) {
+                const newUser = {
+                  ...this.user,
+                  ...this.formGroup.value,
+                  image: urlPdp.message,
+                } as Users;
+
                 this.profileService.checkUserInfo(newUser);
                 this.notifs.sucess(res.message);
               }
@@ -149,6 +149,11 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
         this.isLoading$.next(false);
       }
     } else {
+      const newUser = {
+        ...this.user,
+        ...this.formGroup.value,
+      } as Users;
+
       this.profileService
         .editUser(this.user['_id'], this.formGroup.value)
         .subscribe(

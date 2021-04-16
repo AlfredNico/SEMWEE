@@ -150,8 +150,8 @@ export class AddOrEditComponent implements OnInit {
       this.form.get('image_project_Landscape').clearValidators();
       this.form.get('image_project_Squared').clearValidators();
     } else if (
-      this.imageLandscape != undefined ||
-      this.imageSquared != undefined
+      this.imageLandscape !== undefined ||
+      this.imageSquared !== undefined
     ) {
       this.letter.clearValidators();
       this.form.get('image_project_Landscape').clearValidators();
