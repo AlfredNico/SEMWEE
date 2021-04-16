@@ -82,7 +82,7 @@ export class ProjectsService {
     ): Observable<{ [key: string]: any } | null> => {
       const _id = this.auth.currentUserSubject.value['_id'];
 
-      // const headers = new HttpHeaders().set(
+      // const header = new HttpHeaders().set(
       //   'Authorization',
       //   `Bearer ${this.cookieService.get('SEMEWEE')}`
       // );
@@ -96,8 +96,9 @@ export class ProjectsService {
         idUser: _id,
       };
 
+      // headers: header,
       return this.http
-        .post(`${environment.baseUrl}/project/checkProject`, val)
+        .post(`${environment.baseUrl}/project/checkProject`, val, {})
         .pipe(
           map((res: any) =>
             res.message === true ? { projectName: true } : null
