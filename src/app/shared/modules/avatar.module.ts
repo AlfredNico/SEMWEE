@@ -5,22 +5,15 @@ import { LandingPageModule } from './landing-page.module';
 import { LandingModule } from './landing.module';
 import { SharedModule } from './shared.module';
 
-
-
 @NgModule({
   declarations: [AvatarComponent],
-  imports: [
-    LandingModule,
-    SharedModule,
-    LandingPageModule,
-    CommonModule,
-  ],
+  imports: [LandingModule, SharedModule, LandingPageModule, CommonModule],
   exports: [
     CommonModule,
     LandingModule,
     SharedModule,
     LandingPageModule,
-    AvatarComponent
-  ]
+    AvatarComponent,
+  ],
 })
-export class AvatarModule { }
+export class AvatarModule {}

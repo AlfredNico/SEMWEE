@@ -1,6 +1,7 @@
+import { CookieService } from 'ngx-cookie-service';
 import { Users } from '@app/models/users';
 import { AuthService } from './../../../authentification/services/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { environment } from '@environments/environment';
@@ -21,7 +22,11 @@ export class ProjectsService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private cookieService: CookieService
+  ) {}
 
   public getAllProjects(_idUsers): Observable<Projects[]> {
     return this.http.get<Projects[]>(
@@ -75,22 +80,27 @@ export class ProjectsService {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
-      const _id = this.auth.currentUserSubject.value['_id'];
-      // return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
-      //   map((res) => (res ? { projectName: true } : null)),
-      //   catchError(() => of(null))
+      // const _id = this.auth.currentUserSubject.value['_id'];
+      // const headers = new HttpHeaders().set(
+      //   'Authorization',
+      //   `Bearer ${this.cookieService.get('SEMEWEE')}`
       // );
+      return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
+        map((res) => (res ? { projectName: true } : null)),
+        catchError(() => of(null))
+      );
 
-      return this.http
-        .get(
-          `${environment.baseUrl}/project/checkProject/${_id}/${control.value}`
-        )
-        .pipe(
-          map((res: any) =>
-            res.message === true ? { projectName: true } : null
-          ),
-          catchError(() => of(null))
-        );
+      // return this.http
+      //   .get(
+      //     `${environment.baseUrl}/project/checkProject/${_id}/${control.value}`,
+      //     { headers: headers }
+      //   )
+      //   .pipe(
+      //     map((res: any) =>
+      //       res.message === true ? { projectName: true } : null
+      //     ),
+      //     catchError(() => of(null))
+      //   );
     };
   }
 }

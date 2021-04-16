@@ -47,6 +47,7 @@ import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
+import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
 
 @Injectable({
   providedIn: 'root',
@@ -82,6 +83,7 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
     FooterComponent,
     HeaderComponent,
     HeaderMenuComponent,
+    HeaderMenuDynamicComponent,
     TopbarComponent,
     SearchDropdownInnerComponent,
     NotificationsDropdownInnerComponent,
@@ -130,12 +132,12 @@ import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extra
                 './dashbord/components/projects/new-projects/new-projects.module'
               ).then((m) => m.NewProjectsModule),
           },
-           {
+          {
             path: 'profile',
             loadChildren: () =>
-              import(
-                './profiles/profiles.module'
-              ).then((m) => m.ProfilesModule),
+              import('./profiles/profiles.module').then(
+                (m) => m.ProfilesModule
+              ),
           },
           { path: '', redirectTo: 'all-project', pathMatch: 'full' },
         ],

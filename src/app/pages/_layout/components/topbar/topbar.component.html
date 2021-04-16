@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand navbar-light my-navbar" style="box-shadow: none;">
     <ul class="navbar-nav ml-auto">
-    
+
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown  d-sm-none">
-     
+
           <!-- Dropdown - Messages -->
           <div class="dropdown-menu dropdown-menu-right p-3">
             <form class="form-inline mr-auto w-100 navbar-search">
@@ -19,7 +19,7 @@
             </form>
           </div>
         </li>
-    
+
         <!-- Nav Item - Alerts -->
        <!-- <li class="nav-item dropdown">
                         <a class="nav-icon dropdown" href="#" id="alertsDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -45,7 +45,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                             </div>
                             <div class="dropdown-menu-footer">
                                 <a href="#" class="text-muted">Show all notifications</a>
@@ -71,7 +71,7 @@
             </a>
           </li>
         <!-- Nav Item - Messages -->
-    
+
         <li class="nav-item nav-item-topbar">
           <a class="nav-link nav-link-topbar" data-title="Notifications"
          role="button" [ngClass]="n.menuOpen ? 'activateNotif':'inActivateNotif'" #n="matMenuTrigger" [matMenuTriggerFor]="clicknotif">
@@ -88,14 +88,14 @@
           </div>
       </mat-menu>
         <div class="divider"></div>
-    
+
         <!-- Nav Item - User Information -->
         <ng-container *ngIf="user">
             <li class="nav-item dropdown nav-item-dropdown-topbar">
             <a class="nav-link dropdown-toggle dropdown-topbar" id="userDropdown" role="button" data-toggle="dropdown" [ngClass]="z.menuOpen ? 'activate':'inActivate'" #z="matMenuTrigger" [matMenuTriggerFor]="clickmenu">
                 <span class="mr-2 d-none d-lg-inline text-black-600 text-fullname">{{ (user | async).firstname }} {{ (user | async).lastname }}</span>
                 <i class="fas fa-chevron-down marge-top"></i>
-                <img class="img-profile rounded-circle" [src]="'./assets/images/top_bar/blank.png'">
+                <img class="img-profile rounded-circle" [src]="pdp">
             </a>
               <mat-menu #clickmenu="matMenu" xPosition="before">
                 <div class="menu">
@@ -128,6 +128,6 @@
             <!-- <app-user-dropdown></app-user-dropdown> -->
             </li>
         </ng-container>
-    
+
       </ul>
     </nav>

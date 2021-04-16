@@ -1,10 +1,11 @@
+import { LandingModule } from '@app/shared/modules/landing.module';
+import { LandingPageModule } from './../shared/modules/landing-page.module';
+import { SharedModule } from './../shared/modules/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { PagesRoutingModule } from './pages-routing.module';
-import {
-  NgbProgressbarModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslationModule } from '../modules/i18n/translation.module';
 // import { LayoutComponent } from './_layout/layout.component';
 // import { ScriptsInitComponent } from './_layout/init/scipts-init/scripts-init.component';
@@ -43,6 +44,9 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
     CoreModule,
     SubheaderModule,
     MatProgressBarModule,
+    SharedModule,
+    LandingPageModule,
+    LandingModule,
   ],
   providers: [ProjectsService],
 })

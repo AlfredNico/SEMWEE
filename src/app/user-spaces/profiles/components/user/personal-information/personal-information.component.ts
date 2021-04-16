@@ -11,6 +11,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '@app/authentification/services/auth.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-personal-information',
@@ -66,6 +67,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(this.user);
     if (this.user) {
       this.formGroup.patchValue({
         ...this.user,
@@ -92,7 +94,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   public getPic(): string {
     if (this.user.image !== 'not image' && this.isUploaded === false) {
       this.isPdp = true;
-      return `url('${this.user.image}')`;
+      return `url('${environment.baseUrlImg}${this.user.image}')`;
     } else if (this.isUploaded === true) {
       this.isPdp = true;
       return `url('${this.pdp}')`;
@@ -110,10 +112,17 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
 
   public async save() {
     this.isLoading$.next(true);
+
     if (!this.formGroup.valid) {
       this.isLoading$.next(false);
       return;
     }
+
+    const newUser = {
+      ...this.user,
+      ...this.formGroup.value,
+    } as Users;
+
     if (this.pdpSource instanceof File) {
       try {
         const urlPdp = await this.profileService.uploadedPdp(this.pdpSource);
@@ -126,11 +135,13 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
             .editUser(this.user['_id'], value)
             .subscribe((res: any) => {
               if (res && res.message) {
+                this.profileService.checkUserInfo(newUser);
                 this.notifs.sucess(res.message);
               }
               this.isLoading$.next(false);
             });
         }
+        this.isLoading$.next(false);
 
         this.isLoading$.next(false);
       } catch (error) {
@@ -138,19 +149,22 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
         this.isLoading$.next(false);
       }
     } else {
-      console.log('form', this.formGroup.value);
       this.profileService
         .editUser(this.user['_id'], this.formGroup.value)
-        .subscribe((res: any) => {
-          if (res && res.message) {
-            this.notifs.sucess(res.message);
-          }
-          this.isLoading$.next(false);
-        });
+        .subscribe(
+          (res: any) => {
+            if (res && res.message) {
+              this.profileService.checkUserInfo(newUser);
+              this.notifs.sucess(res.message);
+            }
+            this.isLoading$.next(false);
+          },
+          (error) => this.isLoading$.next(false)
+        );
     }
   }
 
-  public cancel() {
+  public cancel(): void {
     this.isLoading$.next(false);
   }
 
