@@ -80,22 +80,11 @@ export class ProjectsService {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
-      const _id = this.auth.currentUserSubject.value['_id'];
-
-      // const header = new HttpHeaders().set(
-      //   'Authorization',
-      //   `Bearer ${this.cookieService.get('SEMEWEE')}`
-      // );
-      // return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
-      //   map((res) => (res ? { projectName: true } : null)),
-      //   catchError(() => of(null))
-      //   );
-      // { headers: headers }
       const val = {
         nameProject: control.value,
-        idUser: _id,
+        idUser: this.auth.currentUserSubject.value['_id'],
       };
-
+      // console.log('touche ', control.touched);
       // headers: header,
       return this.http
         .post(`${environment.baseUrl}/project/checkProject`, val, {})
