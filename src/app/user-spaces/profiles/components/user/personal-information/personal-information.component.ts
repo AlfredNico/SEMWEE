@@ -110,6 +110,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
     this.isdeletePic = true;
     this.pdpSource = undefined;
     this.isUploaded = false;
+    this.isPdp = false;
     this.formGroup.patchValue({
       image: '',
     });
