@@ -82,6 +82,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
 
   public uploadChanged(event: any): void {
     if (event.target.files && event.target.files[0]) {
+      this.pdp = '';
       const file = (event.target as HTMLInputElement).files[0] as any;
       const reader = new FileReader();
       reader.onload = (e) => (this.pdp = reader.result);
