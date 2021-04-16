@@ -33,6 +33,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   pdpSource: File;
   public user: Users;
   isLoading$ = new BehaviorSubject<boolean>(false);
+  isdeletePic: boolean = false;
   // user: UserModel;
   // firstUserState: UserModel;
   // subscriptions: Subscription[] = [];
@@ -91,10 +92,14 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   }
 
   public getPic(): string {
-    if (this.user.image !== 'not image' && this.isUploaded === false) {
+    if (
+      this.user.image !== 'not image' &&
+      this.isUploaded === false &&
+      this.isdeletePic === false
+    ) {
       this.isPdp = true;
       return `url('${environment.baseUrlImg}${this.user.image}')`;
-    } else if (this.isUploaded === true) {
+    } else if (this.isUploaded === true && this.isdeletePic === false) {
       this.isPdp = true;
       return `url('${this.pdp}')`;
     }
@@ -102,6 +107,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   }
 
   public deletePic() {
+    this.isdeletePic = true;
     this.pdpSource = undefined;
     this.isUploaded = false;
     this.formGroup.patchValue({
@@ -152,6 +158,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       const newUser = {
         ...this.user,
         ...this.formGroup.value,
+        image: 'not image',
       } as Users;
 
       this.profileService

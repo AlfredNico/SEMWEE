@@ -21,6 +21,7 @@ export class ProfileCardComponent implements OnInit {
     this.auth.currentUserSubject.subscribe((user: Users) => {
       if (user['image'] !== 'not image')
         this.pdp = `url('${environment.baseUrlImg}${user['image']}')`;
+      else this.pdp = 'url(./assets/images/top_bar/blank.png)';
     });
   }
 }

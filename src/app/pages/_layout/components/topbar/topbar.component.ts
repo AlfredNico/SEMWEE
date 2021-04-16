@@ -48,6 +48,7 @@ export class TopbarComponent implements OnInit, AfterViewInit {
     this.auth.currentUserSubject.subscribe((user: Users) => {
       if (user['image'] !== 'not image')
         this.pdp = `${environment.baseUrlImg}${user['image']}`;
+      else this.pdp = './assets/images/top_bar/blank.png';
     });
   }
 
