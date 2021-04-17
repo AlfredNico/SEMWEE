@@ -19,7 +19,7 @@
           Name is required
         </span>
         <span class="form-text text-muted text-error" mat-error
-          *ngIf="form.controls['name_project'].errors?.maxLength">
+          *ngIf="form.controls['name_project'].touched && form.controls['name_project'].errors?.maxLength">
           Maximum length name is 40 words
         </span>
         <span class="form-text text-muted text-error" mat-error
