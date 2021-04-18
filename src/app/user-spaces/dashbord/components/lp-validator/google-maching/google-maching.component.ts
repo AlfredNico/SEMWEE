@@ -151,38 +151,30 @@ export class GoogleMachingComponent
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let s = '';
+                  let s = '',
+                    i = 0;
                   Object.entries(query).map((val) => {
                     if (val[1]) {
+                      i++;
                       const lower = (val[1] as any).toLowerCase();
+                      let query = '';
 
                       if (val[0] === 'Valid' && 'yes'.includes(lower)) {
-                        if (s === '') {
-                          s = s + `item["${val[0]}"]===true`;
-                        } else {
-                          s = s + `&& item["${val[0]}"]===true`;
-                        }
+                        query = `item["${val[0]}"]===true`;
                       } else if (val[0] === 'Valid' && 'no'.includes(lower)) {
-                        if (s === '') {
-                          s = s + `item["${val[0]}"]===false`;
-                        } else {
-                          s = s + `&& item["${val[0]}"]===false`;
-                        }
+                        query = `item["${val[0]}"]===true`;
                       } else {
-                        if (s === '') {
-                          s =
-                            s +
-                            `item["${val[0]}"].toLowerCase().includes("${lower}")`;
-                        } else {
-                          s =
-                            s +
-                            `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
-                        }
+                        query = `item["${val[0]}"].toLowerCase().includes("${lower}")`;
                       }
-                      // s = `item["${val[0]}"].includes(true)`;
+
+                      if (i === 1) {
+                        s = s + query;
+                      } else {
+                        s = s + `&& ${query}`;
+                      }
                     }
                   });
-                  console.log(s);
+                  console.log('s: ', s);
                   return eval(s);
                   // return item[property]
                   //   .toLowerCase()
