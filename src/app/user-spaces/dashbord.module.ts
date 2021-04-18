@@ -1,3 +1,4 @@
+import { PageNotFoundComponent } from './../page-not-found.component';
 import { AvatarModule } from './../shared/modules/avatar.module';
 import { Injectable, NgModule } from '@angular/core';
 // import { DashbordComponent } from './dashbord/dashbord.component';
@@ -108,7 +109,7 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
     AvatarModule,
     RouterModule.forChild([
       {
-        path: '',
+        path: 'user-space',
         component: LayoutComponent,
         children: [
           {
@@ -142,6 +143,8 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
           { path: '', redirectTo: 'all-project', pathMatch: 'full' },
         ],
       },
+      { path: '**', component: PageNotFoundComponent },
+      { path: '', redirectTo: 'user-space', pathMatch: 'full' },
     ]),
   ],
   exports: [RouterModule],

@@ -8,6 +8,9 @@
 }
 
 ::ng-deep {
+    // div[tabindex="0"][role="tables"] {
+    //    overflow: auto;
+    // }
      // table
     .mat-table {
         .odd{background: #fff;}

@@ -310,6 +310,16 @@ warn: $SEMWEE-warn
 
 /* You can add global styles to this file, and also import other style files */
 
+.warn-color {
+  color: mat-color($SEMWEE-warn) !important;
+}
+// .primary-color {
+//   color: mat-color($accent) !important;
+// }
+.primary-color {
+  color: mat-color($SEMWEE-primary) !important;
+}
+
 html,
 body {
     height: 100%;

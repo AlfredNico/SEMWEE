@@ -54,12 +54,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         canActivate: [IsLoggedInGuard],
       },
       {
-        path: 'user-space',
-        loadChildren: () =>
-          import('./user-spaces/dashbord.module').then((m) => m.DashbordModule),
-        canActivate: [AuthGuard, IsLoggedInGuard],
-      },
-      {
         path: 'sign-in',
         loadChildren: () =>
           import('./authentification/components/sign-in/auth.module').then(
@@ -88,8 +82,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
           ).then((m) => m.ResetpasswordModule),
         canActivate: [ResetPasswordGuard],
       },
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
-      { path: '**', component: PageNotFoundComponent },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./user-spaces/dashbord.module').then((m) => m.DashbordModule),
+        canActivate: [AuthGuard, IsLoggedInGuard],
+      },
+      // { path: '**', component: PageNotFoundComponent },
+      // { path: '', pathMatch: 'full', redirectTo: 'home' },
     ]),
   ],
   exports: [RouterModule],

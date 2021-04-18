@@ -31,7 +31,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log('upload', results)
+          console.log('upload', results);
           let obj = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -64,8 +64,8 @@ export class LpValidatorService {
           if (result) {
             const tmp = {
               Valid: result.valid,
-              'Popular_Search_Queries': result.psq,
-              'Website_Browser': result.webSitePosition,
+              Popular_Search_Queries: result.psq,
+              Website_Browser: result.webSitePosition,
             };
             data[result._id] = tmp;
             assign(this.converDataMatching(dataSources, data, true));
@@ -93,7 +93,6 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any) {
-    console.log('lasa: ', value)
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -101,8 +100,6 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log('azoko', results);
-
           let infer = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -112,7 +109,7 @@ export class LpValidatorService {
           infer.displayColumns = Object.keys(results[0]);
           infer.displayColumns.unshift('select');
           results.map((tbObj: any, index: number) => {
-            infer.data[index] = {...tbObj, 'select': true};
+            infer.data[index] = { ...tbObj, select: true };
           });
           return infer;
         }),
@@ -144,12 +141,9 @@ export class LpValidatorService {
       Object.keys(values).map((key: string, index: number) => {
         //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0)
-            this.matching.displayColumns.push(columnAdd[0]);
-          if (index === 2)
-            this.matching.displayColumns.push(columnAdd[1]);
-          if (index === 3)
-            this.matching.displayColumns.push(columnAdd[2]);
+          if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
+          if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
+          if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
           this.matching.displayColumns.push(key);
         }
@@ -159,8 +153,8 @@ export class LpValidatorService {
           ? obj[values['_id']]
           : {
               Valid: 'loadingQuery',
-              'Popular_Search_Queries': 'loadingQuery',
-              'Website_Browser': 'loadingQuery',
+              Popular_Search_Queries: 'loadingQuery',
+              Website_Browser: 'loadingQuery',
             };
       // if (afterSearch && obj[values['_id']] == undefined) {
       //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }

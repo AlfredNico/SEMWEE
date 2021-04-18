@@ -76,7 +76,7 @@ export class ProjectsService {
     );
   }
 
-  checkProjectName(): AsyncValidatorFn {
+  checkProjectName(isAddItem: boolean): AsyncValidatorFn {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
@@ -84,13 +84,11 @@ export class ProjectsService {
         nameProject: control.value,
         idUser: this.auth.currentUserSubject.value['_id'],
       };
-      // console.log('touche ', control.touched);
-      // headers: header,
       return this.http
         .post(`${environment.baseUrl}/project/checkProject`, val, {})
         .pipe(
           map((res: any) =>
-            res.message === true ? { projectName: true } : null
+            (res.message && isAddItem) === true ? { projectName: true } : null
           ),
           catchError(() => of(null))
         );

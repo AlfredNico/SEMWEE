@@ -15,7 +15,7 @@
     <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             tableOptions
-        </button>  style="overflow-y: auto;" -->
+        </button>  style="overflow-y: auto;" tabindex="0" role="tables" -->
     <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
       <span>Table options </span>
@@ -37,7 +37,7 @@
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
                   <div style="color: #42425e;">.</div>
                   <div mat-sort-header class="p-0">
-                    <!-- <i class="fas fa-sort"></i> -->
+                    <i class="fas fa-sort"></i>
                   </div>
                 </div>
               </div>
@@ -93,10 +93,14 @@
             (click)="selectRow(row)" [matTooltip]="row[column]"
             [matTooltipDisabled]="rowIndex.includes(i)" class="table-container-td"
             [class.active]="isRowSelected(row)">
-            <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
+            <span *ngIf="isValidURL(row[column]) === false; else templeteURL" [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
               {{ row[column] }}
             </span>
-            <div style="padding: 0 20px;" class="Test" [id]="i+'width'+indexRow">
+            <ng-template #templeteURL>
+              <a #templeteURL [href]="row[column]">{{row[column]}}</a>
+            </ng-template>
+
+            <div style="padding: 0 20px;" class="Test" [id]="i+'infer'+indexRow">
               {{ row[column] }}
             </div>
           </td>

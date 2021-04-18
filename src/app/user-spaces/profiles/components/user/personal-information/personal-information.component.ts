@@ -160,7 +160,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       const newUser = {
         ...this.user,
         ...this.formGroup.value,
-        image: 'not image',
+        image: this.isdeletePic === true ? 'not image' : this.user['image'],
       } as Users;
 
       this.profileService

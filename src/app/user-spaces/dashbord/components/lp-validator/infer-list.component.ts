@@ -453,7 +453,6 @@ export class InferListComponent
   public isColumnDisplay(column: any): boolean {
     switch (true) {
       case column.toLowerCase().includes('_id'):
-      case column.toLowerCase().includes('id'):
         return true;
 
       default:
@@ -478,7 +477,7 @@ export class InferListComponent
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
-      const elem = document.getElementById(`${id}width${index}`);
+      const elem = document.getElementById(`${id}infer${index}`);
       if (elem && this.mawWidth < elem?.offsetWidth)
         this.mawWidth = elem.offsetWidth;
     }
@@ -487,6 +486,16 @@ export class InferListComponent
   public isNumberOrString(itemValue: any) {
     if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
+  }
+
+  public isValidURL(colum: string): boolean {
+    if (colum === 'ID') {
+      const res = colum.match(
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+      );
+      return res !== null;
+    }
+    return false;
   }
 }
 

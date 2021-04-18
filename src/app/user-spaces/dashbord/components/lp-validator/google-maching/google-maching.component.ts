@@ -140,34 +140,49 @@ export class GoogleMachingComponent
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          let data = this.dataView.data.filter((item: any) => {
+          const data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
               return Object.keys(item).some((property) => {
                 if (
-                  query[property] != '' &&
+                  query[property] !== '' &&
                   typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let i = 0,
-                    s = '';
+                  let s = '';
                   Object.entries(query).map((val) => {
                     if (val[1]) {
-                      i++;
                       const lower = (val[1] as any).toLowerCase();
-                      if (i == 1) {
-                        s =
-                          s +
-                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+
+                      if (val[0] === 'Valid' && 'yes'.includes(lower)) {
+                        if (s === '') {
+                          s = s + `item["${val[0]}"]===true`;
+                        } else {
+                          s = s + `&& item["${val[0]}"]===true`;
+                        }
+                      } else if (val[0] === 'Valid' && 'no'.includes(lower)) {
+                        if (s === '') {
+                          s = s + `item["${val[0]}"]===false`;
+                        } else {
+                          s = s + `&& item["${val[0]}"]===false`;
+                        }
                       } else {
-                        s =
-                          s +
-                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                        if (s === '') {
+                          s =
+                            s +
+                            `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                        } else {
+                          s =
+                            s +
+                            `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                        }
                       }
+                      // s = `item["${val[0]}"].includes(true)`;
                     }
                   });
+                  console.log(s);
                   return eval(s);
                   // return item[property]
                   //   .toLowerCase()
@@ -298,11 +313,11 @@ export class GoogleMachingComponent
   public isColumnDisplay(column: any): boolean {
     switch (true) {
       case this.toLowerCase(column) == '_id':
-      case this.toLowerCase(column) == 'id':
-      case this.toLowerCase(column) == 'idproduct':
+      // case this.toLowerCase(column) == 'id':
+      // case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
-      case this.toLowerCase(column) == 'select':
-      case this.toLowerCase(column) == 'ID':
+        // case this.toLowerCase(column) == 'select':
+        // case this.toLowerCase(column) == 'ID':
         return true;
       default:
         return false;
@@ -328,8 +343,8 @@ export class GoogleMachingComponent
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
-      const elem = document.getElementById(`${id}width${index}`);
-      if (elem && this.mawWidth < elem?.offsetWidth)
+      const elem = document.getElementById(`${id}google${index}`);
+      if (elem && this.mawWidth <= elem?.offsetWidth)
         this.mawWidth = elem.offsetWidth;
     }
   }

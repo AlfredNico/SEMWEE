@@ -7,11 +7,9 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from './authentification/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NotificationService } from './services/notification.service';
 import { Router } from '@angular/router';
-import { ErrorInterceptor } from './error.interceptor';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {

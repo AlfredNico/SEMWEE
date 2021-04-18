@@ -386,11 +386,11 @@ export class CheckRelevancyComponent
   public isColumnDisplay(column: any): boolean {
     switch (true) {
       case this.toLowerCase(column) == '_id':
-      case this.toLowerCase(column) == 'id':
-      case this.toLowerCase(column) == 'idproduct':
+      // case this.toLowerCase(column) == 'id':
+      // case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
       case this.toLowerCase(column) == 'select':
-      case this.toLowerCase(column) == 'ID':
+        // case this.toLowerCase(column) == 'ID':
         return true;
       default:
         return false;
@@ -416,8 +416,8 @@ export class CheckRelevancyComponent
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
-      const elem = document.getElementById(`${id}width${index}`);
-      if (elem && this.mawWidth < elem?.offsetWidth)
+      const elem = document.getElementById(`${id}revelancy${index}`);
+      if (elem && this.mawWidth <= elem?.offsetWidth)
         this.mawWidth = elem.offsetWidth;
     }
   }

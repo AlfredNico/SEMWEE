@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { NotificationService } from '@app/services/notification.service';
 import { CustomValidationService } from '@app/shared/services/custom-validation.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
@@ -43,33 +48,7 @@ export class AddOrEditComponent implements OnInit {
     imageSquared: File;
   }>(undefined);
 
-  public form = this.fb.group({
-    name_project: [
-      '',
-      [Validators.required, this.custumValidator.maxLength],
-      [this.projetctService.checkProjectName()],
-      { updateOn: 'blur' },
-    ],
-    image_project_Landscape: [''],
-    image_project_Squared: [''],
-    domain_project: [
-      '',
-      [Validators.required, this.custumValidator.domainValidation],
-    ],
-    country_project: ['', [Validators.required]],
-    language_project: ['', [Validators.required]],
-    path_project: ['', [Validators.required]],
-    protocol_project: ['', [Validators.required]],
-    user_id: ['', Validators.required],
-    letter_thumbnails_project: this.fb.group({
-      letter: [
-        '',
-        [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
-      ],
-      color: ['#66ACFF'],
-      background: ['#F3F6F9'],
-    }),
-  });
+  public form: any;
 
   constructor(
     private fb: FormBuilder,
@@ -102,6 +81,34 @@ export class AddOrEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      name_project: [
+        '',
+        [Validators.required, this.custumValidator.maxLength],
+        [this.projetctService.checkProjectName(this.isAddItem)],
+        { updateOn: 'blur' },
+      ],
+      image_project_Landscape: [''],
+      image_project_Squared: [''],
+      domain_project: [
+        '',
+        [Validators.required, this.custumValidator.domainValidation],
+      ],
+      country_project: ['', [Validators.required]],
+      language_project: ['', [Validators.required]],
+      path_project: ['', [Validators.required]],
+      protocol_project: ['', [Validators.required]],
+      user_id: ['', Validators.required],
+      letter_thumbnails_project: this.fb.group({
+        letter: [
+          '',
+          [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
+        ],
+        color: ['#66ACFF'],
+        background: ['#F3F6F9'],
+      }),
+    });
+
     if (this.dataSources) {
       this.image_url = environment.baseUrlImg + this.dataSources.image_project;
 
@@ -123,7 +130,7 @@ export class AddOrEditComponent implements OnInit {
 
     this.filteredCounrty = this.form.get('country_project').valueChanges.pipe(
       startWith(''),
-      map((value) => {
+      map((value: any) => {
         return this.countries.filter((x) =>
           x.name.toLowerCase().includes(value.toLowerCase())
         );
@@ -251,5 +258,12 @@ export class AddOrEditComponent implements OnInit {
         };
       };
     }
+  }
+
+  public removeImage() {
+    this.imageSquared = undefined;
+    this.imageLandscape = undefined;
+    this.form.controls.image_project_Landscape.setValue('');
+    this.form.controls.image_project_Squared.setValue('');
   }
 }
