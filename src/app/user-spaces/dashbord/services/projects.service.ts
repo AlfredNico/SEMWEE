@@ -76,7 +76,13 @@ export class ProjectsService {
     );
   }
 
-  checkProjectName(isAddItem: boolean): AsyncValidatorFn {
+  public deleteCatalogue(project_id: string) {
+    return this.http.delete<{ message: string }>(
+      `${environment.baseUrl}/project/delete-project/${project_id}`
+    );
+  }
+
+  checkProjectName(isAddItem: boolean, project?: Projects): AsyncValidatorFn {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
@@ -84,14 +90,29 @@ export class ProjectsService {
         nameProject: control.value,
         idUser: this.auth.currentUserSubject.value['_id'],
       };
-      return this.http
-        .post(`${environment.baseUrl}/project/checkProject`, val, {})
-        .pipe(
-          map((res: any) =>
-            (res.message && isAddItem) === true ? { projectName: true } : null
-          ),
-          catchError(() => of(null))
-        );
+      // console.log(created_at);
+
+      if (isAddItem === true) {
+        return this.http
+          .post(`${environment.baseUrl}/project/checkProject`, val, {})
+          .pipe(
+            map((res: any) =>
+              (res.message && isAddItem) === true ? { projectName: true } : null
+            ),
+            catchError(() => of(null))
+          );
+      } else {
+        return this.http
+          .get(
+            `${environment.baseUrl}/project/checkProjectUpdate/${project['user_id']}/${control.value}/${project['_id']}`
+          )
+          .pipe(
+            map((res: any) =>
+              res.message === true ? { projectName: true } : null
+            ),
+            catchError(() => of(null))
+          );
+      }
     };
   }
 }

@@ -37,12 +37,14 @@ export class ErrorInterceptor implements HttpInterceptor {
             // location.reload(true);
             this.notifs.warn(error);
             // window.location.reload();
-            this.router.navigateByUrl('/sign-in');
+            // this.router.navigateByUrl('/sign-in');
             return EMPTY;
+          } else if (err.status === 0) {
+            this.notifs.warn(error);
           } else if (err.status === 0) {
             this.common.hideSpinner('root');
             this.notifs.warn('Server not responding !');
-            this.authService.logout();
+            // this.authService.logout();
           } else {
             console.log('err ', err);
           }

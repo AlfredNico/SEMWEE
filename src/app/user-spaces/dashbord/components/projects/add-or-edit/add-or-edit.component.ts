@@ -39,6 +39,7 @@ export class AddOrEditComponent implements OnInit {
   ];
   readonly protocols: string[] = ['SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
+  created_at: Date = new Date();
 
   @Input() isAddItem: boolean = true;
   @Input() public dataSources: Projects = undefined;
@@ -49,6 +50,10 @@ export class AddOrEditComponent implements OnInit {
   }>(undefined);
 
   public form: any;
+
+  ProjectLetter: any;
+  ProjectBackground: any;
+  ProjectColor: any;
 
   constructor(
     private fb: FormBuilder,
@@ -81,11 +86,31 @@ export class AddOrEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.dataSources) {
+      this.image_url = environment.baseUrlImg + this.dataSources.image_project;
+      this.created_at = this.dataSources.created_project;
+
+      this.ProjectColor = this.dataSources.letter_thumbnails_project[0][
+        'color'
+      ];
+      this.ProjectLetter = this.dataSources.letter_thumbnails_project[0][
+        'letter'
+      ];
+      this.ProjectBackground = this.dataSources.letter_thumbnails_project[0][
+        'background'
+      ];
+    }
+
     this.form = this.fb.group({
       name_project: [
         '',
         [Validators.required, this.custumValidator.maxLength],
-        [this.projetctService.checkProjectName(this.isAddItem)],
+        [
+          this.projetctService.checkProjectName(
+            this.isAddItem,
+            this.dataSources
+          ),
+        ],
         { updateOn: 'blur' },
       ],
       image_project_Landscape: [''],
@@ -101,17 +126,17 @@ export class AddOrEditComponent implements OnInit {
       user_id: ['', Validators.required],
       letter_thumbnails_project: this.fb.group({
         letter: [
-          '',
+          this.ProjectLetter ? this.ProjectLetter : '',
           [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
         ],
-        color: ['#66ACFF'],
-        background: ['#F3F6F9'],
+        color: this.ProjectColor ? this.ProjectColor : ['#66ACFF'],
+        background: this.ProjectBackground
+          ? this.ProjectBackground
+          : ['#F3F6F9'],
       }),
     });
 
     if (this.dataSources) {
-      this.image_url = environment.baseUrlImg + this.dataSources.image_project;
-
       this.form.patchValue({
         ...this.dataSources,
         letter_thumbnails_project: {
