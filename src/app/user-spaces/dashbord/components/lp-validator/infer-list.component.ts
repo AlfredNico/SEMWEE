@@ -346,29 +346,30 @@ export class InferListComponent
       };
 
       Object.keys(value).forEach((key: string, index: number) => {
-        if (value['select'] === true) {
-          if (!key.includes('Facet') && !key.includes('Value')) {
-            // object[header[i]] = value[key];
-            object[key] = value[key];
-            this.filterData[tabIndex] = { ...object };
-          } else if (
-            key.includes('Facet') &&
-            !key.includes('Value') &&
-            this.checklist.includes(key)
-          ) {
-            const keyIndex = header.indexOf(key);
-            object[header[i]] = value[key];
-            i++;
-            object[header[i]] = value[`${key}_Value`];
-            this.filterData[tabIndex] = { ...object };
-            i++;
-          }
+        // if (value['select'] === true) {
+        if (!key.includes('Facet') && !key.includes('Value')) {
+          // object[header[i]] = value[key];
+          object[key] = value[key];
+          this.filterData[currentIndex] = { ...object };
+        } else if (
+          key.includes('Facet') &&
+          !key.includes('Value') &&
+          this.checklist.includes(key)
+        ) {
+          const keyIndex = header.indexOf(key);
+          object[header[i]] = value[key];
+          i++;
+          object[header[i]] = value[`${key}_Value`];
+          this.filterData[currentIndex] = { ...object };
+          i++;
         }
+        // }
       });
 
-      if (value['select'] === true) {
-        tabIndex++;
-      }
+      // if (value['select'] === true) {
+      //   tabIndex++;
+      // }
+      // tabIndex++;
     });
 
     try {

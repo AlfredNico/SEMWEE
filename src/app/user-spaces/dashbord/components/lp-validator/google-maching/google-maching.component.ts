@@ -140,45 +140,49 @@ export class GoogleMachingComponent
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          const data = this.dataView.data.filter((item: any) => {
+          let data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
               return Object.keys(item).some((property) => {
                 if (
-                  query[property] !== '' &&
+                  query[property] != '' &&
                   typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let s = '',
-                    i = 0;
+                  let i = 0,
+                    s = '';
                   Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
                       const lower = (val[1] as any).toLowerCase();
-                      let query = '';
 
                       if (val[0] === 'Valid' && 'yes'.includes(lower)) {
-                        query = `item["${val[0]}"]===true`;
+                        if (i == 1) {
+                          s = `item["${val[0]}"]===true`;
+                        } else {
+                          s = s + `&& item["${val[0]}"]===true`;
+                        }
                       } else if (val[0] === 'Valid' && 'no'.includes(lower)) {
-                        query = `item["${val[0]}"]===true`;
+                        if (i == 1) {
+                          s = `item["${val[0]}"]===false`;
+                        } else {
+                          s = s + `&& item["${val[0]}"]===false`;
+                        }
                       } else {
-                        query = `item["${val[0]}"].toLowerCase().includes("${lower}")`;
-                      }
-
-                      if (i === 1) {
-                        s = s + query;
-                      } else {
-                        s = s + `&& ${query}`;
+                        if (i == 1) {
+                          s = `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                        } else {
+                          s =
+                            s +
+                            `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                        }
                       }
                     }
                   });
-                  console.log('s: ', s);
+                  console.log('s', s);
                   return eval(s);
-                  // return item[property]
-                  //   .toLowerCase()
-                  //   .includes(query[property].toLowerCase());
                 }
               });
             }

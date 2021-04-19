@@ -93,6 +93,7 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any) {
+    console.log('value', value);
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -100,6 +101,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          console.log('result ', results);
           let infer = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -138,29 +140,31 @@ export class LpValidatorService {
 
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
-      Object.keys(values).map((key: string, index: number) => {
-        //console.log(key, index);
-        if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
-          if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
-          if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
+      if (values['select'] === true) {
+        Object.keys(values).map((key: string, index: number) => {
+          //console.log(key, index);
+          if (!this.matching.displayColumns.includes(key)) {
+            if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
+            if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
+            if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
-          this.matching.displayColumns.push(key);
-        }
-      });
-      var tmp =
-        obj[values['_id']] != undefined
-          ? obj[values['_id']]
-          : {
-              Valid: 'loadingQuery',
-              Popular_Search_Queries: 'loadingQuery',
-              Website_Browser: 'loadingQuery',
-            };
-      // if (afterSearch && obj[values['_id']] == undefined) {
-      //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
-      // }
-      //console.log(obj[values['idProduct']] + " : ", tmp);
-      dataValue.push({ ...values, ...tmp });
+            this.matching.displayColumns.push(key);
+          }
+        });
+        var tmp =
+          obj[values['_id']] != undefined
+            ? obj[values['_id']]
+            : {
+                Valid: 'loadingQuery',
+                Popular_Search_Queries: 'loadingQuery',
+                Website_Browser: 'loadingQuery',
+              };
+        // if (afterSearch && obj[values['_id']] == undefined) {
+        //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+        // }
+        //console.log(obj[values['idProduct']] + " : ", tmp);
+        dataValue.push({ ...values, ...tmp });
+      }
     });
 
     return (this.matching = {

@@ -171,6 +171,7 @@ export class CheckRelevancyComponent
                       }
                     }
                   });
+                  console.log('s', s);
                   return eval(s);
                 }
               });
@@ -340,7 +341,10 @@ export class CheckRelevancyComponent
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
 
+    // '1rest property hugy'.match(/property$/);
+
     let val: any = '';
+    const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
     try {
       if (itemSeleted.includes('ItemType'))
@@ -352,19 +356,28 @@ export class CheckRelevancyComponent
         );
 
       this.commonServices.hideSpinner();
-      this.dialog.open(TuneItComponent, {
-        // position: { top: `${clientY}px`, left: `${clientX}px` },
-        // width: itemSeleted == 'itemtype' ? '400px' : '',,
-        data: { row, itemSeleted, checkTuneIt: val },
-      });
-      // .afterClosed()
-      // .pipe(
-      //   map((result: any) => {
-      //     console.log(result);
-      //     if (result) {}
-      //   })
-      // )
-      // .subscribe();
+      this.dialog
+        .open(TuneItComponent, {
+          // position: { top: `${clientY}px`, left: `${clientX}px` },
+          // width: itemSeleted == 'itemtype' ? '400px' : '',,
+          data: { row, itemSeleted, checkTuneIt: val },
+        })
+        .afterClosed()
+        .pipe(
+          map((result: any) => {
+            if (result) {
+              const data = this.dataView.data[index];
+              const val = (data[itemSeleted] = result['Editspelling']);
+              const newVla = {
+                ...data,
+                val,
+              };
+
+              this.dataView.data[index] = newVla;
+            }
+          })
+        )
+        .subscribe();
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         throw error;
