@@ -1,5 +1,12 @@
-import { Component } from '@angular/core';
-import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Component, HostListener } from '@angular/core';
+import {
+  Event,
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 import { CommonService } from './shared/services/common.service';
 
 @Component({
@@ -10,11 +17,13 @@ import { CommonService } from './shared/services/common.service';
     </ngx-spinner>
     <router-outlet></router-outlet>
   `,
-  styles: [`
-    ::ng-deep.spacer {
-      flex: 1 1 auto;
-    }
-`]
+  styles: [
+    `
+      ::ng-deep.spacer {
+        flex: 1 1 auto;
+      }
+    `,
+  ],
 })
 export class AppComponent {
   title = 'SEMWEE';
@@ -37,5 +46,11 @@ export class AppComponent {
         }
       }
     });
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    if (event.keyCode === 27) this.common.hideSpinner();
   }
 }

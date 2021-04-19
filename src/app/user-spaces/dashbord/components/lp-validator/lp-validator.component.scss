@@ -1,5 +1,16 @@
+ //to remove the forth step
+:host ::ng-deep .mat-step-header:nth-of-type(4){
+  display: none !important;
+  // mat-step-header[ng-reflect-index="3"],
+  // mat-step-header[aria-posinset="4"] {
+  //     display: none !important;
+  // }
+}
 
 ::ng-deep {
+    // div[tabindex="0"][role="tables"] {
+    //    overflow: auto;
+    // }
      // table
     .mat-table {
         .odd{background: #fff;}
@@ -10,17 +21,6 @@
           user-select: none;
           cursor: col-resize;
         }
-        /* .mat-cell {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-             max-width: 2em;
-          span {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        } */
         .mat-cell {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -30,6 +30,11 @@
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
+            .mat-form-field-appearance-outline .mat-form-field-infix {
+              padding: 1em 0 1em 0 !important;
+              width: 100%;
+              margin: 0;
+            }
           }
         }
         .mat-header-cell {
@@ -66,10 +71,7 @@
           }
         }
       }
-    mat-step-header[ng-reflect-index="3"],
-    mat-step-header[aria-posinset="4"] {
-        display: none !important;
-    }
+
     .mat-horizontal-content-container {
         overflow: unset !important; // pour le tableau position: sticky;
         padding: 24px 24px 24px 24px !important;
@@ -303,7 +305,4 @@
 }
 
 
-// select row table
-.active {
-    background: #b6e1ff !important;
-    }
+

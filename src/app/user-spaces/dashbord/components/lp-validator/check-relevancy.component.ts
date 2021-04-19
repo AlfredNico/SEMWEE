@@ -1,7 +1,7 @@
+import { PropertyValueService } from './../../services/property-value.service';
+import { ItemTypeService } from './../../services/item-type.service';
 import { NotificationService } from '@app/services/notification.service';
 import { Projects } from './../../interfaces/projects';
-import { TuneItService } from './../../services/tune-it.service';
-import { TuneIt, TuneItVlaue } from './../../interfaces/tune-it';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
@@ -41,6 +41,16 @@ import { HttpErrorResponse } from '@angular/common/http';
       .drag_n_drop {
         cursor: move !important;
       }
+      .Test {
+        position: absolute;
+        visibility: hidden;
+        height: auto;
+        width: auto;
+        white-space: nowrap; /* Thanks to Herb Caudill comment */
+      }
+      .active {
+        background: #b6e1ff !important;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -76,23 +86,28 @@ export class CheckRelevancyComponent
   filterData: any[] = [];
   checklist: string[] = [];
 
-  //Tune it property
-  checkTuneItValue: TuneIt<TuneItVlaue>;
+  // filter icon && and tooltips
+  public icon = '';
+  public active: any = '';
 
-  rowIndex: number[] = [];// disable matTooltips
+  rowIndex: number[] = []; // disable matTooltips
 
   // multipleSelect tables
-  isKeyPressed:boolean = false;
+  isKeyPressed: boolean = false;
   selectedRow: any;
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
 
+  //resizable
+  mawWidth: number = 0;
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
     public dialog: MatDialog,
-    private tuneItService: TuneItService,
+    private itemService: ItemTypeService,
+    private propertyService: PropertyValueService,
     private notifs: NotificationService
   ) {}
 
@@ -115,8 +130,8 @@ export class CheckRelevancyComponent
 
     this.dataView.displayColumns.map((key: any, index: number) => {
       //création formControl Dynamics
-        this.displayColumns.push(key);
-        this.filters.addControl(key, new FormControl(''));
+      this.displayColumns.push(key);
+      this.filters.addControl(key, new FormControl(''));
     });
     this.commonServices.hideSpinner();
   }
@@ -139,18 +154,23 @@ export class CheckRelevancyComponent
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let i = 0, s = '';
-                  Object.entries(query).map(val => {
+                  let i = 0,
+                    s = '';
+                  Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
                       const lower = (val[1] as any).toLowerCase();
                       if (i == 1) {
-                        s = s + `item["${val[0]}"].toLowerCase().includes("${lower}")`
-                      }else{
-                        s = s + `&& item["${val[0]}"].toLowerCase().includes("${lower}")`
+                        s =
+                          s +
+                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                      } else {
+                        s =
+                          s +
+                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
                       }
                     }
-                  })
+                  });
                   return eval(s);
                 }
               });
@@ -177,8 +197,8 @@ export class CheckRelevancyComponent
 
   //Deop item list
   public drop(event: CdkDragDrop<string[]>) {
-    const previousIndex= event.previousIndex - 3;
-    const currentIndex= event.currentIndex - 3;
+    const previousIndex = event.previousIndex - 3;
+    const currentIndex = event.currentIndex - 3;
     moveItemInArray(this.displayColumns, previousIndex, currentIndex);
 
     this.displayColumns.forEach((column, index) => {
@@ -243,24 +263,24 @@ export class CheckRelevancyComponent
   }
 
   public selectRow(row: any) {
-    let index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
-    if(this.isKeyPressed ==  true && this.indexSelectedRow){
+    if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem)
+            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem)
+            return (t.select = this.selectedItem);
           }
         });
-    }else {
+    } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
         ...row,
@@ -275,8 +295,8 @@ export class CheckRelevancyComponent
     this.dataSource.data = this.dataView.data;
   }
 
-  isRowSelected(row: any){
-    if(this.selectedRowsArray.indexOf(row) != -1) {
+  isRowSelected(row: any) {
+    if (this.selectedRowsArray.indexOf(row) != -1) {
       return true;
     }
     return false;
@@ -296,33 +316,55 @@ export class CheckRelevancyComponent
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
-@HostListener('window:keyup', ['$event'])
+  @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed= false;
-}
+    this.isKeyPressed = false;
+  }
+
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    else this.isKeyPressed = false;
+  }
 
   dataMachingReady() {
     this.dataMatching.emit(this.dataView);
   }
 
-  async openTuneIt(id: string, row: Projects, event: any, itemSeleted: any) {
+  async openTuneIt(id: string, row: Projects, event: any, itemSeleted: string) {
     this.commonServices.showSpinner('root');
     const el: HTMLElement = document.getElementById(id);
     // let pos: number = el.offsetTop;
     const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
-    // const item = itemSeleted == 'itemtype' ? true : false;
-    console.log(row['_id']);
+
+    let val: any = '';
 
     try {
-      const editTuneIt = await this.tuneItService.getTuneIt(row['_id']);
+      if (itemSeleted.includes('ItemType'))
+        val = await this.itemService.getItemType(row['_id']);
+      else
+        val = await this.propertyService.getPropertyValue(
+          row['_id'],
+          itemSeleted
+        );
+
       this.commonServices.hideSpinner();
       this.dialog.open(TuneItComponent, {
         // position: { top: `${clientY}px`, left: `${clientX}px` },
         // width: itemSeleted == 'itemtype' ? '400px' : '',,
-        data: { row, itemSeleted, checkTuneIt: editTuneIt },
+        data: { row, itemSeleted, checkTuneIt: val },
       });
+      // .afterClosed()
+      // .pipe(
+      //   map((result: any) => {
+      //     console.log(result);
+      //     if (result) {}
+      //   })
+      // )
+      // .subscribe();
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         throw error;
@@ -330,33 +372,58 @@ export class CheckRelevancyComponent
       this.notifs.warn('Server error !');
       this.commonServices.hideSpinner();
     }
-
   }
 
-   public isColumnDisplay(column: any): boolean{
-    switch(true){
+  sortData($e: any) {
+    $e.direction === 'asc'
+      ? (this.icon = 'asc')
+      : $e.direction === 'desc'
+      ? (this.icon = 'desc')
+      : (this.icon = '');
+    this.active = $e.active;
+  }
+
+  public isColumnDisplay(column: any): boolean {
+    switch (true) {
       case this.toLowerCase(column) == '_id':
-      case this.toLowerCase(column) == 'id':
-      case this.toLowerCase(column) == 'idproduct':
+      // case this.toLowerCase(column) == 'id':
+      // case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
       case this.toLowerCase(column) == 'select':
-      case this.toLowerCase(column) == 'ID':
+        // case this.toLowerCase(column) == 'ID':
         return true;
       default:
         return false;
     }
   }
-  public toLowerCase(item: string): string{
+  public toLowerCase(item: string): string {
     return item.toLowerCase();
   }
-  isPopTuneIt(column: string, value: string):boolean{
-    if (this.toLowerCase(column).includes('itemtype')
-    || (this.toLowerCase(column).includes('value') && value)) return true;
+  isPopTuneIt(column: string, value: string): boolean {
+    if (
+      this.toLowerCase(column).includes('itemtype') ||
+      (this.toLowerCase(column).includes('value') && value)
+    )
+      return true;
     else return false;
   }
 
-  hideTooltip(event: number){
-    if (!this.rowIndex.includes(event))
-      this.rowIndex.push(event);
+  hideTooltip(event: number) {
+    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  }
+
+  public getWidth(id: any) {
+    this.mawWidth = 0;
+
+    for (let index = 0; index < this.dataView.data.length; index++) {
+      const elem = document.getElementById(`${id}revelancy${index}`);
+      if (elem && this.mawWidth <= elem?.offsetWidth)
+        this.mawWidth = elem.offsetWidth;
+    }
+  }
+
+  public isNumberOrString(itemValue: any) {
+    if (typeof itemValue === 'number' || Number(itemValue)) return true;
+    else return false;
   }
 }

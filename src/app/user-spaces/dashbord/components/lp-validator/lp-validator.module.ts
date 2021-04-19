@@ -1,5 +1,5 @@
-import { DbClickresizableDirective } from './../../directives/db-clickresizable.directive';
-import { TuniItDirective } from './../../directives/tuni-it.directive';
+import { PropertyValueService } from './../../services/property-value.service';
+import { ItemTypeService } from './../../services/item-type.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from '@app/shared/modules/landing.module';
@@ -17,13 +17,17 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { TuneItComponent } from './dialog/tune-it.component';
+
 import { DragDropDirective } from '../../directives/drag-drop.directive';
 import { ResizableDirective } from '../../directives/resizable.directive';
+import { TuniItDirective } from './../../directives/tuni-it.directive';
 
-
+import { CapitalizeFirstPipePipe } from 'src/app/user-spaces/dashbord/pipe/capitalize-first-pipe.pipe';
+import { RemoveUnderscorePipe } from 'src/app/user-spaces/dashbord/pipe/remove-underscore.pipe';
 
 @NgModule({
   declarations: [
+    /* COMPONENT DECLARATORS */
     LpValidatorComponent,
     TableOptionsComponent,
     SettingTableComponent,
@@ -32,10 +36,15 @@ import { ResizableDirective } from '../../directives/resizable.directive';
     InferListComponent,
     GoogleMachingComponent,
     TuneItComponent,
+
+    /* DIRECTIRES DECLARATORS */
     DragDropDirective,
     ResizableDirective,
     TuniItDirective,
-    DbClickresizableDirective
+
+    /* PIPE DECLARATORS */
+    CapitalizeFirstPipePipe,
+    RemoveUnderscorePipe,
   ],
   imports: [
     CommonModule,
@@ -46,8 +55,8 @@ import { ResizableDirective } from '../../directives/resizable.directive';
     ResizableModule,
     RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
   ],
-  exports: [RouterModule],
-  providers: [LpValidatorService],
+  exports: [RouterModule, CapitalizeFirstPipePipe],
+  providers: [LpValidatorService, ItemTypeService, PropertyValueService],
   entryComponents: [
     TableOptionsComponent,
     SettingTableComponent,

@@ -30,19 +30,21 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
             console.log('error', error);
-            if (error == 'You should first log in') {
+            if (error === 'You should first log in') {
               this.authService.logout();
             }
             // auto logout if 401 response returned from api
             // location.reload(true);
             this.notifs.warn(error);
             // window.location.reload();
-            this.router.navigateByUrl('/sign-in');
+            // this.router.navigateByUrl('/sign-in');
             return EMPTY;
+          } else if (err.status === 400) {
+            this.notifs.warn(error);
           } else if (err.status === 0) {
             this.common.hideSpinner('root');
             this.notifs.warn('Server not responding !');
-            this.authService.logout();
+            // this.authService.logout();
           } else {
             console.log('err ', err);
           }

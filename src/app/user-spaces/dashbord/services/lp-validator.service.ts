@@ -31,8 +31,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log(results)
-          console.log('upload', results)
+          console.log('upload', results);
           let obj = {
             displayColumns: [] as string[],
             data: [] as any[],
@@ -65,8 +64,8 @@ export class LpValidatorService {
           if (result) {
             const tmp = {
               Valid: result.valid,
-              'Popular Search Queries': result.psq,
-              'Website Browser': result.webSitePosition,
+              Popular_Search_Queries: result.psq,
+              Website_Browser: result.webSitePosition,
             };
             data[result._id] = tmp;
             assign(this.converDataMatching(dataSources, data, true));
@@ -133,8 +132,8 @@ export class LpValidatorService {
   ): DataTypes {
     const columnAdd: string[] = [
       'Valid',
-      'Popular Search Queries',
-      'Website Browser',
+      'Popular_Search_Queries',
+      'Website_Browser',
     ];
 
     let dataValue: any[] = [];
@@ -142,12 +141,9 @@ export class LpValidatorService {
       Object.keys(values).map((key: string, index: number) => {
         //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0)
-            this.matching.displayColumns.push(columnAdd[0]);
-          if (index === 2)
-            this.matching.displayColumns.push(columnAdd[1]);
-          if (index === 3)
-            this.matching.displayColumns.push(columnAdd[2]);
+          if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
+          if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
+          if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
           this.matching.displayColumns.push(key);
         }
@@ -157,8 +153,8 @@ export class LpValidatorService {
           ? obj[values['_id']]
           : {
               Valid: 'loadingQuery',
-              'Popular Search Queries': 'loadingQuery',
-              'Website Browser': 'loadingQuery',
+              Popular_Search_Queries: 'loadingQuery',
+              Website_Browser: 'loadingQuery',
             };
       // if (afterSearch && obj[values['_id']] == undefined) {
       //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }

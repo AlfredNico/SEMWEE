@@ -60,4 +60,5 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
 }

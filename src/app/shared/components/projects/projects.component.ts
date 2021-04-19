@@ -95,4 +95,32 @@ export class ProjectsComponent implements OnInit {
       )
       .subscribe();
   }
+
+  deleteCatalogue(item: Projects) {
+    this.dialog
+      .open(RemoveComponent, {
+        data: {
+          message: 'Are you sure to delete all the catalogs of this project ?',
+        },
+        width: '600px',
+      })
+      .afterClosed()
+      .pipe(
+        map((result) => {
+          if (result === true) {
+            this.projectServices
+              .deleteCatalogue(item._id)
+              .subscribe((result) => {
+                if (result && result.message) {
+                  this.notifs.sucess(result.message);
+
+                  this.projectServices.refresh$.next(true);
+                  this.triggerServices.trigrer$.next(true);
+                }
+              });
+          }
+        })
+      )
+      .subscribe();
+  }
 }

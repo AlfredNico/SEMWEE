@@ -2,13 +2,18 @@ import { style } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
 import { environment } from '@environments/environment';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-avatar',
   template: `
     <div *ngIf="projects.image_project_Squared != ''; else avater">
-      <img [style.margin]="'auto'" [src]="urlImg" height="50" width="50" style="border-radius: 15%;"/>
+      <img
+        [style.margin]="'auto'"
+        [src]="urlImg"
+        height="50"
+        width="50"
+        style="border-radius: 15%;"
+      />
     </div>
     <ng-template #avater>
       <div
