@@ -30,7 +30,7 @@
         <!-- SELECT Column -->
         <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
-            <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
+            <div fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
               class="w-100 bg-white">
               <div fxLayout="column" class="w-100">
                 <div class="drag_n_drop" cdkDragHandle></div>
@@ -45,7 +45,7 @@
                 <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
                   [indeterminate]="someComplete()"></mat-checkbox>
               </div>
-            </span>
+            </div>
             <!-- <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox> -->
           </th>
           <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->

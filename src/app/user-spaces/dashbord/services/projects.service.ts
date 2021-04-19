@@ -78,7 +78,7 @@ export class ProjectsService {
 
   public deleteCatalogue(project_id: string) {
     return this.http.delete<{ message: string }>(
-      `${environment.baseUrl}/project/delete-project/${project_id}`
+      `${environment.baseUrl}/validator/delete-product/${project_id}`
     );
   }
 

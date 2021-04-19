@@ -11,7 +11,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
   selector: 'app-edit',
   template: `
     <div fxLayout="column" *ngIf="data">
-      <h3 mat-dialog-title>Edit project</h3>
+      <h1 mat-dialog-title>Edit project</h1>
       <div mat-dialog-content>
         <app-add-or-edit
           [dataSources]="data"

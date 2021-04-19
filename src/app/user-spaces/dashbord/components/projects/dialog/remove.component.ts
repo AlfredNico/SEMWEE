@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-remove',
   template: `
     <div fxLayout="column">
-      <h3 mat-dialog-title>Delete confirmation</h3>
+      <h1 mat-dialog-title>Delete confirmation</h1>
       <div mat-dialog-content>
         <span> {{ data.message }} </span>
       </div>
