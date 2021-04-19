@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
@@ -24,10 +25,13 @@ import { Users } from '@app/models/users';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
-import { map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { NotificationService } from '@app/services/notification.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-infer-list',
@@ -103,6 +107,14 @@ export class InferListComponent
   //resizable
   public mawWidth: number = 0;
 
+  /**
+   * subscribe to it and call `next()` to refresh the list in the table.
+   * so that we don't have to rewrite the initial subscription for the datasource
+   */
+  private destroy$ = new Subject<any>();
+  private trigger = new BehaviorSubject<any>(null);
+  public dataSources = new SemweeDataSource<any>();
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
@@ -159,10 +171,18 @@ export class InferListComponent
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    //Query search field
+    // Query search field
     this.filters.valueChanges
       .pipe(
         map((query) => {
+          // let httpParams = new HttpParams();
+          // Object.entries(query).map((val: any) => {
+          //   if (val[1]) {
+          //     httpParams = httpParams.append(val[0], val[1]);
+          //     // console.log('params', query, '// ', val);
+          //   }
+          // });
+          // console.log('params', query);
           let data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
@@ -200,7 +220,6 @@ export class InferListComponent
         })
       )
       .subscribe();
-
     //Search field
     this.search.valueChanges
       .pipe(
