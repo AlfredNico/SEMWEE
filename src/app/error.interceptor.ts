@@ -39,7 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             // window.location.reload();
             // this.router.navigateByUrl('/sign-in');
             return EMPTY;
-          } else if (err.status === 0) {
+          } else if (err.status === 400) {
             this.notifs.warn(error);
           } else if (err.status === 0) {
             this.common.hideSpinner('root');
