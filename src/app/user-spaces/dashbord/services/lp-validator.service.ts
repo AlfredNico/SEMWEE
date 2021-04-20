@@ -156,22 +156,22 @@ export class LpValidatorService {
         }
       });
 
-      if (values['select'] === true) {
-        var tmp =
-          obj[values['_id']] != undefined
-            ? obj[values['_id']]
-            : {
-                Valid: 'loadingQuery',
-                Popular_Search_Queries: 'loadingQuery',
-                Website_Browser: 'loadingQuery',
-              };
-        // if (afterSearch && obj[values['_id']] == undefined) {
-        //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
-        // }
-        //console.log(obj[values['idProduct']] + " : ", tmp);
+      // if (values['select'] === true) {
+      var tmp =
+        obj[values['_id']] != undefined
+          ? obj[values['_id']]
+          : {
+              Valid: 'loadingQuery',
+              Popular_Search_Queries: 'loadingQuery',
+              Website_Browser: 'loadingQuery',
+            };
+      // if (afterSearch && obj[values['_id']] == undefined) {
+      //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+      // }
+      //console.log(obj[values['idProduct']] + " : ", tmp);
 
-        dataValue.push({ ...values, ...tmp });
-      }
+      dataValue.push({ ...values, ...tmp });
+      // }
     });
 
     return (this.matching = {

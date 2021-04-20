@@ -523,7 +523,7 @@ export class InferListComponent
   }
 
   public clearInput(column: any) {
-    this.filters.reset(
+    this.filters.controls['column'].reset(
       {
         column: '',
       },

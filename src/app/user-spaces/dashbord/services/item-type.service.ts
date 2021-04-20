@@ -23,7 +23,7 @@ export class ItemTypeService {
     } else {
       return this.http
         .put<{ message: string }>(
-          `${environment.baseUrl}/validator/put-item-type/${_id}`,
+          `${environment.baseUrl}/validator/put-item-type`,
           data
         )
         .toPromise();

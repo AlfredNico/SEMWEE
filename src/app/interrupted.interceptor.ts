@@ -1,5 +1,4 @@
-import { CommonService } from './shared/services/common.service';
-import { Injectable, HostListener } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -8,10 +7,10 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
-import { MockInterceptor } from './mock.interceptor';
+import { CommonService } from './shared/services/common.service';
 
 @Injectable()
-export class HTTPInterceptor implements HttpInterceptor {
+export class InterruptedInterceptor implements HttpInterceptor {
   isInterrompte: boolean = false;
   constructor(private common: CommonService) {}
 
@@ -19,6 +18,7 @@ export class HTTPInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    console.log('url is ', request.url);
     if (this.isInterrompte) {
       return EMPTY;
     }
@@ -28,6 +28,7 @@ export class HTTPInterceptor implements HttpInterceptor {
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
+    console.log('key');
     if (event.keyCode === 27) {
       this.isInterrompte = true;
       console.log('escepe');
@@ -36,9 +37,8 @@ export class HTTPInterceptor implements HttpInterceptor {
   }
 }
 
-// use fake backend in place of Http service for backend-less development
-export const httpInterceptor = {
+export const interruptedInterceptor = {
   provide: HTTP_INTERCEPTORS,
-  useClass: MockInterceptor,
+  useClass: InterruptedInterceptor,
   multi: true,
 };

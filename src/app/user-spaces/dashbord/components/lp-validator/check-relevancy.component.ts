@@ -440,7 +440,7 @@ export class CheckRelevancyComponent
   }
 
   public clearInput(column: any): void {
-    this.filters.reset(
+    this.filters.controls['column'].reset(
       {
         column: '',
       },

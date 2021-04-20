@@ -1,7 +1,7 @@
+import { PropertyType } from './../interfaces/property-value';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { PropertyValue } from '../interfaces/property-value';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ export class PropertyValueService {
   constructor(private http: HttpClient) {}
 
   public appyPropertyValue(
-    data: PropertyValue,
+    data: PropertyType,
     _id?: any
   ): Promise<{ message: string }> {
     if (_id === undefined) {
