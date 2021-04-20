@@ -68,7 +68,7 @@ export class InferListComponent
     hideColumns: [],
     data: [],
   };
-  public displayColumns: string[] = ['select'];
+  public displayColumns: string[] = [];
 
   //generate Data
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -131,7 +131,7 @@ export class InferListComponent
     if (this.data !== undefined) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] }; // initialize dataSources
-        this.displayColumns = ['select']; //display columns tables
+        this.displayColumns = []; //display columns tables
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
         this.rowIndex = [];
@@ -203,11 +203,11 @@ export class InferListComponent
                       if (i == 1) {
                         s =
                           s +
-                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       } else {
                         s =
                           s +
-                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `&& item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       }
                     }
                   });
@@ -516,6 +516,19 @@ export class InferListComponent
       return res !== null;
     }
     return false;
+  }
+
+  onPaginateChange(event) {
+    console.log('Current page index: ' + JSON.stringify(event));
+  }
+
+  public clearInput(column: any) {
+    this.filters.reset(
+      {
+        column: '',
+      },
+      { emitEvent: true }
+    );
   }
 }
 

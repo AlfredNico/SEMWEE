@@ -32,17 +32,22 @@ export class LpValidatorService {
       .pipe(
         map((results: any) => {
           console.log('upload', results);
-          let obj = {
-            displayColumns: [] as string[],
-            data: [] as any[],
-            hideColumns: [] as string[],
+          // return {
+          //   displayColumns: [] as string[],
+          //   data: [] as any[],
+          //   hideColumns: [] as string[],
+          // };
+          return {
+            displayColumns: Object.keys(results[0]),
+            data: results,
+            hideColumns: [],
           };
-          obj.displayColumns = Object.keys(results[0]);
-          obj.displayColumns.unshift('select');
-          results.map((tbObj: any, index: number) => {
-            obj.data[index] = { ...tbObj, select: true };
-          });
-          return obj;
+          // obj.displayColumns = Object.keys(results[0]);
+          // obj.displayColumns.unshift('select');
+          // results.map((tbObj: any, index: number) => {
+          //   obj.data[index] = tbObj;
+          // });
+          // return obj;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -102,18 +107,18 @@ export class LpValidatorService {
       .pipe(
         map((results: any) => {
           console.log('result ', results);
-          let infer = {
-            displayColumns: [] as string[],
-            data: [] as any[],
-            hideColumns: [] as string[],
+          return {
+            displayColumns: Object.keys(results[0]),
+            data: results,
+            hideColumns: [],
           };
 
-          infer.displayColumns = Object.keys(results[0]);
-          infer.displayColumns.unshift('select');
-          results.map((tbObj: any, index: number) => {
-            infer.data[index] = { ...tbObj, select: true };
-          });
-          return infer;
+          // infer.displayColumns = Object.keys(results[0]);
+          // // infer.displayColumns.unshift('select');
+          // results.map((tbObj: any, index: number) => {
+          //   infer.data[index] = tbObj;
+          // });
+          // return infer;
         }),
         catchError((err) => {
           return this.handleError(err);

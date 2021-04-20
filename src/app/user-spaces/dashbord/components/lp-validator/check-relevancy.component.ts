@@ -163,15 +163,14 @@ export class CheckRelevancyComponent
                       if (i == 1) {
                         s =
                           s +
-                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       } else {
                         s =
                           s +
-                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `&& item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       }
                     }
                   });
-                  console.log('s', s);
                   return eval(s);
                 }
               });
@@ -415,7 +414,7 @@ export class CheckRelevancyComponent
   isPopTuneIt(column: string, value: string): boolean {
     if (
       this.toLowerCase(column).includes('itemtype') ||
-      (this.toLowerCase(column).includes('value') && value)
+      (this.toLowerCase(column).match(/property$/) && value)
     )
       return true;
     else return false;
@@ -435,8 +434,17 @@ export class CheckRelevancyComponent
     }
   }
 
-  public isNumberOrString(itemValue: any) {
+  public isNumberOrString(itemValue: any): boolean {
     if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
+  }
+
+  public clearInput(column: any): void {
+    this.filters.reset(
+      {
+        column: '',
+      },
+      { emitEvent: true }
+    );
   }
 }

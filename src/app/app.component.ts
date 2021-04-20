@@ -48,9 +48,9 @@ export class AppComponent {
     });
   }
 
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
-    event: KeyboardEvent
-  ) {
-    if (event.keyCode === 27) this.common.hideSpinner();
-  }
+  // @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
+  //   event: KeyboardEvent
+  // ) {
+  //   if (event.keyCode === 27) this.common.hideSpinner();
+  // }
 }

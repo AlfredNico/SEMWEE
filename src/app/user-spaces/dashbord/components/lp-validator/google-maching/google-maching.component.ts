@@ -146,13 +146,13 @@ export class GoogleMachingComponent
             } else {
               return Object.keys(item).some((property) => {
                 if (
-                  query[property] != '' &&
-                  typeof item[property] === 'string' &&
+                  query[property] &&
+                  // typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
                   let i = 0,
-                    s = '';
+                    q = '';
                   Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
@@ -160,29 +160,26 @@ export class GoogleMachingComponent
 
                       if (val[0] === 'Valid' && 'yes'.includes(lower)) {
                         if (i == 1) {
-                          s = `item["${val[0]}"]===true`;
+                          q = `item["${val[0]}"]===true`;
                         } else {
-                          s = s + `&& item["${val[0]}"]===true`;
+                          q = `${q} && item["${val[0]}"]===true`;
                         }
                       } else if (val[0] === 'Valid' && 'no'.includes(lower)) {
                         if (i == 1) {
-                          s = `item["${val[0]}"]===false`;
+                          q = `item["${val[0]}"]===false`;
                         } else {
-                          s = s + `&& item["${val[0]}"]===false`;
+                          q = `${q} && item["${val[0]}"]===false`;
                         }
                       } else {
                         if (i == 1) {
-                          s = `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          q = `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                         } else {
-                          s =
-                            s +
-                            `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          q = `${q} && item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                         }
                       }
                     }
                   });
-                  console.log('s', s);
-                  return eval(s);
+                  return eval(q);
                 }
               });
             }
@@ -348,5 +345,14 @@ export class GoogleMachingComponent
   public isNumberOrString(itemValue: any) {
     if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
+  }
+
+  public clearInput(column: any) {
+    this.filters.reset(
+      {
+        column: '',
+      },
+      { emitEvent: true }
+    );
   }
 }
