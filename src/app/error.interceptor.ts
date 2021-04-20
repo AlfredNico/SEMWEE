@@ -29,6 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
+          } else if (err.status === 401) {
             console.log('error', error);
             if (error === 'You should first log in') {
               this.authService.logout();

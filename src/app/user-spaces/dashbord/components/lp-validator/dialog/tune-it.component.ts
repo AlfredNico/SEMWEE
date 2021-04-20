@@ -138,6 +138,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ];
   itemType: any = '';
   isItem: boolean;
+  public oldname: string = '';
 
   form = new FormGroup({
     Editspelling: new FormControl(''),
@@ -158,6 +159,9 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ) {
     if (this.data && this.data.row) {
       this.itemType = this.data.itemSeleted;
+      this.oldname = this.data.row[this.data.itemSeleted];
+
+      console.log('data', this.data);
 
       if (this.data.checkTuneIt.length !== 0) {
         if (this.data.itemSeleted === 'ItemType') {
@@ -212,6 +216,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           this.notifs.sucess(res.message);
         }
       } else {
+        console.log('oldname ', this.oldname);
         if (this.data.checkTuneIt && this.data.checkTuneIt.length !== 0) {
           const value = {
             ...this.form.value,

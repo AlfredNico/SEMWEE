@@ -79,7 +79,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     this.triggerServices.switchproject$
       .pipe(
         tap(() => {
@@ -132,19 +132,19 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     this.stepper.next();
   }
 
-  inferList(res: any[]) {
-    let obj1 = {
-      displayColumns: [] as string[],
-      data: [] as any[],
-      hideColumns: [] as string[],
+  private inferList(res: any[]) {
+    return {
+      displayColumns: Object.keys(res[0]),
+      data: res,
+      hideColumns: [],
     };
-    obj1.displayColumns = Object.keys(res[0]);
-    obj1.displayColumns.unshift('select');
-    res.map((tbObj: any, index: number) => {
-      obj1.data[index] = { ...tbObj, select: true };
-    });
+    // obj1.displayColumns = Object.keys(res[0]);
+    // // obj1.displayColumns.unshift('select');
+    // res.map((tbObj: any, index: number) => {
+    //   obj1.data[index] = tbObj;
+    // });
 
-    return obj1;
+    // return obj1;
   }
 
   // mathiing(rest: any[]) {
@@ -199,4 +199,3 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     }
   }
 }
-

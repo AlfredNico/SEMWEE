@@ -30,7 +30,7 @@
         <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
             <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
-              class="w-100 bg-white">
+              class="w-100 bg-white overflow-visible">
               <div fxLayout="column" class="w-100">
                 <div class="drag_n_drop" cdkDragHandle></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
@@ -80,8 +80,11 @@
                 </div>
               </div>
               <mat-form-field appearance="outline">
-                <input matInput type="search" placeholder="Smart Query or Regex ready"
+                <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                   [formControlName]="column" autocomplete="off">
+                  <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearInput(column)">
+                    <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                  </button>
               </mat-form-field>
             </span>
           </th>
@@ -103,7 +106,8 @@
             <div *ngSwitchCase="'Popular_Search_Queries'">
               <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
               </mat-spinner>
-              <div *ngIf="row[column] !== 'loadingQuery'">
+              <div *ngIf="row[column] !== 'loadingQuery'"
+              [ngClass]="{'text-center': isNumberOrString(row[column])}">
                 {{ row[column] }}
               </div>
             </div>
@@ -111,7 +115,7 @@
               <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
               </mat-spinner>
               <div *ngIf="row[column]!=='loadingQuery'"
-              [ngClass]="{'m-auto': isNumberOrString(row[column])}">
+              [ngClass]="{'text-center': isNumberOrString(row[column])}">
                 {{ row[column] }}
               </div>
             </div>

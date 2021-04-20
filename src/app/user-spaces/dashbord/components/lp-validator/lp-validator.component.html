@@ -10,10 +10,9 @@
     completed="false"
     editable="false"
   >
-    <!-- [editable]="isEditable" -->
-    <!--  <ng-template matStepperIcon="home">
-            <mat-icon>home</mat-icon>
-        </ng-template> -->
+    <!-- <ng-template matStepperIcon="edit">
+        <mat-icon>file_upload</mat-icon>
+    </ng-template> -->
     <app-import-item
       #form
       [idProjet]="idProjet"
@@ -27,14 +26,13 @@
     completed="false"
     editable="false"
   >
-    <!-- <ng-template matStepperIcon="home">
-            <mat-icon>home</mat-icon>
-        </ng-template> -->
+  <!-- <ng-template matStepperIcon="edit">
+    <mat-icon>file_upload</mat-icon>
+  </ng-template> -->
     <app-infer-list
       [data]="dataSources"
       (dataInferListReady)="nextCheckRevelancy($event)"
     ></app-infer-list>
-    <!-- <app-files></app-files> -->
   </mat-step>
   <mat-step
     label="Check Relevancy"
@@ -57,4 +55,8 @@
   >
     <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
   </mat-step>
+
+  <!-- <ng-template matStepperIcon="number" let-index="index">
+    <mat-icon>{{index === 0 ? 'perm_contact_calendar': 'edit'}}</mat-icon> --
+  </ng-template> -->
 </mat-horizontal-stepper>

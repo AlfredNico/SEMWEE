@@ -32,17 +32,22 @@ export class LpValidatorService {
       .pipe(
         map((results: any) => {
           console.log('upload', results);
-          let obj = {
-            displayColumns: [] as string[],
-            data: [] as any[],
-            hideColumns: [] as string[],
+          // return {
+          //   displayColumns: [] as string[],
+          //   data: [] as any[],
+          //   hideColumns: [] as string[],
+          // };
+          return {
+            displayColumns: Object.keys(results[0]),
+            data: results,
+            hideColumns: [],
           };
-          obj.displayColumns = Object.keys(results[0]);
-          obj.displayColumns.unshift('select');
-          results.map((tbObj: any, index: number) => {
-            obj.data[index] = { ...tbObj, select: true };
-          });
-          return obj;
+          // obj.displayColumns = Object.keys(results[0]);
+          // obj.displayColumns.unshift('select');
+          // results.map((tbObj: any, index: number) => {
+          //   obj.data[index] = tbObj;
+          // });
+          // return obj;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -93,6 +98,7 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any) {
+    console.log('value', value);
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -100,18 +106,19 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          let infer = {
-            displayColumns: [] as string[],
-            data: [] as any[],
-            hideColumns: [] as string[],
+          console.log('result ', results);
+          return {
+            displayColumns: Object.keys(results[0]),
+            data: results,
+            hideColumns: [],
           };
 
-          infer.displayColumns = Object.keys(results[0]);
-          infer.displayColumns.unshift('select');
-          results.map((tbObj: any, index: number) => {
-            infer.data[index] = { ...tbObj, select: true };
-          });
-          return infer;
+          // infer.displayColumns = Object.keys(results[0]);
+          // // infer.displayColumns.unshift('select');
+          // results.map((tbObj: any, index: number) => {
+          //   infer.data[index] = tbObj;
+          // });
+          // return infer;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -148,6 +155,8 @@ export class LpValidatorService {
           this.matching.displayColumns.push(key);
         }
       });
+
+      // if (values['select'] === true) {
       var tmp =
         obj[values['_id']] != undefined
           ? obj[values['_id']]
@@ -160,7 +169,9 @@ export class LpValidatorService {
       //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
       // }
       //console.log(obj[values['idProduct']] + " : ", tmp);
+
       dataValue.push({ ...values, ...tmp });
+      // }
     });
 
     return (this.matching = {

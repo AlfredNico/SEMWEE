@@ -140,45 +140,46 @@ export class GoogleMachingComponent
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          const data = this.dataView.data.filter((item: any) => {
+          let data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
               return Object.keys(item).some((property) => {
                 if (
-                  query[property] !== '' &&
-                  typeof item[property] === 'string' &&
+                  query[property] &&
+                  // typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let s = '',
-                    i = 0;
+                  let i = 0,
+                    q = '';
                   Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
                       const lower = (val[1] as any).toLowerCase();
-                      let query = '';
 
                       if (val[0] === 'Valid' && 'yes'.includes(lower)) {
-                        query = `item["${val[0]}"]===true`;
+                        if (i == 1) {
+                          q = `item["${val[0]}"]===true`;
+                        } else {
+                          q = `${q} && item["${val[0]}"]===true`;
+                        }
                       } else if (val[0] === 'Valid' && 'no'.includes(lower)) {
-                        query = `item["${val[0]}"]===true`;
+                        if (i == 1) {
+                          q = `item["${val[0]}"]===false`;
+                        } else {
+                          q = `${q} && item["${val[0]}"]===false`;
+                        }
                       } else {
-                        query = `item["${val[0]}"].toLowerCase().includes("${lower}")`;
-                      }
-
-                      if (i === 1) {
-                        s = s + query;
-                      } else {
-                        s = s + `&& ${query}`;
+                        if (i == 1) {
+                          q = `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
+                        } else {
+                          q = `${q} && item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
+                        }
                       }
                     }
                   });
-                  console.log('s: ', s);
-                  return eval(s);
-                  // return item[property]
-                  //   .toLowerCase()
-                  //   .includes(query[property].toLowerCase());
+                  return eval(q);
                 }
               });
             }
@@ -344,5 +345,14 @@ export class GoogleMachingComponent
   public isNumberOrString(itemValue: any) {
     if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
+  }
+
+  public clearInput(column: any) {
+    this.filters.reset(
+      {
+        column: '',
+      },
+      { emitEvent: true }
+    );
   }
 }

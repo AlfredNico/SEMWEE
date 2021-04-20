@@ -35,12 +35,6 @@ export class TokenInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${this.cookieService.get('SEMEWEE')}`,
         },
       });
-      // request = request.clone({
-      //   headers: request.headers.set(
-      //     'Authorization',
-      //     'Bearer ' + this.cookieService.get('SEMEWEE')
-      //   ),
-      // });
     }
     // // default --> json
     // if (!request.headers.has('Content-Type')) {

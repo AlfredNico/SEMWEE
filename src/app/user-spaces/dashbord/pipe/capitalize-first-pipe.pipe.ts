@@ -8,7 +8,9 @@ export class CapitalizeFirstPipePipe implements PipeTransform {
     if (value === null) {
       return 'Not assigned';
     }
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    return value !== 'ID'
+      ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+      : value;
     // return value[0].toUpperCase() + value.substr(1).toLowerCase();
   }
 }
