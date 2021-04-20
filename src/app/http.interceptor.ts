@@ -29,7 +29,7 @@ export class HTTPInterceptor implements HttpInterceptor {
     event: KeyboardEvent
   ) {
     if (event.keyCode === 27) {
-      this.this.isInterrompte = true;
+      this.isInterrompte = true;
       console.log('escepe');
       this.common.hideSpinner();
     }
