@@ -4,7 +4,6 @@ export interface PropertyValue {
   Synonimyze: string;
   Editsynonimize: string;
   SemanticScope: string;
-  Apply_on_the_colum: boolean;
   Apply_on_the_table: boolean;
   idinferlist: any;
 }

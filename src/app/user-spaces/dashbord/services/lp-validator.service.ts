@@ -145,17 +145,18 @@ export class LpValidatorService {
 
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
-      if (values['select'] === true) {
-        Object.keys(values).map((key: string, index: number) => {
-          //console.log(key, index);
-          if (!this.matching.displayColumns.includes(key)) {
-            if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
-            if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
-            if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
+      Object.keys(values).map((key: string, index: number) => {
+        //console.log(key, index);
+        if (!this.matching.displayColumns.includes(key)) {
+          if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
+          if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
+          if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
-            this.matching.displayColumns.push(key);
-          }
-        });
+          this.matching.displayColumns.push(key);
+        }
+      });
+
+      if (values['select'] === true) {
         var tmp =
           obj[values['_id']] != undefined
             ? obj[values['_id']]
@@ -168,6 +169,7 @@ export class LpValidatorService {
         //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
         // }
         //console.log(obj[values['idProduct']] + " : ", tmp);
+
         dataValue.push({ ...values, ...tmp });
       }
     });
