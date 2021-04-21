@@ -29,6 +29,13 @@ export class TokenInterceptor implements HttpInterceptor {
     ) {
       this.notifs.warn('Session expiré');
       this.router.navigateByUrl('/sign-in');
+    } else if (localStorage.getItem('currentUser') !== null) {
+      const token = JSON.parse(localStorage.getItem('currentUser'))['token'];
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } else if (this.cookieService.check('SEMEWEE') === true) {
       request = request.clone({
         setHeaders: {

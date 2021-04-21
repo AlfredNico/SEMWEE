@@ -109,6 +109,7 @@ export class GoogleMachingComponent
         this.resultData
       );
       Object.assign(this.dataView, value);
+      this.displayColumns = value.displayColumns;
     }
 
     this.dataSource.data = this.dataView.data;
@@ -116,8 +117,8 @@ export class GoogleMachingComponent
     this.dataSource.sort = this.sort;
 
     this.dataView.displayColumns.map((key: string, index: number) => {
-      this.displayColumns.push(key);
-      this.filters.addControl(key, new FormControl(''));
+      if (key != 'select') this.filters.addControl(key, new FormControl(''));
+      // this.displayColumns.push(key);
     });
 
     this.checkValid();
@@ -348,11 +349,6 @@ export class GoogleMachingComponent
   }
 
   public clearInput(column: any) {
-    this.filters.reset(
-      {
-        column: '',
-      },
-      { emitEvent: true }
-    );
+    this.filters.controls[column].reset('');
   }
 }

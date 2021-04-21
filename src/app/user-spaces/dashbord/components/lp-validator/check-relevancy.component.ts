@@ -119,9 +119,9 @@ export class CheckRelevancyComponent
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
         this.rowIndex = [];
-        // this.dataView.displayColumns = [];
       }
       Object.assign(this.dataView, this.dataInferList);
+      this.displayColumns = this.dataInferList.displayColumns;
     }
 
     this.dataSource.data = this.dataView.data;
@@ -129,9 +129,9 @@ export class CheckRelevancyComponent
     this.dataSource.sort = this.sort;
 
     this.dataView.displayColumns.map((key: any, index: number) => {
+      if (key != 'select') this.filters.addControl(key, new FormControl(''));
       //création formControl Dynamics
-      this.displayColumns.push(key);
-      this.filters.addControl(key, new FormControl(''));
+      // this.displayColumns.push(key);
     });
     this.commonServices.hideSpinner();
   }
@@ -346,7 +346,7 @@ export class CheckRelevancyComponent
     const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
     try {
-      if (itemSeleted.includes('ItemType'))
+      if (this.toLowerCase(itemSeleted).match(/item[^]*type$/))
         val = await this.itemService.getItemType(row['_id']);
       else
         val = await this.propertyService.getPropertyValue(
@@ -413,7 +413,7 @@ export class CheckRelevancyComponent
   }
   isPopTuneIt(column: string, value: string): boolean {
     if (
-      this.toLowerCase(column).includes('itemtype') ||
+      this.toLowerCase(column).match(/item[^]*type$/) ||
       (this.toLowerCase(column).match(/property$/) && value)
     )
       return true;
@@ -440,11 +440,6 @@ export class CheckRelevancyComponent
   }
 
   public clearInput(column: any): void {
-    this.filters.controls['column'].reset(
-      {
-        column: '',
-      },
-      { emitEvent: true }
-    );
+    this.filters.controls[column].reset('');
   }
 }

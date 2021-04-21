@@ -133,18 +133,14 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   private inferList(res: any[]) {
+    const head: string[] = Object.keys(res[0]);
+    head.splice(head.indexOf('select'), 1);
+    head.unshift('select');
     return {
-      displayColumns: Object.keys(res[0]),
+      displayColumns: head,
       data: res,
       hideColumns: [],
     };
-    // obj1.displayColumns = Object.keys(res[0]);
-    // // obj1.displayColumns.unshift('select');
-    // res.map((tbObj: any, index: number) => {
-    //   obj1.data[index] = tbObj;
-    // });
-
-    // return obj1;
   }
 
   // mathiing(rest: any[]) {

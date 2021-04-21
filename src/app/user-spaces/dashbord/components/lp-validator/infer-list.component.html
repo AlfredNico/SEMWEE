@@ -31,7 +31,7 @@
         <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
           <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
             <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
-              class="w-100 bg-white overflow-visible">
+              class="w-100 bg-white">
               <div fxLayout="column" class="w-100">
                 <div class="drag_n_drop" cdkDragHandle></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
@@ -41,7 +41,7 @@
                   </div>
                 </div>
               </div>
-              <div style="padding: 15px;" class="text-center bg-white">
+              <div style="padding: 17px;" class="text-center bg-white">
                 <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
                   [indeterminate]="someComplete()"></mat-checkbox>
               </div>
@@ -96,7 +96,7 @@
             (click)="selectRow(row)" [matTooltip]="row[column]"
             [matTooltipDisabled]="rowIndex.includes(i)" class="table-container-td"
             [class.active]="isRowSelected(row)">
-            <span *ngIf="isValidURL(row[column]) === false; else templeteURL" [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
+            <span *ngIf="isValidURL(row[column]) === false; else templeteURL" [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
               {{ row[column] }}
             </span>
             <ng-template #templeteURL>

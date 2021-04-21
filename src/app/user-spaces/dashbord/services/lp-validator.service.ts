@@ -10,7 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class LpValidatorService {
   public matching: DataTypes = {
-    displayColumns: ['select'],
+    displayColumns: [],
     hideColumns: [],
     data: [],
   };
@@ -31,23 +31,14 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log('upload', results);
-          // return {
-          //   displayColumns: [] as string[],
-          //   data: [] as any[],
-          //   hideColumns: [] as string[],
-          // };
+          const head: string[] = Object.keys(results[0]);
+          head.splice(head.indexOf('select'), 1);
+          head.unshift('select');
           return {
-            displayColumns: Object.keys(results[0]),
+            displayColumns: head,
             data: results,
             hideColumns: [],
           };
-          // obj.displayColumns = Object.keys(results[0]);
-          // obj.displayColumns.unshift('select');
-          // results.map((tbObj: any, index: number) => {
-          //   obj.data[index] = tbObj;
-          // });
-          // return obj;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -98,7 +89,6 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any) {
-    console.log('value', value);
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -106,19 +96,14 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log('result ', results);
+          const head: string[] = Object.keys(results[0]);
+          head.splice(head.indexOf('select'), 1);
+          head.unshift('select');
           return {
-            displayColumns: Object.keys(results[0]),
+            displayColumns: head,
             data: results,
             hideColumns: [],
           };
-
-          // infer.displayColumns = Object.keys(results[0]);
-          // // infer.displayColumns.unshift('select');
-          // results.map((tbObj: any, index: number) => {
-          //   infer.data[index] = tbObj;
-          // });
-          // return infer;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -156,22 +141,22 @@ export class LpValidatorService {
         }
       });
 
-      // if (values['select'] === true) {
-      var tmp =
-        obj[values['_id']] != undefined
-          ? obj[values['_id']]
-          : {
-              Valid: 'loadingQuery',
-              Popular_Search_Queries: 'loadingQuery',
-              Website_Browser: 'loadingQuery',
-            };
-      // if (afterSearch && obj[values['_id']] == undefined) {
-      //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
-      // }
-      //console.log(obj[values['idProduct']] + " : ", tmp);
+      if (values['select'] === true) {
+        const tmp =
+          obj[values['_id']] != undefined
+            ? obj[values['_id']]
+            : {
+                Valid: 'loadingQuery',
+                Popular_Search_Queries: 'loadingQuery',
+                Website_Browser: 'loadingQuery',
+              };
+        // if (afterSearch && obj[values['_id']] == undefined) {
+        //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+        // }
+        //console.log(obj[values['idProduct']] + " : ", tmp);
 
-      dataValue.push({ ...values, ...tmp });
-      // }
+        dataValue.push({ ...values, ...tmp });
+      }
     });
 
     return (this.matching = {

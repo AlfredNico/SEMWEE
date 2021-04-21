@@ -120,7 +120,7 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
               ).then((m) => m.LpValidatorModule),
           },
           {
-            path: 'all-project',
+            path: 'all-projects',
             loadChildren: () =>
               import(
                 './dashbord/components/projects/all-projects/all-projects.module'
@@ -140,7 +140,7 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
                 (m) => m.ProfilesModule
               ),
           },
-          { path: '', redirectTo: 'all-project', pathMatch: 'full' },
+          { path: '', redirectTo: 'all-projects', pathMatch: 'full' },
         ],
       },
       { path: '**', component: PageNotFoundComponent },

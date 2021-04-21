@@ -3,12 +3,12 @@
     <div mat-dialog-content>
         <!-- <div *ngFor="let facet of facetLists; let i = index"> -->
         <mat-selection-list #items color="accent" *ngFor="let facet of facetLists; let i = index">
-            <mat-list-option #item [disabled]="selectedOptions.length > 4 && onChecked(facet) && !item.selected" [selected]="facet && selectedOptions.includes(facet)" (click)="onNgModelChange(facet)">
+            <mat-list-option #item [selected]="facet && selectedOptions?.includes(facet)" (click)="onNgModelChange(facet)">
                 {{ facet.split('_').join(' ') }}
             </mat-list-option>
         </mat-selection-list>
         <!-- items.selectedOptions.selected.length > 6 && item.selected === false &&  && !item.selected  i < 5 -->
-        <!-- </div> -->
+        <!-- </div>  selectedOptions.length > 4 &&   onChecked(facet) && [disabled]="onChecked(facet) && !item.selected"   -->
     </div>
     <div mat-dialog-actions align='center'>
         <button mat-raised-button (click)="onClick()" tabindex="-1">CLOSE</button>
