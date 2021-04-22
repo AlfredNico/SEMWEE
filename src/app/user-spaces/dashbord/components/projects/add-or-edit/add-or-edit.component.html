@@ -142,31 +142,46 @@
       </div>
     </div>
 
-    <div class="w-100 my-5 mx-1 pt-4">
-      <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">SSL<span class="text-danger">*</span> / TLS<span class="text-danger">*</span></mat-label>
-      <mat-radio-group class="w-50 px-3" aria-label="website" formControlName="protocol_project">
-        <mat-radio-button color="accent" class="mx-5" *ngFor="let protocol of protocols"
-          [value]="protocol">
-          {{ protocol }}
-        </mat-radio-button>
-      </mat-radio-group>
+    <div class="w-100" fxLayout="row" fxLayoutAlign="start center" >
+      <div class="w-100 my-5 mx-1 pt-4">
+        <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">
+          HTTPS<span class="text-danger">*</span>
+          <!-- / TLS<span class="text-danger">*</span> -->
+        </mat-label>
+        <!-- <mat-radio-group class="w-50 px-3" aria-label="website" formControlName="protocol_project">
+          <mat-radio-button color="accent" class="mx-5" *ngFor="let protocol of protocols"
+            [value]="protocol">
+            {{ protocol }}
+          </mat-radio-button>
+        </mat-radio-group> -->
+        <div class="mx-auto w-50 px-3">
+          <mat-label ngClass="labelBeforeSlide">Off</mat-label>
+          <mat-slide-toggle formControlName="protocol_project">>On</mat-slide-toggle>
+        </div>
 
-      <div *ngIf="(form.get('protocol_project')?.touched &&
-          form.get('protocol_project')?.errors?.required); else showInstrProt">
-        <span class="form-text text-muted text-error" mat-error *ngIf="
-      form.get('protocol_project')?.touched &&
-      form.get('protocol_project')?.errors?.required
-    ">Protocol is required
-        </span>
+        <div *ngIf="(form.get('protocol_project')?.touched &&
+            form.get('protocol_project')?.errors?.required); else showInstrProt">
+          <span class="form-text text-muted text-error" mat-error *ngIf="
+        form.get('protocol_project')?.touched &&
+        form.get('protocol_project')?.errors?.required
+      ">Protocol is required
+          </span>
+        </div>
+        <ng-template #showInstrProt>
+          <span class="form-text text-muted txt-muted">Tell us if your website uses HTTPS
+            certificate.</span>
+        </ng-template>
       </div>
-      <ng-template #showInstrProt>
-        <span class="form-text text-muted txt-muted">Tell us if your website uses SSL/TLS
-          certificate.</span>
-      </ng-template>
+
+      <!-- <div class="w-100" fxLayout="row">
+          <mat-label ngClass="labelBeforeSlide">Off</mat-label>
+          <mat-slide-toggle>On</mat-slide-toggle>
+      </div> -->
     </div>
 
+
     <!-- [readonly]="true" -->
-    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">t
       <!-- <div class="w-100 row">
         <div mat-form-field class="form-group col-7">
           <label>Landscape image<span class="text-danger">*</span></label>

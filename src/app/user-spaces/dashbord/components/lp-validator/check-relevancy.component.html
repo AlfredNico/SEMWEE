@@ -22,7 +22,7 @@
     </a>
   </div>
   <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-  <div class="px-2 m-3 table-container" #element>
+  <div class="px-2 m-3 table-container" #element role="tables">>
 
       <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
         class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"
@@ -69,8 +69,7 @@
               cdkDrag (click)="getWidth(i)">
 
               <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white"
-                [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth"
-                (tabIndex)="hideTooltip($event)">
+                [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
                 <div fxLayout="column" class="w-100">
                   <div class="drag_n_drop" cdkDragHandle></div>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
@@ -96,8 +95,7 @@
 
             <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
               [class.odd]="odd" [class.even]="even"
-              [ngClass]="{'hide-rows': isColumnDisplay(column)}" [matTooltip]="row[column]"
-              [matTooltipDisabled]="rowIndex.includes(i)" [id]="i +'_'+ indexRow" appTuniIt
+              [ngClass]="{'hide-rows': isColumnDisplay(column)}" [id]="i +'_'+ indexRow" appTuniIt
               [appTuniIt]="isPopTuneIt(column, row[column])" [class.active]="isRowSelected(row)">
               <!-- [ngClass]="{'pointer_item': isPopTuneIt(column, row[column])}"  -->
               <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"

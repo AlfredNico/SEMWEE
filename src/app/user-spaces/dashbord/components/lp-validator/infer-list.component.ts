@@ -94,8 +94,6 @@ export class InferListComponent
   public icon = '';
   public active: any = '';
 
-  rowIndex: number[] = [];
-
   // multipleSelect tables
   isKeyPressed: boolean = false;
   selectedRow: any;
@@ -133,7 +131,6 @@ export class InferListComponent
         this.displayColumns = []; //display columns tables
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
-        this.rowIndex = [];
       }
       Object.assign(this.dataView, this.data);
       this.displayColumns = this.data.displayColumns;
@@ -472,9 +469,9 @@ export class InferListComponent
     this.active = $e.active;
   }
 
-  hideTooltip(event: number) {
-    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  }
+  // hideTooltip(event: number) {
+  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  // }
 
   public getWidth(id: any) {
     this.mawWidth = 0;

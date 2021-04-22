@@ -90,8 +90,6 @@ export class CheckRelevancyComponent
   public icon = '';
   public active: any = '';
 
-  rowIndex: number[] = []; // disable matTooltips
-
   // multipleSelect tables
   isKeyPressed: boolean = false;
   selectedRow: any;
@@ -118,7 +116,6 @@ export class CheckRelevancyComponent
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
-        this.rowIndex = [];
       }
       Object.assign(this.dataView, this.dataInferList);
       this.displayColumns = this.dataInferList.displayColumns;
@@ -420,9 +417,9 @@ export class CheckRelevancyComponent
     else return false;
   }
 
-  hideTooltip(event: number) {
-    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  }
+  // hideTooltip(event: number) {
+  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  // }
 
   public getWidth(id: any) {
     this.mawWidth = 0;

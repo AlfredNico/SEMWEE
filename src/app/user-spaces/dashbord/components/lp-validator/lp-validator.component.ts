@@ -43,6 +43,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   @ViewChild('matTabGroup', { static: true }) tab: any;
 
   selectedStepperIndex = 0;
+  setIndexStep: number = 0;
 
   public idProjet: string;
 
@@ -106,6 +107,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   // Upload file ok
   public nextInfterList(event: any) {
+    this.setIndexStep = this.stepper.selectedIndex;
     // this.isUserProject = true;
     this.dataSources = event;
 
@@ -116,7 +118,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   public nextCheckRevelancy(event: any) {
-    // this.isCheckRevelancy = true;
+    this.setIndexStep = this.stepper.selectedIndex;
     this.dataInferList = event;
 
     this.stepper.selected.completed = true;
@@ -125,6 +127,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   public nextMatching(event: any) {
+    this.setIndexStep = this.stepper.selectedIndex;
     this.childRevelancy = event;
 
     this.stepper.selected.completed = true;

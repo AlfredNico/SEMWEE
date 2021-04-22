@@ -72,7 +72,7 @@ export class GoogleMachingComponent
   public icon = '';
   public active: any = '';
 
-  rowIndex: number[] = []; // disable matTooltips
+  // rowIndex: number[] = []; // disable matTooltips
 
   // multipleSelect tables
   isKeyPressed: boolean = false;
@@ -100,7 +100,6 @@ export class GoogleMachingComponent
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
-        this.rowIndex = [];
         // this.dataView.displayColumns = [];
       }
 
@@ -329,9 +328,9 @@ export class GoogleMachingComponent
     else return false;
   }
 
-  hideTooltip(event: number) {
-    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  }
+  // hideTooltip(event: number) {
+  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  // }
 
   public getWidth(id: any) {
     this.mawWidth = 0;

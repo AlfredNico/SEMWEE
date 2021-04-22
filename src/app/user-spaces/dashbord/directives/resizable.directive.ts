@@ -15,7 +15,7 @@ import {
 export class ResizableDirective {
   @Input('resizeColumn') resizable: boolean;
   @Input() index: number;
-  @Output() tabIndex = new EventEmitter<any>();
+  // @Output() tabIndex = new EventEmitter<any>();
 
   @Input() maxWidth: number;
   private minWidth: number;
@@ -90,7 +90,7 @@ export class ResizableDirective {
       }
 
       //triggres services
-      this.tabIndex.emit(this.index);
+      // this.tabIndex.emit(this.index);
       this.minWidth = width;
       this.isDbClicked = false;
     }
@@ -105,7 +105,7 @@ export class ResizableDirective {
 
   @HostListener('dblclick', ['$event']) onLeave(e: MouseEvent) {
     //triggres services
-    this.tabIndex.emit(this.index);
+    // this.tabIndex.emit(this.index);
 
     this.isDbClicked = !this.isDbClicked;
     if (this.isDbClicked == true) {
