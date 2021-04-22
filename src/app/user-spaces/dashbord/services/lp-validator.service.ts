@@ -133,7 +133,8 @@ export class LpValidatorService {
       Object.keys(values).map((key: string, index: number) => {
         //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
+          if (index === 0)
+            this.matching.displayColumns.push('select', columnAdd[0]);
           if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
           if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 

@@ -44,6 +44,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   selectedStepperIndex = 0;
   setIndexStep: number = 0;
+  isEditeStepper = false;
+  checkIndex: number;
 
   public idProjet: string;
 
@@ -146,20 +148,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     };
   }
 
-  // mathiing(rest: any[]) {
-  //   let obj2 = {
-  //     displayColumns: [] as string[],
-  //     data: [] as any[],
-  //     hideColumns: [] as string[],
-  //   };
-  //   obj2.displayColumns = Object.keys(rest[0]);
-  //   rest.map((tbObj: any, index: number) => {
-  //     obj2.data[index] = tbObj;
-  //   });
-
-  //   return obj2;
-  // }
-
   private async checkProject(): Promise<void> {
     if (this.idProjet) {
       const res = await this.infoProduitService.checkProject(this.idProjet);
@@ -195,6 +183,17 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         });
         this.isNextStepp = false;
       }
+    }
+  }
+
+  public isStepper(index: number): void {
+    if (typeof index === 'number') {
+      this.isEditeStepper = true;
+      this.checkIndex = index;
+      // return this.stepper?.steps.toArray()[index].completed;
+    } else {
+      this.isEditeStepper = false;
+      this.checkIndex = 9;
     }
   }
 }

@@ -7,6 +7,15 @@
   // }
 }
 
+.mat-step-icon {
+	// set circle size
+	border-radius: 50%;
+	height: 36px !important;
+	width: 36px !important;
+	position: relative;
+  top:-6px!important
+}
+
 ::ng-deep {
     div[role="tables"] {
         // overflow: auto;
