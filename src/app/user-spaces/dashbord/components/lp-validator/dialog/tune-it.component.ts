@@ -20,8 +20,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       [formGroup]="form"
       fxLayout="row"
       [ngClass]="{
-        panel1: itemType == 'ItemType',
-        panel2: itemType != 'ItemType'
+        panel1: inludes(itemType),
+        panel2: !itemType
       }"
     >
       <div fxLayout="column" fxLayoutAlign="space-between center" class="w-100">
@@ -31,7 +31,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
             fxLayout="row"
             fxLayoutAlign="space-between center"
           >
-            <h4>Tune it !</h4>
+            <h2>Tune it !</h2>
             <mat-form-field appearance="outline">
               <mat-select [value]="items[0].value" #item>
                 <mat-option *ngFor="let item of items" [value]="item.value">
@@ -58,30 +58,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <mat-form-field
             appearance="outline"
             class="w-100"
-            *ngIf="item.value == 'Synonimyze'"
+            *ngIf="item.value == 'Synonymize'"
           >
             <textarea
               matInput
               rows="3"
               cols="30"
-              placeholder="Synonimyze..."
-              formControlName="Synonimyze"
+              placeholder="Synonymize..."
+              formControlName="Synonymize"
             ></textarea>
           </mat-form-field>
-
-          <!-- <mat-form-field
-            appearance="outline"
-            class="w-100"
-            *ngIf="item.value == 'Editsynonimize'"
-          >
-            <textarea
-              matInput
-              rows="3"
-              cols="30"
-              placeholder="Edit synonyms..."
-              formControlName="Editsynonimize"
-            ></textarea>
-          </mat-form-field> -->
         </mat-dialog-content>
 
         <mat-dialog-actions class="w-100 p-0" align="end">
@@ -91,8 +77,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
             (click)="onClick()"
             cdkFocusInitial
           >
-            <span *ngIf="itemType == 'ItemType'">Apply</span>
-            <span *ngIf="itemType != 'ItemType'">Apply on the Table</span>
+            <span *ngIf="inludes(itemType)">Apply</span>
+            <span *ngIf="!inludes(itemType)">Apply on the Table</span>
           </button>
           <button mat-raised-button color="accent" mat-dialog-close>
             Cancel
@@ -101,7 +87,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       </div>
       <div
         fxLayout="column"
-        *ngIf="itemType != 'ItemType'"
+        *ngIf="!inludes(itemType)"
         style="width: 350px; margin-left: 3em;"
       >
         <mat-label class="w-100 px-1 py-2">
@@ -109,7 +95,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <i>Even hidden columns and lines are concerned !</i>
         </mat-label>
         <mat-radio-group aria-label="items" formControlName="SemanticScope">
-          <!-- [(ngModel)]="itemsType[0].value" [checked]="i === 0" -->
           <mat-radio-button
             color="accent"
             class="mx-5"
@@ -128,8 +113,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class TuneItComponent implements OnInit, AfterViewInit {
   readonly items: any[] = [
     { value: 'Editspelling', viewValue: 'Edit spelling' },
-    { value: 'Synonimyze', viewValue: 'Synonimyze' },
-    // { value: 'Editsynonimize', viewValue: 'Edit synonyms' },
+    { value: 'Synonymize', viewValue: 'Synonymize' },
   ];
   readonly itemsType: { value: string; label: string }[] = [
     { value: 'item_type_only', label: 'This Item Type only' },
@@ -138,13 +122,14 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ];
   itemType: any = '';
   isItem: boolean;
+  public oldname: string = '';
 
   form = new FormGroup({
     Editspelling: new FormControl(''),
-    Synonimyze: new FormControl(''),
-    // Editsynonimize: new FormControl(''),
+    Synonymize: new FormControl(''),
+    oldname: new FormControl(''),
+    // Apply_on_the_colum: new FormControl(false),
     SemanticScope: new FormControl(false),
-    Apply_on_the_colum: new FormControl(false),
     Apply_on_the_table: new FormControl(false),
   });
 
@@ -158,18 +143,23 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ) {
     if (this.data && this.data.row) {
       this.itemType = this.data.itemSeleted;
+      this.oldname = this.data.row[this.data.itemSeleted];
+
+      // console.log('data', this.data);
 
       if (this.data.checkTuneIt.length !== 0) {
-        if (this.data.itemSeleted === 'ItemType') {
+        if (this.inludes(this.itemType)) {
           const value = this.data.checkTuneIt[0];
           this.form.patchValue({
             ...value,
+            oldname: this.data.row[this.itemType],
           });
         } else {
           const value = this.data.checkTuneIt;
           this.form.patchValue({
             Editspelling: value[0]['Editspelling'],
             SemanticScope: value[0]['SemanticScope'],
+            oldname: this.data.row[this.itemType],
           });
         }
       } else {
@@ -177,6 +167,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         this.form.patchValue({
           Editspelling: this.data.row[`${this.data.itemSeleted}`],
           SemanticScope: this.itemsType[0].value,
+          oldname: this.data.row[this.itemType],
         });
       }
     }
@@ -187,10 +178,10 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   async onClick() {
-    const { Editspelling, Synonimyze, SemanticScope } = this.form.controls;
+    const { Editspelling, Synonymize } = this.form.controls;
 
-    if (Editspelling.value || Synonimyze.value) {
-      if (this.itemType == 'ItemType') {
+    if (Editspelling.value || Synonymize.value) {
+      if (this.inludes(this.itemType)) {
         if (this.data.checkTuneIt && this.data.checkTuneIt.length !== 0) {
           const data = {
             ...this.form.value,
@@ -212,34 +203,21 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           this.notifs.sucess(res.message);
         }
       } else {
-        if (this.data.checkTuneIt && this.data.checkTuneIt.length !== 0) {
-          const value = {
-            ...this.form.value,
-            Apply_on_the_table: true,
-            idinferlist: this.data.row['_id'],
-            NomProperty: this.itemType,
-          };
-          const res = await this.propertyService.appyPropertyValue(
-            value,
-            this.data.checkTuneIt[0]['_id']
-          );
+        const value = {
+          ...this.form.value,
+          Apply_on_the_table: true,
+          NomProperty: this.itemType,
+          idproject: this.data.row['idproject'],
+        };
+        const res = await this.propertyService.appyPropertyValue(value);
 
-          if (res && res.message) this.dialogRef.close(this.form.value);
-          this.notifs.sucess(res.message);
-        } else {
-          const value = {
-            ...this.form.value,
-            Apply_on_the_table: true,
-            idinferlist: this.data.row['_id'],
-            NomProperty: this.itemType,
-          };
-          const res = await this.propertyService.appyPropertyValue(value);
-          if (res && res.message) this.dialogRef.close(this.form.value);
-          this.notifs.sucess(res.message);
-        }
+        if (res && res.message) this.dialogRef.close(this.form.value);
+        this.notifs.sucess(res.message);
       }
     }
+  }
 
-    // this.dialogRef.close(this.form.value);
+  public inludes(item: string): boolean {
+    return !!item.toLowerCase().match(/item[^]*type$/);
   }
 }

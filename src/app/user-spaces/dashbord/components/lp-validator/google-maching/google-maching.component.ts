@@ -72,7 +72,7 @@ export class GoogleMachingComponent
   public icon = '';
   public active: any = '';
 
-  rowIndex: number[] = []; // disable matTooltips
+  // rowIndex: number[] = []; // disable matTooltips
 
   // multipleSelect tables
   isKeyPressed: boolean = false;
@@ -100,7 +100,6 @@ export class GoogleMachingComponent
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
-        this.rowIndex = [];
         // this.dataView.displayColumns = [];
       }
 
@@ -109,6 +108,7 @@ export class GoogleMachingComponent
         this.resultData
       );
       Object.assign(this.dataView, value);
+      this.displayColumns = value.displayColumns;
     }
 
     this.dataSource.data = this.dataView.data;
@@ -116,8 +116,8 @@ export class GoogleMachingComponent
     this.dataSource.sort = this.sort;
 
     this.dataView.displayColumns.map((key: string, index: number) => {
-      this.displayColumns.push(key);
-      this.filters.addControl(key, new FormControl(''));
+      if (key != 'select') this.filters.addControl(key, new FormControl(''));
+      // this.displayColumns.push(key);
     });
 
     this.checkValid();
@@ -140,45 +140,46 @@ export class GoogleMachingComponent
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          const data = this.dataView.data.filter((item: any) => {
+          let data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
               return Object.keys(item).some((property) => {
                 if (
-                  query[property] !== '' &&
-                  typeof item[property] === 'string' &&
+                  query[property] &&
+                  // typeof item[property] === 'string' &&
                   query[property] !== undefined &&
                   item[property] !== undefined
                 ) {
-                  let s = '',
-                    i = 0;
+                  let i = 0,
+                    q = '';
                   Object.entries(query).map((val) => {
                     if (val[1]) {
                       i++;
                       const lower = (val[1] as any).toLowerCase();
-                      let query = '';
 
                       if (val[0] === 'Valid' && 'yes'.includes(lower)) {
-                        query = `item["${val[0]}"]===true`;
+                        if (i == 1) {
+                          q = `item["${val[0]}"]===true`;
+                        } else {
+                          q = `${q} && item["${val[0]}"]===true`;
+                        }
                       } else if (val[0] === 'Valid' && 'no'.includes(lower)) {
-                        query = `item["${val[0]}"]===true`;
+                        if (i == 1) {
+                          q = `item["${val[0]}"]===false`;
+                        } else {
+                          q = `${q} && item["${val[0]}"]===false`;
+                        }
                       } else {
-                        query = `item["${val[0]}"].toLowerCase().includes("${lower}")`;
-                      }
-
-                      if (i === 1) {
-                        s = s + query;
-                      } else {
-                        s = s + `&& ${query}`;
+                        if (i == 1) {
+                          q = `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
+                        } else {
+                          q = `${q} && item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
+                        }
                       }
                     }
                   });
-                  console.log('s: ', s);
-                  return eval(s);
-                  // return item[property]
-                  //   .toLowerCase()
-                  //   .includes(query[property].toLowerCase());
+                  return eval(q);
                 }
               });
             }
@@ -327,9 +328,9 @@ export class GoogleMachingComponent
     else return false;
   }
 
-  hideTooltip(event: number) {
-    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  }
+  // hideTooltip(event: number) {
+  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  // }
 
   public getWidth(id: any) {
     this.mawWidth = 0;
@@ -344,5 +345,9 @@ export class GoogleMachingComponent
   public isNumberOrString(itemValue: any) {
     if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
+  }
+
+  public clearInput(column: any) {
+    this.filters.controls[column].reset('');
   }
 }

@@ -43,6 +43,9 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   @ViewChild('matTabGroup', { static: true }) tab: any;
 
   selectedStepperIndex = 0;
+  setIndexStep: number = 0;
+  isEditeStepper = false;
+  checkIndex: number;
 
   public idProjet: string;
 
@@ -79,7 +82,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {}
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     this.triggerServices.switchproject$
       .pipe(
         tap(() => {
@@ -106,6 +109,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   // Upload file ok
   public nextInfterList(event: any) {
+    this.setIndexStep = this.stepper.selectedIndex;
     // this.isUserProject = true;
     this.dataSources = event;
 
@@ -116,7 +120,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   public nextCheckRevelancy(event: any) {
-    // this.isCheckRevelancy = true;
+    this.setIndexStep = this.stepper.selectedIndex;
     this.dataInferList = event;
 
     this.stepper.selected.completed = true;
@@ -125,6 +129,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   public nextMatching(event: any) {
+    this.setIndexStep = this.stepper.selectedIndex;
     this.childRevelancy = event;
 
     this.stepper.selected.completed = true;
@@ -132,34 +137,16 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     this.stepper.next();
   }
 
-  inferList(res: any[]) {
-    let obj1 = {
-      displayColumns: [] as string[],
-      data: [] as any[],
-      hideColumns: [] as string[],
+  private inferList(res: any[]) {
+    const head: string[] = Object.keys(res[0]);
+    head.splice(head.indexOf('select'), 1);
+    head.unshift('select');
+    return {
+      displayColumns: head,
+      data: res,
+      hideColumns: [],
     };
-    obj1.displayColumns = Object.keys(res[0]);
-    obj1.displayColumns.unshift('select');
-    res.map((tbObj: any, index: number) => {
-      obj1.data[index] = { ...tbObj, select: true };
-    });
-
-    return obj1;
   }
-
-  // mathiing(rest: any[]) {
-  //   let obj2 = {
-  //     displayColumns: [] as string[],
-  //     data: [] as any[],
-  //     hideColumns: [] as string[],
-  //   };
-  //   obj2.displayColumns = Object.keys(rest[0]);
-  //   rest.map((tbObj: any, index: number) => {
-  //     obj2.data[index] = tbObj;
-  //   });
-
-  //   return obj2;
-  // }
 
   private async checkProject(): Promise<void> {
     if (this.idProjet) {
@@ -198,5 +185,15 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       }
     }
   }
-}
 
+  public isStepper(index: number): void {
+    if (typeof index === 'number') {
+      this.isEditeStepper = true;
+      this.checkIndex = index;
+      // return this.stepper?.steps.toArray()[index].completed;
+    } else {
+      this.isEditeStepper = false;
+      this.checkIndex = 9;
+    }
+  }
+}

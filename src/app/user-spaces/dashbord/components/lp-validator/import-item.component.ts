@@ -96,7 +96,20 @@ import { LpValidatorService } from '../../services/lp-validator.service';
         </div>
 
         <button
-          style="margin: 25px 0 5px;"
+          mat-raised-button
+          style="margin: 25px 10px 0 0;"
+          color="warn"
+          *ngIf="
+            fileName !== undefined &&
+            fileName?.length > 0 &&
+            isExcelFile === true
+          "
+          (click)="removeUpload()"
+        >
+          Remove upload
+        </button>
+        <button
+          style="margin: 25px 0 0 10px"
           mat-raised-button
           color="accent"
           (click)="form.valid && onSubmit()"
@@ -177,10 +190,10 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       });
 
       //Read CSV file
-      const fileToRead = file;
-      const fileReader = new FileReader();
-      fileReader.onload = this.onFileLoad;
-      fileReader.readAsText(fileToRead, 'UTF-8');
+      // const fileToRead = file;
+      // const fileReader = new FileReader();
+      // fileReader.onload = this.onFileLoad;
+      // fileReader.readAsText(fileToRead, 'UTF-8');
     }
   }
 
@@ -201,12 +214,21 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       this.common.hideSpinner();
       this.common.isLoading$.next(false);
     } catch (error) {
-      this.notifs.warn('Server is not responding');
-      console.log('error ', error);
+      // this.notifs.warn('Server is not responding');
+      // console.log('error ', error);
       this.common.hideSpinner();
       this.common.isLoading$.next(false);
       throw error;
     }
+  }
+
+  removeUpload() {
+    this.fileName = '';
+    this.isExcelFile = false;
+    this.form.patchValue({
+      fileSource: '',
+      fileName: '',
+    });
   }
 
   ngOnDestroy() {

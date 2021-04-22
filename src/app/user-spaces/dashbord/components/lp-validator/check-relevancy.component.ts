@@ -90,8 +90,6 @@ export class CheckRelevancyComponent
   public icon = '';
   public active: any = '';
 
-  rowIndex: number[] = []; // disable matTooltips
-
   // multipleSelect tables
   isKeyPressed: boolean = false;
   selectedRow: any;
@@ -118,10 +116,9 @@ export class CheckRelevancyComponent
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
-        this.rowIndex = [];
-        // this.dataView.displayColumns = [];
       }
       Object.assign(this.dataView, this.dataInferList);
+      this.displayColumns = this.dataInferList.displayColumns;
     }
 
     this.dataSource.data = this.dataView.data;
@@ -129,9 +126,9 @@ export class CheckRelevancyComponent
     this.dataSource.sort = this.sort;
 
     this.dataView.displayColumns.map((key: any, index: number) => {
+      if (key != 'select') this.filters.addControl(key, new FormControl(''));
       //création formControl Dynamics
-      this.displayColumns.push(key);
-      this.filters.addControl(key, new FormControl(''));
+      // this.displayColumns.push(key);
     });
     this.commonServices.hideSpinner();
   }
@@ -163,11 +160,11 @@ export class CheckRelevancyComponent
                       if (i == 1) {
                         s =
                           s +
-                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       } else {
                         s =
                           s +
-                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `&& item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       }
                     }
                   });
@@ -340,10 +337,13 @@ export class CheckRelevancyComponent
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
 
+    // '1rest property hugy'.match(/property$/);
+
     let val: any = '';
+    const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
     try {
-      if (itemSeleted.includes('ItemType'))
+      if (this.toLowerCase(itemSeleted).match(/item[^]*type$/))
         val = await this.itemService.getItemType(row['_id']);
       else
         val = await this.propertyService.getPropertyValue(
@@ -352,19 +352,28 @@ export class CheckRelevancyComponent
         );
 
       this.commonServices.hideSpinner();
-      this.dialog.open(TuneItComponent, {
-        // position: { top: `${clientY}px`, left: `${clientX}px` },
-        // width: itemSeleted == 'itemtype' ? '400px' : '',,
-        data: { row, itemSeleted, checkTuneIt: val },
-      });
-      // .afterClosed()
-      // .pipe(
-      //   map((result: any) => {
-      //     console.log(result);
-      //     if (result) {}
-      //   })
-      // )
-      // .subscribe();
+      this.dialog
+        .open(TuneItComponent, {
+          // position: { top: `${clientY}px`, left: `${clientX}px` },
+          // width: itemSeleted == 'itemtype' ? '400px' : '',,
+          data: { row, itemSeleted, checkTuneIt: val },
+        })
+        .afterClosed()
+        .pipe(
+          map((result: any) => {
+            if (result) {
+              const data = this.dataView.data[index];
+              const val = (data[itemSeleted] = result['Editspelling']);
+              const newVla = {
+                ...data,
+                val,
+              };
+
+              this.dataView.data[index] = newVla;
+            }
+          })
+        )
+        .subscribe();
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
         throw error;
@@ -401,16 +410,16 @@ export class CheckRelevancyComponent
   }
   isPopTuneIt(column: string, value: string): boolean {
     if (
-      this.toLowerCase(column).includes('itemtype') ||
-      (this.toLowerCase(column).includes('value') && value)
+      this.toLowerCase(column).match(/item[^]*type$/) ||
+      (this.toLowerCase(column).match(/property$/) && value)
     )
       return true;
     else return false;
   }
 
-  hideTooltip(event: number) {
-    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  }
+  // hideTooltip(event: number) {
+  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  // }
 
   public getWidth(id: any) {
     this.mawWidth = 0;
@@ -422,8 +431,12 @@ export class CheckRelevancyComponent
     }
   }
 
-  public isNumberOrString(itemValue: any) {
+  public isNumberOrString(itemValue: any): boolean {
     if (typeof itemValue === 'number' || Number(itemValue)) return true;
     else return false;
+  }
+
+  public clearInput(column: any): void {
+    this.filters.controls[column].reset('');
   }
 }

@@ -1,5 +1,5 @@
 <div fxLayout="column" class="w-100">
-  <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
+  <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3" style="padding-right: 0 !important;">
     <!-- <button mat-mini-fab color="accent" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
         </button> -->
@@ -10,7 +10,7 @@
       <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
     <span>Table intef list</span>
     <!-- <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
@@ -18,11 +18,11 @@
         </button> -->
     <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-      <span>Table options </span>
+      <span>Table options</span>
     </a>
   </div>
   <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-  <div class="px-2 m-3 table-container" #element>
+  <div class="px-2 m-3 table-container" #element role="tables">
 
       <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
         class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"
@@ -43,7 +43,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="padding: 15px;" class="text-center bg-white">
+                <div style="padding: 17px;" class="text-center bg-white">
                   <mat-checkbox color="accent" [checked]="allSelect"
                     (change)="setAll($event.checked)" [indeterminate]="someComplete()">
                   </mat-checkbox>
@@ -69,8 +69,7 @@
               cdkDrag (click)="getWidth(i)">
 
               <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white"
-                [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth"
-                (tabIndex)="hideTooltip($event)">
+                [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
                 <div fxLayout="column" class="w-100">
                   <div class="drag_n_drop" cdkDragHandle></div>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
@@ -85,21 +84,23 @@
                   </div>
                 </div>
                 <mat-form-field appearance="outline">
-                  <input matInput type="search" placeholder="Smart Query or Regex ready"
+                  <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                     [formControlName]="column" autocomplete="off">
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearInput(column)">
+                      <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                    </button>
                 </mat-form-field>
               </span>
             </th>
 
             <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
               [class.odd]="odd" [class.even]="even"
-              [ngClass]="{'hide-rows': isColumnDisplay(column)}" [matTooltip]="row[column]"
-              [matTooltipDisabled]="rowIndex.includes(i)" [id]="i +'_'+ indexRow" appTuniIt
+              [ngClass]="{'hide-rows': isColumnDisplay(column)}" [id]="i +'_'+ indexRow" appTuniIt
               [appTuniIt]="isPopTuneIt(column, row[column])" [class.active]="isRowSelected(row)">
               <!-- [ngClass]="{'pointer_item': isPopTuneIt(column, row[column])}"  -->
               <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"
                 style="padding-right: 10px;">
-                <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }">
+                <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
                   {{ row[column] }}
                 </span>
                 <button #button style="display: none" mat-stroked-button

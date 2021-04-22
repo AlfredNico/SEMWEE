@@ -2,13 +2,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CheckUserInfoService {
+  private listeData = new BehaviorSubject<any[]>([]);
+  private listeDataLoaded = of(false);
   constructor(private http: HttpClient) {}
 
   checkProject(_idProduit: any) {

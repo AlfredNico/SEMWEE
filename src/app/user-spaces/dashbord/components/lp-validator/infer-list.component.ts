@@ -1,4 +1,3 @@
-import { query } from '@angular/animations';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewChecked,
@@ -68,7 +67,7 @@ export class InferListComponent
     hideColumns: [],
     data: [],
   };
-  public displayColumns: string[] = ['select'];
+  public displayColumns: string[] = [];
 
   //generate Data
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -94,8 +93,6 @@ export class InferListComponent
   // filter icon && and tooltips
   public icon = '';
   public active: any = '';
-
-  rowIndex: number[] = [];
 
   // multipleSelect tables
   isKeyPressed: boolean = false;
@@ -131,12 +128,12 @@ export class InferListComponent
     if (this.data !== undefined) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] }; // initialize dataSources
-        this.displayColumns = ['select']; //display columns tables
+        this.displayColumns = []; //display columns tables
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
-        this.rowIndex = [];
       }
       Object.assign(this.dataView, this.data);
+      this.displayColumns = this.data.displayColumns;
     }
 
     this.dataSource.data = this.dataView.data;
@@ -146,22 +143,14 @@ export class InferListComponent
     this.dataView.displayColumns.map((key: string, index: number) => {
       if (key != 'select') {
         //création formControl Dynamics
-        this.displayColumns.push(key);
         this.filters.addControl(key, new FormControl(''));
-      }
 
-      if (
-        !key.includes('Value') &&
-        !key.includes('select') &&
-        key.includes('Facet')
-      ) {
-        this.selectedOptions.push(key);
-        if (
-          this.checklist.length < 5 &&
-          key.includes('Facet') &&
-          !key.includes('Value')
-        ) {
+        if (!key.includes('Value') && key.includes('Facet')) {
+          this.selectedOptions.push(key);
           this.checklist.push(key);
+          // if (key.includes('Facet') && !key.includes('Value')) {
+          //   this.checklist.push(key);
+          // }
         }
       }
     });
@@ -203,11 +192,11 @@ export class InferListComponent
                       if (i == 1) {
                         s =
                           s +
-                          `item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       } else {
                         s =
                           s +
-                          `&& item["${val[0]}"].toLowerCase().includes("${lower}")`;
+                          `&& item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
                       }
                     }
                   });
@@ -304,71 +293,62 @@ export class InferListComponent
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner('root');
 
-    const header = [
-      'select',
-      'ID',
-      'category',
-      'subcategory',
-      'subcategory_2',
-      'Facet_1',
-      'Facet_1_Value',
-      'Facet_2',
-      'Facet_2_Value',
-      'Facet_3',
-      'Facet_3_Value',
-      'Facet_4',
-      'Facet_4_Value',
-      'Facet_5',
-      'Facet_5_Value',
-    ];
+    // const header = [
+    //   'select',
+    //   'ID',
+    //   'category',
+    //   'subcategory',
+    //   'subcategory_2',
+    //   'Facet_1',
+    //   'Facet_1_Value',
+    //   'Facet_2',
+    //   'Facet_2_Value',
+    //   'Facet_3',
+    //   'Facet_3_Value',
+    //   'Facet_4',
+    //   'Facet_4_Value',
+    //   'Facet_5',
+    //   'Facet_5_Value',
+    // ];
 
-    let tabIndex = 0;
+    // let tabIndex = 0;
 
     this.dataView.data.forEach((value: any, currentIndex: number) => {
-      let i = 5;
-      let object: any = {
-        select: '',
-        ID: '',
-        Category: '',
-        Subcategory: '',
-        Subcategory_2: '',
-        Facet_1: '',
-        Facet_1_Value: '',
-        Facet_2: '',
-        Facet_2_Value: '',
-        Facet_3: '',
-        Facet_3_Value: '',
-        Facet_4: '',
-        Facet_4_Value: '',
-        Facet_5: '',
-        Facet_5_Value: '',
-        email: this.user.email,
-      };
-
+      let object = {};
+      // let i = 5;
+      // let object: any = {
+      //   select: '',
+      //   ID: '',
+      //   Category: '',
+      //   Subcategory: '',
+      //   Subcategory_2: '',
+      //   Facet_1: '',
+      //   Facet_1_Value: '',
+      //   Facet_2: '',
+      //   Facet_2_Value: '',
+      //   Facet_3: '',
+      //   Facet_3_Value: '',
+      //   Facet_4: '',
+      //   Facet_4_Value: '',
+      //   Facet_5: '',
+      //   Facet_5_Value: '',
+      //   email: this.user.email,
+      // };
       Object.keys(value).forEach((key: string, index: number) => {
-        if (value['select'] === true) {
-          if (!key.includes('Facet') && !key.includes('Value')) {
-            // object[header[i]] = value[key];
-            object[key] = value[key];
-            this.filterData[tabIndex] = { ...object };
-          } else if (
-            key.includes('Facet') &&
-            !key.includes('Value') &&
-            this.checklist.includes(key)
-          ) {
-            const keyIndex = header.indexOf(key);
-            object[header[i]] = value[key];
-            i++;
-            object[header[i]] = value[`${key}_Value`];
-            this.filterData[tabIndex] = { ...object };
-            i++;
-          }
+        if (!key.includes('Facet') && !key.includes('Value')) {
+          object[key] = value[key];
+          this.filterData[currentIndex] = { ...object };
+        } else if (
+          key.includes('Facet') &&
+          !key.includes('Value') &&
+          this.checklist.includes(key)
+        ) {
+          const keyIndex = this.displayColumns.indexOf(key);
+          object[this.displayColumns[keyIndex]] = value[key];
+          object[this.displayColumns[keyIndex + 1]] = value[`${key}_Value`];
+          this.filterData[currentIndex] = { ...object };
         }
       });
-
-      if (value['select'] === true) {
-        tabIndex++;
-      }
     });
 
     try {
@@ -379,11 +359,12 @@ export class InferListComponent
       if (result && result.data) {
         this.dataInferListReady.emit(result);
       } else {
-        this.notifs.warn('Server is not responding');
+        this.notifs.warn('Display error');
       }
       this.commonServices.isLoading$.next(false);
       this.commonServices.hideSpinner();
     } catch (error) {
+      this.notifs.warn('Display error');
       this.commonServices.isLoading$.next(false);
       this.commonServices.hideSpinner();
       throw error;
@@ -488,9 +469,9 @@ export class InferListComponent
     this.active = $e.active;
   }
 
-  hideTooltip(event: number) {
-    if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  }
+  // hideTooltip(event: number) {
+  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
+  // }
 
   public getWidth(id: any) {
     this.mawWidth = 0;
@@ -508,13 +489,21 @@ export class InferListComponent
   }
 
   public isValidURL(colum: string): boolean {
-    if (colum === 'ID') {
+    if (colum === 'ID' || colum === 'idcsv') {
       const res = colum.match(
         /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
       );
       return res !== null;
     }
     return false;
+  }
+
+  onPaginateChange(event) {
+    console.log('Current page index: ' + JSON.stringify(event));
+  }
+
+  public clearInput(column: any) {
+    this.filters.controls[column].reset('');
   }
 }
 

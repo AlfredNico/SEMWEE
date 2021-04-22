@@ -1,10 +1,9 @@
-export interface PropertyValue {
+export interface PropertyType {
+  idproject: any;
   NomProperty: string;
+  oldname: string;
   Editspelling: string;
-  Synonimyze: string;
-  Editsynonimize: string;
+  Synonymize: string;
   SemanticScope: string;
-  Apply_on_the_colum: boolean;
   Apply_on_the_table: boolean;
-  idinferlist: any;
 }

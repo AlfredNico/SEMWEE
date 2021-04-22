@@ -10,8 +10,8 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
-import * as INFERLIST from 'src/app/shared/fake-data/semwee.json';
-import * as FILE from 'src/app/shared/fake-data/file.json';
+import * as INFERLIST from 'src/app/shared/fake-data/inferlist.json';
+import * as PRODUCT from 'src/app/shared/fake-data/product.json';
 import { Projects } from './user-spaces/dashbord/interfaces/projects';
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
@@ -172,34 +172,34 @@ export class MockInterceptor implements HttpInterceptor {
             status: 200,
             body: projects,
           })
-        );
-
-      case url.includes('validator/import-csv') && method === 'POST':
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: (INFERLIST as any)['default'],
-          })
-        );
-
-      case url.includes('validator/post-infer-list') && method === 'POST':
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: (FILE as any)['default'],
-          })
-        );
-
-      case url.includes('/project/get-project-product'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array(
-              (INFERLIST as any)['default'],
-              (FILE as any)['default']
-            ),
-          })
         ); */
+
+      // case url.includes('validator/import-csv') && method === 'POST':
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: (INFERLIST as any)['default'],
+      //     })
+      //   );
+
+      // case url.includes('validator/post-infer-list') && method === 'POST':
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: (PRODUCT as any)['default'],
+      //     })
+      //   );
+
+      // case url.includes('/project/get-project-product'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: Array(
+      //         (INFERLIST as any)['default'],
+      //         (FILE as any)['default']
+      //       ),
+      //     })
+      //   );
 
       // pass through any requests not handled above
       default:

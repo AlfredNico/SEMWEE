@@ -10,7 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class LpValidatorService {
   public matching: DataTypes = {
-    displayColumns: ['select'],
+    displayColumns: [],
     hideColumns: [],
     data: [],
   };
@@ -31,18 +31,14 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log('upload', results);
-          let obj = {
-            displayColumns: [] as string[],
-            data: [] as any[],
-            hideColumns: [] as string[],
+          const head: string[] = Object.keys(results[0]);
+          head.splice(head.indexOf('select'), 1);
+          head.unshift('select');
+          return {
+            displayColumns: head,
+            data: results,
+            hideColumns: [],
           };
-          obj.displayColumns = Object.keys(results[0]);
-          obj.displayColumns.unshift('select');
-          results.map((tbObj: any, index: number) => {
-            obj.data[index] = { ...tbObj, select: true };
-          });
-          return obj;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -100,18 +96,14 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          let infer = {
-            displayColumns: [] as string[],
-            data: [] as any[],
-            hideColumns: [] as string[],
+          const head: string[] = Object.keys(results[0]);
+          head.splice(head.indexOf('select'), 1);
+          head.unshift('select');
+          return {
+            displayColumns: head,
+            data: results,
+            hideColumns: [],
           };
-
-          infer.displayColumns = Object.keys(results[0]);
-          infer.displayColumns.unshift('select');
-          results.map((tbObj: any, index: number) => {
-            infer.data[index] = { ...tbObj, select: true };
-          });
-          return infer;
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -141,26 +133,31 @@ export class LpValidatorService {
       Object.keys(values).map((key: string, index: number) => {
         //console.log(key, index);
         if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0) this.matching.displayColumns.push(columnAdd[0]);
+          if (index === 0)
+            this.matching.displayColumns.push('select', columnAdd[0]);
           if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
           if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
           this.matching.displayColumns.push(key);
         }
       });
-      var tmp =
-        obj[values['_id']] != undefined
-          ? obj[values['_id']]
-          : {
-              Valid: 'loadingQuery',
-              Popular_Search_Queries: 'loadingQuery',
-              Website_Browser: 'loadingQuery',
-            };
-      // if (afterSearch && obj[values['_id']] == undefined) {
-      //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
-      // }
-      //console.log(obj[values['idProduct']] + " : ", tmp);
-      dataValue.push({ ...values, ...tmp });
+
+      if (values['select'] === true) {
+        const tmp =
+          obj[values['_id']] != undefined
+            ? obj[values['_id']]
+            : {
+                Valid: 'loadingQuery',
+                Popular_Search_Queries: 'loadingQuery',
+                Website_Browser: 'loadingQuery',
+              };
+        // if (afterSearch && obj[values['_id']] == undefined) {
+        //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
+        // }
+        //console.log(obj[values['idProduct']] + " : ", tmp);
+
+        dataValue.push({ ...values, ...tmp });
+      }
     });
 
     return (this.matching = {

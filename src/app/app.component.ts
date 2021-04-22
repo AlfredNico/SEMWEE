@@ -1,3 +1,4 @@
+import { InterruptedService } from './shared/services/interrupted.service';
 import { Component, HostListener } from '@angular/core';
 import {
   Event,
@@ -28,7 +29,13 @@ import { CommonService } from './shared/services/common.service';
 export class AppComponent {
   title = 'SEMWEE';
 
-  constructor(private router: Router, private common: CommonService) {
+  constructor(
+    private router: Router,
+    private common: CommonService,
+    private interrupted: InterruptedService
+  ) {
+    // this.interrupted.isInterrompted.next(false);
+
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
@@ -51,6 +58,9 @@ export class AppComponent {
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 27) this.common.hideSpinner();
+    if (event.keyCode === 27) {
+      // this.interrupted.isInterrompted.next(true);
+      this.common.hideSpinner();
+    }
   }
 }

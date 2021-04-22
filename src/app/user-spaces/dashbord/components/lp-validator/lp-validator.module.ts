@@ -24,6 +24,7 @@ import { TuniItDirective } from './../../directives/tuni-it.directive';
 
 import { CapitalizeFirstPipePipe } from 'src/app/user-spaces/dashbord/pipe/capitalize-first-pipe.pipe';
 import { RemoveUnderscorePipe } from 'src/app/user-spaces/dashbord/pipe/remove-underscore.pipe';
+import { StepperIconDirective } from '../../directives/stepper-icon.directive';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { RemoveUnderscorePipe } from 'src/app/user-spaces/dashbord/pipe/remove-u
     DragDropDirective,
     ResizableDirective,
     TuniItDirective,
+    StepperIconDirective,
 
     /* PIPE DECLARATORS */
     CapitalizeFirstPipePipe,
