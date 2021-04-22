@@ -30,4 +30,3 @@ jobs:
    # - run: npm run fix-memory-limit
     - run: npm i
     - run: npm run build-prod
-#     - run: npm run build --if-present
