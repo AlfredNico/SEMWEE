@@ -74,6 +74,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
                 hidden
               />
             </div>
+            <!-- (change)="onFileChange($event)" -->
 
             <div
               *ngIf="
@@ -95,7 +96,20 @@ import { LpValidatorService } from '../../services/lp-validator.service';
         </div>
 
         <button
-          style="margin: 25px 0 5px;"
+          mat-raised-button
+          style="margin: 25px 10px 0 0;"
+          color="warn"
+          *ngIf="
+            fileName !== undefined &&
+            fileName?.length > 0 &&
+            isExcelFile === true
+          "
+          (click)="removeUpload()"
+        >
+          Remove upload
+        </button>
+        <button
+          style="margin: 25px 0 0 10px"
           mat-raised-button
           color="accent"
           (click)="form.valid && onSubmit()"
@@ -146,6 +160,10 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   //subscription
   public subscription$ = new Subscription();
 
+  //////////////
+  csvContent: string;
+  parsedCsv: string[][];
+
   constructor(
     private lpValidatorServices: LpValidatorService,
     private common: CommonService,
@@ -170,6 +188,12 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         fileSource: file,
         fileName: file?.name,
       });
+
+      //Read CSV file
+      // const fileToRead = file;
+      // const fileReader = new FileReader();
+      // fileReader.onload = this.onFileLoad;
+      // fileReader.readAsText(fileToRead, 'UTF-8');
     }
   }
 
@@ -190,15 +214,53 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       this.common.hideSpinner();
       this.common.isLoading$.next(false);
     } catch (error) {
-      this.notifs.warn('Server is not responding');
-      console.log('error ', error);
+      // this.notifs.warn('Server is not responding');
+      // console.log('error ', error);
       this.common.hideSpinner();
       this.common.isLoading$.next(false);
       throw error;
     }
   }
 
+  removeUpload() {
+    this.fileName = '';
+    this.isExcelFile = false;
+    this.form.patchValue({
+      fileSource: '',
+      fileName: '',
+    });
+  }
+
   ngOnDestroy() {
     this.subscription$.unsubscribe();
+  }
+
+  private onFileLoad(fileLoadedEvent): void {
+    console.log('file', fileLoadedEvent);
+    const csvSeparator = ';';
+    const textFromFileLoaded = fileLoadedEvent.target.result;
+    this.csvContent = textFromFileLoaded;
+
+    const txt = textFromFileLoaded;
+    const csv = [];
+    const lines = txt.split('\n');
+    lines.forEach((element) => {
+      const cols: string[] = element.split(csvSeparator);
+      csv.push(cols);
+    });
+    this.parsedCsv = csv;
+
+    // demo output as alert
+    var output: string = '';
+    csv.forEach((row) => {
+      output += '\n';
+      var colNo = 0;
+      row.forEach((col) => {
+        if (colNo > 0) output += '; ';
+        output += col;
+        colNo++;
+      });
+    });
+    console.log('output', csv);
   }
 }

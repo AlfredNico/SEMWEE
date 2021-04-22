@@ -1,3 +1,4 @@
+import { Users } from './../../../../models/users';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 // import { Observable } from 'rxjs';
 import { LayoutService } from '../../../../_metronic/core';
@@ -14,13 +15,13 @@ import { KTUtil } from '../../../../../assets/js/components/util';
 import { User } from '@app/classes/users';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { Subject } from 'rxjs';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
-
 export class TopbarComponent implements OnInit, AfterViewInit {
   // user$: Observable<UserModel>;
   user: Subject<User> = new Subject<User>();
@@ -37,11 +38,18 @@ export class TopbarComponent implements OnInit, AfterViewInit {
   extrasLanguagesDisplay: boolean;
   extrasUserDisplay: boolean;
   extrasUserLayout: 'offcanvas' | 'dropdown';
-  menuListItems : any;
+  menuListItems: any;
+
+  public pdp: any = './assets/images/top_bar/blank.png';
 
   constructor(private layout: LayoutService, public auth: AuthService) {
     // this.user$ = this.auth.currentUserSubject.asObservable();
     this.user = this.auth.currentUserSubject;
+    this.auth.currentUserSubject.subscribe((user: Users) => {
+      if (user['image'] !== 'not image')
+        this.pdp = `${environment.baseUrlImg}${user['image']}`;
+      else this.pdp = './assets/images/top_bar/blank.png';
+    });
   }
 
   ngOnInit(): void {
@@ -71,18 +79,14 @@ export class TopbarComponent implements OnInit, AfterViewInit {
       'extras.quickPanel.display'
     );
     this.menuListItems = [
-        {menuLinkText: 'Settings',
+      {
+        menuLinkText: 'Settings',
         menuIcon: '<img [src]="./assets/images/top_bar/user.png" alt=".">',
-        isDisabled:false},
-        {menuLinkText: 'AboutUs',
-        menuIcon: 'people',
-        isDisabled:false},
-        {menuLinkText: 'Help',
-        menuIcon: 'help',
-        isDisabled:false},
-        {menuLinkText:'Contact',
-        menuIcon:'contact',
-        isDisabled:true }
+        isDisabled: false,
+      },
+      { menuLinkText: 'AboutUs', menuIcon: 'people', isDisabled: false },
+      { menuLinkText: 'Help', menuIcon: 'help', isDisabled: false },
+      { menuLinkText: 'Contact', menuIcon: 'contact', isDisabled: true },
     ];
   }
 
@@ -134,5 +138,4 @@ export class TopbarComponent implements OnInit, AfterViewInit {
     this.auth.logout();
     // document.location.reload();
   }
-
 }

@@ -32,15 +32,15 @@
     .mat-sort-header-indicator {
       &::before {
         // content: "<>";
-        content: "ᐊᐅ";
-        position: absolute;
-        opacity: 1 !important;
-        color:  rgb(255, 255, 255) !important;
-        // font-size: 1.2em;
-        font-weight: bold;
-        transform: translate(-10%, 20%)   rotate(90deg) !important;
-        top: -1.2em !important;
-        font-size: .8em;
+        // content: "ᐊᐅ";
+        // position: absolute;
+        // opacity: 1 !important;
+        // color:  rgb(255, 255, 255) !important;
+        // // font-size: 1.2em;
+        // font-weight: bold;
+        // transform: translate(-10%, 20%)   rotate(90deg) !important;
+        // top: -1.2em !important;
+        // font-size: .8em;
       }
     }
   }
@@ -51,15 +51,15 @@
          .mat-sort-header-indicator {
            &::before {
             //  content: "<";
-             content: "ᐊ";
-             position: absolute;
-             color:  #fff !important;
-             opacity: 1 !important;
-            //  font-size: 1.2em;
-             font-weight: bold;
-             transform: translate(0,0) rotate(90deg) !important;
-             top: -0.9rem !important;
-             font-size: .8em;
+            //  content: "ᐊ";
+            //  position: absolute;
+            //  color:  #fff !important;
+            //  opacity: 1 !important;
+            // //  font-size: 1.2em;
+            //  font-weight: bold;
+            //  transform: translate(0,0) rotate(90deg) !important;
+            //  top: -0.9rem !important;
+            //  font-size: .8em;
            }
          }
        }
@@ -71,15 +71,15 @@
           .mat-sort-header-indicator {
             &::before  {
               // content: ">";
-              content: "ᐅ";
-              position: absolute;
-              color:  #fff !important;
-              opacity: 1 !important;
-              font-size: 1.2em;
-              font-weight: bold;
-              transform: translate(0,-10%) rotate(90deg) !important;
-              top: -0.5rem !important;
-              font-size: .8em
+              // content: "ᐅ";
+              // position: absolute;
+              // color:  #fff !important;
+              // opacity: 1 !important;
+              // font-size: 1.2em;
+              // font-weight: bold;
+              // transform: translate(0,-10%) rotate(90deg) !important;
+              // top: -0.5rem !important;
+              // font-size: .8em
             }
           }
         }

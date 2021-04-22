@@ -1,4 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { Users } from '@app/models/users';
+import { AuthService } from './../../../authentification/services/auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { environment } from '@environments/environment';
@@ -19,7 +22,11 @@ export class ProjectsService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private cookieService: CookieService
+  ) {}
 
   public getAllProjects(_idUsers): Observable<Projects[]> {
     return this.http.get<Projects[]>(
@@ -69,19 +76,43 @@ export class ProjectsService {
     );
   }
 
-  checkProjectName(): AsyncValidatorFn {
+  public deleteCatalogue(project_id: string) {
+    return this.http.delete<{ message: string }>(
+      `${environment.baseUrl}/validator/delete-product/${project_id}`
+    );
+  }
+
+  checkProjectName(isAddItem: boolean, project?: Projects): AsyncValidatorFn {
     return (
       control: AbstractControl
     ): Observable<{ [key: string]: any } | null> => {
-      return of(['nico', 'zaho', 'john'].includes(control.value)).pipe(
-        map((res) => (res ? { projectName: true } : null)),
-        catchError(() => of(null))
-      );
+      const val = {
+        nameProject: control.value,
+        idUser: this.auth.currentUserSubject.value['_id'],
+      };
+      // console.log(created_at);
 
-      // return this.http.post(`${environment.baseUrl}/project/delete-project`, {control}).pipe(
-      //    map(res => (res ? { projectName : true} : null)),
-      //    catchError(()=> of(null))
-      // )
+      if (isAddItem === true) {
+        return this.http
+          .post(`${environment.baseUrl}/project/checkProject`, val, {})
+          .pipe(
+            map((res: any) =>
+              (res.message && isAddItem) === true ? { projectName: true } : null
+            ),
+            catchError(() => of(null))
+          );
+      } else {
+        return this.http
+          .get(
+            `${environment.baseUrl}/project/checkProjectUpdate/${project['user_id']}/${control.value}/${project['_id']}`
+          )
+          .pipe(
+            map((res: any) =>
+              res.message === true ? { projectName: true } : null
+            ),
+            catchError(() => of(null))
+          );
+      }
     };
   }
 }

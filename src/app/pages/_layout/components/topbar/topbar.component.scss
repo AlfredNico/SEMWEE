@@ -1,5 +1,4 @@
 .navbar-nav > li > a ,.submenu-box ul li a{
-    color:gray!important;
     text-transform: capitalize;
     font-size: 15px;
 	//   padding:10px 10px 10px 20px!important;
@@ -218,7 +217,7 @@ header navbar design
 .navbar-nav > li > a >i{
     font-size: 18px;
     color:#BCBBC8;
-	margin: 1px 7px 0px 7px;
+	margin: 1px 10px 0px 3.5px;
 	padding:0px;
 }
 
@@ -457,12 +456,12 @@ footer.footer ul {
 footer
 ----------------------*/
 .size-icon::before {
-    font-size: 21px!important;
+    font-size: 19px!important;
 }
 
 .text-fullname {
     font-weight: 500;
-    color: #48484B;
+    color: #4D4D55;
 }
 
 .navbar .navbar-nav .nav-item .divider {
@@ -471,7 +470,7 @@ footer
 .navbar .navbar-nav .divider {
     border-right: 1px solid #F2F2F2;
     height: 30px;
-    margin-top: 15px;
+    margin-top: 10px;
     margin-left: 10px;
 }
 
@@ -519,10 +518,13 @@ footer
     content: attr(data-title);
     position: absolute;
     bottom: -50px;
-    left: 12px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
     display: inline-block;
     padding: 3px 6px;
-    border-radius: 2px;
+    border-radius: 4px;
     background: rgba(0,0,0,.9);
     color: #fff;
     font-size: 12px;
@@ -551,7 +553,7 @@ footer
     display: flex!important;
     align-items: center;
     margin: 0!important;
-    padding: 0 10px 0 6px!important;
+    padding: 0 10px 0 10px!important;
 }
 
 .nav-item-topbar .nav-link-topbar i{
@@ -583,4 +585,48 @@ footer
    
 .inActivate{
     background: transparent;
+}
+
+.notif {
+    background: #FFC05E!important;
+    box-shadow: none!important;
+    border-radius: 50%;
+    display: block;
+    height: 15px!important;
+    width: 15px!important;
+    padding: 1px;
+    position: absolute;
+    top: -7px!important;
+    right: 2px!important;
+    text-align: center;
+    transition: top 0.1s ease-out;
+    font-size: 0.675rem;
+    color: #fff;
+    border: 2px solid #fff!important;
+}
+
+.nav-item-topbar:hover .notif {
+    border: 2px solid #F2F2F2!important;
+}
+
+.menu-notif {
+    width: 300px!important;
+    height: 250px!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.activateNotif .nav-item-topbar {
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.activateNotif .notif {
+    display: none;
+    transition: top 0.1s ease-out;
+}
+
+::ng-deep.mat-menu-panel.menu-panel-notif {
+    margin-top: 30px!important;
 }

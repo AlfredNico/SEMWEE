@@ -21,6 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ResetPasswordGuard } from './guards/reset-password.guard';
+import { interruptedInterceptor } from './interrupted.interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -54,12 +55,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         canActivate: [IsLoggedInGuard],
       },
       {
-        path: 'user-space',
-        loadChildren: () =>
-          import('./user-spaces/dashbord.module').then((m) => m.DashbordModule),
-        canActivate: [AuthGuard, IsLoggedInGuard],
-      },
-      {
         path: 'sign-in',
         loadChildren: () =>
           import('./authentification/components/sign-in/auth.module').then(
@@ -88,8 +83,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
           ).then((m) => m.ResetpasswordModule),
         canActivate: [ResetPasswordGuard],
       },
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
-      { path: '**', component: PageNotFoundComponent },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./user-spaces/dashbord.module').then((m) => m.DashbordModule),
+        canActivate: [AuthGuard, IsLoggedInGuard],
+      },
+      // { path: '**', component: PageNotFoundComponent },
+      // { path: '', pathMatch: 'full', redirectTo: 'home' },
     ]),
   ],
   exports: [RouterModule],
@@ -98,6 +99,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     tokenInterceptor,
     errorInterceptor,
     mockInterceptor,
+    interruptedInterceptor,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

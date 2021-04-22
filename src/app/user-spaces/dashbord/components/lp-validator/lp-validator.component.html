@@ -1,60 +1,52 @@
-<mat-horizontal-stepper
-  labelPosition="bottom"
-  [linear]="true"
-  #stepper
-  [selectedIndex]="selectedStepperIndex"
-  (selectionChange)="selectionChange($event)"
->
-  <mat-step
-    label="Import Items"
-    completed="false"
-    editable="false"
-  >
-    <!-- [editable]="isEditable" -->
-    <!--  <ng-template matStepperIcon="home">
-            <mat-icon>home</mat-icon>
-        </ng-template> -->
-    <app-import-item
-      #form
-      [idProjet]="idProjet"
-      [isNextStep]="isNextStepp"
-      (uploadFiles)="nextInfterList($event)"
-    ></app-import-item>
+<mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper
+  [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange($event)">
+  <mat-step label="Import Items" completed="false" editable="false">
+    <ng-template matStepLabel>
+      <div appStepperIcon [index]="0" (stepperIndex)="isStepper($event)">
+        Import Items
+      </div>
+  </ng-template>
+    <app-import-item #form [idProjet]="idProjet" [isNextStep]="isNextStepp"
+      (uploadFiles)="nextInfterList($event)"></app-import-item>
   </mat-step>
-  <mat-step
-    label="Infer List Pages"
-    state="text_snippet"
-    completed="false"
-    editable="false"
-  >
-    <!-- <ng-template matStepperIcon="home">
-            <mat-icon>home</mat-icon>
-        </ng-template> -->
-    <app-infer-list
-      [data]="dataSources"
-      (dataInferListReady)="nextCheckRevelancy($event)"
-    ></app-infer-list>
-    <!-- <app-files></app-files> -->
+  <mat-step label="Infer List Pages" state="text_snippet" completed="false" editable="false" >
+    <ng-template matStepLabel>
+      <div appStepperIcon [index]="1" (stepperIndex)="isStepper($event)">
+        Infer List Pages
+      </div>
+  </ng-template>
+    <app-infer-list [data]="dataSources" (dataInferListReady)="nextCheckRevelancy($event)">
+    </app-infer-list>
   </mat-step>
-  <mat-step
-    label="Check Relevancy"
-    state="download_done"
-    completed="false"
-    editable="false"
-  >
-    <app-check-relevancy
-      [dataInferList]="dataInferList"
-      (dataMatching)="nextMatching($event)"
-    ></app-check-relevancy>
+  <mat-step label="Check Relevancy" state="download_done" completed="false" editable="false">
+    <ng-template matStepLabel>
+      <div appStepperIcon [index]="2" (stepperIndex)="isStepper($event)">
+        Check Relevancy
+      </div>
+  </ng-template>
+    <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)">
+    </app-check-relevancy>
   </mat-step>
 
-  <mat-step
-    class="hide-stepper"
-    label="Check Relevancy"
-    state="download_done"
-    completed="false"
-    editable="false"
-  >
+  <mat-step class="hide-stepper" label="Check Relevancy" state="download_done" completed="false"
+    editable="false">
     <app-google-maching [dataSources]="childRevelancy"></app-google-maching>
   </mat-step>
+
+  <ng-template matStepperIcon="edit" let-index="index">
+    <!-- <mat-icon>{{index === 0 ? 'perm_contact_calendar': 'edit'}}</mat-icon> -->
+    <mat-icon appStepperIcon [index]="index" *ngIf="isEditeStepper === false || checkIndex!=index"  (stepperIndex)="isStepper($event)">
+      done
+    </mat-icon>
+    <mat-icon appStepperIcon [index]="index" *ngIf="isEditeStepper === true && checkIndex==index"  (stepperIndex)="isStepper($event)">
+      edit
+    </mat-icon>
+  </ng-template>
+  <ng-template matStepperIcon="number" let-index="index">
+    <!-- || setIndexStep===stepper?.steps.toArray()[index]?.selectedIndex" -->
+    <mat-icon *ngIf="stepper?.steps.toArray()[index]?.completed">
+      sync
+    </mat-icon>
+    <span *ngIf="!stepper?.steps.toArray()[index]?.completed">{{index + 1}}</span>
+  </ng-template>
 </mat-horizontal-stepper>

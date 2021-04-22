@@ -1,5 +1,13 @@
 import { style } from '@angular/animations';
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  Renderer2,
+} from '@angular/core';
 
 @Directive({
   selector: '[resizeColumn]',
@@ -7,14 +15,16 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Rende
 export class ResizableDirective {
   @Input('resizeColumn') resizable: boolean;
   @Input() index: number;
-  @Output() tabIndex = new EventEmitter<any>();
+  // @Output() tabIndex = new EventEmitter<any>();
 
-  @Input() minWidth: number;
   @Input() maxWidth: number;
+  private minWidth: number;
+  private isDbClicked: boolean = false;
 
   private startX: number;
+  private startY: number;
 
-  private startWidth: number;
+  private startWidth: number = 0;
 
   private column: HTMLElement;
 
@@ -31,8 +41,6 @@ export class ResizableDirective {
       const row = this.renderer.parentNode(this.column);
       const thead = this.renderer.parentNode(row);
       this.table = this.renderer.parentNode(thead);
-
-      // console.log(this.renderer.parentNode(row));
 
       const resizer = this.renderer.createElement('span');
 
@@ -56,20 +64,21 @@ export class ResizableDirective {
       // Calculate width of column
       let width = this.startWidth + (event.pageX - this.startX - offset);
 
+      // console.log('elem ', this.column);
+      // console.log('elem ', this.column.childNodes);
+
       const tableCells = Array.from(
         this.table.querySelectorAll('.mat-row')
       ).map((row: any) => row.querySelectorAll('.mat-cell').item(this.index));
-
-      // console.log(this.column.childNodes[0]);
 
       // Set table header width
       this.renderer.setStyle(this.column, 'width', `${width}px`);
 
       // render for input sreach field
-      let div = this.column.childNodes[0] as HTMLElement;
+      const div = this.column.childNodes[0] as HTMLElement;
       div.style.width = `${width}px`;
 
-      let chiled = div.childNodes[1] as HTMLElement;
+      const chiled = div.childNodes[1] as HTMLElement;
       chiled.style.width = `${width}px`;
 
       let formSearch = this.column.childNodes[1] as HTMLElement;
@@ -77,12 +86,13 @@ export class ResizableDirective {
 
       // Set table cells width
       for (const cell of tableCells) {
-        console.log('xx');
         this.renderer.setStyle(cell, 'width', `${width}px`);
       }
 
       //triggres services
-      this.tabIndex.emit(this.index);
+      // this.tabIndex.emit(this.index);
+      this.minWidth = width;
+      this.isDbClicked = false;
     }
   };
 
@@ -93,7 +103,52 @@ export class ResizableDirective {
     }
   };
 
-  @HostListener('dblclick', ['$event']) onLeave( e: MouseEvent ) {
-    console.log('min: ', this.minWidth, '  max: ', this.maxWidth);
+  @HostListener('dblclick', ['$event']) onLeave(e: MouseEvent) {
+    //triggres services
+    // this.tabIndex.emit(this.index);
+
+    this.isDbClicked = !this.isDbClicked;
+    if (this.isDbClicked == true) {
+      const tableCells = Array.from(
+        this.table.querySelectorAll('.mat-row')
+      ).map((row: any) => row.querySelectorAll('.mat-cell').item(this.index));
+
+      // Set table header width
+      this.renderer.setStyle(this.column, 'width', `${this.maxWidth}px`);
+
+      // render for input sreach field
+      const div = this.column.childNodes[0] as HTMLElement;
+      div.style.width = `${this.maxWidth}px`;
+
+      (div.childNodes[1] as HTMLElement).style.width = `${this.maxWidth}px`;
+
+      const f = this.column.childNodes[1] as HTMLElement;
+      if (this.maxWidth > 30) f.style.width = `${this.maxWidth}px`;
+
+      // Set table cells width
+      for (const cell of tableCells)
+        this.renderer.setStyle(cell, 'width', `${this.maxWidth}px`);
+    } else {
+      // render for input sreach field
+      const tableCells = Array.from(
+        this.table.querySelectorAll('.mat-row')
+      ).map((row: any) => row.querySelectorAll('.mat-cell').item(this.index));
+
+      // Set table header width
+      this.renderer.setStyle(this.column, 'width', `${this.minWidth}px`);
+
+      // render for input sreach field
+      const div = this.column.childNodes[0] as HTMLElement;
+      div.style.width = `${this.minWidth}px`;
+
+      (div.childNodes[1] as HTMLElement).style.width = `${this.minWidth}px`;
+
+      const f = this.column.childNodes[1] as HTMLElement;
+      if (this.minWidth > 30) f.style.width = `${this.minWidth}px`;
+
+      // Set table cells width
+      for (const cell of tableCells)
+        this.renderer.setStyle(cell, 'width', `${this.minWidth}px`);
+    }
   }
 }

@@ -10,12 +10,17 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 @Component({
   selector: 'app-edit',
   template: `
-  <div fxLayout="column" *ngIf="data">
-    <h3 mat-dialog-title>Edit project</h3>
-    <div mat-dialog-content>
-      <app-add-or-edit [dataSources]="data" [userId]="userId" [isAddItem]="false" (formProject)="onSubmit($event)"></app-add-or-edit>
+    <div fxLayout="column" *ngIf="data">
+      <h1 mat-dialog-title>Edit project</h1>
+      <div mat-dialog-content>
+        <app-add-or-edit
+          [dataSources]="data"
+          [userId]="userId"
+          [isAddItem]="false"
+          (formProject)="onSubmit($event)"
+        ></app-add-or-edit>
+      </div>
     </div>
-  </div>
   `,
   styles: [
     `
@@ -49,7 +54,6 @@ export class EditComponent implements OnInit {
   private imageLandscape: File;
   private imageSquared: File;
 
-
   userId: any;
 
   form: FormGroup;
@@ -73,52 +77,53 @@ export class EditComponent implements OnInit {
     this.dialogRef.close(this.form.value);
   }
 
- async onSubmit(value: {
-    form: FormGroup,
-    imageLandscape: File,
-    imageSquared: File}) {
-      this.form = value.form;
-      this.imageLandscape = value.imageLandscape;
-      this.imageSquared = value.imageSquared;
+  async onSubmit(value: {
+    form: FormGroup;
+    imageLandscape: File;
+    imageSquared: File;
+  }) {
+    this.form = value.form;
+    this.imageLandscape = value.imageLandscape;
+    this.imageSquared = value.imageSquared;
 
-      this.common.showSpinner('root');
+    this.common.showSpinner('root');
     if (
       this.imageLandscape instanceof File ||
       this.imageSquared instanceof File
     ) {
-        try {
-          const img1 = this.imageLandscape
-            ? await this.projetctService.uploadImages(this.imageLandscape)
-            : undefined;
-          const img2 = this.imageSquared
-            ? await this.projetctService.uploadImages(this.imageSquared)
-            : undefined;
+      try {
+        const img1 = this.imageLandscape
+          ? await this.projetctService.uploadImages(this.imageLandscape)
+          : undefined;
+        const img2 = this.imageSquared
+          ? await this.projetctService.uploadImages(this.imageSquared)
+          : undefined;
 
-          const values = {
-            _id: this.data._id,
-            ...this.form.value,
-            image_project_Landscape: img1 ? img1.img : '',
-            image_project_Squared: img2 ? img2.img : '',
-          };
+        const values = {
+          _id: this.data._id,
+          ...this.form.value,
+          image_project_Landscape: img1 ? img1.img : '',
+          image_project_Squared: img2 ? img2.img : '',
+        };
 
-          this.projetctService.editProjects(values).subscribe(
-            (result) => {
-              this.notifs.sucess(result.message);
-              this.dialogRef.close(true);
-              this.common.hideSpinner();
-            },
-            (error) => {
-              this.common.hideSpinner();
-            }
-          );
-        } catch (error) {
-          if (error instanceof HttpErrorResponse) {
-            console.log(error.message);
-            this.notifs.warn(error.message);
+        this.projetctService.editProjects(values).subscribe(
+          (result) => {
+            this.notifs.sucess(result.message);
+            this.dialogRef.close(true);
+            this.common.hideSpinner();
+          },
+          (error) => {
+            this.common.hideSpinner();
           }
-          this.common.hideSpinner();
-          throw error;
+        );
+      } catch (error) {
+        if (error instanceof HttpErrorResponse) {
+          console.log(error.message);
+          this.notifs.warn(error.message);
         }
+        this.common.hideSpinner();
+        throw error;
+      }
     } else {
       const value = {
         _id: this.data._id,

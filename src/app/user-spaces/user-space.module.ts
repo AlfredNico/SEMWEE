@@ -9,7 +9,7 @@ import { LandingPageModule } from '../shared/modules/landing-page.module';
 // import { InputComponent } from './components/input/input.component';
 // import { LayoutComponent } from './components/layout/layout.component';
 // import { OutputComponent } from './components/output/output.component';
-import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
+// import { SettingTableComponent } from '../shared/components/setting-table/setting-table.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ProjectsService } from './dashbord/services/projects.service';
 
@@ -21,7 +21,7 @@ import { ProjectsService } from './dashbord/services/projects.service';
     // CheckComponent,
     // OutputComponent,
     SideMenuComponent,
-    SettingTableComponent,
+    // SettingTableComponent,
   ],
   imports: [
     LandingPageModule,

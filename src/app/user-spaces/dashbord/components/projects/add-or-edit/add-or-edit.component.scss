@@ -1,4 +1,4 @@
-::ng-deep {
+:host  {
   .mat-form-field-appearance-outline .mat-form-field-infix {
       padding: .5em 0 0.7em 0 !important;
   }
@@ -81,4 +81,12 @@
       right: 2.2rem;
       bottom: 2rem;
   }
+
+  .labelBeforeSlide {
+    vertical-align: top;
+    line-height: 24px;
+    margin-right:0.5rem;
+    margin-bottom:0.5rem;
+  }
 }
+

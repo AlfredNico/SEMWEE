@@ -1,111 +1,159 @@
 <div fxLayout="column" class="w-100">
-    <div fxLayout="row"
-    fxLayoutAlign="space-between center" class="px-2 m-3">
-      <div class="w-50">
-        <!-- <mat-progress-bar mode="buffer" color="accent" [value]="progressBarValue"></mat-progress-bar> -->
-      </div>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Quick Search</mat-label>
-            <input matInput type="search" placeholder="Quick Search" autocomplete="off" [formControl]="search">
-            <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="px-2 m-3">
+    <div class="w-50">
+      <!-- <mat-progress-bar mode="buffer" color="accent" [value]="progressBarValue"></mat-progress-bar> -->
     </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-        <!-- <span>Table intef list</span> -->
 
-        <!-- <a mat-list-item (click)="tableOpons()">
+    <mat-form-field appearance="outline">
+      <mat-label>Quick Search</mat-label>
+      <input matInput type="search" placeholder="Quick Search" autocomplete="off"
+        [formControl]="search">
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <!-- <span>Table intef list</span> -->
+
+    <!-- <a mat-list-item (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             <span>Table options </span>
         </a> -->
-    </div>
-    <!-- style="overflow-y: auto;" -->
-    <div class="px-2 m-3 table-container">
-        <table mat-table [dataSource]="dataSource" matSort class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandl>
+  </div>
+  <!-- style="overflow-y: auto;"   tabindex="0" role="tables"-->
+  <div class="px-2 m-3 table-container" role="tables">>
+    <table mat-table [dataSource]="dataSource" (matSortChange)="sortData($event)" matSort class="w-100 p-4 m-3 datatable " cdkDropList
+      [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)"
+      cdkDropListOrientation="horizontal" cdkDragHandle>
 
-            <div *ngFor="let column of displayColumns; let i = index">
-               <!-- SELECT Column -->
-               <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
-                <th mat-header-cell *matHeaderCellDef style="padding-left: 24px!important;
-                padding-top: 28px!important;" class="px-5">
-                    <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox>
-                </th>
-                <!-- (ngModelChange)="updateAllComplete()" -->
-                <td mat-cell [class.odd]="odd" [class.even]="even" *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-                [class.active]="isRowSelected(row)">
-                    <mat-checkbox color="accent" [(ngModel)]="row[column]"
-                    (ngModelChange)="updateAllComplete()">
-                    </mat-checkbox>
-                </td>
-            </ng-container>
-
-              <!-- DYNAMICS Column -->
-              <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag [ngClass]="{'hide-rows': isColumnDisplay(column)}">
-                        <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white" [resizeColumn]="true" [index]="i" (tabIndex)="hideTooltip($event)">
-                            <div fxLayout="column" class="w-100">
-                                <div class="clip-path drag_n_drop" cdkDragHandle>.</div>
-                                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-0">
-                                    <div>
-                                        {{ column.split('_').join(' ') | uppercase }}
-                                    </div>
-                                    <div mat-sort-header class="pl-3">
-                                        <!-- <i class="fas fa-sort"></i> -->
-                                    </div>
-                                </div>
-                            </div>
-                            <mat-form-field appearance="outline">
-                              <input matInput type="search" placeholder="Smart Query or Regex ready" [formControlName]="column" autocomplete="off">
-                            </mat-form-field>
-                        </span>
-                    </th>
-                    <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" class="table-container-td" [ngSwitch]="column" [ngClass]="{'hide-rows': isColumnDisplay(column)}">
-                        <div *ngSwitchCase="'Valid'">
-                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
-                            <div style="text-align: center !important;" *ngIf="row[column]===true">
-                                <mat-icon color="accent">done</mat-icon>
-                            </div>
-                            <div style="text-align: center !important;" *ngIf="row[column]===false">
-                                <mat-icon  color="warn">close</mat-icon>
-                            </div>
-                        </div>
-                        <div *ngSwitchCase="'Popular Search Queries'">
-                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
-                            <div *ngIf="row[column]!=='loadingQuery'" >
-                                {{ row[column] }}
-                            </div>
-                        </div>
-                        <div *ngSwitchCase="'Website Browser'">
-                            <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto"></mat-spinner>
-                            <div *ngIf="row[column]!=='loadingQuery'">
-                                {{ row[column] }}
-                            </div>
-                        </div>
-                        <div *ngSwitchDefault [matTooltip]="row[column]" [matTooltipDisabled]="rowIndex.includes(i)">{{ row[column] }}</div>
-                    </td>
-                </ng-container>
+      <div *ngFor="let column of displayColumns; let i = index">
+        <!-- SELECT Column -->
+        <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
+            <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
+              class="w-100 bg-white overflow-visible">
+              <div fxLayout="column" class="w-100">
+                <div class="drag_n_drop" cdkDragHandle></div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
+                  <div style="color: #42425e;">.</div>
+                  <div mat-sort-header class="p-0">
+                    <i class="fas fa-sort"></i>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 17px;" class="text-center bg-white">
+                <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
+                  [indeterminate]="someComplete()"></mat-checkbox>
+              </div>
+            </span>
+            <!-- <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox> -->
+          </th>
+          <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
+          <td mat-cell [class.odd]="odd" [class.even]="even"
+            *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
+            [class.active]="isRowSelected(row)" class="p-0 text-center">
+            <div class="bg-whire">
+              <mat-checkbox color="accent" [(ngModel)]="row[column]" (click)="selectRow(row)">
+              </mat-checkbox>
             </div>
+          </td>
+        </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
-        </table>
+        <!-- DYNAMICS Column -->
+        <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
+          <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate"
+            cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag
+            [ngClass]="{'hide-rows': isColumnDisplay(column)}" (click)="getWidth(i)">
+            <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
+              class="w-100 bg-white" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
+              <div fxLayout="column" class="w-100">
+                <div class="drag_n_drop" cdkDragHandle></div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
+                  <div mat-sort-header>
+                    {{ column | removeUnderscore | capitalizeFirstPipe }}
+                  </div>
+                  <div class="pl-3">
+                    <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
+                    <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>
+                    <i *ngIf="icon === 'desc' && active === column" class="fas fa-sort-down"></i>
+                  </div>
+                </div>
+              </div>
+              <mat-form-field appearance="outline">
+                <input matInput type="search" #search placeholder="Smart Query or Regex ready"
+                  [formControlName]="column" autocomplete="off">
+                  <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearInput(column)">
+                    <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                  </button>
+              </mat-form-field>
+            </span>
+          </th>
+          <td mat-cell *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
+            [class.odd]="odd" [class.even]="even" class="table-container-td" [ngSwitch]="column"
+            [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.active]="isRowSelected(row)">
+            <div *ngSwitchCase="'Valid'">
+              <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
+              </mat-spinner>
+              <div style="text-align: center !important;" *ngIf="row[column]===true">
+                <!-- <mat-icon color="accent">done</mat-icon> -->
+                <span style="color: #b4e87c;">Yes</span>
+              </div>
+              <div style="text-align: center !important;" *ngIf="row[column]===false">
+                <!-- <mat-icon color="warn">close</mat-icon> -->
+                <span class="warn-color">No</span>
+              </div>
+            </div>
+            <div *ngSwitchCase="'Popular_Search_Queries'">
+              <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
+              </mat-spinner>
+              <div *ngIf="row[column] !== 'loadingQuery'"
+              [ngClass]="{'text-center': isNumberOrString(row[column])}">
+                {{ row[column] }}
+              </div>
+            </div>
+            <div *ngSwitchCase="'Website_Browser'">
+              <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
+              </mat-spinner>
+              <div *ngIf="row[column]!=='loadingQuery'"
+              [ngClass]="{'text-center': isNumberOrString(row[column])}">
+                {{ row[column] }}
+              </div>
+            </div>
+            <div *ngSwitchDefault
+              [ngClass]="{'text-center': isNumberOrString(row[column])}">
+              {{ row[column] }}
+          </div>
+            <div #content style="padding: 0 20px;" class="Test" [id]="i+'google'+indexRow">
+              {{ row[column] }}
+            </div>
+          </td>
+        </ng-container>
+      </div>
+
+      <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="text-center" [colSpan]="dataView.displayColumns.length">No data</td>
+      </tr>
+    </table>
+  </div>
+
+  <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
+    [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"></mat-paginator>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <button type="button" mat-raised-button color="accent" class="m-3">
+      Display Revelant List Page
+    </button>
+
+    <div fxLayoutAlign="end center" class="w-100">
+      <button type="button" mat-raised-button color="accent" class="m-3">
+        Export
+      </button>
+      <button type="button" mat-raised-button color="accent" class="m-3">
+        Send data to ...
+      </button>
     </div>
-
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]" showFirstLastButtons></mat-paginator>
-
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-        <button type="button" mat-raised-button color="accent" class="m-3">
-            Display Revelant List Page
-        </button>
-
-        <div fxLayoutAlign="end center" class="w-100">
-            <button type="button" mat-raised-button color="accent" class="m-3">
-            Export
-            </button>
-            <button type="button" mat-raised-button color="accent" class="m-3">
-                Send data to ...
-            </button>
-        </div>
-    </div>
+  </div>
 
 </div>

@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { NotificationService } from '@app/services/notification.service';
 import { CustomValidationService } from '@app/shared/services/custom-validation.service';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
@@ -9,20 +14,18 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import * as COUNTRY from 'src/app/shared/fake-data/countries.json';
 
-
 @Component({
   selector: 'app-add-or-edit',
   templateUrl: './add-or-edit.component.html',
-  styleUrls: ['./add-or-edit.component.scss']
+  styleUrls: ['./add-or-edit.component.scss'],
 })
 export class AddOrEditComponent implements OnInit {
-
   public image_url: string = 'assets/images/png/project_img.png';
   image_project!: File;
   private imageLandscape: File;
   private imageSquared: File;
 
-  @Input() private userId: any;
+  @Input() private userId: any = undefined;
   readonly countries: any[] = (COUNTRY as any).default;
   readonly languages: { name: string; code: string }[] = [
     {
@@ -36,49 +39,28 @@ export class AddOrEditComponent implements OnInit {
   ];
   readonly protocols: string[] = ['SSL', 'TLS'];
   filteredCounrty: Observable<any[]>;
+  created_at: Date = new Date();
 
   @Input() isAddItem: boolean = true;
   @Input() public dataSources: Projects = undefined;
   @Output() public formProject = new EventEmitter<{
-    form: FormGroup,
-    imageLandscape: File,
-    imageSquared: File
+    form: FormGroup;
+    imageLandscape: File;
+    imageSquared: File;
   }>(undefined);
 
-  public form = this.fb.group({
-    name_project: [
-      '',
-      [Validators.required, this.custumValidator.maxLength],
-      [this.projetctService.checkProjectName()],
-      { updateOn: 'blur' },
-    ],
-    image_project_Landscape: [''],
-    image_project_Squared: [''],
-    domain_project: [
-      '',
-      [Validators.required, this.custumValidator.domainValidation],
-    ],
-    country_project: ['', [Validators.required]],
-    language_project: ['', [Validators.required]],
-    path_project: ['', [Validators.required]],
-    protocol_project: ['', [Validators.required]],
-    user_id: ['', Validators.required],
-    letter_thumbnails_project: this.fb.group({
-      letter: [
-        '',
-        [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
-      ],
-      color: ['#66ACFF'],
-      background: ['#F3F6F9'],
-    }),
-  });
+  public form: any;
+
+  ProjectLetter: any;
+  ProjectBackground: any;
+  ProjectColor: any;
 
   constructor(
     private fb: FormBuilder,
     private projetctService: ProjectsService,
     private notis: NotificationService,
     private custumValidator: CustomValidationService
-  ) { }
+  ) {}
 
   get name_project() {
     return this.form.get('name_project');
@@ -104,14 +86,64 @@ export class AddOrEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      if (this.dataSources) {
+    if (this.dataSources) {
       this.image_url = environment.baseUrlImg + this.dataSources.image_project;
+      this.created_at = this.dataSources.created_project;
 
+      this.ProjectColor = this.dataSources.letter_thumbnails_project[0][
+        'color'
+      ];
+      this.ProjectLetter = this.dataSources.letter_thumbnails_project[0][
+        'letter'
+      ];
+      this.ProjectBackground = this.dataSources.letter_thumbnails_project[0][
+        'background'
+      ];
+    }
+
+    this.form = this.fb.group({
+      name_project: [
+        '',
+        [Validators.required, this.custumValidator.maxLength],
+        [
+          this.projetctService.checkProjectName(
+            this.isAddItem,
+            this.dataSources
+          ),
+        ],
+        { updateOn: 'blur' },
+      ],
+      image_project_Landscape: [''],
+      image_project_Squared: [''],
+      domain_project: [
+        '',
+        [Validators.required, this.custumValidator.domainValidation],
+      ],
+      country_project: ['', [Validators.required]],
+      language_project: ['', [Validators.required]],
+      path_project: ['', [Validators.required]],
+      protocol_project: ['', [Validators.required]],
+      user_id: ['', Validators.required],
+      letter_thumbnails_project: this.fb.group({
+        letter: [
+          this.ProjectLetter ? this.ProjectLetter : '',
+          [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
+        ],
+        color: this.ProjectColor ? this.ProjectColor : ['#66ACFF'],
+        background: this.ProjectBackground
+          ? this.ProjectBackground
+          : ['#F3F6F9'],
+      }),
+    });
+
+    if (this.dataSources) {
       this.form.patchValue({
         ...this.dataSources,
         letter_thumbnails_project: {
           letter: this.dataSources.letter_thumbnails_project[0]['letter'],
-          background: this.dataSources.letter_thumbnails_project[0]['background'],
+          background: this.dataSources.letter_thumbnails_project[0][
+            'background'
+          ],
           color: this.dataSources.letter_thumbnails_project[0]['color'],
         },
       });
@@ -123,7 +155,7 @@ export class AddOrEditComponent implements OnInit {
 
     this.filteredCounrty = this.form.get('country_project').valueChanges.pipe(
       startWith(''),
-      map((value) => {
+      map((value: any) => {
         return this.countries.filter((x) =>
           x.name.toLowerCase().includes(value.toLowerCase())
         );
@@ -150,8 +182,8 @@ export class AddOrEditComponent implements OnInit {
       this.form.get('image_project_Landscape').clearValidators();
       this.form.get('image_project_Squared').clearValidators();
     } else if (
-      this.imageLandscape != undefined ||
-      this.imageSquared != undefined
+      this.imageLandscape !== undefined ||
+      this.imageSquared !== undefined
     ) {
       this.letter.clearValidators();
       this.form.get('image_project_Landscape').clearValidators();
@@ -164,14 +196,13 @@ export class AddOrEditComponent implements OnInit {
       this.formProject.emit({
         form: this.form,
         imageLandscape: this.imageLandscape,
-        imageSquared: this.imageSquared
+        imageSquared: this.imageSquared,
       });
-    }else{
-      this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
+    } else {
+      this.notis.warn('invalid field !');
+      // this.notis.info(`You should upload landscape or squard image or you should add thumbnails letter for your project !`);
     }
   }
-
-
 
   onImageChanged(event: any) {
     if (event.target.files && event.target.files[0]) {
@@ -254,4 +285,10 @@ export class AddOrEditComponent implements OnInit {
     }
   }
 
+  public removeImage() {
+    this.imageSquared = undefined;
+    this.imageLandscape = undefined;
+    this.form.controls.image_project_Landscape.setValue('');
+    this.form.controls.image_project_Squared.setValue('');
+  }
 }

@@ -50,6 +50,4 @@ Thumbs.db
 #make vscode and environnement not to github
 *environnement*
 src/environnement/*
-src/environnement/!*
 *mock.interceptor.ts
-!*mock.interceptor.ts

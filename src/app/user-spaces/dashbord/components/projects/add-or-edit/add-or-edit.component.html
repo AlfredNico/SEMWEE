@@ -8,7 +8,6 @@
         formControlName="name_project" autocomplete="off" class="form-control"
         placeholder="Example" />
 
-
       <div
         *ngIf="(form.controls['name_project'].touched &&
       form.controls['name_project'].errors?.required) || form.controls['name_project'].errors?.maxLength || form.controls['name_project'].errors?.projectName; else showInstrName">
@@ -19,7 +18,7 @@
           Name is required
         </span>
         <span class="form-text text-muted text-error" mat-error
-          *ngIf="form.controls['name_project'].errors?.maxLength">
+          *ngIf="form.controls['name_project'].touched && form.controls['name_project'].errors?.maxLength">
           Maximum length name is 40 words
         </span>
         <span class="form-text text-muted text-error" mat-error
@@ -100,7 +99,7 @@
         <label>Language<span class="text-danger">*</span></label>
         <mat-select [ngClass]="{'err': (form.get('language_project')?.touched &&
         form.get('language_project')?.errors?.required)}" formControlName="language_project"
-          class="form-control">
+          class="form-control" placeholder="Language">
           <mat-option *ngFor="let language of languages" [value]="language.code">
             {{ language.name }}
           </mat-option>
@@ -143,32 +142,46 @@
       </div>
     </div>
 
-    <div class="w-100 my-5 mx-1 pt-4">
-      <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">SSL<span class="text-danger">*</span> / TLS<span class="text-danger">*</span></mat-label>
-      <mat-radio-group class="w-50 px-3" aria-label="website" formControlName="protocol_project">
-        <mat-radio-button color="accent" class="mx-5" *ngFor="let protocol of protocols"
-          [value]="protocol">
-          {{ protocol }}
-        </mat-radio-button>
-      </mat-radio-group>
+    <div class="w-100" fxLayout="row" fxLayoutAlign="start center" >
+      <div class="w-100 my-5 mx-1 pt-4">
+        <mat-label style="margin-right: 0; color: #B5B5C3 !important;">
+          HTTPS<span class="text-danger">*</span>
+          <!-- / TLS<span class="text-danger">*</span> -->
+        </mat-label>
+        <!-- <mat-radio-group class="w-50 px-3" aria-label="website" formControlName="protocol_project">
+          <mat-radio-button color="accent" class="mx-5" *ngFor="let protocol of protocols"
+            [value]="protocol">
+            {{ protocol }}
+          </mat-radio-button>
+        </mat-radio-group> -->
+        <div style="display: inline-block;margin-left:0;" class="mx-auto w-50 px-3">
+          <mat-slide-toggle formControlName="protocol_project"></mat-slide-toggle>
+        </div>
 
-      <div *ngIf="(form.get('protocol_project')?.touched &&
-          form.get('protocol_project')?.errors?.required); else showInstrProt">
-        <span class="form-text text-muted text-error" mat-error *ngIf="
-      form.get('protocol_project')?.touched &&
-      form.get('protocol_project')?.errors?.required
-    ">Protocol is required
-        </span>
+        <div *ngIf="(form.get('protocol_project')?.touched &&
+            form.get('protocol_project')?.errors?.required); else showInstrProt">
+          <span class="form-text text-muted text-error" mat-error *ngIf="
+        form.get('protocol_project')?.touched &&
+        form.get('protocol_project')?.errors?.required
+      ">Protocol is required
+          </span>
+        </div>
+        <ng-template #showInstrProt>
+          <span class="form-text text-muted txt-muted">Tell us if your website uses HTTPS
+            certificate.</span>
+        </ng-template>
       </div>
-      <ng-template #showInstrProt>
-        <span class="form-text text-muted txt-muted">Tell us if your website uses SSL/TLS
-          certificate.</span>
-      </ng-template>
+
+      <!-- <div class="w-100" fxLayout="row">
+          <mat-label ngClass="labelBeforeSlide">Off</mat-label>
+          <mat-slide-toggle>On</mat-slide-toggle>
+      </div> -->
     </div>
 
+
     <!-- [readonly]="true" -->
-    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
-      <div class="w-100 row">
+    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">t
+      <!-- <div class="w-100 row">
         <div mat-form-field class="form-group col-7">
           <label>Landscape image<span class="text-danger">*</span></label>
           <input formControlName="image_project_Landscape" class="form-control"
@@ -184,21 +197,24 @@
           (click)="landscape.click()">
           Upload Landscape Image
         </button>
-      </div>
+      </div> -->
       <div class="w-100 row">
-        <div mat-form-field class="form-group col-7">
+        <div mat-form-field class="form-group col-6">
           <label>Squared image<span class="text-danger">*</span></label>
           <input formControlName="image_project_Squared" class="form-control"
-            placeholder="-" #image2/>
+            placeholder="Squared image" [readonly]="true" #image2/>
           <span class="form-text text-muted">You can choose a square format image to illustrate your
             project.</span>
         </div>
 
         <input type="file" accept="image/*" #squared (change)="uploadSquared($event)"
           style="display: none" />
-        <button style="margin-top: 27px" color="accent" class="upload-button col-4" mat-raised-button type="button"
+        <button style="margin-top: 27px" color="accent" class="upload-button mx-1 col-3" mat-raised-button type="button"
           (click)="squared.click()">
           Upload Squared Image
+        </button>
+        <button style="margin-top: 27px" color="warn" class="upload-button mx-1 col-2" mat-raised-button type="button" (click)="removeImage()" [disabled]="!image_project_Squared.value">
+        Remove Image
         </button>
 
       </div>
@@ -210,7 +226,7 @@
       <div class="w-100" fxLayout="column" fxLayoutAlign="center center"
         formGroupName="letter_thumbnails_project">
         <h3 color="accent" class="text-muted">
-          If you do not upload landscape or squard image, you must complete this field below !
+          If you do not upload image, you must complete this field below !
         </h3>
         <div class="letter-add-edit" [style.background]="background" [style.color]="color">
           {{ letter?.value }}
