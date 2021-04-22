@@ -144,7 +144,7 @@
 
     <div class="w-100" fxLayout="row" fxLayoutAlign="start center" >
       <div class="w-100 my-5 mx-1 pt-4">
-        <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">
+        <mat-label style="margin-right: 0; color: #B5B5C3 !important;">
           HTTPS<span class="text-danger">*</span>
           <!-- / TLS<span class="text-danger">*</span> -->
         </mat-label>
@@ -154,9 +154,8 @@
             {{ protocol }}
           </mat-radio-button>
         </mat-radio-group> -->
-        <div class="mx-auto w-50 px-3">
-          <mat-label ngClass="labelBeforeSlide">Off</mat-label>
-          <mat-slide-toggle formControlName="protocol_project">>On</mat-slide-toggle>
+        <div style="display: inline-block;margin-left:0;" class="mx-auto w-50 px-3">
+          <mat-slide-toggle formControlName="protocol_project"></mat-slide-toggle>
         </div>
 
         <div *ngIf="(form.get('protocol_project')?.touched &&

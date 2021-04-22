@@ -316,4 +316,13 @@
      //     .mat-checkbox-checked .mat-checkbox-background {
      //         background-color: #72addc;
      //     }
+    .mat-sort-header-container.mat-focus-indicator{
+        padding-left: 5px;
+    }
+    .right-adj .mat-form-field-flex{
+        margin-right: 0 !important;
+    }
+    .right-adj .mat-form-field-outline{
+        margin-right: 0 !important;
+    }
  }
