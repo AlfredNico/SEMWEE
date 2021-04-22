@@ -77,7 +77,7 @@ export class NewProjectsComponent implements OnInit {
         if (result && result.message) {
           this.notis.sucess(result.message);
           this.common.hideSpinner();
-          this.router.navigateByUrl('/user-space/all-project');
+          this.router.navigateByUrl('/user-space/all-projects');
         } else {
           console.log('not valid');
           this.notis.warn('input required');
