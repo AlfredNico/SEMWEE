@@ -69,7 +69,7 @@
                 <div class="drag_n_drop" cdkDragHandle></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
                   <div mat-sort-header>
-                    {{ column | removeUnderscore | capitalizeFirstPipe }}
+                    {{ column | removeUnderscore | titlecase }}
                   </div>
                   <div class="pl-3">
                     <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
@@ -110,7 +110,7 @@
                 {{ row[column] }}
               </div>
             </div>
-            <div *ngSwitchCase="'Website_Browser'">
+            <div *ngSwitchCase="'Website_Best_Position'">
               <mat-spinner *ngIf="row[column]==='loadingQuery'" style="zoom: .2;" class="m-auto">
               </mat-spinner>
               <div *ngIf="row[column]!=='loadingQuery'"
