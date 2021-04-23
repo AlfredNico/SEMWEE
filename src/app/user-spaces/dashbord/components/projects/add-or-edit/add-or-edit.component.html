@@ -170,6 +170,23 @@
 
     <!-- [readonly]="true" -->
     <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
+      <!-- <div class="w-100 row">
+        <div mat-form-field class="form-group col-7">
+          <label>Landscape image<span class="text-danger">*</span></label>
+          <input formControlName="image_project_Landscape" class="form-control"
+            placeholder="-" #image1 />
+          <span class="form-text text-muted">You can choose a landscape format image to illustrate
+            your project.</span>
+        </div>
+
+        <input type="file" accept="image/*" #landscape (change)="uploadLandscape($event)"
+          style="display: none" />
+
+        <button style="margin-top: 27px" color="accent" class="upload-button col-4" mat-raised-button type="button"
+          (click)="landscape.click()">
+          Upload Landscape Image
+        </button>
+      </div> -->
       <div class="w-100 row">
         <div mat-form-field class="form-group col-6">
           <label>Squared image<span class="text-danger">*</span></label>
@@ -198,7 +215,7 @@
       <div class="w-100" fxLayout="column" fxLayoutAlign="center center"
         formGroupName="letter_thumbnails_project">
         <h3 color="accent" class="text-muted">
-          If you do not upload landscape or squard image, you must complete this field below !
+          If you do not upload image, you must complete this field below !
         </h3>
         <div class="letter-add-edit" [style.background]="background" [style.color]="color">
           {{ letter?.value }}
