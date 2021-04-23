@@ -1,5 +1,5 @@
 <div fxLayout="column" class="w-100">
-  <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
+  <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3" style="padding-right: 0 !important;">
     <!-- <button mat-mini-fab color="accent" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
         </button> -->
@@ -10,7 +10,7 @@
       <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
     <span>Table intef list</span>
     <!-- <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
@@ -18,11 +18,11 @@
         </button> -->
     <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-      <span>Table options </span>
+      <span>Table options</span>
     </a>
   </div>
   <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-  <div class="px-2 m-3 table-container" #element role="tables">>
+  <div class="px-2 m-3 table-container" #element role="tables">
 
       <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
         class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"

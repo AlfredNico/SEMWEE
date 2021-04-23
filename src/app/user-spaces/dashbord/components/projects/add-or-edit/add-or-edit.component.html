@@ -144,19 +144,12 @@
 
     <div class="w-100" fxLayout="row" fxLayoutAlign="start center" >
       <div class="w-100 my-5 mx-1 pt-4">
-        <mat-label style="margin-right: 20%; color: #B5B5C3 !important;">
+        <mat-label style="margin-right: 0; color: #B5B5C3 !important;">
           HTTPS<span class="text-danger">*</span>
           <!-- / TLS<span class="text-danger">*</span> -->
         </mat-label>
-        <!-- <mat-radio-group class="w-50 px-3" aria-label="website" formControlName="protocol_project">
-          <mat-radio-button color="accent" class="mx-5" *ngFor="let protocol of protocols"
-            [value]="protocol">
-            {{ protocol }}
-          </mat-radio-button>
-        </mat-radio-group> -->
-        <div class="mx-auto w-50 px-3">
-          <mat-label ngClass="labelBeforeSlide">Off</mat-label>
-          <mat-slide-toggle formControlName="protocol_project">>On</mat-slide-toggle>
+        <div style="display: inline-block;margin-left:0;" class="mx-auto w-50 px-3">
+          <mat-slide-toggle formControlName="protocol_project"></mat-slide-toggle>
         </div>
 
         <div *ngIf="(form.get('protocol_project')?.touched &&
@@ -172,33 +165,11 @@
             certificate.</span>
         </ng-template>
       </div>
-
-      <!-- <div class="w-100" fxLayout="row">
-          <mat-label ngClass="labelBeforeSlide">Off</mat-label>
-          <mat-slide-toggle>On</mat-slide-toggle>
-      </div> -->
     </div>
 
 
     <!-- [readonly]="true" -->
-    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">t
-      <!-- <div class="w-100 row">
-        <div mat-form-field class="form-group col-7">
-          <label>Landscape image<span class="text-danger">*</span></label>
-          <input formControlName="image_project_Landscape" class="form-control"
-            placeholder="-" #image1 />
-          <span class="form-text text-muted">You can choose a landscape format image to illustrate
-            your project.</span>
-        </div>
-
-        <input type="file" accept="image/*" #landscape (change)="uploadLandscape($event)"
-          style="display: none" />
-
-        <button style="margin-top: 27px" color="accent" class="upload-button col-4" mat-raised-button type="button"
-          (click)="landscape.click()">
-          Upload Landscape Image
-        </button>
-      </div> -->
+    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
       <div class="w-100 row">
         <div mat-form-field class="form-group col-6">
           <label>Squared image<span class="text-danger">*</span></label>

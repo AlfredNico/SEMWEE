@@ -1,5 +1,5 @@
 <div fxLayout="column" class="w-100">
-    <div fxLayout="row" fxLayoutAlign="end center" class="px-2 m-3">
+    <div fxLayout="row right-adj" fxLayoutAlign="end center" class="px-2 m-3" style="padding-right: 0 !important;">
         <!-- <button mat-mini-fab color="primary" aria-label="setting icon">
             <mat-icon>settings</mat-icon>
         </button> id="filters" -->
@@ -10,7 +10,7 @@
       <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
     <span>Table intef list</span>
     <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
         <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
@@ -62,7 +62,7 @@
 
                 <!-- DYNAMICS Column -->
                 <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
-                    <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag (click)="getWidth(i)">
+                    <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                         <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
               <div fxLayout="column" class="w-100">
                 <div class="drag_n_drop" cdkDragHandle></div>

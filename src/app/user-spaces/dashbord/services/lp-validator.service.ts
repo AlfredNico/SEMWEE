@@ -61,7 +61,7 @@ export class LpValidatorService {
             const tmp = {
               Valid: result.valid,
               Popular_Search_Queries: result.psq,
-              Website_Browser: result.webSitePosition,
+              Website_Best_Position: result.webSitePosition,
             };
             data[result._id] = tmp;
             assign(this.converDataMatching(dataSources, data, true));
@@ -125,7 +125,7 @@ export class LpValidatorService {
     const columnAdd: string[] = [
       'Valid',
       'Popular_Search_Queries',
-      'Website_Browser',
+      'Website_Best_Position',
     ];
 
     let dataValue: any[] = [];
@@ -149,7 +149,7 @@ export class LpValidatorService {
             : {
                 Valid: 'loadingQuery',
                 Popular_Search_Queries: 'loadingQuery',
-                Website_Browser: 'loadingQuery',
+                Website_Best_Position: 'loadingQuery',
               };
         // if (afterSearch && obj[values['_id']] == undefined) {
         //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
