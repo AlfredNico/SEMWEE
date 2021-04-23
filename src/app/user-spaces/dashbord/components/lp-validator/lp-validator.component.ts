@@ -11,7 +11,7 @@ import { AuthService } from '@app/authentification/services/auth.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { delay, map, switchMap, take, tap } from 'rxjs/operators';
 import { CheckUserInfoService } from '../../services/check-user-info.service';
 import { CheckRelevancyComponent } from './check-relevancy.component';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
@@ -88,7 +88,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         tap(() => {
           this.common.showSpinner('root');
         }),
-        map(async (idProjet) => {
+        switchMap(async (idProjet: any) => {
           if (idProjet) {
             this.idProjet = idProjet;
             await this.checkProject();
@@ -98,7 +98,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe();
-    // this.checkProject();
   }
 
   selectionChange(ev: any) {

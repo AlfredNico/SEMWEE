@@ -22,40 +22,32 @@ export class CommonService {
 
   constructor(private spinner: NgxSpinnerService) {}
 
-  public showSpinner(name = 'root') {
-    return this.spinner.show(name, this.spinnerOptions);
+  public showSpinner(name = 'root', fullScreen = true, template?: any) {
+    const options: Spinner = this.spinnerOptions;
+    if (template) {
+      delete options.type;
+      options.template = template;
+    }
+    return this.spinner.show(name, options);
   }
 
   public hideSpinner(name = 'root') {
-    return this.spinner.hide(name);
+    this.spinner
+      .getSpinner(name)
+      .pipe(
+        tap((spinner) => {
+          if (spinner) {
+            if (spinner.show) {
+              this.spinner.hide(name);
+            }
+          }
+        }),
+        take(1)
+      )
+      .subscribe();
   }
 
-  // public showSpinner(name = 'root', fullScreen = true, template?: any) {
-  //   const options: Spinner = this.spinnerOptions;
-  //   if (template) {
-  //     delete options.type;
-  //     options.template = template;
-  //   }
-  //   return this.spinner.show(name, options);
-  // }
-
-  // public hideSpinner(name = 'root') {
-  //   this.spinner
-  //     .getSpinner(name)
-  //     .pipe(
-  //       tap((spinner) => {
-  //         if (spinner) {
-  //           if (spinner.show) {
-  //             this.spinner.hide(name);
-  //           }
-  //         }
-  //       }),
-  //       take(1)
-  //     )
-  //     .subscribe();
-  // }
-
-  // public getSpinner(name: string) {
-  //   return this.spinner.getSpinner(name);
-  // }
+  public getSpinner(name: string) {
+    return this.spinner.getSpinner(name);
+  }
 }
