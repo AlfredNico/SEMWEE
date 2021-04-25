@@ -90,19 +90,25 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         }),
         switchMap(async (idProjet: any) => {
           if (idProjet) {
-            const res = await this.infoProduitService.checkProject(idProjet);
-            if (res) {
-              await this.checkProject(res);
-              this.common.hideSpinner('root');
-              this.common.isLoading$.next(false);
-            }
+            const res = (
+              await this.infoProduitService.checkProject(idProjet)
+            ).subscribe(async (res) => {
+              if (res) {
+                await this.checkProject(res);
+                this.common.hideSpinner('root');
+                this.common.isLoading$.next(false);
+              }
+            });
           } else {
-            const res = await this.infoProduitService.checkProject(idProjet);
-            if (res) {
-              await this.checkProject(res);
-              this.common.hideSpinner('root');
-              this.common.isLoading$.next(false);
-            }
+            const res = (
+              await this.infoProduitService.checkProject(idProjet)
+            ).subscribe(async (res) => {
+              if (res) {
+                await this.checkProject(res);
+                this.common.hideSpinner('root');
+                this.common.isLoading$.next(false);
+              }
+            });
           }
         })
       )

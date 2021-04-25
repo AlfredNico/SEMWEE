@@ -1,3 +1,4 @@
+import { IdbService } from './services/idb.service';
 import { InterruptedService } from './shared/services/interrupted.service';
 import { Component, HostListener } from '@angular/core';
 import {
@@ -32,9 +33,11 @@ export class AppComponent {
   constructor(
     private router: Router,
     private common: CommonService,
-    private interrupted: InterruptedService
+    private interrupted: InterruptedService,
+    private readonly idb: IdbService
   ) {
     // this.interrupted.isInterrompted.next(false);
+    this.idb.connectToIDB();
 
     this.router.events.subscribe((event: Event) => {
       switch (true) {

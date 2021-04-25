@@ -15,7 +15,7 @@
         Infer List Pages
       </div>
   </ng-template>
-    <app-infer-list [data]="dataSources" (dataInferListReady)="nextCheckRevelancy($event)">
+    <app-infer-list [data]="dataSources" [idProjet]="idProjet" (dataInferListReady)="nextCheckRevelancy($event)">
     </app-infer-list>
   </mat-step>
   <mat-step label="Check Relevancy" state="download_done" completed="false" editable="false">

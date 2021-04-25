@@ -39,7 +39,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: move !important;
+        cursor: pointer !important;
       }
       .Test {
         position: absolute;

@@ -12,45 +12,47 @@ export class CommonService {
     false
   );
   count: number = 0;
-  private readonly spinnerOptions: Spinner = {
-    type: 'ball-spin-clockwise',
-    size: 'medium',
-    bdColor: 'rgba(131,128,128,0.8)',
-    color: 'white',
-    fullScreen: true,
-  };
+  // private readonly spinnerOptions: Spinner = {
+  //   type: 'ball-spin-clockwise',
+  //   size: 'medium',
+  //   bdColor: 'rgba(131,128,128,0.8)',
+  //   color: 'white',
+  //   fullScreen: true,
+  // };
 
   constructor(private spinner: NgxSpinnerService) {}
 
-  public show(name = 'root') {
-    return this.spinner.show(name, this.spinnerOptions);
-  }
-
-  public hide(name = 'root') {
-    return this.spinner.hide(name);
-  }
+  // public hideSpinner(name = 'root') {
+  //   return this.spinner.hide(name);
+  // }
 
   public showSpinner(name = 'root', fullScreen = true, template?: any) {
-    const options: Spinner = this.spinnerOptions;
+    const options: Spinner = {
+      type: 'ball-spin-clockwise',
+      size: 'medium',
+      bdColor: 'rgba(131,128,128,0.8)',
+      color: 'white',
+      fullScreen,
+    };
     if (template) {
       delete options.type;
-      options.template = template;
+      // options.template = template;
     }
     return this.spinner.show(name, options);
   }
 
   public hideSpinner(name = 'root') {
-    this.spinner
+    return this.spinner
       .getSpinner(name)
       .pipe(
         tap((spinner) => {
           if (spinner) {
-            if (spinner.show) {
+            if (spinner.show === true) {
               this.spinner.hide(name);
             }
           }
-        }),
-        take(1)
+        })
+        // take(1)
       )
       .subscribe();
   }

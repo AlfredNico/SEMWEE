@@ -41,7 +41,7 @@ import { HttpParams } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: move !important;
+        cursor: pointer !important;
       }
 
       .Test {
@@ -82,6 +82,9 @@ export class InferListComponent
 
   // selection toggle
   allSelect: boolean = true;
+
+  //idProduit
+  @Input() idProjet: string = '';
 
   //data after filter
   filterData: any[] = [];
@@ -353,7 +356,8 @@ export class InferListComponent
 
     try {
       const result = await this.lpValidatorServices.postInferList(
-        this.filterData
+        this.filterData,
+        this.idProjet
       );
 
       if (result && result.data) {

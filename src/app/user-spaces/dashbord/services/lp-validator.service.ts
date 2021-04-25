@@ -1,8 +1,9 @@
+import { IdbService } from './../../../services/idb.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class LpValidatorService {
   public progressBarValue: number = 0;
   public trigger$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private readonly idb: IdbService) {}
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
@@ -31,6 +32,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          this.idb.addItems('infetList', results, idProjet);
           const head: string[] = Object.keys(results[0]);
           head.splice(head.indexOf('select'), 1);
           head.unshift('select');
@@ -88,7 +90,7 @@ export class LpValidatorService {
     });
   }
 
-  public postInferList(value: any) {
+  public postInferList(value: any, idProjet: string) {
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -96,6 +98,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          this.idb.addItems('checkRevelancy', results, idProjet);
           const head: string[] = Object.keys(results[0]);
           head.splice(head.indexOf('select'), 1);
           head.unshift('select');
