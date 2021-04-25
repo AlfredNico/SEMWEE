@@ -39,7 +39,7 @@ export class AppComponent {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
-          this.common.showSpinner('root');
+          this.common.showSpinner();
           break;
         }
         case event instanceof NavigationEnd:
@@ -49,6 +49,7 @@ export class AppComponent {
           break;
         }
         default: {
+          this.common.hideSpinner();
           break;
         }
       }

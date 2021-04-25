@@ -22,6 +22,14 @@ export class CommonService {
 
   constructor(private spinner: NgxSpinnerService) {}
 
+  public show(name = 'root') {
+    return this.spinner.show(name, this.spinnerOptions);
+  }
+
+  public hide(name = 'root') {
+    return this.spinner.hide(name);
+  }
+
   public showSpinner(name = 'root', fullScreen = true, template?: any) {
     const options: Spinner = this.spinnerOptions;
     if (template) {

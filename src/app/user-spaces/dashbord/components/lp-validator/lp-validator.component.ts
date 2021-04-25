@@ -90,11 +90,20 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         }),
         switchMap(async (idProjet: any) => {
           if (idProjet) {
-            this.idProjet = idProjet;
-            await this.checkProject();
-          } else await this.checkProject();
-          this.common.hideSpinner('root');
-          this.common.isLoading$.next(false);
+            const res = await this.infoProduitService.checkProject(idProjet);
+            if (res) {
+              await this.checkProject(res);
+              this.common.hideSpinner('root');
+              this.common.isLoading$.next(false);
+            }
+          } else {
+            const res = await this.infoProduitService.checkProject(idProjet);
+            if (res) {
+              await this.checkProject(res);
+              this.common.hideSpinner('root');
+              this.common.isLoading$.next(false);
+            }
+          }
         })
       )
       .subscribe();
@@ -147,41 +156,38 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     };
   }
 
-  private async checkProject(): Promise<void> {
-    if (this.idProjet) {
-      const res = await this.infoProduitService.checkProject(this.idProjet);
-      if (res && res[0].length > 0 && res[1].length > 0) {
-        this.selectedStepperIndex = 2;
-        this.stepper.steps.forEach((step) => {
+  private async checkProject(data: any[]): Promise<void> {
+    if ((data[0].length && data[1].length) > 0) {
+      this.selectedStepperIndex = 2;
+      this.stepper.steps.forEach((step) => {
+        step.completed = true;
+        step.editable = true;
+      });
+
+      this.dataSources = this.inferList(data[0]);
+      this.dataInferList = this.inferList(data[1]);
+      this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+    } else if (data[0].length > 0 && data[1].length == 0) {
+      this.selectedStepperIndex = 1;
+      this.stepper.steps.forEach((step, index) => {
+        if (index < 1) {
           step.completed = true;
           step.editable = true;
-        });
-
-        this.dataSources = this.inferList(res[0]);
-        this.dataInferList = this.inferList(res[1]);
-        this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
-      } else if (res && res[0].length > 0 && res[1].length == 0) {
-        this.selectedStepperIndex = 1;
-        this.stepper.steps.forEach((step, index) => {
-          if (index < 1) {
-            step.completed = true;
-            step.editable = true;
-          } else {
-            step.completed = false;
-            step.editable = true;
-          }
-        });
-
-        this.dataSources = this.inferList(res[0]);
-        this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
-      } else {
-        this.selectedStepperIndex = 0;
-        this.stepper.steps.forEach((step) => {
+        } else {
           step.completed = false;
           step.editable = true;
-        });
-        this.isNextStepp = false;
-      }
+        }
+      });
+
+      this.dataSources = this.inferList(data[0]);
+      this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+    } else {
+      this.selectedStepperIndex = 0;
+      this.stepper.steps.forEach((step) => {
+        step.completed = false;
+        step.editable = true;
+      });
+      this.isNextStepp = false;
     }
   }
 

@@ -8,13 +8,13 @@ export class CapitalizeFirstPipePipe implements PipeTransform {
     if (value === null) {
       return 'Not assigned';
     }
-    return value !== 'ID'
-      ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
-      : value;
-    // return value[0].toUpperCase() + value.substr(1).toLowerCase();
+    const re = /(\b[a-z](?!\s))/g;
+    return value !== 'ID' ? value.replace(re, (x) => x.toUpperCase()) : value;
   }
 }
 
+// return value !== 'ID' ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+//   : value;
 // import { Pipe, PipeTransform } from '@angular/core';
 
 // @Pipe({ name: 'titleCaseExcept' })

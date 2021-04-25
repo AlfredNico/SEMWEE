@@ -66,7 +66,7 @@
           <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
             <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef
               class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x"
-              cdkDrag (click)="getWidth(i)">
+              cdkDrag>
 
               <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white"
                 [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
@@ -74,9 +74,9 @@
                   <div class="drag_n_drop" cdkDragHandle></div>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
                     <div mat-sort-header>
-                      {{ column | removeUnderscore | titlecase }}
+                      {{ column | removeUnderscore | capitalizeFirstPipe }}
                     </div>
-                    <div class="pl-3">
+                    <div class="pl-3" (click)="getWidth(i)">
                       <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
                       <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>
                       <i *ngIf="icon === 'desc' && active === column" class="fas fa-sort-down"></i>
