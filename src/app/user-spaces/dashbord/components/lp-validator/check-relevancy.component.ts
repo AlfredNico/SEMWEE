@@ -106,7 +106,8 @@ export class CheckRelevancyComponent
     public dialog: MatDialog,
     private itemService: ItemTypeService,
     private propertyService: PropertyValueService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    private idb: idbS
   ) {}
 
   ngOnChanges() {

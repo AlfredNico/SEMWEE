@@ -5,14 +5,14 @@
         </button> -->
     <mat-form-field appearance="outline">
       <mat-label>Quick Search</mat-label>
-      <input matInput type="search" #search placeholder="Quick Search" autocomplete="off"
+      <input matInput type="search" #searchInput placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
-        <mat-icon  *ngIf="!search.value">search</mat-icon>
-        <mat-icon  *ngIf="search.value" matPrefix class="bg-light rounded-circle" color="warn">close</mat-icon>
+        <mat-icon  *ngIf="searchInput.value == ''" matPrefix >search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
-    <span>Table intef list</span>
+    <span>Table inter list</span>
     <!-- <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
             <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
             tableOptions
