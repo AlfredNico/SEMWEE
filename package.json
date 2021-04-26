@@ -38,6 +38,7 @@
         "express": "^4.17.1",
         "highlight.js": "^10.4.0",
         "highlightjs-line-numbers.js": "^2.8.0",
+        "idb": "^6.0.0",
         "jquery": "^3.5.1",
         "moment": "^2.27.0",
         "ng-apexcharts": "^1.5.1",

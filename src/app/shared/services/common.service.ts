@@ -12,50 +12,52 @@ export class CommonService {
     false
   );
   count: number = 0;
-  private readonly spinnerOptions: Spinner = {
-    type: 'ball-spin-clockwise',
-    size: 'medium',
-    bdColor: 'rgba(131,128,128,0.8)',
-    color: 'white',
-    fullScreen: true,
-  };
+  // private readonly spinnerOptions: Spinner = {
+  //   type: 'ball-spin-clockwise',
+  //   size: 'medium',
+  //   bdColor: 'rgba(131,128,128,0.8)',
+  //   color: 'white',
+  //   fullScreen: true,
+  // };
 
   constructor(private spinner: NgxSpinnerService) {}
 
-  public showSpinner(name = 'root') {
-    return this.spinner.show(name, this.spinnerOptions);
+  // public hideSpinner(name = 'root') {
+  //   return this.spinner.hide(name);
+  // }
+
+  public showSpinner(name = 'root', fullScreen = true, template?: any) {
+    const options: Spinner = {
+      type: 'ball-spin-clockwise',
+      size: 'medium',
+      bdColor: 'rgba(131,128,128,0.8)',
+      color: 'white',
+      fullScreen,
+    };
+    if (template) {
+      delete options.type;
+      // options.template = template;
+    }
+    return this.spinner.show(name, options);
   }
 
   public hideSpinner(name = 'root') {
-    return this.spinner.hide(name);
+    return this.spinner
+      .getSpinner(name)
+      .pipe(
+        tap((spinner) => {
+          if (spinner) {
+            if (spinner.show === true) {
+              this.spinner.hide(name);
+            }
+          }
+        }),
+        take(2)
+      )
+      .subscribe();
   }
 
-  // public showSpinner(name = 'root', fullScreen = true, template?: any) {
-  //   const options: Spinner = this.spinnerOptions;
-  //   if (template) {
-  //     delete options.type;
-  //     options.template = template;
-  //   }
-  //   return this.spinner.show(name, options);
-  // }
-
-  // public hideSpinner(name = 'root') {
-  //   this.spinner
-  //     .getSpinner(name)
-  //     .pipe(
-  //       tap((spinner) => {
-  //         if (spinner) {
-  //           if (spinner.show) {
-  //             this.spinner.hide(name);
-  //           }
-  //         }
-  //       }),
-  //       take(1)
-  //     )
-  //     .subscribe();
-  // }
-
-  // public getSpinner(name: string) {
-  //   return this.spinner.getSpinner(name);
-  // }
+  public getSpinner(name: string) {
+    return this.spinner.getSpinner(name);
+  }
 }

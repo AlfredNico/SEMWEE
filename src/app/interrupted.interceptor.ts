@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { NotificationService } from './services/notification.service';
 import { switchMap, tap, finalize, map, take, delay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -23,7 +24,7 @@ export class InterruptedInterceptor implements HttpInterceptor {
   constructor(
     private interrupted: InterruptedService,
     private notifs: NotificationService,
-    private spinner: NgxSpinnerService
+    private comoon: CommonService
   ) {}
 
   intercept(
@@ -35,8 +36,17 @@ export class InterruptedInterceptor implements HttpInterceptor {
     }, 1000);
     this.pendingRequestsCount++;
     return next.handle(request).pipe(
+      tap(() => {
+        if (this.pendingRequestsCount > 10) {
+          this.notifs.info('You can interrupt this processing with Esc');
+        }
+      }),
       finalize(() => {
         this.pendingRequestsCount--;
+        if (this.pendingRequestsCount < 10) {
+          this.notifs.dismiss();
+        }
+        this.comoon.hideSpinner('root');
       })
     );
   }
