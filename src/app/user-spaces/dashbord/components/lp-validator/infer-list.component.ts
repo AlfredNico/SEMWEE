@@ -41,7 +41,7 @@ import { HttpParams } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: pointer !important;
+        cursor: cell !important;
       }
 
       .Test {
@@ -408,6 +408,10 @@ export class InferListComponent
   ) {
     if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
+  }
+
+  @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
+    console.log('handeol');
   }
 
   ngOnDestroy() {

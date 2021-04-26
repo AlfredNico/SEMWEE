@@ -18,7 +18,6 @@
         <!--end::Text-->
         <!--begin::Dropdown-->
         <div class="dropdown dropdown-inline ml-2" data-placement="left">
-          <button mat-raised-button color="warn" class="mx-2" (click)="deleteCatalogue(project)" *ngIf="project.product.length > 0" [matTooltip]="'Delete catalog'">Delete catalog</button>
           <a (click)="onDeteils(project)" class="btn btn-icon btn-light btn-hover-primary btn-sm">
             <span class="svg-icon svg-icon-md svg-icon-primary" [matTooltip]="'Project detail'">
               <!--begin::Svg Icon | path:assets/media/svg/icons/General/Settings-1.svg-->

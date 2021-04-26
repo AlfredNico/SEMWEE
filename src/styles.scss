@@ -354,6 +354,16 @@ app-root {
     }
 }
 
+.mat-snack-bar-container.snack-bar-info-echape {
+  background-color: #17426d;
+  color: #fff;
+  text-transform: uppercase;
+  z-index: 999999 !important;
+  .mat-simple-snackbar .mat-simple-snackbar-action button {
+      color: #fff;
+  }
+}
+
 a {
     text-decoration: none !important;
     color: #2464a4 !important;

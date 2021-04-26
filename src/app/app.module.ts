@@ -1,3 +1,5 @@
+import { LandingPageModule } from './shared/modules/landing-page.module';
+import { BottonSheetComponent } from './shared/components/botton-sheet/botton-sheet.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -30,12 +32,13 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, PageNotFoundComponent],
+  declarations: [AppComponent, PageNotFoundComponent, BottonSheetComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     InlineSVGModule.forRoot(),
     HttpClientModule,
+    LandingPageModule,
     SharedModule,
     NgbModule,
     TranslateModule.forRoot({

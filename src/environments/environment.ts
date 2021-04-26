@@ -9,6 +9,8 @@ export const environment = {
   isMockEnabled: true,
   baseUrl: 'https://api.semwee.app:3000/api',
   baseUrlImg: 'https://api.semwee.app:3000',
+  // baseUrl: 'https://back-semwee.herokuapp.com/api',
+  // baseUrlImg: 'https://back-semwee.herokuapp.com',
 };
 
 /*
