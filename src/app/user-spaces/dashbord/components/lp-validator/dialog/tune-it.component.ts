@@ -145,7 +145,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
       this.itemType = this.data.itemSeleted;
       this.oldname = this.data.row[this.data.itemSeleted];
 
-      console.log('data', this.data);
+      // console.log('data', this.data);
 
       if (this.data.checkTuneIt.length !== 0) {
         if (this.inludes(this.itemType)) {
@@ -218,7 +218,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         // SemanticScope: string;
         // Apply_on_the_table: boolean;
 
-        console.log(value);
+        // console.log(value);
         const res = await this.propertyService.appyPropertyValue(value);
 
         if (res && res.message) this.dialogRef.close(this.form.value);
