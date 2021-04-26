@@ -32,8 +32,8 @@ export class CheckUserInfoService {
             map((results: any) => {
               if (results[0].length > 0)
                 this.idb.addItems('infetList', results[0], _idProduit);
-              if (results[1].length > 0) return results;
-              this.idb.addItems('checkRevelancy', results[1], _idProduit);
+              if (results[1].length > 0)
+                this.idb.addItems('checkRevelancy', results[1], _idProduit);
 
               return results;
             }),

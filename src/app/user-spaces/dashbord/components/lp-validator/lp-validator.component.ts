@@ -95,8 +95,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
             ).subscribe(async (res) => {
               if (res) {
                 await this.checkProject(res);
-                this.common.hideSpinner('root');
-                this.common.isLoading$.next(false);
               }
             });
           } else {
@@ -105,8 +103,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
             ).subscribe(async (res) => {
               if (res) {
                 await this.checkProject(res);
-                this.common.hideSpinner('root');
-                this.common.isLoading$.next(false);
               }
             });
           }
@@ -173,6 +169,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       this.dataSources = this.inferList(data[0]);
       this.dataInferList = this.inferList(data[1]);
       this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+      this.common.hideSpinner('root');
+      this.common.isLoading$.next(false);
     } else if (data[0].length > 0 && data[1].length == 0) {
       this.selectedStepperIndex = 1;
       this.stepper.steps.forEach((step, index) => {
@@ -187,6 +185,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
       this.dataSources = this.inferList(data[0]);
       this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
+      this.common.hideSpinner('root');
+      this.common.isLoading$.next(false);
     } else {
       this.selectedStepperIndex = 0;
       this.stepper.steps.forEach((step) => {
@@ -194,6 +194,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         step.editable = true;
       });
       this.isNextStepp = false;
+      this.common.hideSpinner('root');
+      this.common.isLoading$.next(false);
     }
   }
 

@@ -29,16 +29,15 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
-          } else if (err.status === 401) {
             console.log('error', error);
             if (error === 'You should first log in') {
-              this.authService.logout();
+              this.common.hideSpinner('root');
+              this.router.navigateByUrl('/sign-in');
             }
             // auto logout if 401 response returned from api
             // location.reload(true);
             this.notifs.warn(error);
             // window.location.reload();
-            // this.router.navigateByUrl('/sign-in');
             return EMPTY;
           } else if (err.status === 400) {
             this.notifs.warn(error);
@@ -49,10 +48,12 @@ export class ErrorInterceptor implements HttpInterceptor {
           } else {
             console.log('err ', err);
           }
+          this.common.hideSpinner('root');
           // } else if (this.cookieService.check('SEMEWEE') == false) {
           //   this.notifs.warn('Session expired');
         } else if (error) {
           this.notifs.warn(error);
+          this.common.hideSpinner('root');
           return EMPTY;
           // return throwError(error);
         }

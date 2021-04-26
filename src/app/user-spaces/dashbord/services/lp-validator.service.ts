@@ -91,6 +91,7 @@ export class LpValidatorService {
   }
 
   public postInferList(value: any, idProjet: string) {
+    console.log(value);
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -98,6 +99,7 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          console.log(results);
           this.idb.addItems('checkRevelancy', results, idProjet);
           const head: string[] = Object.keys(results[0]);
           head.splice(head.indexOf('select'), 1);

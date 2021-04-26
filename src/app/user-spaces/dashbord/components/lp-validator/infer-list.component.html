@@ -5,13 +5,14 @@
         </button> id="filters" -->
     <mat-form-field appearance="outline">
       <mat-label>Quick Search</mat-label>
-      <input matInput type="search" placeholder="Quick Search" autocomplete="off"
+      <input matInput type="search" #searchInput  placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
-      <mat-icon matPrefix>search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value == ''" matPrefix >search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
-    <span>Table intef list</span>
+    <span>Table inter list</span>
     <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
         <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
         tableOptions
@@ -33,8 +34,8 @@
                     <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
                         <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white">
               <div fxLayout="column" class="w-100">
-                <div class="drag_n_drop" cdkDragHandle></div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
+                <div class="drag_n_drop  pt-3" cdkDragHandle></div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4  py-3 pt-1">
                   <div style="color: #42425e;">.</div>
                   <div mat-sort-header class="p-0">
                     <i class="fas fa-sort"></i>
@@ -51,7 +52,7 @@
           <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center">
+            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
             <div class="bg-whire">
               <mat-checkbox color="accent" [(ngModel)]="row[column]"
                 (ngModelChange)="updateAllComplete()">
@@ -90,7 +91,7 @@
           <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd"
             [class.even]="even" mat-cell
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
-            (click)="selectRow(row)" class="table-container-td" [class.active]="isRowSelected(row)">
+            class="table-container-td" [class.active]="isRowSelected(row)">
             <span *ngIf="isValidURL(row[column]) === false; else templeteURL"
               [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
               {{ row[column] }}

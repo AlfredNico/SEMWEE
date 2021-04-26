@@ -86,8 +86,8 @@ export class SignInComponent implements OnInit, AfterViewInit {
     } catch (error) {
       this.common.hideSpinner();
       if (error instanceof HttpErrorResponse) {
+        console.log('error ', error);
       }
-      console.log('error ', error);
       throw error;
     }
   }

@@ -41,7 +41,7 @@ import { HttpParams } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: pointer !important;
+        cursor: cell !important;
       }
 
       .Test {
@@ -296,47 +296,8 @@ export class InferListComponent
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner('root');
 
-    // const header = [
-    //   'select',
-    //   'ID',
-    //   'category',
-    //   'subcategory',
-    //   'subcategory_2',
-    //   'Facet_1',
-    //   'Facet_1_Value',
-    //   'Facet_2',
-    //   'Facet_2_Value',
-    //   'Facet_3',
-    //   'Facet_3_Value',
-    //   'Facet_4',
-    //   'Facet_4_Value',
-    //   'Facet_5',
-    //   'Facet_5_Value',
-    // ];
-
-    // let tabIndex = 0;
-
     this.dataView.data.forEach((value: any, currentIndex: number) => {
       let object = {};
-      // let i = 5;
-      // let object: any = {
-      //   select: '',
-      //   ID: '',
-      //   Category: '',
-      //   Subcategory: '',
-      //   Subcategory_2: '',
-      //   Facet_1: '',
-      //   Facet_1_Value: '',
-      //   Facet_2: '',
-      //   Facet_2_Value: '',
-      //   Facet_3: '',
-      //   Facet_3_Value: '',
-      //   Facet_4: '',
-      //   Facet_4_Value: '',
-      //   Facet_5: '',
-      //   Facet_5_Value: '',
-      //   email: this.user.email,
-      // };
       Object.keys(value).forEach((key: string, index: number) => {
         if (!key.includes('Facet') && !key.includes('Value')) {
           object[key] = value[key];
@@ -447,6 +408,10 @@ export class InferListComponent
   ) {
     if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
+  }
+
+  @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
+    console.log('handeol');
   }
 
   ngOnDestroy() {
