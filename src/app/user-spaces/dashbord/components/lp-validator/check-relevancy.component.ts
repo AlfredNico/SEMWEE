@@ -336,11 +336,22 @@ export class CheckRelevancyComponent
     const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
+    let indexRow: any[] = [];
+
+    this.dataView.data.forEach((element, index) => {
+      if (
+        (element[itemSeleted.match(/Item[^]*Type$/)?.toString()] ||
+          element[itemSeleted.match(/property$/)?.toString()]) ==
+        row[itemSeleted]
+      ) {
+        indexRow.push(index);
+      }
+    });
 
     // '1rest property hugy'.match(/property$/);
 
     let val: any = '';
-    const index = this.dataView.data.findIndex((x) => x._id === row._id);
+    // const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
     try {
       if (this.toLowerCase(itemSeleted).match(/item[^]*type$/))
@@ -362,14 +373,16 @@ export class CheckRelevancyComponent
         .pipe(
           map((result: any) => {
             if (result) {
-              const data = this.dataView.data[index];
-              const val = (data[itemSeleted] = result['Editspelling']);
-              const newVla = {
-                ...data,
-                val,
-              };
+              indexRow.forEach((index) => {
+                const data = this.dataView.data[index];
+                const val = (data[itemSeleted] = result['Editspelling']);
+                const newVla = {
+                  ...data,
+                  val,
+                };
 
-              this.dataView.data[index] = newVla;
+                this.dataView.data[index] = newVla;
+              });
             }
           })
         )

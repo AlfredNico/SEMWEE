@@ -51,8 +51,8 @@ export class CommonService {
               this.spinner.hide(name);
             }
           }
-        })
-        // take(1)
+        }),
+        take(2)
       )
       .subscribe();
   }

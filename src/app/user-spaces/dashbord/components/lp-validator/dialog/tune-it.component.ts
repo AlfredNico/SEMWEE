@@ -145,7 +145,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
       this.itemType = this.data.itemSeleted;
       this.oldname = this.data.row[this.data.itemSeleted];
 
-      // console.log('data', this.data);
+      console.log('data', this.data);
 
       if (this.data.checkTuneIt.length !== 0) {
         if (this.inludes(this.itemType)) {
@@ -207,8 +207,18 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           ...this.form.value,
           Apply_on_the_table: true,
           NomProperty: this.itemType,
-          idproject: this.data.row['idproject'],
+          idproject: this.data.row['idProduct'],
         };
+
+        // idproject: any;
+        // NomProperty: string;
+        // oldname: string;
+        // Editspelling: string;
+        // Synonymize: string;
+        // SemanticScope: string;
+        // Apply_on_the_table: boolean;
+
+        console.log(value);
         const res = await this.propertyService.appyPropertyValue(value);
 
         if (res && res.message) this.dialogRef.close(this.form.value);

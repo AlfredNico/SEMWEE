@@ -36,8 +36,16 @@ export class InterruptedInterceptor implements HttpInterceptor {
     }, 1000);
     this.pendingRequestsCount++;
     return next.handle(request).pipe(
+      tap(() => {
+        if (this.pendingRequestsCount > 10) {
+          this.notifs.info('You can interrupt this processing with Esc');
+        }
+      }),
       finalize(() => {
         this.pendingRequestsCount--;
+        if (this.pendingRequestsCount < 10) {
+          this.notifs.dismiss();
+        }
         this.comoon.hideSpinner('root');
       })
     );

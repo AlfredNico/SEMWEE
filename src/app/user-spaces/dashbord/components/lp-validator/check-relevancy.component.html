@@ -5,9 +5,10 @@
         </button> -->
     <mat-form-field appearance="outline">
       <mat-label>Quick Search</mat-label>
-      <input matInput type="search" placeholder="Quick Search" autocomplete="off"
+      <input matInput type="search" #search placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
-      <mat-icon matPrefix>search</mat-icon>
+        <mat-icon  *ngIf="!search.value">search</mat-icon>
+        <mat-icon  *ngIf="search.value" matPrefix class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
@@ -35,9 +36,9 @@
               <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
                 class="w-100 bg-white">
                 <div fxLayout="column" class="w-100">
-                  <div class="drag_n_drop" cdkDragHandle></div>
-                  <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
-                    <div style="color: #42425e;">.</div>
+                  <div class="drag_n_drop pt-3" cdkDragHandle></div>
+                  <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4  py-3">
+                    <div style="color: #3e3ebc;">.</div>
                     <div mat-sort-header class="p-0">
                       <i class="fas fa-sort"></i>
                     </div>
