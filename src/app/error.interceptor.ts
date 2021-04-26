@@ -32,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           } else if (err.status === 401) {
             console.log('error', error);
             if (error === 'You should first log in') {
-              this.authService.logout();
+              this.common.hideSpinner('root');
             }
             // auto logout if 401 response returned from api
             // location.reload(true);
@@ -49,10 +49,12 @@ export class ErrorInterceptor implements HttpInterceptor {
           } else {
             console.log('err ', err);
           }
+          this.common.hideSpinner('root');
           // } else if (this.cookieService.check('SEMEWEE') == false) {
           //   this.notifs.warn('Session expired');
         } else if (error) {
           this.notifs.warn(error);
+          this.common.hideSpinner('root');
           return EMPTY;
           // return throwError(error);
         }

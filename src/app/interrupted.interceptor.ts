@@ -31,21 +31,23 @@ export class InterruptedInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    setInterval(() => {
-      this.count++;
-    }, 1000);
+    this.count = 0;
+    // setInterval(() => {
+    //   this.count++;
+    // }, 1000).pip
     this.pendingRequestsCount++;
     return next.handle(request).pipe(
       tap(() => {
-        if (this.pendingRequestsCount > 10) {
-          this.notifs.info('You can interrupt this processing with Esc');
-        }
+        // console.log(this.count);
+        // if (this.count > 10) {
+        //   this.notifs.info('You can interrupt this processing with Esc');
+        // }
       }),
       finalize(() => {
         this.pendingRequestsCount--;
-        if (this.pendingRequestsCount < 10) {
-          this.notifs.dismiss();
-        }
+        // if (this.count < 10) {
+        //   this.notifs.dismiss();
+        // }
         this.comoon.hideSpinner('root');
       })
     );

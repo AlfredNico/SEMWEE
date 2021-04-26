@@ -52,7 +52,7 @@ export class CommonService {
             }
           }
         }),
-        take(2)
+        take(1)
       )
       .subscribe();
   }

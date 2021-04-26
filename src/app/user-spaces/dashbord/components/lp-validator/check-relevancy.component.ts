@@ -1,3 +1,4 @@
+import { IdbService } from './../../../../services/idb.service';
 import { PropertyValueService } from './../../services/property-value.service';
 import { ItemTypeService } from './../../services/item-type.service';
 import { NotificationService } from '@app/services/notification.service';
@@ -106,7 +107,8 @@ export class CheckRelevancyComponent
     public dialog: MatDialog,
     private itemService: ItemTypeService,
     private propertyService: PropertyValueService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    private idb: IdbService
   ) {}
 
   ngOnChanges() {
