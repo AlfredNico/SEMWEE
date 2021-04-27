@@ -475,12 +475,10 @@ export class InferListComponent
   }
 
   public isValidURL(value: any, colum: string): boolean {
-    console.log('ZE', colum);
     if (colum === 'ID' || colum === 'idcsv') {
       const res = value.match(
         /(http(s)?:\/\/.)?([A-z]\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
       );
-      console.log('res', res);
       return res !== null;
     }
     return false;
