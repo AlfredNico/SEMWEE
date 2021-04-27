@@ -113,16 +113,15 @@ export class LpValidatorService {
           const headers = [
             'number',
             'select',
-            'List_Page_Label',
-            'Number_of_Item',
-            'List_Page_Main_Query',
             'Item_Type',
+            'List_Page_Label',
+            'List_Page_Main_Query',
             '_1st_Property',
             '_2nd_Property',
             '_3rd_Property',
             '_4th_Property',
             '_5th_Property',
-            'property_Schema',
+            'Property_Schema',
             '_id',
             'idProduct',
           ];
@@ -170,8 +169,8 @@ export class LpValidatorService {
       '_4th_Property',
       '_5th_Property',
       'property_Schema',
-      '_id',
-      'idProduct',
+      // '_id',
+      // 'idProduct',
     ];
 
     let dataValue: any[] = [];
