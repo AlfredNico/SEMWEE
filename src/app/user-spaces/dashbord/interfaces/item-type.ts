@@ -1,7 +1,6 @@
 export interface ItemType {
   Editspelling: string;
-  Synonimyze: string;
-  idproject: any;
+  Synonymize: string;
   oldname: string;
-  newname: string;
+  idinferlist: any;
 }

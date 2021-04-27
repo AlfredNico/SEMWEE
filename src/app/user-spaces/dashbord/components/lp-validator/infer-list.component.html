@@ -5,22 +5,23 @@
         </button> id="filters" -->
     <mat-form-field appearance="outline">
       <mat-label>Quick Search</mat-label>
-      <input matInput type="search" placeholder="Quick Search" autocomplete="off"
+      <input matInput type="search" #searchInput  placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
-      <mat-icon matPrefix>search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value == ''" matPrefix >search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-left:22px;margin-right:10px;">
-    <span>Table intef list</span>
+    <span>Table inter list</span>
     <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
         <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
         tableOptions
     </button> -->
     <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-    <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
+    <!-- <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
       <span>Table options </span>
-    </a>
+    </a> -->
   </div>
   <div class="px-2 m-3 table-container" role="tables">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
@@ -28,13 +29,39 @@
       (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
             <div *ngFor="let column of displayColumns; let i = index">
-                <!-- SELECT Column -->
+                <!-- NUÙBER Column -->
+                <ng-container *ngIf="column === 'number'" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
+                        <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white">
+              <div fxLayout="column" class="w-100">
+                <div fxLayout="row" fxLayoutAlign="center center center" class="px-4  py-3 pt-1" style="height: 49px;">
+                  <div style="color: #fff;">#</div>
+                </div>
+              </div>
+              <div style="padding: 17px;" class="text-center bg-white">
+              <mat-checkbox color="accent"
+                style="visibility: hidden;">
+              </mat-checkbox>
+              </div>
+            </span>
+          </th>
+          <td mat-cell [class.odd]="odd" [class.even]="even"
+            *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
+            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+            <div class="bg-whire">
+              {{ indexRow + 1 }}
+            </div>
+          </td>
+        </ng-container>
+
+
+         <!-- SELECT Column -->
                 <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
                     <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
                         <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white">
               <div fxLayout="column" class="w-100">
-                <div class="drag_n_drop" cdkDragHandle></div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
+                <!-- <div class="drag_n_drop  pt-3" cdkDragHandle></div> -->
+                <div fxLayout="row" fxLayoutAlign="center center center" class="px-4  py-3 pt-1" style="height: 49px;">
                   <div style="color: #42425e;">.</div>
                   <div mat-sort-header class="p-0">
                     <i class="fas fa-sort"></i>
@@ -51,7 +78,7 @@
           <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center">
+            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
             <div class="bg-whire">
               <mat-checkbox color="accent" [(ngModel)]="row[column]"
                 (ngModelChange)="updateAllComplete()">
@@ -61,12 +88,12 @@
         </ng-container>
 
         <!-- DYNAMICS Column -->
-        <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
+        <ng-container [matColumnDef]="column" *ngIf="column !== 'select' && column !== 'number'">
             <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                 <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
               <div fxLayout="column" class="w-100">
                 <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1">
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1" id="columnInferHead">
                   <div mat-sort-header>
                     {{ column | removeUnderscore | capitalizeFirstPipe }}
                   </div>
@@ -77,7 +104,7 @@
                   </div>
                 </div>
               </div>
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" id="formInferHead">
                 <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                   [formControlName]="column" autocomplete="off">
                 <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value"
@@ -90,13 +117,13 @@
           <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd"
             [class.even]="even" mat-cell
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
-            (click)="selectRow(row)" class="table-container-td" [class.active]="isRowSelected(row)">
-            <span *ngIf="isValidURL(row[column]) === false; else templeteURL"
+            class="table-container-td" [class.active]="isRowSelected(row)">
+            <span *ngIf="isValidURL(row[column], column) === false; else templeteURL"
               [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
               {{ row[column] }}
             </span>
                         <ng-template #templeteURL>
-                            <a #templeteURL [href]="row[column]">{{row[column]}}</a>
+                            <a #templeteURL href="row[column]" target="_blank">{{row[column]}}</a>
                         </ng-template>
 
                         <div style="padding: 0 20px;" class="Test" [id]="i+'infer'+indexRow">
@@ -109,8 +136,6 @@
             <tr mat-header-row *matHeaderRowDef="dataView.displayColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
 
-            <!-- Row shown when there is no matching data that will be provided to the wrapper table. -->
-            <!-- width(i, containerMin.offsetWidth, containerMax.offsetWidth) -->
             <tr class="mat-row" *matNoDataRow>
                 <td class="text-center" [colSpan]="dataView.displayColumns.length">No data</td>
             </tr>
@@ -125,6 +150,10 @@
         <button mat-raised-button color="accent">Updates Items</button>
 
         <div fxLayoutAlign="end center" class="w-100">
+          <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
+            <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
+            Table options
+          </button>
             <button type="button" mat-raised-button color="accent" class="m-3" (click)="openSettingTable()">
         <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
         Settings

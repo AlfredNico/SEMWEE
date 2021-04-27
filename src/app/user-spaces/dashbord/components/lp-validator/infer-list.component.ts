@@ -31,6 +31,7 @@ import { NotificationService } from '@app/services/notification.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
 import { HttpParams } from '@angular/common/http';
+import { APP_BASE_HREF } from '@angular/common';
 
 @Component({
   selector: 'app-infer-list',
@@ -41,7 +42,7 @@ import { HttpParams } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: pointer !important;
+        cursor: cell !important;
       }
 
       .Test {
@@ -57,7 +58,7 @@ import { HttpParams } from '@angular/common/http';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [FormBuilder], // <-- THIS PART
+  providers: [FormBuilder, { provide: APP_BASE_HREF, useValue: '' }],
 })
 export class InferListComponent
   implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
@@ -68,6 +69,8 @@ export class InferListComponent
     data: [],
   };
   public displayColumns: string[] = [];
+
+  inferHeigth: number = 0;
 
   //generate Data
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -135,8 +138,16 @@ export class InferListComponent
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
       }
+
       Object.assign(this.dataView, this.data);
       this.displayColumns = this.data.displayColumns;
+      this.inferHeigth =
+        this.inferHeigth >
+          document.getElementById('formInferHead')?.offsetHeight &&
+        document.getElementById('formInferHead')?.offsetHeight
+          ? document.getElementById('formInferHead')?.offsetHeight
+          : this.inferHeigth;
+      console.log(this.inferHeigth);
     }
 
     this.dataSource.data = this.dataView.data;
@@ -296,47 +307,8 @@ export class InferListComponent
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner('root');
 
-    // const header = [
-    //   'select',
-    //   'ID',
-    //   'category',
-    //   'subcategory',
-    //   'subcategory_2',
-    //   'Facet_1',
-    //   'Facet_1_Value',
-    //   'Facet_2',
-    //   'Facet_2_Value',
-    //   'Facet_3',
-    //   'Facet_3_Value',
-    //   'Facet_4',
-    //   'Facet_4_Value',
-    //   'Facet_5',
-    //   'Facet_5_Value',
-    // ];
-
-    // let tabIndex = 0;
-
     this.dataView.data.forEach((value: any, currentIndex: number) => {
       let object = {};
-      // let i = 5;
-      // let object: any = {
-      //   select: '',
-      //   ID: '',
-      //   Category: '',
-      //   Subcategory: '',
-      //   Subcategory_2: '',
-      //   Facet_1: '',
-      //   Facet_1_Value: '',
-      //   Facet_2: '',
-      //   Facet_2_Value: '',
-      //   Facet_3: '',
-      //   Facet_3_Value: '',
-      //   Facet_4: '',
-      //   Facet_4_Value: '',
-      //   Facet_5: '',
-      //   Facet_5_Value: '',
-      //   email: this.user.email,
-      // };
       Object.keys(value).forEach((key: string, index: number) => {
         if (!key.includes('Facet') && !key.includes('Value')) {
           object[key] = value[key];
@@ -449,6 +421,17 @@ export class InferListComponent
     else this.isKeyPressed = false;
   }
 
+  // @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
+  //   console.log('handeol');
+  // }
+
+  @HostListener('keydown', ['$event']) onKeyDown(e) {
+    if (e.shiftKey && e.keyCode == 9) {
+      console.log('shift and tab');
+    }
+    console.log('key', e.keyCode);
+  }
+
   ngOnDestroy() {
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
     this.dataSource.data = [];
@@ -492,10 +475,10 @@ export class InferListComponent
     else return false;
   }
 
-  public isValidURL(colum: string): boolean {
+  public isValidURL(value: any, colum: string): boolean {
     if (colum === 'ID' || colum === 'idcsv') {
-      const res = colum.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+      const res = value.match(
+        /(http(s)?:\/\/.)?([A-z]\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
       );
       return res !== null;
     }

@@ -6,9 +6,10 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Quick Search</mat-label>
-      <input matInput type="search" placeholder="Quick Search" autocomplete="off"
+      <input matInput type="search" #searchInput placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
-      <mat-icon matPrefix>search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value == ''" matPrefix >search</mat-icon>
+        <mat-icon  *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -20,46 +21,72 @@
         </a> -->
   </div>
   <!-- style="overflow-y: auto;"   tabindex="0" role="tables"-->
-  <div class="px-2 m-3 table-container" role="tables">>
+  <div class="px-2 m-3 table-container" role="tables">
     <table mat-table [dataSource]="dataSource" (matSortChange)="sortData($event)" matSort class="w-100 p-4 m-3 datatable " cdkDropList
       [cdkDropListData]="dataView.data" (cdkDropListDropped)="drop($event)"
       cdkDropListOrientation="horizontal" cdkDragHandle>
 
       <div *ngFor="let column of displayColumns; let i = index">
-        <!-- SELECT Column -->
-        <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
-          <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
-            <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
-              class="w-100 bg-white overflow-visible">
-              <div fxLayout="column" class="w-100">
-                <div class="drag_n_drop" cdkDragHandle></div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 py-3">
-                  <div style="color: #42425e;">.</div>
-                  <div mat-sort-header class="p-0">
-                    <i class="fas fa-sort"></i>
+                    <!-- NUÙBER Column -->
+                    <ng-container *ngIf="column === 'number'" [matColumnDef]="column">
+                      <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
+                          <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white">
+                <div fxLayout="column" class="w-100">
+                  <div fxLayout="row" fxLayoutAlign="center center center" class="px-4  py-3 pt-1" style="height: 49px;">
+                    <div style="color: #fff;">#</div>
                   </div>
                 </div>
+                <div style="padding: 17px;" class="text-center bg-white">
+                <mat-checkbox color="accent"
+                  style="visibility: hidden;">
+                </mat-checkbox>
+                </div>
+              </span>
+            </th>
+            <td mat-cell [class.odd]="odd" [class.even]="even"
+              *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
+              [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+              <div class="bg-whire">
+                {{ indexRow + 1 }}
               </div>
-              <div style="padding: 17px;" class="text-center bg-white">
-                <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
-                  [indeterminate]="someComplete()"></mat-checkbox>
+            </td>
+          </ng-container>
+
+
+           <!-- SELECT Column -->
+                  <ng-container *ngIf="column === 'select'" [matColumnDef]="column">
+                      <th mat-header-cell *matHeaderCellDef class="px-1 py-1 text-truncate">
+                          <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters" class="w-100 bg-white">
+                <div fxLayout="column" class="w-100">
+                  <!-- <div class="drag_n_drop  pt-3" cdkDragHandle></div> -->
+                  <div fxLayout="row" fxLayoutAlign="center center center" class="px-4  py-3 pt-1" style="height: 49px;">
+                    <div style="color: #42425e;">.</div>
+                    <div mat-sort-header class="p-0">
+                      <i class="fas fa-sort"></i>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding: 17px;" class="text-center bg-white">
+                  <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
+                    [indeterminate]="someComplete()"></mat-checkbox>
+                </div>
+              </span>
+              <!-- <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox> -->
+            </th>
+            <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
+            <td mat-cell [class.odd]="odd" [class.even]="even"
+              *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
+              [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+              <div class="bg-whire">
+                <mat-checkbox color="accent" [(ngModel)]="row[column]"
+                  (ngModelChange)="updateAllComplete()">
+                </mat-checkbox>
               </div>
-            </span>
-            <!-- <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox> -->
-          </th>
-          <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
-          <td mat-cell [class.odd]="odd" [class.even]="even"
-            *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center">
-            <div class="bg-whire">
-              <mat-checkbox color="accent" [(ngModel)]="row[column]" (click)="selectRow(row)">
-              </mat-checkbox>
-            </div>
-          </td>
-        </ng-container>
+            </td>
+          </ng-container>
 
         <!-- DYNAMICS Column -->
-        <ng-container [matColumnDef]="column" *ngIf="column !== 'select'">
+        <ng-container [matColumnDef]="column" *ngIf="column !== 'select' && column !== 'number'">
           <th mat-header-cell *matHeaderCellDef class="p-1 text-truncate"
             cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag
             [ngClass]="{'hide-rows': isColumnDisplay(column)}">

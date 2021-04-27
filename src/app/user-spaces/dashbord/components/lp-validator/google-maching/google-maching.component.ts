@@ -95,7 +95,7 @@ export class GoogleMachingComponent
   ) {}
 
   ngOnChanges() {
-    this.commonServices.showSpinner();
+    // this.commonServices.showSpinner();
     if (this.dataSources.data.length > 0) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
@@ -307,7 +307,7 @@ export class GoogleMachingComponent
     switch (true) {
       case this.toLowerCase(column) == '_id':
       // case this.toLowerCase(column) == 'id':
-      // case this.toLowerCase(column) == 'idproduct':
+      case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
         // case this.toLowerCase(column) == 'select':
         // case this.toLowerCase(column) == 'ID':

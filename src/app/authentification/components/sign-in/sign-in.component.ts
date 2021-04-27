@@ -3,7 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
+  DoCheck,
   ElementRef,
+  OnChanges,
   OnInit,
   Renderer2,
   ViewChild,
@@ -20,7 +22,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
-export class SignInComponent implements OnInit, AfterViewInit {
+export class SignInComponent implements OnInit, AfterViewInit, DoCheck {
   hide = true;
   @ViewChild('recaptch', { static: true }) public recaptch: ElementRef;
 
@@ -46,6 +48,14 @@ export class SignInComponent implements OnInit, AfterViewInit {
   }
   get getpassword() {
     return this.loginForm.controls.password;
+  }
+
+  ngDoCheck(): void {
+    this.common.hideSpinner();
+  }
+
+  ngOnChanges(): void {
+    this.common.hideSpinner();
   }
 
   ngOnInit(): void {
@@ -86,8 +96,8 @@ export class SignInComponent implements OnInit, AfterViewInit {
     } catch (error) {
       this.common.hideSpinner();
       if (error instanceof HttpErrorResponse) {
+        console.log('error ', error);
       }
-      console.log('error ', error);
       throw error;
     }
   }

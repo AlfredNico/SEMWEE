@@ -1,3 +1,4 @@
+import { IdbService } from './../../../../services/idb.service';
 import { PropertyValueService } from './../../services/property-value.service';
 import { ItemTypeService } from './../../services/item-type.service';
 import { NotificationService } from '@app/services/notification.service';
@@ -39,7 +40,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: pointer !important;
+        cursor: cell !important;
       }
       .Test {
         position: absolute;
@@ -90,6 +91,9 @@ export class CheckRelevancyComponent
   public icon = '';
   public active: any = '';
 
+  //idProduit
+  @Input() idProjet: string = '';
+
   // multipleSelect tables
   isKeyPressed: boolean = false;
   selectedRow: any;
@@ -106,7 +110,8 @@ export class CheckRelevancyComponent
     public dialog: MatDialog,
     private itemService: ItemTypeService,
     private propertyService: PropertyValueService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    private idb: IdbService
   ) {}
 
   ngOnChanges() {
@@ -336,11 +341,23 @@ export class CheckRelevancyComponent
     const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
+    let indexRow: any[] = [];
 
-    // '1rest property hugy'.match(/property$/);
+    this.dataView.data.forEach((element, index) => {
+      if (
+        (element[itemSeleted.match(/Item[^]*Type$/)?.toString()] ||
+          element['_1st_Property'] ||
+          element['_2st_Property'] ||
+          element['_3st_Property'] ||
+          element['_4st_Property'] ||
+          element['_5st_Property']) === row[itemSeleted]
+      ) {
+        indexRow.push(index);
+      }
+    });
 
     let val: any = '';
-    const index = this.dataView.data.findIndex((x) => x._id === row._id);
+    // const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
     try {
       if (this.toLowerCase(itemSeleted).match(/item[^]*type$/))
@@ -362,14 +379,22 @@ export class CheckRelevancyComponent
         .pipe(
           map((result: any) => {
             if (result) {
-              const data = this.dataView.data[index];
-              const val = (data[itemSeleted] = result['Editspelling']);
-              const newVla = {
-                ...data,
-                val,
-              };
+              indexRow.forEach((index) => {
+                const data = this.dataView.data[index];
+                const val = (data[itemSeleted] = result['Editspelling']);
+                const newVla = {
+                  ...data,
+                  val,
+                };
 
-              this.dataView.data[index] = newVla;
+                this.dataView.data[index] = newVla;
+              });
+
+              this.idb.addItems(
+                'checkRevelancy',
+                this.dataView.data,
+                this.idProjet
+              );
             }
           })
         )
@@ -396,7 +421,7 @@ export class CheckRelevancyComponent
     switch (true) {
       case this.toLowerCase(column) == '_id':
       // case this.toLowerCase(column) == 'id':
-      // case this.toLowerCase(column) == 'idproduct':
+      case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
       case this.toLowerCase(column) == 'select':
         // case this.toLowerCase(column) == 'ID':
