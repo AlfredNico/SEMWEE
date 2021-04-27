@@ -1,4 +1,4 @@
-<mat-card class="example-card">
+<mat-card>
   <mat-card-header>
     <mat-card-title>interrupted corfirmation</mat-card-title>
   </mat-card-header>
@@ -7,7 +7,7 @@
       you are sure to interrupt this request
     </p>
   </mat-card-content>
-  <mat-card-actions>
+  <mat-card-actions align="center">
     <button mat-button color="primary" (click)="interropt()">YES</button>
     <button mat-button color="warn" (click)="_bottomSheetRef.dismiss();">NO</button>
   </mat-card-actions>

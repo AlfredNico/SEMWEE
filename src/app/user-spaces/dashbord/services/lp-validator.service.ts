@@ -34,8 +34,13 @@ export class LpValidatorService {
         map((results: any) => {
           this.idb.addItems('infetList', results, idProjet);
           const head: string[] = Object.keys(results[0]);
-          head.splice(head.indexOf('select'), 1);
-          head.unshift('select');
+          if (head.indexOf('select') !== -1) {
+            head.splice(head.indexOf('select'), 1);
+          }
+
+          head.unshift('number', 'select');
+
+          // console.log('head', head);
           return {
             displayColumns: head,
             data: results,
@@ -99,13 +104,29 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          console.log(results);
           this.idb.addItems('checkRevelancy', results, idProjet);
-          const head: string[] = Object.keys(results[0]);
-          head.splice(head.indexOf('select'), 1);
-          head.unshift('select');
+          // const head: string[] = Object.keys(results[0]);
+          // head.splice(head.indexOf('select'), 1);
+          // console.log('head', head);
+          // head.unshift('select');
+          const headers = [
+            'number',
+            'select',
+            'List_Page_Label',
+            'Number_of_Item',
+            'List_Page_Main_Query',
+            'ItemType',
+            '1st property',
+            '2nd property',
+            '3rd property',
+            '4th property',
+            '5th property',
+            'property_Schema',
+            '_id',
+            'idProduct',
+          ];
           return {
-            displayColumns: head,
+            displayColumns: headers,
             data: results,
             hideColumns: [],
           };
@@ -127,25 +148,44 @@ export class LpValidatorService {
     obj: any = {},
     afterSearch: boolean = false
   ): DataTypes {
-    const columnAdd: string[] = [
+    // const columnAdd: string[] = [
+    //   'Valid',
+    //   'Popular_Search_Queries',
+    //   'Website_Best_Position',
+    // ];
+    const headers = [
+      'number',
+      'select',
       'Valid',
+      'List_Page_Label',
       'Popular_Search_Queries',
+      'Number_of_Item',
+      'List_Page_Main_Query',
       'Website_Best_Position',
+      'ItemType',
+      '1st property',
+      '2nd property',
+      '3rd property',
+      '4th property',
+      '5th property',
+      'property_Schema',
+      '_id',
+      'idProduct',
     ];
 
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
-      Object.keys(values).map((key: string, index: number) => {
-        //console.log(key, index);
-        if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0)
-            this.matching.displayColumns.push('select', columnAdd[0]);
-          if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
-          if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
+      // Object.keys(values).map((key: string, index: number) => {
+      //   //console.log(key, index);
+      //   if (!this.matching.displayColumns.includes(key)) {
+      //     if (index === 0)
+      //       this.matching.displayColumns.push('select', columnAdd[0]);
+      //     if (index === 1) this.matching.displayColumns.push(columnAdd[1]);
+      //     if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
-          this.matching.displayColumns.push(key);
-        }
-      });
+      //     this.matching.displayColumns.push(key);
+      //   }
+      // });
 
       if (values['select'] === true) {
         const tmp =
@@ -166,7 +206,7 @@ export class LpValidatorService {
     });
 
     return (this.matching = {
-      displayColumns: this.matching.displayColumns,
+      displayColumns: headers,
       hideColumns: [],
       data: dataValue,
     });

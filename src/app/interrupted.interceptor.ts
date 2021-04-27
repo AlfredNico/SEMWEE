@@ -24,7 +24,7 @@ export class InterruptedInterceptor implements HttpInterceptor {
   constructor(
     private interrupted: InterruptedService,
     private notifs: NotificationService,
-    private comoon: CommonService
+    private common: CommonService
   ) {}
 
   intercept(
@@ -37,13 +37,11 @@ export class InterruptedInterceptor implements HttpInterceptor {
     // }, 1000);
     this.pendingRequestsCount++;
     return next.handle(request).pipe(
-      // tap(() => {
-      //   console.log(this.count);
-      //   if (this.count > 10) {
-      //     this.notifs.info('You can interrupt this processing with Esc');
-      //   }
-      // }),
       finalize(() => {
+        // this.common.isLoading$.subscribe((res) => {
+        //   if (res) console.log('res', res);
+        //   else console.log('res', res);
+        // });
         this.pendingRequestsCount--;
         // if (this.count < 10) {
         //   this.notifs.dismiss();
