@@ -38,10 +38,10 @@ export class InterruptedInterceptor implements HttpInterceptor {
     this.pendingRequestsCount++;
     return next.handle(request).pipe(
       finalize(() => {
-        this.common.isLoading$.subscribe((res) => {
-          if (res) console.log('res', res);
-          else console.log('res', res);
-        });
+        // this.common.isLoading$.subscribe((res) => {
+        //   if (res) console.log('res', res);
+        //   else console.log('res', res);
+        // });
         this.pendingRequestsCount--;
         // if (this.count < 10) {
         //   this.notifs.dismiss();

@@ -34,12 +34,13 @@ export class LpValidatorService {
         map((results: any) => {
           this.idb.addItems('infetList', results, idProjet);
           const head: string[] = Object.keys(results[0]);
-          if (head.indexOf('select') === 0)
+          if (head.indexOf('select') !== -1) {
             head.splice(head.indexOf('select'), 1);
-            
+          }
+
           head.unshift('number', 'select');
 
-           console.log('head', head)
+          // console.log('head', head);
           return {
             displayColumns: head,
             data: results,
@@ -109,6 +110,7 @@ export class LpValidatorService {
           // console.log('head', head);
           // head.unshift('select');
           const headers = [
+            'number',
             'select',
             'List_Page_Label',
             'Number_of_Item',
@@ -127,7 +129,7 @@ export class LpValidatorService {
             displayColumns: headers,
             data: results,
             hideColumns: [],
-          };          
+          };
         }),
         catchError((err) => {
           return this.handleError(err);
@@ -151,24 +153,25 @@ export class LpValidatorService {
     //   'Popular_Search_Queries',
     //   'Website_Best_Position',
     // ];
-     const headers = [
-        'select',
-        'Valid',
-        'List_Page_Label',
-        'Popular_Search_Queries',
-        'Number_of_Item',
-        'List_Page_Main_Query',
-        'Website_Best_Position',
-        'ItemType',
-        '1st property',
-        '2nd property',
-        '3rd property',
-        '4th property',
-        '5th property',
-        'property_Schema',
-        '_id',
-        'idProduct',
-      ];
+    const headers = [
+      'number',
+      'select',
+      'Valid',
+      'List_Page_Label',
+      'Popular_Search_Queries',
+      'Number_of_Item',
+      'List_Page_Main_Query',
+      'Website_Best_Position',
+      'ItemType',
+      '1st property',
+      '2nd property',
+      '3rd property',
+      '4th property',
+      '5th property',
+      'property_Schema',
+      '_id',
+      'idProduct',
+    ];
 
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {

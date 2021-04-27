@@ -69,6 +69,8 @@ export class InferListComponent
   };
   public displayColumns: string[] = [];
 
+  inferHeigth: number = 0;
+
   //generate Data
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -138,7 +140,13 @@ export class InferListComponent
 
       Object.assign(this.dataView, this.data);
       this.displayColumns = this.data.displayColumns;
-      console.log('head', this.displayColumns)
+      this.inferHeigth =
+        this.inferHeigth <
+          document.getElementById('formInferHead')?.offsetHeight &&
+        document.getElementById('formInferHead')?.offsetHeight
+          ? document.getElementById('formInferHead')?.offsetHeight
+          : this.inferHeigth;
+      console.log(this.inferHeigth);
     }
 
     this.dataSource.data = this.dataView.data;
@@ -466,11 +474,13 @@ export class InferListComponent
     else return false;
   }
 
-  public isValidURL(colum: string): boolean {
+  public isValidURL(value: any, colum: string): boolean {
+    console.log('ZE', colum);
     if (colum === 'ID' || colum === 'idcsv') {
-      const res = colum.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+      const res = value.match(
+        /(http(s)?:\/\/.)?([A-z]\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
       );
+      console.log('res', res);
       return res !== null;
     }
     return false;
