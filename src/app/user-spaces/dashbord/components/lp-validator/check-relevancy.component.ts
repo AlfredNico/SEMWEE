@@ -40,7 +40,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: pointer !important;
+        cursor: cell !important;
       }
       .Test {
         position: absolute;
@@ -90,6 +90,9 @@ export class CheckRelevancyComponent
   // filter icon && and tooltips
   public icon = '';
   public active: any = '';
+
+  //idProduit
+  @Input() idProjet: string = '';
 
   // multipleSelect tables
   isKeyPressed: boolean = false;
@@ -385,6 +388,12 @@ export class CheckRelevancyComponent
 
                 this.dataView.data[index] = newVla;
               });
+
+              this.idb.addItems(
+                'checkRevelancy',
+                this.dataView.data,
+                this.idProjet
+              );
             }
           })
         )
@@ -411,7 +420,7 @@ export class CheckRelevancyComponent
     switch (true) {
       case this.toLowerCase(column) == '_id':
       // case this.toLowerCase(column) == 'id':
-      // case this.toLowerCase(column) == 'idproduct':
+      case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
       case this.toLowerCase(column) == 'select':
         // case this.toLowerCase(column) == 'ID':

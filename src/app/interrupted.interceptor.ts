@@ -24,31 +24,29 @@ export class InterruptedInterceptor implements HttpInterceptor {
   constructor(
     private interrupted: InterruptedService,
     private notifs: NotificationService,
-    private comoon: CommonService
+    private common: CommonService
   ) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.count = 0;
+    // this.count = 0;
     // setInterval(() => {
     //   this.count++;
-    // }, 1000).pip
+    // }, 1000);
     this.pendingRequestsCount++;
     return next.handle(request).pipe(
-      tap(() => {
-        // console.log(this.count);
-        // if (this.count > 10) {
-        //   this.notifs.info('You can interrupt this processing with Esc');
-        // }
-      }),
       finalize(() => {
+        // this.common.isLoading$.subscribe((res) => {
+        //   if (res) console.log('res', res);
+        //   else console.log('res', res);
+        // });
         this.pendingRequestsCount--;
         // if (this.count < 10) {
         //   this.notifs.dismiss();
         // }
-        this.comoon.hideSpinner('root');
+        // this.comoon.hideSpinner('root');
       })
     );
   }

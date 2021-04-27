@@ -35,6 +35,15 @@ export class NotificationService {
     });
   }
 
+  public infoIterropt(message: string) {
+    this.snackbar.open(message, 'Close', {
+      ...this.config,
+      panelClass: ['snack-bar-info-echape'],
+      duration: undefined,
+      // duration: 4000,
+    });
+  }
+
   public dismiss() {
     this.snackbar.dismiss();
   }

@@ -12,7 +12,6 @@ export class ItemTypeService {
     data: ItemType,
     _id?: any
   ): Promise<{ message: string }> {
-    console.log(_id);
     if (_id === undefined) {
       return this.http
         .post<{ message: string }>(
