@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { NotificationService } from './../../../../../services/notification.service';
 import { PropertyValueService } from './../../../services/property-value.service';
 import { ItemTypeService } from './../../../services/item-type.service';
@@ -139,7 +140,8 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     public dialogRef: MatDialogRef<TuneItComponent>,
     private itemService: ItemTypeService,
     private propertyService: PropertyValueService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    private common: CommonService
   ) {
     if (this.data && this.data.row) {
       this.itemType = this.data.itemSeleted;
@@ -176,6 +178,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   async onClick() {
+    this.common.showSpinner('root');
     const { Editspelling, Synonymize } = this.form.controls;
 
     if (Editspelling.value || Synonymize.value) {
@@ -186,10 +189,17 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           Synonymize: this.form.controls.Synonymize.value,
           oldname: this.form.controls.oldname.value,
         };
-        const res = await this.itemService.appygItemType(data);
-        console.log(res);
-        if (res && res.message) this.dialogRef.close(this.form.value);
-        this.notifs.sucess(res.message);
+
+        try {
+          const res = await this.itemService.appygItemType(data);
+          if (res && res.message) {
+            this.dialogRef.close(this.form.value);
+            this.notifs.sucess(res.message);
+          }
+          this.common.hideSpinner();
+        } catch (error) {
+          this.common.hideSpinner();
+        }
       } else {
         const value = {
           ...this.form.value,
@@ -199,10 +209,16 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         };
 
         // console.log(value);
-        const res = await this.propertyService.appyPropertyValue(value);
-
-        if (res && res.message) this.dialogRef.close(this.form.value);
-        this.notifs.sucess(res.message);
+        try {
+          const res = await this.propertyService.appyPropertyValue(value);
+          if (res && res.message) {
+            this.dialogRef.close(this.form.value);
+            this.notifs.sucess(res.message);
+          }
+          this.common.hideSpinner();
+        } catch (error) {
+          this.common.hideSpinner();
+        }
       }
     }
   }

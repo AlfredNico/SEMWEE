@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { IdbService } from './../../../../../services/idb.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { NotificationService } from '@app/services/notification.service';
@@ -25,7 +26,8 @@ export class DetailsComponent implements OnInit {
     private projectServices: ProjectsService,
     private notifs: NotificationService,
     private triggerServices: TriggerService,
-    private idb: IdbService
+    private idb: IdbService,
+    private readonly common: CommonService
   ) {
     this.image_url = environment.baseUrlImg + this.data.image_project_Squared;
     if (this.data.product.length > 0) {
@@ -56,7 +58,7 @@ export class DetailsComponent implements OnInit {
       .pipe(
         map((result) => {
           if (result === true) {
-            this.isBtnCatalog = false;
+            this.common.showSpinner();
             this.idb.deleteItem('infetList', this.data['_id']);
             this.idb.deleteItem('checkRevelancy', this.data['_id']),
               this.projectServices
@@ -64,7 +66,8 @@ export class DetailsComponent implements OnInit {
                 .subscribe((result) => {
                   if (result && result.message) {
                     this.notifs.sucess(result.message);
-
+                    this.isBtnCatalog = false;
+                    this.common.hideSpinner();
                     // this.projectServices.refresh$.next(true);
                     // this.triggerServices.trigrer$.next(true);
                   }
