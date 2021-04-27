@@ -116,7 +116,6 @@ export class LpValidatorService {
             'Item_Type',
             'List_Page_Label',
             'List_Page_Main_Query',
-            'Item_Type',
             '_1st_Property',
             '_2nd_Property',
             '_3rd_Property',
