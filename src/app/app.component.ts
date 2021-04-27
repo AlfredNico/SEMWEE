@@ -17,7 +17,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
   selector: 'app-root',
   template: `
     <ngx-spinner name="root">
-      <p [style.color]="'white'">loading ...</p>
+      <p [style.color]="'white'">Loading ...</p>
     </ngx-spinner>
     <router-outlet></router-outlet>
   `,

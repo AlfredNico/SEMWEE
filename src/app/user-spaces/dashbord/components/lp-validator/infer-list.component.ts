@@ -135,8 +135,10 @@ export class InferListComponent
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
       }
+
       Object.assign(this.dataView, this.data);
       this.displayColumns = this.data.displayColumns;
+      console.log('head', this.displayColumns)
     }
 
     this.dataSource.data = this.dataView.data;
@@ -410,8 +412,15 @@ export class InferListComponent
     else this.isKeyPressed = false;
   }
 
-  @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
-    console.log('handeol');
+  // @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
+  //   console.log('handeol');
+  // }
+
+  @HostListener('keydown', ['$event']) onKeyDown(e) {
+    if (e.shiftKey && e.keyCode == 9) {
+      console.log('shift and tab');
+    }
+    console.log('key', e.keyCode);
   }
 
   ngOnDestroy() {
