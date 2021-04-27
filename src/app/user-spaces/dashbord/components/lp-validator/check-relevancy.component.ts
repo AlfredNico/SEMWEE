@@ -350,7 +350,7 @@ export class CheckRelevancyComponent
           element['_2st_Property'] ||
           element['_3st_Property'] ||
           element['_4st_Property'] ||
-          element['_5st_Property']) == row[itemSeleted]
+          element['_5st_Property']) === row[itemSeleted]
       ) {
         indexRow.push(index);
       }

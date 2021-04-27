@@ -123,7 +123,7 @@
               {{ row[column] }}
             </span>
                         <ng-template #templeteURL>
-                            <a #templeteURL [href]="row[column]">{{row[column]}}</a>
+                            <a #templeteURL href="row[column]" target="_blank">{{row[column]}}</a>
                         </ng-template>
 
                         <div style="padding: 0 20px;" class="Test" [id]="i+'infer'+indexRow">

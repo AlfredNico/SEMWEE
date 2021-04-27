@@ -24,6 +24,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ResetPasswordGuard } from './guards/reset-password.guard';
 import { interruptedInterceptor } from './interrupted.interceptor';
+import { InformationSheetButtomComponent } from './shared/components/information-sheet-buttom/information-sheet-buttom.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -32,7 +33,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, PageNotFoundComponent, BottonSheetComponent],
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+    BottonSheetComponent,
+    InformationSheetButtomComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

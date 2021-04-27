@@ -1,9 +1,11 @@
+import { InformationSheetButtomComponent } from './../components/information-sheet-buttom/information-sheet-buttom.component';
 import { NotificationService } from '@app/services/notification.service';
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { BehaviorSubject, interval, Subject, Subscription } from 'rxjs';
 import { startWith, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +29,8 @@ export class CommonService {
 
   constructor(
     private readonly spinner: NgxSpinnerService,
-    private readonly notifs: NotificationService
+    private readonly notifs: NotificationService,
+    private _bottomSheet: MatBottomSheet
   ) {}
 
   // public hideSpinner(name = 'root') {
@@ -91,7 +94,8 @@ export class CommonService {
 
   private checkAlerts(response: number, isRes: boolean): void {
     if (response === 10 && isRes) {
-      this.notifs.infoIterropt('You can interrupt this processing with Esc');
+      // this.notifs.infoIterropt('You can interrupt this processing with Esc');
+      this._bottomSheet.open(InformationSheetButtomComponent);
     }
   }
 }

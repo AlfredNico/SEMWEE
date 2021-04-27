@@ -198,17 +198,8 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           idproject: this.data.row['idProduct'],
         };
 
-        // idproject: any;
-        // NomProperty: string;
-        // oldname: string;
-        // Editspelling: string;
-        // Synonymize: string;
-        // SemanticScope: string;
-        // Apply_on_the_table: boolean;
-
         // console.log(value);
         const res = await this.propertyService.appyPropertyValue(value);
-        console.log('res', res);
 
         if (res && res.message) this.dialogRef.close(this.form.value);
         this.notifs.sucess(res.message);

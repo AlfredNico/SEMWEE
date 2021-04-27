@@ -31,6 +31,7 @@ import { NotificationService } from '@app/services/notification.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
 import { HttpParams } from '@angular/common/http';
+import { APP_BASE_HREF } from '@angular/common';
 
 @Component({
   selector: 'app-infer-list',
@@ -57,7 +58,7 @@ import { HttpParams } from '@angular/common/http';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [FormBuilder], // <-- THIS PART
+  providers: [FormBuilder, { provide: APP_BASE_HREF, useValue: '' }],
 })
 export class InferListComponent
   implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
