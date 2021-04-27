@@ -36,9 +36,9 @@
                     <div style="color: #fff;">#</div>
                   </div>
                 </div>
-                <div style="padding: 17px;" class="text-center bg-white">
+                <div style="height: 4em"  class="text-center bg-white">
                 <mat-checkbox color="accent"
-                  style="visibility: hidden;">
+                  style="visibility: hidden; margin: 20px;">
                 </mat-checkbox>
                 </div>
               </span>
@@ -64,8 +64,8 @@
                     </div>
                   </div>
                 </div>
-                <div style="padding: 17px;" class="text-center bg-white">
-                  <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
+                <div style="height:4em"  class="text-center bg-white">
+                  <mat-checkbox style="margin: 20px;" color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
                     [indeterminate]="someComplete()"></mat-checkbox>
                 </div>
               </span>
@@ -87,8 +87,8 @@
                         <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
                 <div fxLayout="column" class="w-100">
                   <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
-                  <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1" >
-                    <div mat-sort-header>
+                  <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1"  mat-sort-header>
+                    <div>
                       {{ column | removeUnderscore | capitalizeFirstPipe }}
                     </div>
                     <div class="pl-3">
@@ -98,7 +98,7 @@
                     </div>
                   </div>
                 </div>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline"  style="height: 4em;">
                   <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                     [formControlName]="column" autocomplete="off">
                     <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearInput(column)">
@@ -112,8 +112,9 @@
                         [class.active]="isRowSelected(row)">
                         <!-- [ngClass]="{'pointer_item': isPopTuneIt(column, row[column])}"  -->
                         <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100" style="padding-right: 10px;">
-                            <span [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
+                            <span class="w-100" [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
                   {{ row[column] }}
+                  <div *ngIf="row[column] === ''" class="text-center" style="opacity: 0.5;"> - </div>
                 </span>
                             <button #button style="display: none; color: #fff; background-color: #3b85fe;" mat-stroked-button *ngIf="isPopTuneIt(column, row[column])" (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column) : ''">
                   Tune it!

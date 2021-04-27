@@ -75,13 +75,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <button
             mat-raised-button
             color="accent"
-            (click)="onClick()"
+            (click)="!loading && onClick()"
             cdkFocusInitial
-            [disabled]="loading"
-            [ngClass]="{
-              btn1: inludes(itemType),
-              btn2: !inludes(itemType)
-            }"
+            [ngStyle]="{ width: inludes(itemType) ? '5em' : '11em' }"
           >
             <span *ngIf="inludes(itemType) && !loading"> Apply </span>
             <span *ngIf="!inludes(itemType) && !loading"

@@ -38,9 +38,9 @@
                   <div style="color: #fff;">#</div>
                 </div>
               </div>
-              <div style="padding: 17px;" class="text-center bg-white">
+              <div style="height: 4em"  class="text-center bg-white">
               <mat-checkbox color="accent"
-                style="visibility: hidden;">
+                style="visibility: hidden; margin: 20px;">
               </mat-checkbox>
               </div>
             </span>
@@ -68,14 +68,12 @@
                   </div>
                 </div>
               </div>
-              <div style="padding: 17px;" class="text-center bg-white">
-                <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
+              <div style="height: 4em" class="text-center bg-white">
+                <mat-checkbox color="accent" style="margin: 20px;" [checked]="allSelect" (change)="setAll($event.checked)"
                   [indeterminate]="someComplete()"></mat-checkbox>
               </div>
             </span>
-            <!-- <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)" [indeterminate]="someComplete()"></mat-checkbox> -->
           </th>
-          <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
             [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
@@ -93,8 +91,8 @@
                 <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
               <div fxLayout="column" class="w-100">
                 <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1" id="columnInferHead">
-                  <div mat-sort-header>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1" id="columnInferHead" mat-sort-header>
+                  <div>
                     {{ column | removeUnderscore | capitalizeFirstPipe }}
                   </div>
                   <div class="pl-3">
@@ -104,7 +102,7 @@
                   </div>
                 </div>
               </div>
-              <mat-form-field appearance="outline" id="formInferHead">
+              <mat-form-field appearance="outline" id="formInferHead" style="height: 4em;">
                 <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                   [formControlName]="column" autocomplete="off">
                 <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value"
@@ -121,9 +119,10 @@
             <span *ngIf="isValidURL(row[column], column) === false; else templeteURL"
               [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
               {{ row[column] }}
+              <div *ngIf="row[column] === ''" class="text-center" style="opacity: 0.5;"> - </div>
             </span>
                         <ng-template #templeteURL>
-                            <a #templeteURL href="row[column]" target="_blank">{{row[column]}}</a>
+                            <a #templeteURL [href]="row[column]" target="_blank">{{row[column]}}</a>
                         </ng-template>
 
                         <div style="padding: 0 20px;" class="Test" [id]="i+'infer'+indexRow">
@@ -142,9 +141,15 @@
         </table>
     </div>
 
-  <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
-    [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-    (page)="onPaginateChange($event)"></mat-paginator>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+      <div>
+        {{ dataView?.data?.length }} of {{ data?.data?.length }}
+      </div>
+      <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
+        [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
+        (page)="onPaginateChange($event)"></mat-paginator>
+    </div>
+
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
         <button mat-raised-button color="accent">Updates Items</button>

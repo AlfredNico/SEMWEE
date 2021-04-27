@@ -55,6 +55,16 @@ import { APP_BASE_HREF } from '@angular/common';
       .active {
         background: #b6e1ff !important;
       }
+     ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5em 0 0.5em 0 !important;
+    height: 4vh;
+    margin: .5em 0 1em;
+}
+     
+    ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+        /* top: .25em; */
+        padding: 1.5em 0 .5em;
+    }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
