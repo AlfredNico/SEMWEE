@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { LayoutService } from '../../../../../_metronic/core';
@@ -47,7 +48,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private projectsServices: ProjectsService,
     public triggerServices: TriggerService,
-    private route: ActivatedRoute,
+    private common: CommonService,
     private router: Router
   ) {
     this.location = this.loc;
@@ -108,6 +109,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
   public triggres(_id: any) {
     this.triggerServices.switchproject$.next(_id);
     this.triggerServices.switchUrl$.next(true);
+    this.common.isLoading$.next(true);
     this.router.navigate(['/user-space/lp-validator', _id]);
   }
 }
