@@ -218,7 +218,7 @@
           If you do not upload image, you must complete this field below !
         </h3>
         <div class="letter-add-edit" [style.background]="background" [style.color]="color">
-          {{ letter?.value }}
+          {{ letter?.value | uppercase }}
         </div>
         <div mat-form-field class="form-group my-3 w-50">
           <input
