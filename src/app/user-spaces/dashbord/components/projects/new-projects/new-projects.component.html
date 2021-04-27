@@ -251,7 +251,7 @@
           [style.background]="background"
           [style.color]="color"
         >
-          {{ letter?.value }}
+          {{ letter?.value | uppercase }}
         </div>
         <div mat-form-field class="form-group my-3 w-50">
           <input [ngClass]="{'err': letter?.touched && letter?.errors?.required || letter?.errors?.uppercase}"
