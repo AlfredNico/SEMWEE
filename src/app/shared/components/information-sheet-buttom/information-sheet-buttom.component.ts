@@ -19,8 +19,8 @@ export class InformationSheetButtomComponent implements OnInit {
     this._bottomSheetRef.dismiss();
     this.coockie.set(
       'info',
-      'true',
-      0.2,
+      'hide',
+      30,
       '/infoSemwee',
       undefined,
       false,

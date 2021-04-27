@@ -19,6 +19,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 export class DetailsComponent implements OnInit {
   public image_url: any;
   public isBtnCatalog = false;
+  public loading: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Projects,
@@ -26,8 +27,7 @@ export class DetailsComponent implements OnInit {
     private projectServices: ProjectsService,
     private notifs: NotificationService,
     private triggerServices: TriggerService,
-    private idb: IdbService,
-    private readonly common: CommonService
+    private idb: IdbService
   ) {
     this.image_url = environment.baseUrlImg + this.data.image_project_Squared;
     if (this.data.product.length > 0) {
@@ -58,7 +58,7 @@ export class DetailsComponent implements OnInit {
       .pipe(
         map((result) => {
           if (result === true) {
-            this.common.showSpinner();
+            this.loading = true;
             this.idb.deleteItem('infetList', this.data['_id']);
             this.idb.deleteItem('checkRevelancy', this.data['_id']),
               this.projectServices
@@ -67,7 +67,7 @@ export class DetailsComponent implements OnInit {
                   if (result && result.message) {
                     this.notifs.sucess(result.message);
                     this.isBtnCatalog = false;
-                    this.common.hideSpinner();
+                    this.loading = false;
                     // this.projectServices.refresh$.next(true);
                     // this.triggerServices.trigrer$.next(true);
                   }

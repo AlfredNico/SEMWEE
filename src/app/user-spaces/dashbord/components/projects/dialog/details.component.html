@@ -80,17 +80,25 @@
   <!--end::Body-->
 
   <div mat-dialog-actions align="center">
-    <button mat-raised-button tabindex="-1" mat-dialog-close>Close</button>
+    <button mat-raised-button tabindex="-1" mat-dialog-close disabled]="loading">Close</button>
     <button
       mat-raised-button
       tabindex="-1"
       color="accent"
       mat-dialog-close
       (click)="onEdit(data)"
+      disabled]="loading"
     >
       Edit
     </button>
-    <button mat-raised-button color="warn" class="mx-1" (click)="deleteCatalogue(data)" *ngIf="isBtnCatalog">Delete catalog</button>
+    <button mat-raised-button color="warn" class="mx-1" [disabled]="loading" (click)="deleteCatalogue(data)" *ngIf="isBtnCatalog">Delete catalog
+      <span *ngIf="!loading">Delete catalog</span>
+      <i
+      *ngIf="loading"
+      class="fa fa-spinner fa-spin"
+      style="color: #fff"
+    ></i>
+    </button>
   </div>
 </div>
 

@@ -7,6 +7,14 @@
      // }
  }
 
+::ng-deep{
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 1.5em 0 0.7em 0 !important;
+    height: 4vh;
+    margin: auto;
+}
+}
+
 .mat-step-icon {
 	// set circle size
 	border-radius: 50%;

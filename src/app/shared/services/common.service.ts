@@ -70,6 +70,7 @@ export class CommonService {
                   )
                   .subscribe();
               } else {
+                this._bottomSheet.dismiss();
                 this.onDestroy$.next();
                 this.onDestroy$.complete();
                 this.notifs.dismiss();
@@ -77,7 +78,7 @@ export class CommonService {
               }
             });
             if (spinner.show === true) {
-              this.isLoading = false;
+              this._bottomSheet.dismiss();
               this.spinner.hide(name);
             }
           }

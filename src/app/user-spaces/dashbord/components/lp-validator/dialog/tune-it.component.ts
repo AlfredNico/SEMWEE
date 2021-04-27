@@ -77,11 +77,23 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
             color="accent"
             (click)="onClick()"
             cdkFocusInitial
+            [disabled]="loading"
+            [ngClass]="{
+              btn1: inludes(itemType),
+              btn2: !inludes(itemType)
+            }"
           >
-            <span *ngIf="inludes(itemType)">Apply</span>
-            <span *ngIf="!inludes(itemType)">Apply on the Table</span>
+            <span *ngIf="inludes(itemType) && !loading"> Apply </span>
+            <span *ngIf="!inludes(itemType) && !loading"
+              >Apply on the Table</span
+            >
+            <i
+              *ngIf="loading"
+              class="fa fa-spinner fa-spin"
+              style="color: #fff"
+            ></i>
           </button>
-          <button mat-raised-button color="accent" mat-dialog-close>
+          <button mat-raised-button color="accent" (click)="onClose()">
             Cancel
           </button>
         </mat-dialog-actions>
@@ -124,6 +136,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   itemType: any = '';
   isItem: boolean;
   public oldname: string = '';
+  public loading: boolean = false;
 
   form = new FormGroup({
     Editspelling: new FormControl(''),
@@ -140,8 +153,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     public dialogRef: MatDialogRef<TuneItComponent>,
     private itemService: ItemTypeService,
     private propertyService: PropertyValueService,
-    private notifs: NotificationService,
-    private common: CommonService
+    private notifs: NotificationService
   ) {
     if (this.data && this.data.row) {
       this.itemType = this.data.itemSeleted;
@@ -178,7 +190,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   async onClick() {
-    this.common.showSpinner('root');
+    this.loading = true;
     const { Editspelling, Synonymize } = this.form.controls;
 
     if (Editspelling.value || Synonymize.value) {
@@ -193,12 +205,11 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         try {
           const res = await this.itemService.appygItemType(data);
           if (res && res.message) {
-            this.dialogRef.close(this.form.value);
             this.notifs.sucess(res.message);
+            this.loading = false;
           }
-          this.common.hideSpinner();
         } catch (error) {
-          this.common.hideSpinner();
+          this.loading = false;
         }
       } else {
         const value = {
@@ -212,15 +223,18 @@ export class TuneItComponent implements OnInit, AfterViewInit {
         try {
           const res = await this.propertyService.appyPropertyValue(value);
           if (res && res.message) {
-            this.dialogRef.close(this.form.value);
+            this.loading = false;
             this.notifs.sucess(res.message);
           }
-          this.common.hideSpinner();
         } catch (error) {
-          this.common.hideSpinner();
+          this.loading = false;
         }
       }
     }
+  }
+
+  public onClose() {
+    this.dialogRef.close(this.form.value);
   }
 
   public inludes(item: string): boolean {
