@@ -141,7 +141,7 @@ export class InferListComponent
       Object.assign(this.dataView, this.data);
       this.displayColumns = this.data.displayColumns;
       this.inferHeigth =
-        this.inferHeigth <
+        this.inferHeigth >
           document.getElementById('formInferHead')?.offsetHeight &&
         document.getElementById('formInferHead')?.offsetHeight
           ? document.getElementById('formInferHead')?.offsetHeight
