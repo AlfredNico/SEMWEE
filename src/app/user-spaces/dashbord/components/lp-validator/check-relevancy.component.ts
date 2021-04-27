@@ -346,14 +346,15 @@ export class CheckRelevancyComponent
     this.dataView.data.forEach((element, index) => {
       if (
         (element[itemSeleted.match(/Item[^]*Type$/)?.toString()] ||
-          element[itemSeleted.match(/property$/)?.toString()]) ==
-        row[itemSeleted]
+          element['_1st_Property'] ||
+          element['_2st_Property'] ||
+          element['_3st_Property'] ||
+          element['_4st_Property'] ||
+          element['_5st_Property']) == row[itemSeleted]
       ) {
         indexRow.push(index);
       }
     });
-
-    // '1rest property hugy'.match(/property$/);
 
     let val: any = '';
     // const index = this.dataView.data.findIndex((x) => x._id === row._id);

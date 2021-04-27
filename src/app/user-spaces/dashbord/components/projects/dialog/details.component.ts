@@ -27,7 +27,6 @@ export class DetailsComponent implements OnInit {
     private triggerServices: TriggerService,
     private idb: IdbService
   ) {
-    console.log('id', this.data);
     this.image_url = environment.baseUrlImg + this.data.image_project_Squared;
     if (this.data.product.length > 0) {
       this.isBtnCatalog = true;

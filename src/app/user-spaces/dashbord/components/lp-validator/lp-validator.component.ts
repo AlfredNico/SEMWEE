@@ -148,9 +148,8 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   private inferList(res: any[]) {
-    console.log(res[0]);
-    const head: string[] = Object.keys(res);
-    if (head.indexOf('select') === -1) {
+    const head = Object.keys(res[0]);
+    if (head.indexOf('select') !== -1) {
       head.splice(head.indexOf('select'), 1);
     }
     head.unshift('number', 'select');
@@ -162,24 +161,21 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   private checkRevelancy(res: any[]) {
-    // const head: string[] = Object.keys(res[0]);
-    // head.splice(head.indexOf('select'), 1);
-    // head.unshift('select');
     const headers = [
       'number',
       'select',
       'Item_Type',
       'List_Page_Label',
       'List_Page_Main_Query',
-      'Property_Schema',
-      'Number_of_Item',
+      'Item_Type',
       '_1st_Property',
       '_2nd_Property',
       '_3rd_Property',
       '_4th_Property',
       '_5th_Property',
-      // '_id',
-      // 'idProduct',
+      'Property_Schema',
+      '_id',
+      'idProduct',
     ];
     return {
       displayColumns: headers,

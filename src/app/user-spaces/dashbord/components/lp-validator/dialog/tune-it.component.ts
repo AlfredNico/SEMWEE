@@ -145,8 +145,6 @@ export class TuneItComponent implements OnInit, AfterViewInit {
       this.itemType = this.data.itemSeleted;
       this.oldname = this.data.row[this.data.itemSeleted];
 
-      // console.log('data', this.data);
-
       if (this.data.checkTuneIt.length !== 0) {
         if (this.inludes(this.itemType)) {
           const value = this.data.checkTuneIt[0];
@@ -181,27 +179,17 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     const { Editspelling, Synonymize } = this.form.controls;
 
     if (Editspelling.value || Synonymize.value) {
-      if (this.inludes(this.itemType)) {
-        if (this.data.checkTuneIt && this.data.checkTuneIt.length !== 0) {
-          const data = {
-            ...this.form.value,
-            idinferlist: this.data.row['_id'],
-          };
-          const res = await this.itemService.appygItemType(
-            data,
-            this.data.checkTuneIt[0]['_id']
-          );
-          if (res && res.message) this.dialogRef.close(this.form.value);
-          this.notifs.sucess(res.message);
-        } else {
-          const data = {
-            ...this.form.value,
-            idinferlist: this.data.row['_id'],
-          };
-          const res = await this.itemService.appygItemType(data);
-          if (res && res.message) this.dialogRef.close(this.form.value);
-          this.notifs.sucess(res.message);
-        }
+      if (this.inludes(this.itemType) === true) {
+        const data = {
+          idinferlist: this.data.row['_id'],
+          Editspelling: this.form.controls.Editspelling.value,
+          Synonymize: this.form.controls.Synonymize.value,
+          oldname: this.form.controls.oldname.value,
+        };
+        const res = await this.itemService.appygItemType(data);
+        console.log(res);
+        if (res && res.message) this.dialogRef.close(this.form.value);
+        this.notifs.sucess(res.message);
       } else {
         const value = {
           ...this.form.value,
@@ -220,6 +208,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
 
         // console.log(value);
         const res = await this.propertyService.appyPropertyValue(value);
+        console.log('res', res);
 
         if (res && res.message) this.dialogRef.close(this.form.value);
         this.notifs.sucess(res.message);

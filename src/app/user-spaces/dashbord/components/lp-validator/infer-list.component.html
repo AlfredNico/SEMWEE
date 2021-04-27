@@ -18,10 +18,10 @@
         tableOptions
     </button> -->
     <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-    <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
+    <!-- <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
       <span>Table options </span>
-    </a>
+    </a> -->
   </div>
   <div class="px-2 m-3 table-container" role="tables">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
@@ -150,6 +150,10 @@
         <button mat-raised-button color="accent">Updates Items</button>
 
         <div fxLayoutAlign="end center" class="w-100">
+          <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
+            <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
+            Table options
+          </button>
             <button type="button" mat-raised-button color="accent" class="m-3" (click)="openSettingTable()">
         <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
         Settings

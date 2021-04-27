@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { IdbService } from './../../../services/idb.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -115,15 +116,15 @@ export class LpValidatorService {
             'Item_Type',
             'List_Page_Label',
             'List_Page_Main_Query',
-            'Property_Schema',
-            'Number_of_Item',
+            'Item_Type',
             '_1st_Property',
             '_2nd_Property',
             '_3rd_Property',
             '_4th_Property',
             '_5th_Property',
-            // '_id',
-            // 'idProduct',
+            'Property_Schema',
+            '_id',
+            'idProduct',
           ];
           return {
             displayColumns: headers,
