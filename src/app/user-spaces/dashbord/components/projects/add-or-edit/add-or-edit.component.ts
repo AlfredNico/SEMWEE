@@ -127,7 +127,7 @@ export class AddOrEditComponent implements OnInit {
       letter_thumbnails_project: this.fb.group({
         letter: [
           this.ProjectLetter ? this.ProjectLetter : '',
-          [Validators.maxLength(1), this.custumValidator.uppercaseValidator],
+          [Validators.maxLength(1)],
         ],
         color: this.ProjectColor ? this.ProjectColor : ['#66ACFF'],
         background: this.ProjectBackground
