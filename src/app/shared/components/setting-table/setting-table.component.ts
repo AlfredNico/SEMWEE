@@ -10,6 +10,7 @@ import { SettingRowsTable } from '@app/models/setting-table';
 export class SettingTableComponent implements OnInit {
   selectedOptions: string[] = [];
   facetLists: string[] = [];
+  checked: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
@@ -17,6 +18,7 @@ export class SettingTableComponent implements OnInit {
   ) {
     this.facetLists = this.data.selectedOptions;
     this.selectedOptions = this.data.checklist;
+    this.checked =  this.data.checked;
     // this.selectedOptions = this.data.selectedOptions;
   }
 
@@ -31,10 +33,12 @@ export class SettingTableComponent implements OnInit {
   }
 
   onClick(): void {
-    this.dialogRef.close(this.selectedOptions);
+    this.dialogRef.close({selected: this.selectedOptions, checked:this.checked});
   }
 
-  onChecked(item: any) {
-    return this.selectedOptions.includes(item) ? false : true;
+  onChecked(event: any) {
+     this.selectedOptions = [];
+    this.selectedOptions = event=== false ? this.selectedOptions=  this.data.selectedOptions: [];
   }
+
 }

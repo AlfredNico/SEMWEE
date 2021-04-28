@@ -30,7 +30,6 @@ export class CommonService {
 
   constructor(
     private readonly spinner: NgxSpinnerService,
-    private readonly notifs: NotificationService,
     private _bottomSheet: MatBottomSheet,
     private coockie: CookieService
   ) {}
@@ -56,32 +55,32 @@ export class CommonService {
   }
 
   public hideSpinner(name = 'root') {
-    this.isLoading = true;
     return this.spinner
       .getSpinner(name)
       .pipe(
         tap((spinner) => {
           if (spinner) {
-            this.isLoading = true;
             this.isLoading$.subscribe((res) => {
-              if (res == true) {
+              if (res === true) {
+                this.isLoading = true;
                 this.subscription$ = this.intervalCount
                   .pipe(
-                    takeUntil(this.onDestroy$),
-                    // takeWhile(() => res),
-                    tap((x) => this.checkAlerts(x, res))
-                  )
-                  .subscribe();
+                    takeUntil(this.onDestroy$))
+                  .subscribe((x) => this.checkAlerts(x, res));
               } else {
+                this.isLoading = false;
                 this._bottomSheet.dismiss();
                 this.onDestroy$.next();
                 this.onDestroy$.complete();
-                this.notifs.dismiss();
                 this.subscription$.unsubscribe();
               }
             });
             if (spinner.show === true) {
+              this.isLoading = false;
               this._bottomSheet.dismiss();
+              this.onDestroy$.next();
+              this.onDestroy$.complete();
+              this.subscription$.unsubscribe();
               this.spinner.hide(name);
             }
           }
@@ -97,7 +96,8 @@ export class CommonService {
   }
 
   private checkAlerts(response: number, isRes: boolean): void {
-    if (response === 10 && isRes && !this.coockie.check('info')) {
+    if (response === 10 && this.isLoading === true && !this.coockie.check('info')) {
+      console.log(isRes, '..', response)
       // this.notifs.infoIterropt('You can interrupt this processing with Esc');
       this._bottomSheet.open(InformationSheetButtomComponent);
     }

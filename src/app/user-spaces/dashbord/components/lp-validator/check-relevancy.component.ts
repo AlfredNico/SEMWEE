@@ -58,10 +58,9 @@ import { HttpErrorResponse } from '@angular/common/http';
     margin: 0 !important;
 }
       
-      ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
-          /* top: .25em; */
-          padding: 1.5em 0 .5em;
-      }
+      .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0 !important;
+}
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -110,6 +109,7 @@ export class CheckRelevancyComponent
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
+  numberSelected: number = 0;
 
   //resizable
   mawWidth: number = 0;
@@ -143,7 +143,8 @@ export class CheckRelevancyComponent
       //création formControl Dynamics
       // this.displayColumns.push(key);
     });
-    this.commonServices.hideSpinner();
+    //  this.commonServices.hideSpinner();
+    // this.commonServices.isLoading$.next(false);
   }
 
   ngOnInit(): void {}
@@ -272,28 +273,34 @@ export class CheckRelevancyComponent
     this.dataView.data.forEach((t) => (t.select = completed));
   }
 
-  public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x._id === row._id);
+public selectRow(row: any) {
+    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
     } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
-        ...row,
+        ...this.dataView.data[index],
         select: row['select'] == true ? false : true,
       };
       this.selectedRowsArray.push(this.dataView.data[index]);
@@ -331,10 +338,10 @@ export class CheckRelevancyComponent
     this.isKeyPressed = false;
   }
 
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+   @HostListener('document:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
   }
 

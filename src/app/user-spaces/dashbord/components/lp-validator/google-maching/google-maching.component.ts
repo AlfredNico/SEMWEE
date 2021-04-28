@@ -95,7 +95,6 @@ export class GoogleMachingComponent
   ) {}
 
   ngOnChanges() {
-    // this.commonServices.showSpinner();
     if (this.dataSources.data.length > 0) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
@@ -121,7 +120,7 @@ export class GoogleMachingComponent
     });
 
     this.checkValid();
-    this.commonServices.hideSpinner();
+    // this.commonServices.hideSpinner();
   }
 
   ngOnInit(): void {}
@@ -229,27 +228,33 @@ export class GoogleMachingComponent
   }
 
   public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x._id === row._id);
+    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
     } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
-        ...row,
+        ...this.dataView.data[index],
         select: row['select'] == true ? false : true,
       };
       this.selectedRowsArray.push(this.dataView.data[index]);
@@ -290,9 +295,10 @@ export class GoogleMachingComponent
   @HostListener('document:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
   }
+
 
   sortData($e: any) {
     $e.direction === 'asc'

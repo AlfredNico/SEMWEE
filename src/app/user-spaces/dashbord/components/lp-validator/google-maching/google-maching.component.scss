@@ -3,11 +3,14 @@
   height: 4vh;
   margin: 0 !important;
 }
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0 !important;
+}
 
-  ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
-    /* top: .25em; */
-    padding: 1.5em 0 .5em;
-  }
+  // ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+  //   /* top: .25em; */
+  //   padding: 1.5em 0 .5em;
+  // }
 .datatable:not(.table) {
     display: revert;
   }

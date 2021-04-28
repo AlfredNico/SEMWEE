@@ -24,33 +24,23 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err) => {
         const error = err.error.error || err.statusText;
-        // You should first log in !
         console.log('err ', err);
 
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
             console.log('error', error);
-            if (error === 'You should first log in') {
-              this.common.hideSpinner('root');
-              this.router.navigateByUrl('/sign-in');
+            if (error.includes('You should first log in!')) {
+              this.authService.logout();
             }
-            // auto logout if 401 response returned from api
-            // location.reload(true);
             this.notifs.warn(error);
             // window.location.reload();
-            return EMPTY;
-          } else if (err.status === 400) {
-            this.notifs.warn(error);
-          } else if (err.status === 0) {
-            this.common.hideSpinner('root');
+          }else if (err.status === 0) {
             this.notifs.warn('Server not responding !');
-            // this.authService.logout();
           } else {
-            console.log('err ', err);
+            this.notifs.warn(error);
           }
           this.common.hideSpinner('root');
-          // } else if (this.cookieService.check('SEMEWEE') == false) {
-          //   this.notifs.warn('Session expired');
+          return EMPTY;
         } else if (error) {
           this.notifs.warn(error);
           this.common.hideSpinner('root');

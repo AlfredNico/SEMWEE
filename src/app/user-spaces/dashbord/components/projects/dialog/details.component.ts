@@ -65,11 +65,11 @@ export class DetailsComponent implements OnInit {
                 .deleteCatalogue(item._id)
                 .subscribe((result) => {
                   if (result && result.message) {
+                    this.projectServices.refresh$.next(true);
+                    this.triggerServices.trigrer$.next(true);
                     this.notifs.sucess(result.message);
                     this.isBtnCatalog = false;
                     this.loading = false;
-                    // this.projectServices.refresh$.next(true);
-                    // this.triggerServices.trigrer$.next(true);
                   }
                 });
           }

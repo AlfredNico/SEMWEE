@@ -26,7 +26,7 @@
     </a>
   </div>
   <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-    <div class="px-2 m-3 table-container" role="tables">
+  <div class="px-2 m-3 table-container" role="tables">
 
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
       class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"
@@ -103,7 +103,7 @@
             <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white"
               [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
               <div fxLayout="column" class="w-100">
-                <div class="drag_n_drop  pt-3" cdkDragHandle (dbclick)="getWidth(i)"></div>
+                <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1"
                   mat-sort-header>
                   <div>
@@ -154,8 +154,8 @@
       </div>
 
 
-      <tr mat-header-row *matHeaderRowDef="dataView.displayColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: dataView.displayColumns;"></tr>
+      <tr mat-header-row *matHeaderRowDef="dataView?.displayColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: dataView?.displayColumns;"></tr>
 
       <tr class="mat-row" *matNoDataRow>
         <td class="text-center" [colSpan]="dataView.displayColumns.length">No data</td>
@@ -168,8 +168,7 @@
       Number of imtes {{ dataView?.data?.length }}
     </div>
     <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
-      [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-      ></mat-paginator>
+      [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"></mat-paginator>
   </div>
   <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
     <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">

@@ -216,7 +216,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           idproject: this.data.row['idProduct'],
         };
 
-        // console.log(value);
+        //  [disabled]="!contractTypeValid" console.log(value);
         try {
           const res = await this.propertyService.appyPropertyValue(value);
           if (res && res.message) {

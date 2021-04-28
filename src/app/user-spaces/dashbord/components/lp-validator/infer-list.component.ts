@@ -60,11 +60,14 @@ import { APP_BASE_HREF } from '@angular/common';
     height: 4vh;
     margin: 0 !important;
 }
-     
-    ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
-        /* top: .25em; */
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0 !important;
+}
+    /* ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+        top: .25em; 
         padding: 1.5em 0 .5em;
-    }
+    }*/
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -103,6 +106,7 @@ export class InferListComponent
   filterData: any[] = [];
   checklist: string[] = [];
   selectedOptions: string[] = [];
+  checked: boolean = true;
   // @Output() uploadFiles = new EventEmitter<any>();
   @Output() dataInferListReady = new EventEmitter<any>();
 
@@ -116,6 +120,7 @@ export class InferListComponent
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
+  numberSelected: number = 0;
 
   //resizable
   public mawWidth: number = 0;
@@ -146,9 +151,11 @@ export class InferListComponent
         this.displayColumns = []; //display columns tables
         this.checklist = []; // initialize setting uptions
         this.selectedOptions = []; // initialize list items selected on options
+        this.checked = true;
       }
-
+      
       Object.assign(this.dataView, this.data);
+      this.numberSelected = this.dataView.data.length;
       this.displayColumns = this.data.displayColumns;
     }
 
@@ -170,7 +177,8 @@ export class InferListComponent
         }
       }
     });
-    this.commonServices.hideSpinner();
+    // this.commonServices.hideSpinner();
+    // this.commonServices.isLoading$.next(false);
   }
 
   ngOnInit(): void {}
@@ -293,13 +301,15 @@ export class InferListComponent
         data: {
           selectedOptions: this.selectedOptions,
           checklist: this.checklist,
+          checked: this.checked
         },
         width: '600px',
       })
       .afterClosed()
       .pipe(
-        map((result: string[]) => {
-          this.checklist = result;
+        map((result: any) => {
+          this.checklist = result['selected'];
+          this.checked = result['checked'];
         })
       )
       .subscribe();
@@ -308,9 +318,11 @@ export class InferListComponent
   async tableReady() {
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner('root');
+    
 
     this.dataView.data.forEach((value: any, currentIndex: number) => {
       let object = {};
+      let i = 1;
       Object.keys(value).forEach((key: string, index: number) => {
         if (!key.includes('Facet') && !key.includes('Value')) {
           object[key] = value[key];
@@ -320,10 +332,13 @@ export class InferListComponent
           !key.includes('Value') &&
           this.checklist.includes(key)
         ) {
-          const keyIndex = this.displayColumns.indexOf(key);
-          object[this.displayColumns[keyIndex]] = value[key];
-          object[this.displayColumns[keyIndex + 1]] = value[`${key}_Value`];
+          // const keyIndex = this.displayColumns.indexOf(key);
+          // object[this.displayColumns[keyIndex]] = value[key];
+          // object[this.displayColumns[keyIndex + 1]] = value[`${key}_Value`];
+          object[`Facet_${i}`] = value[key];
+          object[`Facet_${i}_Value`] = value[`${key}_Value`];
           this.filterData[currentIndex] = { ...object };
+          i++;
         }
       });
     });
@@ -350,35 +365,45 @@ export class InferListComponent
   }
 
   setAll(completed: boolean) {
+    this.numberSelected = 0;
     this.allSelect = completed;
     if (this.dataView.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) => (t.select = completed));
+    this.dataView.data.forEach((t) => {
+      if(t.select === true ) this.numberSelected++
+      t.select = completed
+    });
   }
 
   public selectRow(row: any) {
-    let index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
     } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
-        ...row,
+        ...this.dataView.data[index],
         select: row['select'] == true ? false : true,
       };
       this.selectedRowsArray.push(this.dataView.data[index]);
@@ -388,6 +413,12 @@ export class InferListComponent
     this.indexSelectedRow = index;
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
     this.dataSource.data = this.dataView.data;
+    this.numberSelected = 0;
+    this.dataView.data.forEach(s => {
+      if (s.select === true) {
+        this.numberSelected++
+      }
+    })
   }
 
   isRowSelected(row: any) {
@@ -419,7 +450,7 @@ export class InferListComponent
   @HostListener('document:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
   }
 
@@ -427,12 +458,12 @@ export class InferListComponent
   //   console.log('handeol');
   // }
 
-  @HostListener('keydown', ['$event']) onKeyDown(e) {
-    if (e.shiftKey && e.keyCode == 9) {
-      console.log('shift and tab');
-    }
-    console.log('key', e.keyCode);
-  }
+  // @HostListener('keydown', ['$event']) onKeyDown(e) {
+  //   if (e.shiftKey && e.keyCode == 9) {
+  //     console.log('shift and tab');
+  //   }
+  //   console.log('key', e.keyCode);
+  // }
 
   ngOnDestroy() {
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
@@ -495,6 +526,11 @@ export class InferListComponent
   public clearInput(column: any) {
     this.filters.controls[column].reset('');
   }
+
+  transformURL(url: string): string{
+    console.log('rul', url)
+    return url.toString()
+  }
 }
 
 // onResizeEnd(event: ResizeEvent, columnName): void {
@@ -508,4 +544,4 @@ export class InferListComponent
 //       currentEl.style.width = cssValue;
 //     }
 //   }
-// }
+// }sle

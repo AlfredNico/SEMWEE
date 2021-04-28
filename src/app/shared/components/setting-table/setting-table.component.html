@@ -1,5 +1,15 @@
 <div fxLayout="column">
-    <h1 mat-dialog-title>Settings tables</h1>
+    <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
+        <h1 mat-dialog-title>Settings tables</h1>
+        <section class="example-section">
+            <mat-checkbox
+                [(ngModel)]="checked"
+                (click)="onChecked(checked)"
+                labelPosition="before">
+             select / unselect all
+            </mat-checkbox>
+          </section>
+    </div>
     <div mat-dialog-content>
         <!-- <div *ngFor="let facet of facetLists; let i = index"> -->
         <mat-selection-list #items color="accent" *ngFor="let facet of facetLists; let i = index">
