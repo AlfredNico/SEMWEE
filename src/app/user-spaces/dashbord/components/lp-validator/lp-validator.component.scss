@@ -31,7 +31,7 @@
 ::ng-deep {
     div[role="tables"] {
         // overflow: auto;
-        position: relative;
+        // position: relative;
         max-height: calc(100vh - 550px);
         overflow-x: auto;
     }

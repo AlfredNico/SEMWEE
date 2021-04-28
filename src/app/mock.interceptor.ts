@@ -167,29 +167,29 @@ export class MockInterceptor implements HttpInterceptor {
           })
         );
 
-      case url.includes('project/get-project'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: projects,
-          })
-        ); */
+      // case url.includes('project/get-project'):
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: projects,
+      //     })
+      //   ); */
 
-      case url.includes('validator/import-csv') && method === 'POST':
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: (INFERLIST as any)['default'],
-          })
-        );
+      // case url.includes('validator/import-csv') && method === 'POST':
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: (INFERLIST as any)['default'],
+      //     })
+      //   );
 
-      case url.includes('validator/post-infer-list') && method === 'POST':
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: (PRODUCT as any)['default'],
-          })
-        );
+      // case url.includes('validator/post-infer-list') && method === 'POST':
+      //   return of(
+      //     new HttpResponse({
+      //       status: 200,
+      //       body: (PRODUCT as any)['default'],
+      //     })
+      //   );
 
       // case url.includes('/project/get-project'):
       //   return of(

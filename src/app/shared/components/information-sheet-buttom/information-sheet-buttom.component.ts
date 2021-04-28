@@ -16,12 +16,13 @@ export class InformationSheetButtomComponent implements OnInit {
   ngOnInit(): void {}
 
   noSee() {
+    console.log('hole')
     this._bottomSheetRef.dismiss();
     this.coockie.set(
       'info',
       'hide',
       30,
-      '/infoSemwee',
+      '/',
       undefined,
       false,
       'Strict'

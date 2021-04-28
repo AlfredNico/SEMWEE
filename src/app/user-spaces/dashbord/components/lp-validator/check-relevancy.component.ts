@@ -125,8 +125,6 @@ export class CheckRelevancyComponent
   ) {}
 
   ngOnChanges() {
-    this.commonServices.showSpinner();
-
     if (this.dataInferList !== undefined) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };

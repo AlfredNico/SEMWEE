@@ -1,4 +1,3 @@
-import { CommonService } from '@app/shared/services/common.service';
 import { IdbService } from './../../../services/idb.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -40,8 +39,6 @@ export class LpValidatorService {
           }
 
           head.unshift('number', 'select');
-
-          // console.log('head', head);
           return {
             displayColumns: head,
             data: results,
@@ -96,8 +93,8 @@ export class LpValidatorService {
     });
   }
 
-  public postInferList(value: any, idProjet: string) {
-    console.log(value);
+  public postInferList(idProjet: any, value: any) {
+    console.log(idProjet)
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -106,10 +103,6 @@ export class LpValidatorService {
       .pipe(
         map((results: any) => {
           this.idb.addItems('checkRevelancy', results, idProjet);
-          // const head: string[] = Object.keys(results[0]);
-          // head.splice(head.indexOf('select'), 1);
-          // console.log('head', head);
-          // head.unshift('select');
           const headers = [
             'number',
             'select',
@@ -148,11 +141,6 @@ export class LpValidatorService {
     obj: any = {},
     afterSearch: boolean = false
   ): DataTypes {
-    // const columnAdd: string[] = [
-    //   'Valid',
-    //   'Popular_Search_Queries',
-    //   'Website_Best_Position',
-    // ];
     const headers = [
       'number',
       'select',
@@ -169,8 +157,8 @@ export class LpValidatorService {
       '_4th_Property',
       '_5th_Property',
       'property_Schema',
-      // '_id',
-      // 'idProduct',
+      '_id',
+      'idProduct',
     ];
 
     let dataValue: any[] = [];

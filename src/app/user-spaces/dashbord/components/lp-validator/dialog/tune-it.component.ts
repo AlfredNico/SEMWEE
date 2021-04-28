@@ -89,7 +89,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
               style="color: #fff"
             ></i>
           </button>
-          <button mat-raised-button color="accent" (click)="onClose()">
+          <button mat-raised-button color="accent" mat-dialog-close>
             Cancel
           </button>
         </mat-dialog-actions>
@@ -203,6 +203,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           if (res && res.message) {
             this.notifs.sucess(res.message);
             this.loading = false;
+            this.dialogRef.close(this.form.value);
           }
         } catch (error) {
           this.loading = false;
@@ -221,16 +222,13 @@ export class TuneItComponent implements OnInit, AfterViewInit {
           if (res && res.message) {
             this.loading = false;
             this.notifs.sucess(res.message);
+            this.dialogRef.close(this.form.value);
           }
         } catch (error) {
           this.loading = false;
         }
       }
     }
-  }
-
-  public onClose() {
-    this.dialogRef.close(this.form.value);
   }
 
   public inludes(item: string): boolean {

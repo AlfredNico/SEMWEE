@@ -6,6 +6,7 @@ import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { BehaviorSubject, interval, Subject, Subscription } from 'rxjs';
 import { startWith, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class CommonService {
   count: number = 0;
   intervalCount = interval(1000);
   private onDestroy$ = new Subject<number>();
-  isLoading = true;
+  isLoading = false;
   public subscription$: Subscription = new Subscription();
   // private readonly spinnerOptions: Spinner = {
   //   type: 'ball-spin-clockwise',
@@ -30,7 +31,8 @@ export class CommonService {
   constructor(
     private readonly spinner: NgxSpinnerService,
     private readonly notifs: NotificationService,
-    private _bottomSheet: MatBottomSheet
+    private _bottomSheet: MatBottomSheet,
+    private coockie: CookieService
   ) {}
 
   // public hideSpinner(name = 'root') {
@@ -60,6 +62,7 @@ export class CommonService {
       .pipe(
         tap((spinner) => {
           if (spinner) {
+            this.isLoading = true;
             this.isLoading$.subscribe((res) => {
               if (res == true) {
                 this.subscription$ = this.intervalCount
@@ -94,7 +97,7 @@ export class CommonService {
   }
 
   private checkAlerts(response: number, isRes: boolean): void {
-    if (response === 10 && isRes) {
+    if (response === 10 && isRes && !this.coockie.check('info')) {
       // this.notifs.infoIterropt('You can interrupt this processing with Esc');
       this._bottomSheet.open(InformationSheetButtomComponent);
     }

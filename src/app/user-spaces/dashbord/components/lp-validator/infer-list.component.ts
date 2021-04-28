@@ -68,7 +68,7 @@ import { APP_BASE_HREF } from '@angular/common';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [FormBuilder, { provide: APP_BASE_HREF, useValue: '' }],
+  providers: [FormBuilder],
 })
 export class InferListComponent
   implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
@@ -82,7 +82,7 @@ export class InferListComponent
 
   inferHeigth: number = 0;
 
-  //generate Data
+  //generate Data , { provide: APP_BASE_HREF, useValue: '' }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
@@ -140,7 +140,6 @@ export class InferListComponent
   }
 
   ngOnChanges() {
-    this.commonServices.showSpinner('root');
     if (this.data !== undefined) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] }; // initialize dataSources
@@ -151,13 +150,6 @@ export class InferListComponent
 
       Object.assign(this.dataView, this.data);
       this.displayColumns = this.data.displayColumns;
-      this.inferHeigth =
-        this.inferHeigth >
-          document.getElementById('formInferHead')?.offsetHeight &&
-        document.getElementById('formInferHead')?.offsetHeight
-          ? document.getElementById('formInferHead')?.offsetHeight
-          : this.inferHeigth;
-      console.log(this.inferHeigth);
     }
 
     this.dataSource.data = this.dataView.data;
@@ -471,6 +463,7 @@ export class InferListComponent
   // }
 
   public getWidth(id: any) {
+  console.log('cokes', id)
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {

@@ -90,7 +90,7 @@
             <th mat-header-cell [ngClass]="{'hide-rows': isColumnDisplay(column)}" *matHeaderCellDef class="px-1 py-1 text-truncate" cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag>
                 <span fxLayout="column" fxLayoutAlign="space-between center" class="w-100 bg-white" [formGroup]="filters" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
               <div fxLayout="column" class="w-100">
-                <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
+                <div class="drag_n_drop  pt-3" cdkDragHandle (dbclick)="getWidth(i)"></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1" id="columnInferHead" mat-sort-header>
                   <div>
                     {{ column | removeUnderscore | capitalizeFirstPipe }}
@@ -143,7 +143,7 @@
         </table>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center" >
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="ml-5">
       <div>
         Number of imtes {{ dataView?.data?.length }}
       </div>

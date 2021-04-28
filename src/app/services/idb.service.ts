@@ -8,6 +8,7 @@ import { Observable, Subject } from 'rxjs';
 export class IdbService {
   private _dataChange: Subject<any> = new Subject<any>();
   private _dbPromise!: Promise<IDBPDatabase<any>>;
+  isCalled: boolean
   constructor() {
     if (!('indexedDB' in window)) {
       return;
@@ -40,16 +41,16 @@ export class IdbService {
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readwrite');
         const store = tx.objectStore(storeName);
-        this.getAllData(storeName).then((values: any) => {
-          if (values.length > 1) {
-            this.getItemIntoDB(storeName).then((res) => {
-              if (res === id) {
-                this.deleteItem(storeName, res);
-              }
-            });
-          }
-        });
-        store.put({ id, value });
+        // this.getAllData(storeName).then((values: any) => {
+        //   if (values.length > 1) {
+        //     this.getItemIntoDB(storeName).then((res) => {
+        //       if (res === id) {
+        //         this.deleteItem(storeName, res);
+        //       }
+        //     });
+        //   }
+        // });
+        store.add({ id, value });
         // this._dataChange.next(items);
         return tx.complete;
       })

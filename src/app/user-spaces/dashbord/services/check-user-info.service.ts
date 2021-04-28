@@ -22,8 +22,12 @@ export class CheckUserInfoService {
     ]).then((res) => {
       if (res[0] || res[1]) {
         if (res[0] && res[1])
-          return of(Array(res[0]['value'], res[1]['value']));
-        else if (res[0]) return of(Array(res[0]['value'], Array()));
+          {
+            return of(Array(res[0]['value'], res[1]['value']));
+          }
+        else if (res[0]){
+           return of(Array(res[0]['value'], Array()))
+          };
       } else {
         return this.http
           .get<any[]>(

@@ -21,34 +21,13 @@ export class InterruptedInterceptor implements HttpInterceptor {
   timer: any;
   pendingRequestsCount = 0;
   isLoading = false;
-  constructor(
-    private interrupted: InterruptedService,
-    private notifs: NotificationService,
-    private common: CommonService
-  ) {}
+  constructor() {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // this.count = 0;
-    // setInterval(() => {
-    //   this.count++;
-    // }, 1000);
-    this.pendingRequestsCount++;
-    return next.handle(request).pipe(
-      finalize(() => {
-        // this.common.isLoading$.subscribe((res) => {
-        //   if (res) console.log('res', res);
-        //   else console.log('res', res);
-        // });
-        this.pendingRequestsCount--;
-        // if (this.count < 10) {
-        //   this.notifs.dismiss();
-        // }
-        // this.comoon.hideSpinner('root');
-      })
-    );
+    return next.handle(request);
   }
 }
 
