@@ -330,8 +330,8 @@ export class InferListComponent
 
     try {
       const result = await this.lpValidatorServices.postInferList(
-        this.filterData,
-        this.idProjet
+        this.idProjet,
+        this.filterData
       );
 
       if (result && result.data) {

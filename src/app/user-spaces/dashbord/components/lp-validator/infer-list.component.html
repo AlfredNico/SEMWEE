@@ -124,7 +124,7 @@
               <div *ngIf="row[column] === ''" class="text-center" style="opacity: 0.5;"> - </div>
             </span>
                         <ng-template #templeteURL>
-                            <a #templeteURL [href]="row[column]" target="_blank">{{row[column]}}</a>
+                            <a #templeteURL href="{{row[column]}}" target="_blank">{{row[column]}}</a>
                         </ng-template>
 
                         <div style="padding: 0 20px;" class="Test" [id]="i+'infer'+indexRow">
