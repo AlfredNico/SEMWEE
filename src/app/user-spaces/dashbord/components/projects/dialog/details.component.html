@@ -1,8 +1,8 @@
 <div class="pb-5">
   <!--begin::Header-->
   <div class="d-flex flex-column flex-center"
-  [style.background]="data.letter_thumbnails_project[0]['background']">
-    <!--begin::Symbol-->
+  >
+    <!--begin::Symbol [style.background]="data.letter_thumbnails_project[0]['background']"-->
     <div *ngIf="data['image_project_Squared']; else thumbnail" style="width: 120px; height: 120px;">
       <img [src]="image_url" class="h-100 align-self-end" style="border-radius: 50%;" alt="logo">
     </div>
@@ -80,17 +80,18 @@
   <!--end::Body-->
 
   <div mat-dialog-actions align="center">
-    <button mat-raised-button tabindex="-1" mat-dialog-close>Close</button>
+    <button mat-raised-button tabindex="-1" mat-dialog-close style="width: 10em;">Close</button>
     <button
       mat-raised-button
       tabindex="-1"
       color="accent"
       mat-dialog-close
       (click)="loading && onEdit(data)"
+      style="width: 10em;"
     >
       Edit
     </button>
-    <button mat-raised-button color="warn" class="mx-1" (click)="deleteCatalogue(data)" *ngIf="isBtnCatalog">
+    <button mat-raised-button color="warn" class="mx-1" (click)="deleteCatalogue(data)" *ngIf="isBtnCatalog" style="width: 10em;">
       <span *ngIf="!loading">Delete catalog</span>
       <i
       *ngIf="loading"

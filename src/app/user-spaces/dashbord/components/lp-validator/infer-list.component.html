@@ -102,14 +102,16 @@
                   </div>
                 </div>
               </div>
-              <mat-form-field appearance="outline" id="formInferHead" style="height: 4em;">
-                <input matInput type="search" #search placeholder="Smart Query or Regex ready"
-                  [formControlName]="column" autocomplete="off">
-                <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value"
-                  (click)="clearInput(column)">
-                  <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
-                </button>
-              </mat-form-field>
+              <div style="height: 4em;" class="bg-white">
+                <mat-form-field appearance="outline" id="formTable">
+                  <input matInput type="search" #search placeholder="Smart Query or Regex ready"
+                    [formControlName]="column" autocomplete="off">
+                  <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value"
+                    (click)="clearInput(column)">
+                    <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
             </span>
           </th>
           <td [ngClass]="{'hide-rows': isColumnDisplay(column)}" [class.odd]="odd"
@@ -143,7 +145,7 @@
 
     <div fxLayout="row" fxLayoutAlign="space-between center" >
       <div>
-        {{ dataView?.data?.length }} of {{ data?.data?.length }}
+        Number of imtes {{ dataView?.data?.length }}
       </div>
       <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
         [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"

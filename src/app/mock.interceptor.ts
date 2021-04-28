@@ -12,7 +12,8 @@ import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
 import * as INFERLIST from 'src/app/shared/fake-data/inferlist.json';
 import * as PRODUCT from 'src/app/shared/fake-data/product.json';
-import { Projects } from './user-spaces/dashbord/interfaces/projects';
+import * as PROJECT from 'src/app/shared/fake-data/project.json';
+
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
 /* export const usersData: Users[] = [
@@ -174,29 +175,29 @@ export class MockInterceptor implements HttpInterceptor {
           })
         ); */
 
-      // case url.includes('validator/import-csv') && method === 'POST':
-      //   return of(
-      //     new HttpResponse({
-      //       status: 200,
-      //       body: (INFERLIST as any)['default'],
-      //     })
-      //   );
+      case url.includes('validator/import-csv') && method === 'POST':
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: (INFERLIST as any)['default'],
+          })
+        );
 
-      // case url.includes('validator/post-infer-list') && method === 'POST':
-      //   return of(
-      //     new HttpResponse({
-      //       status: 200,
-      //       body: (PRODUCT as any)['default'],
-      //     })
-      //   );
+      case url.includes('validator/post-infer-list') && method === 'POST':
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: (PRODUCT as any)['default'],
+          })
+        );
 
-      // case url.includes('/project/get-project-product'):
+      // case url.includes('/project/get-project'):
       //   return of(
       //     new HttpResponse({
       //       status: 200,
       //       body: Array(
       //         (INFERLIST as any)['default'],
-      //         (FILE as any)['default']
+      //         (PROJECT as any)['default']
       //       ),
       //     })
       //   );
