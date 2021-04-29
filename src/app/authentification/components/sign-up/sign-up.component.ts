@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -13,7 +13,7 @@ import { CustomValidationService } from '@app/shared/services/custom-validation.
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements DoCheck {
   hide = true;
   submitted = false;
 
@@ -53,7 +53,9 @@ export class SignUpComponent implements OnInit {
     private auth: AuthService
   ) {}
 
-  ngOnInit(): void {}
+  ngDoCheck(): void {
+    this.common.hideSpinner();
+  }
 
   async onSubmit() {
     this.common.showSpinner('root');

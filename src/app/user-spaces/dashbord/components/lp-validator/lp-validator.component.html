@@ -1,3 +1,4 @@
+<div class="text-label">LP Validator</div>
 <mat-horizontal-stepper labelPosition="bottom" [linear]="true" #stepper
   [selectedIndex]="selectedStepperIndex" (selectionChange)="selectionChange($event)">
   <mat-step label="Import Items" completed="false" editable="false">
@@ -15,7 +16,7 @@
         Infer List Pages
       </div>
   </ng-template>
-    <app-infer-list [data]="dataSources" (dataInferListReady)="nextCheckRevelancy($event)">
+    <app-infer-list [data]="dataSources" [idProjet]="idProjet" (dataInferListReady)="nextCheckRevelancy($event)">
     </app-infer-list>
   </mat-step>
   <mat-step label="Check Relevancy" state="download_done" completed="false" editable="false">
@@ -24,7 +25,7 @@
         Check Relevancy
       </div>
   </ng-template>
-    <app-check-relevancy [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)">
+    <app-check-relevancy [idProjet]="idProjet" [dataInferList]="dataInferList" (dataMatching)="nextMatching($event)">
     </app-check-relevancy>
   </mat-step>
 

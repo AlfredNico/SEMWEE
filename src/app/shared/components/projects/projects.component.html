@@ -1,6 +1,6 @@
 <div class="card-body pt-2">
       <!--begin::Item-->
-      <div class="d-flex align-items-center content-project" *ngFor="let project of (allProjects$ | async)?.reverse();">
+      <div class="d-flex align-items-center content-project" *ngFor="let project of (allProjects$ | async)">
         <!--begin::Symbol-->
         <div class="mr-5">
           <span class="symbol-label">
@@ -10,15 +10,14 @@
         </div>
         <!--end::Symbol-->
         <!--begin::Text-->
-        <div (click)="triggerServices.switchproject$.next(project._id)"
+        <a (click)="triggerServices.switchproject$.next(project._id)"
         [routerLink]="['/user-space/lp-validator', project._id]" class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content">
-          <a class="text-dark mb-1 font-size-lg">{{ project.name_project }}</a>
+          <div class="text-dark mb-1 font-size-lg">{{ project.name_project }}</div>
           <span class="text-muted">Created At {{ project.created_project | date: 'medium' }}</span>
-        </div>
+        </a>
         <!--end::Text-->
         <!--begin::Dropdown-->
         <div class="dropdown dropdown-inline ml-2" data-placement="left">
-          <button mat-raised-button color="warn" class="mx-2" (click)="deleteCatalogue(project)" *ngIf="project.product.length > 0" [matTooltip]="'Delete catalog'">Delete catalog</button>
           <a (click)="onDeteils(project)" class="btn btn-icon btn-light btn-hover-primary btn-sm">
             <span class="svg-icon svg-icon-md svg-icon-primary" [matTooltip]="'Project detail'">
               <!--begin::Svg Icon | path:assets/media/svg/icons/General/Settings-1.svg-->

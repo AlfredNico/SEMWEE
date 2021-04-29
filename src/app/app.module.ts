@@ -1,3 +1,5 @@
+import { LandingPageModule } from './shared/modules/landing-page.module';
+import { BottonSheetComponent } from './shared/components/botton-sheet/botton-sheet.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -22,6 +24,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ResetPasswordGuard } from './guards/reset-password.guard';
 import { interruptedInterceptor } from './interrupted.interceptor';
+import { InformationSheetButtomComponent } from './shared/components/information-sheet-buttom/information-sheet-buttom.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -30,12 +33,18 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, PageNotFoundComponent],
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+    BottonSheetComponent,
+    InformationSheetButtomComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     InlineSVGModule.forRoot(),
     HttpClientModule,
+    LandingPageModule,
     SharedModule,
     NgbModule,
     TranslateModule.forRoot({

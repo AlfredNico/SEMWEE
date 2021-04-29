@@ -1,8 +1,21 @@
+::ng-deep #formTable {
+  padding: 0 !important;
+  height: 4vh;
+  margin: 0 !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0 !important;
+}
+
+  // ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+  //   /* top: .25em; */
+  //   padding: 1.5em 0 .5em;
+  // }
 .datatable:not(.table) {
     display: revert;
   }
   .drag_n_drop {
-    cursor: move !important;
+   cursor: cell !important;
   }
 
 ::ng-deep {
@@ -13,7 +26,7 @@
 }
 
 div.middle{
-    text-align: center;
+  text-align: center;
 }
 
 .Test {
@@ -26,3 +39,4 @@ div.middle{
 .active {
   background: #b6e1ff !important;
 }
+
