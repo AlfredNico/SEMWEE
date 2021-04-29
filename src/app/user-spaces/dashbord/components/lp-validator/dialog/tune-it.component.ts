@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { NotificationService } from './../../../../../services/notification.service';
 import { PropertyValueService } from './../../../services/property-value.service';
 import { ItemTypeService } from './../../../services/item-type.service';
@@ -74,11 +75,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
           <button
             mat-raised-button
             color="accent"
-            (click)="onClick()"
+            (click)="!loading && onClick()"
             cdkFocusInitial
+            [ngStyle]="{ width: inludes(itemType) ? '5em' : '11em' }"
           >
-            <span *ngIf="inludes(itemType)">Apply</span>
-            <span *ngIf="!inludes(itemType)">Apply on the Table</span>
+            <span *ngIf="inludes(itemType) && !loading"> Apply </span>
+            <span *ngIf="!inludes(itemType) && !loading"
+              >Apply on the Table</span
+            >
+            <i
+              *ngIf="loading"
+              class="fa fa-spinner fa-spin"
+              style="color: #fff"
+            ></i>
           </button>
           <button mat-raised-button color="accent" mat-dialog-close>
             Cancel
@@ -123,6 +132,7 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   itemType: any = '';
   isItem: boolean;
   public oldname: string = '';
+  public loading: boolean = false;
 
   form = new FormGroup({
     Editspelling: new FormControl(''),
@@ -144,8 +154,6 @@ export class TuneItComponent implements OnInit, AfterViewInit {
     if (this.data && this.data.row) {
       this.itemType = this.data.itemSeleted;
       this.oldname = this.data.row[this.data.itemSeleted];
-
-      // console.log('data', this.data);
 
       if (this.data.checkTuneIt.length !== 0) {
         if (this.inludes(this.itemType)) {
@@ -178,41 +186,47 @@ export class TuneItComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   async onClick() {
+    this.loading = true;
     const { Editspelling, Synonymize } = this.form.controls;
 
     if (Editspelling.value || Synonymize.value) {
-      if (this.inludes(this.itemType)) {
-        if (this.data.checkTuneIt && this.data.checkTuneIt.length !== 0) {
-          const data = {
-            ...this.form.value,
-            idinferlist: this.data.row['_id'],
-          };
-          const res = await this.itemService.appygItemType(
-            data,
-            this.data.checkTuneIt[0]['_id']
-          );
-          if (res && res.message) this.dialogRef.close(this.form.value);
-          this.notifs.sucess(res.message);
-        } else {
-          const data = {
-            ...this.form.value,
-            idinferlist: this.data.row['_id'],
-          };
+      if (this.inludes(this.itemType) === true) {
+        const data = {
+          idinferlist: this.data.row['_id'],
+          Editspelling: this.form.controls.Editspelling.value,
+          Synonymize: this.form.controls.Synonymize.value,
+          oldname: this.form.controls.oldname.value,
+        };
+
+        try {
           const res = await this.itemService.appygItemType(data);
-          if (res && res.message) this.dialogRef.close(this.form.value);
-          this.notifs.sucess(res.message);
+          if (res && res.message) {
+            this.notifs.sucess(res.message);
+            this.loading = false;
+            this.dialogRef.close(this.form.value);
+          }
+        } catch (error) {
+          this.loading = false;
         }
       } else {
         const value = {
           ...this.form.value,
           Apply_on_the_table: true,
           NomProperty: this.itemType,
-          idproject: this.data.row['idproject'],
+          idproject: this.data.row['idProduct'],
         };
-        const res = await this.propertyService.appyPropertyValue(value);
 
-        if (res && res.message) this.dialogRef.close(this.form.value);
-        this.notifs.sucess(res.message);
+        //  [disabled]="!contractTypeValid" console.log(value);
+        try {
+          const res = await this.propertyService.appyPropertyValue(value);
+          if (res && res.message) {
+            this.loading = false;
+            this.notifs.sucess(res.message);
+            this.dialogRef.close(this.form.value);
+          }
+        } catch (error) {
+          this.loading = false;
+        }
       }
     }
   }

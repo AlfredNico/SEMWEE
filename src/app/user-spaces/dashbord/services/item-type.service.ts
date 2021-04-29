@@ -8,26 +8,13 @@ import { environment } from '@environments/environment';
 })
 export class ItemTypeService {
   constructor(private http: HttpClient) {}
-  public appygItemType(
-    data: ItemType,
-    _id?: any
-  ): Promise<{ message: string }> {
-    console.log(_id);
-    if (_id === undefined) {
-      return this.http
-        .post<{ message: string }>(
-          `${environment.baseUrl}/validator/post-item-type`,
-          data
-        )
-        .toPromise();
-    } else {
-      return this.http
-        .put<{ message: string }>(
-          `${environment.baseUrl}/validator/put-item-type`,
-          data
-        )
-        .toPromise();
-    }
+  public appygItemType(data: ItemType) {
+    return this.http
+      .put<{ message: string }>(
+        `${environment.baseUrl}/validator/put-item-type`,
+        data
+      )
+      .toPromise();
   }
 
   public getItemType(_id: any) {

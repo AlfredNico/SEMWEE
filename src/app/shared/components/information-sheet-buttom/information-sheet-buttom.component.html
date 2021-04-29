@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>information!</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      You can interrupt this processing with Esc
+    </p>
+  </mat-card-content>
+  <mat-card-actions align="center">
+    <button mat-button color="primary" class="mx-1" (click)="_bottomSheetRef.dismiss()">
+      close
+    </button>
+    <button mat-button color="warn" class="mx-1" (click)="noSee()">I don't see it</button>
+  </mat-card-actions>
+</mat-card>

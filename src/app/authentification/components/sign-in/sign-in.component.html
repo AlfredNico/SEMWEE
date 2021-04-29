@@ -58,7 +58,7 @@
 
                             <div id="recaptch" #recaptch class="w-100">
                                 <div class="py-1" fxLayout="row" fxLayoutAlign="center center">
-                                    <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.options.siteKey" [hl]="recaptcha.options.language" [size]="'normal'" formControlName="recaptcha">
+                                    <ngx-recaptcha2 #captchaElem [siteKey]="recaptcha.options?.siteKey" [hl]="recaptcha.options?.language" [size]="'normal'" formControlName="recaptcha">
                                     </ngx-recaptcha2>
                                 </div>
                             </div>

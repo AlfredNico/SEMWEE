@@ -1,5 +1,6 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ForgotPwdService } from '@app/authentification/services/forgot-pwd.service';
@@ -9,30 +10,50 @@ import { CustomValidationService } from '@app/shared/services/custom-validation.
 @Component({
   selector: 'app-resetpassword',
   templateUrl: './resetpassword.component.html',
-  styleUrls: ['./resetpassword.component.scss']
+  styleUrls: ['./resetpassword.component.scss'],
 })
-export class ResetpasswordComponent implements OnInit {
-
+export class ResetpasswordComponent implements DoCheck {
   hide = true;
   submitted = false;
 
-  public form = this.fb.group({
-    password: ['', Validators.compose([Validators.required, this.custumValidator.patternValidator()])],
-    confirm_password: ['', Validators.required],
-    token: [false, Validators.required],
-  }, {
-    validator: this.custumValidator.MatchPassword('password', 'confirm_password')
-  });
+  public form = this.fb.group(
+    {
+      password: [
+        '',
+        Validators.compose([
+          Validators.required,
+          this.custumValidator.patternValidator(),
+        ]),
+      ],
+      confirm_password: ['', Validators.required],
+      token: [false, Validators.required],
+    },
+    {
+      validator: this.custumValidator.MatchPassword(
+        'password',
+        'confirm_password'
+      ),
+    }
+  );
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private custumValidator: CustomValidationService, private forgetPwdService: ForgotPwdService, private notifs: NotificationService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private custumValidator: CustomValidationService,
+    private forgetPwdService: ForgotPwdService,
+    private notifs: NotificationService,
+    private readonly common: CommonService
+  ) {
     // const value = this.route.queryParamMap.subscribe(tokenValue => {
     // })
     this.form.patchValue({
       token: this.route.snapshot.queryParamMap.get('token'),
-    })
+    });
   }
 
-  ngOnInit(): void {
+  ngDoCheck(): void {
+    this.common.hideSpinner();
   }
 
   async onSubmit() {
@@ -42,10 +63,9 @@ export class ResetpasswordComponent implements OnInit {
     }
 
     try {
-
       const result = await this.forgetPwdService.resetPassword({
         newPass: this.form.controls.password.value,
-        resetLink: this.form.controls.token.value
+        resetLink: this.form.controls.token.value,
       });
       if (result && result.message) {
         this.notifs.sucess(result.message);
@@ -57,5 +77,4 @@ export class ResetpasswordComponent implements OnInit {
       }
     }
   }
-
 }

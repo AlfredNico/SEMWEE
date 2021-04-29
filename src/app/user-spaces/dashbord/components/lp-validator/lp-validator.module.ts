@@ -1,3 +1,4 @@
+import { IdbService } from './../../../../services/idb.service';
 import { PropertyValueService } from './../../services/property-value.service';
 import { ItemTypeService } from './../../services/item-type.service';
 import { NgModule } from '@angular/core';
@@ -58,7 +59,12 @@ import { StepperIconDirective } from '../../directives/stepper-icon.directive';
     RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
   ],
   exports: [RouterModule, CapitalizeFirstPipePipe],
-  providers: [LpValidatorService, ItemTypeService, PropertyValueService],
+  providers: [
+    LpValidatorService,
+    ItemTypeService,
+    PropertyValueService,
+    IdbService,
+  ],
   entryComponents: [
     TableOptionsComponent,
     SettingTableComponent,

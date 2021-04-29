@@ -7,6 +7,12 @@
      // }
  }
 
+::ng-deep #formTable {
+    padding: 0.5em 0 0.5em 0 !important;
+    height: 4vh;
+    margin: .5em 0 1em;
+}
+
 .mat-step-icon {
 	// set circle size
 	border-radius: 50%;
@@ -19,7 +25,7 @@
 ::ng-deep {
     div[role="tables"] {
         // overflow: auto;
-        position: relative;
+        // position: relative;
         max-height: calc(100vh - 550px);
         overflow-x: auto;
     }
@@ -324,5 +330,12 @@
     }
     .right-adj .mat-form-field-outline{
         margin-right: 0 !important;
+    }
+
+    .text-label {
+        font-size: 23px;
+        margin: 25px;
+        font-weight: 600;
+        color: #434254;
     }
  }
