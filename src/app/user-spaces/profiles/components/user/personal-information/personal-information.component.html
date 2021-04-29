@@ -42,7 +42,8 @@
           <div class="col-lg-9 col-xl-6">
             <div class="image-input image-input-outline" id="kt_profile_avatar"
               [class.image-input-empty]="!user?.image"
-              [style.backgroundImage]="'url(./assets/media/users/blank.png)'">
+              [ngStyle]="{'background-image': getPic()==='none' ? 'url(./assets/media/users/blank.png)' : ''}">
+              <!-- [style.backgroundImage]="url(./assets/media/users/blank.png)'" -->
               <div class="image-input-wrapper" [style.backgroundImage]="getPic()"></div>
               <label
                 class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"

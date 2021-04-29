@@ -44,7 +44,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralModule } from '@app/_metronic/partials/content/general/general.module';
 import { HighlightModule } from 'ngx-highlightjs';
-import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
@@ -99,6 +99,7 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
     LandingModule,
     SharedModule,
     // LayoutModule,
+    NgbProgressbarModule, //ProgressBar module
     CommonModule,
     FormsModule,
     GeneralModule,

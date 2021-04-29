@@ -97,8 +97,6 @@ export class CommonService {
 
   private checkAlerts(response: number, isRes: boolean): void {
     if (response === 10 && this.isLoading === true && !this.coockie.check('info')) {
-      console.log(isRes, '..', response)
-      // this.notifs.infoIterropt('You can interrupt this processing with Esc');
       this._bottomSheet.open(InformationSheetButtomComponent);
     }
   }

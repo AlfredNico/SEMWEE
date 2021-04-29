@@ -13,19 +13,21 @@
         class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
+
   <div fxLayout="row" fxLayoutAlign="space-between center"
     style="margin-left:22px;margin-right:10px;">
-    <span>Table inter list</span>
-    <!-- <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
-            <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-            tableOptions
-        </button> -->
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+      <span>Table inter list</span>
+      <div>
+        {{ numberSelected }} lines selected from {{ dataView?.data?.length }} items
+      </div>
+    </div>
     <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-      <span>Table options</span>
+      <span>Table options </span>
     </a>
   </div>
-  <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
+
   <div class="px-2 m-3 table-container" role="tables">
 
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
@@ -163,18 +165,11 @@
     </table>
 
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center" class="ml-5">
-    <div>
-      Number of imtes {{ dataView?.data?.length }}
-    </div>
-    <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
-      [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"></mat-paginator>
-  </div>
+
+  <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
+    [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"></mat-paginator>
+
   <div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-    <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
-      <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-      Table options
-    </button>
     <button type="button" mat-raised-button color="accent" class="m-3" (click)="openSettingTable()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
       Settings

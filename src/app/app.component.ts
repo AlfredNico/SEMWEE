@@ -42,20 +42,20 @@ export class AppComponent {
     // this.interrupted.isInterrompted.next(false);
     this.idb.connectToIDB();
 
-    this.router.events.subscribe((event: Event) => {
-      switch (true) {
-        case event instanceof NavigationStart: {
-          this.common.showSpinner();
-          break;
-        }
-        case event instanceof NavigationEnd:
-        case event instanceof NavigationCancel:
-        case event instanceof NavigationError: {
-          this.common.hideSpinner();
-          break;
-        }
-      }
-    });
+    // this.router.events.subscribe((event: Event) => {
+    //   switch (true) {
+    //     case event instanceof NavigationStart: {
+    //       this.common.showSpinner();
+    //       break;
+    //     }
+    //     case event instanceof NavigationEnd:
+    //     case event instanceof NavigationCancel:
+    //     case event instanceof NavigationError: {
+    //       this.common.hideSpinner();
+    //       break;
+    //     }
+    //   }
+    // });
   }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(

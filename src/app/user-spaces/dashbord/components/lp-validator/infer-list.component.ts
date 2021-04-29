@@ -24,14 +24,13 @@ import { Users } from '@app/models/users';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { NotificationService } from '@app/services/notification.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
-import { HttpParams } from '@angular/common/http';
-import { APP_BASE_HREF } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-infer-list',
@@ -139,7 +138,8 @@ export class InferListComponent
     public dialog: MatDialog,
     private lpValidatorServices: LpValidatorService,
     private auth: AuthService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    public senitizer: DomSanitizer
   ) {
     this.user = this.auth.currentUserSubject.value;
   }
@@ -158,26 +158,26 @@ export class InferListComponent
       this.numberSelected = this.dataView.data.length;
       this.displayColumns = this.data.displayColumns;
     }
-
+    
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
+    
     this.dataView.displayColumns.map((key: string, index: number) => {
       if (key != 'select') {
         //création formControl Dynamics
         this.filters.addControl(key, new FormControl(''));
-
+        
         if (!key.includes('Value') && key.includes('Facet')) {
           this.selectedOptions.push(key);
           this.checklist.push(key);
           // if (key.includes('Facet') && !key.includes('Value')) {
-          //   this.checklist.push(key);
-          // }
+            //   this.checklist.push(key);
+            // }
+          }
         }
-      }
-    });
-    // this.commonServices.hideSpinner();
+      });
+      // this.commonServices.hideSpinner();
     // this.commonServices.isLoading$.next(false);
   }
 
@@ -280,6 +280,11 @@ export class InferListComponent
         // }),
         map((result: SettingRowsTable) => {
           if (result) {
+            if (result.noHiddenRows.indexOf('select') !== -1) {
+              result.noHiddenRows.splice(result.noHiddenRows.indexOf('select'), 1);
+            }
+            result.noHiddenRows.unshift('number', 'select');
+
             this.displayColumns = result.noHiddenRows;
             this.dataView.displayColumns = result.noHiddenRows;
 
@@ -365,15 +370,16 @@ export class InferListComponent
   }
 
   setAll(completed: boolean) {
-    this.numberSelected = 0;
+    this.selectedRowsArray = [];
     this.allSelect = completed;
     if (this.dataView.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) => {
-      if(t.select === true ) this.numberSelected++
-      t.select = completed
-    });
+   this.dataView.data.forEach((t) =>(t.select = completed));
+    if(completed === true )
+      this.numberSelected = this.dataView.data.length
+    else
+      this.numberSelected = 0;
   }
 
   public selectRow(row: any) {
@@ -444,14 +450,15 @@ export class InferListComponent
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false;
+   this.isKeyPressed = false
   }
 
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+  @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
-    else this.isKeyPressed = false;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
+      this.isKeyPressed = true
+    }
   }
 
   // @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
@@ -466,6 +473,7 @@ export class InferListComponent
   // }
 
   ngOnDestroy() {
+    console.log('destrout')
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
     this.dataSource.data = [];
   }

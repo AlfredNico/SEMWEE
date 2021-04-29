@@ -43,7 +43,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.common.showSpinner('root');
+    // this.common.showSpinner('root');
     this.allProjects$.subscribe(
       (result: any[]) => {
         if (result && result.length == 0) {
@@ -56,7 +56,7 @@ export class AllProjectsComponent implements OnInit, AfterViewInit {
           this.notifs.warn(error.message);
         }
         this.router.navigateByUrl('/user-space/new-project');
-        this.common.hideSpinner();
+        // this.common.hideSpinner();
       }
     );
   }

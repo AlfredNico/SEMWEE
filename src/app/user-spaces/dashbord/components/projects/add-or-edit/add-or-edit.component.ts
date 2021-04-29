@@ -122,7 +122,7 @@ export class AddOrEditComponent implements OnInit {
       country_project: ['', [Validators.required]],
       language_project: ['', [Validators.required]],
       path_project: ['', [Validators.required]],
-      protocol_project: ['', [Validators.required]],
+      protocol_project: [false],
       user_id: ['', Validators.required],
       letter_thumbnails_project: this.fb.group({
         letter: [
@@ -175,7 +175,6 @@ export class AddOrEditComponent implements OnInit {
   }
 
   async onClickButton() {
-    // this.f1.emit(this.form);
     if (this.imageLandscape == undefined && this.imageSquared == undefined) {
       // this.form.get('letter_thumbnails_project')['controls']
       this.letter.setValidators([Validators.required]);

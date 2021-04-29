@@ -13,21 +13,18 @@
         class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
-    style="margin-left:22px;margin-right:10px;">
-    <span>Table inter list</span>
-    <div>
-      {{ numberSelected }} lines selected from {{ dataView?.data?.length }} items
+  <div fxLayout="row" fxLayoutAlign="space-between center"
+    style="margin-left:2em;margin-right:2em;" class="py-2">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+      <span>Table inter list</span>
+      <div>
+        {{ numberSelected }} lines selected from {{ dataView?.data?.length }} items
+      </div>
     </div>
-    <!-- <button type="button" mat-raised-button color="primary" class="m-3" (click)="tableOpons()">
-        <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-        tableOptions
-    </button> -->
-    <!-- style="overflow-y: auto;" tabindex="0" role="tables" -->
-    <!-- <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
+    <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
       <span>Table options </span>
-    </a> -->
+    </a>
   </div>
   <div class="px-2 m-3 table-container" role="tables">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
@@ -137,7 +134,8 @@
               <div *ngIf="row[column] === ''" class="text-center" style="opacity: 0.5;"> - </div>
             </span>
             <ng-template #templeteURL>
-              <a #templeteURL [href]="row[column]" target="_blank">{{row[column]}}</a>
+              <a #templeteURL [href]="senitizer.bypassSecurityTrustUrl(row[column])"
+                target="_blank">{{row[column]}}</a>
             </ng-template>
 
             <div style="padding: 0 20px;" class="Test" [id]="i+'infer'+indexRow">
@@ -156,7 +154,7 @@
     </table>
   </div>
 
- 
+
   <mat-paginator showFirstLastButtons [length]="dataSource.data.length" [pageSize]="10"
     [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
     (page)="onPaginateChange($event)"></mat-paginator>
@@ -166,10 +164,6 @@
     <button mat-raised-button color="accent">Updates Items</button>
 
     <div fxLayoutAlign="end center" class="w-100">
-      <button type="button" mat-raised-button color="accent" class="m-3" (click)="tableOpons()">
-        <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-        Table options
-      </button>
       <button type="button" mat-raised-button color="accent" class="m-3"
         (click)="openSettingTable()">
         <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>

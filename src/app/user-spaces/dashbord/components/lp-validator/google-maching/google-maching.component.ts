@@ -80,6 +80,7 @@ export class GoogleMachingComponent
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
+  numberSelected: number = 0;
 
   // selection toggle
   allSelect: boolean = true;
@@ -107,18 +108,19 @@ export class GoogleMachingComponent
         this.resultData
       );
       Object.assign(this.dataView, value);
+      this.numberSelected = value.data.length;
       this.displayColumns = value.displayColumns;
     }
-
+    
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
+    
     this.dataView.displayColumns.map((key: string, index: number) => {
       if (key != 'select') this.filters.addControl(key, new FormControl(''));
       // this.displayColumns.push(key);
     });
-
+    
     this.checkValid();
     // this.commonServices.hideSpinner();
   }
@@ -219,16 +221,21 @@ export class GoogleMachingComponent
     );
   }
 
-  setAll(completed: boolean) {
+   setAll(completed: boolean) {
+    this.selectedRowsArray = [];
     this.allSelect = completed;
     if (this.dataView.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) => (t.select = completed));
+    this.dataView.data.forEach((t) =>(t.select = completed));
+    if(completed === true )
+      this.numberSelected = this.dataView.data.length
+    else
+      this.numberSelected = 0;
   }
 
-  public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    public selectRow(row: any) {
+    const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
@@ -264,6 +271,12 @@ export class GoogleMachingComponent
     this.indexSelectedRow = index;
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
     this.dataSource.data = this.dataView.data;
+    this.numberSelected = 0;
+    this.dataView.data.forEach(s => {
+      if (s.select === true) {
+        this.numberSelected++
+      }
+    })
   }
 
   isRowSelected(row: any) {
@@ -287,16 +300,17 @@ export class GoogleMachingComponent
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
-  @HostListener('window:keyup', ['$event'])
+ @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false;
+   this.isKeyPressed = false
   }
 
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+  @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
-    else this.isKeyPressed = false;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
+      this.isKeyPressed = true
+    }
   }
 
 

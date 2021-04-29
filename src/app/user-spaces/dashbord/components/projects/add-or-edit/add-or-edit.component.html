@@ -65,8 +65,7 @@
       <label>Country<span class="text-danger">*</span></label>
       <input [ngClass]="{'err': (form.get('country_project')?.touched &&
       form.get('country_project')?.errors?.required) || form.get('country_project')?.max}"
-        formControlName="country_project" [matAutocomplete]="autoComplete" class="form-control"
-         />
+        formControlName="country_project" [matAutocomplete]="autoComplete" class="form-control" />
 
       <mat-autocomplete #autoComplete="matAutocomplete">
         <mat-option *ngFor="let contry of filteredCounrty | async" [value]="contry.name">
@@ -142,68 +141,37 @@
       </div>
     </div>
 
-    <div class="w-100" fxLayout="row" fxLayoutAlign="start center" >
-      <div class="w-100 my-5 mx-1 pt-4">
-        <mat-label style="margin-right: 0; color: #B5B5C3 !important;">
-          HTTPS<span class="text-danger">*</span>
-          <!-- / TLS<span class="text-danger">*</span> -->
-        </mat-label>
-        <div style="display: inline-block;margin-left:0;" class="mx-auto w-50 px-3">
-          <mat-slide-toggle formControlName="protocol_project"></mat-slide-toggle>
-        </div>
-
-        <div *ngIf="(form.get('protocol_project')?.touched &&
-            form.get('protocol_project')?.errors?.required); else showInstrProt">
-          <span class="form-text text-muted text-error" mat-error *ngIf="
-        form.get('protocol_project')?.touched &&
-        form.get('protocol_project')?.errors?.required
-      ">Protocol is required
-          </span>
-        </div>
-        <ng-template #showInstrProt>
-          <span class="form-text text-muted txt-muted">Tell us if your website uses HTTPS
-            certificate.</span>
-        </ng-template>
+    <div class="form-group row"><label class="col-lg-1 col-form-label text-lg-left">HTTPS<span
+          class="text-danger mx-1">*</span></label>
+      <div class="col-lg-9 col-xl-4"><span class="switch switch-icon"><label><input type="checkbox"
+              formControlName="protocol_project"
+              class="ng-valid ng-dirty ng-touched"><span></span></label></span>
+        <!-- <div class="form-text text-muted"> off/on </div> -->
       </div>
     </div>
 
 
     <!-- [readonly]="true" -->
     <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
-      <!-- <div class="w-100 row">
-        <div mat-form-field class="form-group col-7">
-          <label>Landscape image<span class="text-danger">*</span></label>
-          <input formControlName="image_project_Landscape" class="form-control"
-            placeholder="-" #image1 />
-          <span class="form-text text-muted">You can choose a landscape format image to illustrate
-            your project.</span>
-        </div>
-
-        <input type="file" accept="image/*" #landscape (change)="uploadLandscape($event)"
-          style="display: none" />
-
-        <button style="margin-top: 27px" color="accent" class="upload-button col-4" mat-raised-button type="button"
-          (click)="landscape.click()">
-          Upload Landscape Image
-        </button>
-      </div> -->
       <div class="w-100 row">
         <div mat-form-field class="form-group col-6">
           <label>Squared image<span class="text-danger">*</span></label>
           <input formControlName="image_project_Squared" class="form-control"
-            placeholder="Squared image" [readonly]="true" #image2/>
+            placeholder="Squared image" [readonly]="true" #image2 />
           <span class="form-text text-muted">You can choose a square format image to illustrate your
             project.</span>
         </div>
 
         <input type="file" accept="image/*" #squared (change)="uploadSquared($event)"
           style="display: none" />
-        <button style="margin-top: 27px" color="accent" class="upload-button mx-1 col-3" mat-raised-button type="button"
-          (click)="squared.click()">
+        <button style="margin-top: 27px" color="accent" class="upload-button mx-1 col-3"
+          mat-raised-button type="button" (click)="squared.click()">
           Upload Squared Image
         </button>
-        <button style="margin-top: 27px" color="warn" class="upload-button mx-1 col-2" mat-raised-button type="button" (click)="removeImage()" [disabled]="!image_project_Squared.value">
-        Remove Image
+        <button style="margin-top: 27px" color="warn" class="upload-button mx-1 col-2"
+          mat-raised-button type="button" (click)="removeImage()"
+          [disabled]="!image_project_Squared.value">
+          Remove Image
         </button>
 
       </div>
@@ -223,8 +191,7 @@
         <div mat-form-field class="form-group my-3 w-50">
           <input
             [ngClass]="{'err': letter?.touched && letter?.errors?.required || letter?.errors?.uppercase}"
-            formControlName="letter" maxlength="1" autocomplete="off" class="form-control"
-            />
+            formControlName="letter" maxlength="1" autocomplete="off" class="form-control" />
 
           <div
             *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase; else showInstrLogo">
@@ -258,7 +225,7 @@
   </div>
 
   <div align="end" class="my-3">
-    <button  *ngIf="isAddItem == false" class="add-project mx-3" mat-raised-button mat-dialog-close>
+    <button *ngIf="isAddItem == false" class="add-project mx-3" mat-raised-button mat-dialog-close>
       Close
     </button>
     <button class="add-project mx-3" mat-raised-button color="primary" (click)="onClickButton()">

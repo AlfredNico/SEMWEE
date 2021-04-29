@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -27,7 +27,7 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
   styleUrls: [],
   providers: [ProjectsService],
 })
-export class NewProjectsComponent implements OnInit {
+export class NewProjectsComponent implements DoCheck {
   public user: User;
   public userId: any;
   private form: FormGroup;
@@ -47,7 +47,9 @@ export class NewProjectsComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngDoCheck(): void {
+    this.common.hideSpinner();
+  }
 
   async onSubmit(value: {
     form: FormGroup;

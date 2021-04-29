@@ -53,10 +53,11 @@ import { HttpErrorResponse } from '@angular/common/http';
         background: #b6e1ff !important;
       }
       ::ng-deep #formTable {
-    padding: 0 !important;
-    height: 4vh;
-    margin: 0 !important;
-}
+        padding: 0 !important;
+        height: 4vh;
+        margin: 0 !important;
+      }
+      .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {min-width: auto;}
       
       .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 1em 0 1em 0 !important;
@@ -131,19 +132,20 @@ export class CheckRelevancyComponent
         this.displayColumns = [];
       }
       Object.assign(this.dataView, this.dataInferList);
+      this.numberSelected = this.dataInferList.data.length;
       this.displayColumns = this.dataInferList.displayColumns;
     }
 
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
+    
     this.dataView.displayColumns.map((key: any, index: number) => {
       if (key != 'select') this.filters.addControl(key, new FormControl(''));
       //création formControl Dynamics
       // this.displayColumns.push(key);
     });
-    //  this.commonServices.hideSpinner();
+    // this.commonServices.hideSpinner();
     // this.commonServices.isLoading$.next(false);
   }
 
@@ -265,16 +267,22 @@ export class CheckRelevancyComponent
       .subscribe();
   }
 
-  setAll(completed: boolean) {
+    setAll(completed: boolean) {
+    this.selectedRowsArray = [];
     this.allSelect = completed;
     if (this.dataView.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) => (t.select = completed));
+    this.dataView.data.forEach((t) =>(t.select = completed));
+    if(completed === true )
+      this.numberSelected = this.dataView.data.length
+    else
+      this.numberSelected = 0;
+
   }
 
-public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+  public selectRow(row: any) {
+    const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
@@ -310,6 +318,12 @@ public selectRow(row: any) {
     this.indexSelectedRow = index;
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
     this.dataSource.data = this.dataView.data;
+    this.numberSelected = 0;
+    this.dataView.data.forEach(s => {
+      if (s.select === true) {
+        this.numberSelected++
+      }
+    })
   }
 
   isRowSelected(row: any) {
@@ -333,16 +347,17 @@ public selectRow(row: any) {
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
-  @HostListener('window:keyup', ['$event'])
+ @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false;
+   this.isKeyPressed = false
   }
 
-   @HostListener('document:keydown', ['$event']) onKeydownHandler(
+  @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
-    else this.isKeyPressed = false;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
+      this.isKeyPressed = true
+    }
   }
 
   dataMachingReady() {

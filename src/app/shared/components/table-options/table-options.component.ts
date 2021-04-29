@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SettingRowsTable } from '@app/models/setting-table';
 import {
@@ -21,7 +21,9 @@ export class TableOptionsComponent implements OnInit {
   public filters = this.fb.group([]);
   btnToRigth: boolean = true;
   btnToLeft: boolean = true;
-  itelLabel: string = '';
+  selectedItems: string[] = [];
+  selectedIndex: number = 0;
+  isKeyPressed: boolean = false;
 
   infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
 
@@ -34,7 +36,7 @@ export class TableOptionsComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.displayRows = this.data;
-    // console.log(data);
+    
     if (this.data.noHiddenRows.includes('select')) {
       const value = this.data.noHiddenRows.shift();
     }
@@ -81,89 +83,140 @@ export class TableOptionsComponent implements OnInit {
   }
 
   moveToLeft() {
-    this.btnToLeft = true;
-    transferArrayItem(
-      this.noHidden,
-      this.hidden,
-      this.infItems.previewIndex,
-      this.infItems.currentIndex
-    );
+    this.selectedItems.forEach((value) =>{
+      this.setItemLeft(value);
 
-    if (this.infItems.isFacet === true) {
-      const facetIndex = this.noHidden.indexOf(
-        this.noHidden[this.infItems.previewIndex]
-      );
       transferArrayItem(
         this.noHidden,
         this.hidden,
-        facetIndex,
-        this.hidden.length
+        this.infItems.previewIndex,
+        this.infItems.currentIndex
       );
-    }
-
-    this.itelLabel = '';
+  
+      if (this.infItems.isFacet === true) {
+        const facetIndex = this.noHidden.indexOf(
+          this.noHidden[this.infItems.previewIndex]
+          );
+        transferArrayItem(
+          this.noHidden,
+          this.hidden,
+          facetIndex,
+          this.hidden.length
+        );
+      }
+    })
+     this.btnToRigth = true;
+    this.btnToLeft = true;
+    this.selectedItems = [] //init items selecteds
     this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
   moveToRigth() {
-    this.btnToRigth = true;
-    transferArrayItem(
-      this.hidden,
-      this.noHidden,
-      this.infItems.previewIndex,
-      this.infItems.currentIndex
-    );
-    if (this.infItems.isFacet === true) {
-      const facetIndex = this.noHidden.indexOf(
-        this.noHidden[this.infItems.previewIndex]
-      );
+    this.selectedItems.forEach((value)=>{
+      this.setItemRigth(value);
+
       transferArrayItem(
         this.hidden,
         this.noHidden,
-        facetIndex,
-        this.noHidden.length
+        this.infItems.previewIndex,
+        this.infItems.currentIndex
       );
-    }
-    this.itelLabel = '';
+      if (this.infItems.isFacet === true) {
+        const facetIndex = this.noHidden.indexOf(
+          this.noHidden[this.infItems.previewIndex]
+        );
+        transferArrayItem(
+          this.hidden,
+          this.noHidden,
+          facetIndex,
+          this.noHidden.length
+        );
+      }
+    })
+    this.btnToRigth = true;
+    this.btnToLeft = true;
+    this.selectedItems = [] //init items selecteds
     this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
-  setItemLeft(item: string) {
-    this.btnToLeft = false;
-    this.btnToRigth = true;
-    this.itelLabel = item;
-
+  private setItemLeft(item: string) {
     this.infItems = this.getIndexDisplayColums(item);
   }
 
-  setItemRigth(item: string) {
-    this.btnToRigth = false;
-    this.btnToLeft = true;
-
-    this.itelLabel = item;
-    this.infItems = this.getIndexHiddenColumns(item);
+  private setItemRigth(item: string) {
+    this.infItems = this.getIndexHiddenColumns(item.toString());
   }
 
-  getIndexDisplayColums(item: string) {
+  private getIndexDisplayColums(item: string) {
     const previewIndex = this.noHidden.indexOf(item);
     const currentIndex = this.hidden.length;
     let isFacet = false;
-    if (item.includes('Facet')) {
+    if (item.includes('Facet') && !item.includes('_Value')) {
       const facetIndex = this.noHidden.indexOf(`${item}_Value`);
       isFacet = true;
     }
     return { previewIndex, currentIndex, isFacet };
   }
 
-  getIndexHiddenColumns(item: string) {
+  private getIndexHiddenColumns(item: string) {
     const previewIndex = this.hidden.indexOf(item);
     const currentIndex = this.noHidden.length;
 
     let isFacet = false;
-    if (item.includes('Facet')) {
+    if (item.includes('Facet') && !item.includes('_Value')) {
       const facetIndex = this.noHidden.indexOf(`${item}_Value`);
       isFacet = true;
     }
     return { previewIndex, currentIndex, isFacet };
+  }
+
+  setClickedItem(item: string, items: string[]){
+    if (items === this.hidden) {
+      this.btnToLeft = true;
+      this.btnToRigth = false;
+    } else {
+      this.btnToLeft = false;
+      this.btnToRigth = true;
+    }
+
+    const index = items.indexOf(item);
+    if (this.selectedIndex && this.isKeyPressed === true) {
+      if (this.selectedIndex > index) {
+        items.forEach((val, i) => {
+          if (this.selectedIndex >= i && i >= index) {
+            if (!this.selectedItems.includes(val))
+              this.selectedItems.push(val)
+            // if (this.selectedItems.includes(item))
+            //   this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+          }
+        })
+      } else {
+         items.forEach((val, i) => {
+          if (this.selectedIndex <= i && i <= index) {
+            if (!this.selectedItems.includes(val))
+              this.selectedItems.push(val)
+            // if (this.selectedItems.includes(item))
+            //   this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+          }
+        })
+      }
+    } else {
+      this.selectedItems = [];
+      this.selectedItems.push(item);
+    }
+    this.selectedIndex = index;
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+   this.isKeyPressed = false
+  }
+
+  @HostListener('window:keydown', ['$event']) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
+      this.isKeyPressed = true
+    }
   }
 }
