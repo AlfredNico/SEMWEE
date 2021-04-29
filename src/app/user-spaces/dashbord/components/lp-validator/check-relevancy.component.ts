@@ -57,7 +57,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     height: 4vh;
     margin: 0 !important;
 }
-      
+
       .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 1em 0 1em 0 !important;
 }
@@ -274,7 +274,7 @@ export class CheckRelevancyComponent
   }
 
 public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)

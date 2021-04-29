@@ -228,7 +228,7 @@ export class GoogleMachingComponent
   }
 
   public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)

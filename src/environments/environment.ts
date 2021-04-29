@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   appVersion: 'versionSEMWEE',
   USERDATA_KEY: 'authf649fc9a5f55',
-  isMockEnabled: true,
+  isMockEnabled: false,
   baseUrl: 'https://pp.semwee.app:3000/api',
   baseUrlImg: 'https://pp.semwee.app:3000',
   // baseUrl: 'https://back-semwee.herokuapp.com/api',
