@@ -284,7 +284,11 @@ export class CheckRelevancyComponent
     this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);  
   }
 
+<<<<<<< HEAD
   public selectRow(row: any) {
+=======
+public selectRow(row: any) {
+>>>>>>> c2ed7219692f7e0d20300de2b25b85d708e70edb
     const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
