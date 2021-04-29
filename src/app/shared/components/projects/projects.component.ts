@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { DetailsComponent } from '@app/user-spaces/dashbord/components/projects/dialog/details.component';
@@ -25,7 +26,8 @@ export class ProjectsComponent implements OnInit {
     public dialog: MatDialog,
     private common: CommonService,
     private notifs: NotificationService,
-    public triggerServices: TriggerService
+    public triggerServices: TriggerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -87,5 +89,10 @@ export class ProjectsComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  public navigateURL(_id: any){
+    this.common.isLoading$.next(true);
+    this.router.navigate(['/user-space/lp-validator', _id]);
   }
 }

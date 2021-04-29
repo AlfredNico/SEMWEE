@@ -13,16 +13,15 @@
         class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px"
-    style="margin-left:22px;margin-right:10px;">
-    <div>
-      {{ numberSelected }} lines selected from {{ dataView?.data?.length }} items
-    </div>
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+    <h3 class="text-dark font-weight-bold my-1 mr-5">
+      Selected: {{ numberSelected }} / {{ dataView?.data?.length }} 
+    </h3>
   </div>
-  <!-- style="overflow-y: auto;"   tabindex="0" role="tables"-->
-  <div class="px-2 m-3 table-container" role="tables">
+
+  <div class="px-0 my-0 table-container" role="tables">
     <table mat-table [dataSource]="dataSource" (matSortChange)="sortData($event)" matSort
-      class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"
+      class="w-100 p-0 m-0 datatable " cdkDropList [cdkDropListData]="dataView.data"
       (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" cdkDragHandle>
 
       <div *ngFor="let column of displayColumns; let i = index">
@@ -113,8 +112,8 @@
                   <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                     [formControlName]="column" autocomplete="off">
                   <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                    *ngIf="search.value" (click)="clearInput(column)">
-                    <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                    (click)="clearInput(column)" [ngClass]="{'invisible': !search.value }" >
+                    <mat-icon *ngIf="search.value" class="bg-light rounded-circle" color="warn">close</mat-icon>
                   </button>
                 </mat-form-field>
               </div>

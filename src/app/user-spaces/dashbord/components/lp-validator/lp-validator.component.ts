@@ -72,7 +72,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     private common: CommonService,
     private triggerServices: TriggerService
   ) {
-    this.common.showSpinner('root');
     this.route.paramMap.subscribe(async (params: ParamMap) => {
       this.idProjet = params.get('idProduit');
     });
@@ -80,15 +79,11 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   public dataInferList: DataTypes;
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit() {
+  async ngOnInit() {
+    await this.common.showSpinner('root');
     this.triggerServices.switchproject$
       .pipe(
-        tap(() => {
-          this.common.showSpinner('root');
-        }),
-        switchMap(async (idProjet: any) => {
+        tap(async (idProjet: any) => {
           if (idProjet) {
             const res = (
               await this.infoProduitService.checkProject(idProjet)
@@ -109,6 +104,33 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe();
+  }
+
+  async ngAfterViewInit() {
+    // await this.common.showSpinner('root');
+    // this.triggerServices.switchproject$
+    //   .pipe(
+    //     tap(async (idProjet: any) => {
+    //       if (idProjet) {
+    //         const res = (
+    //           await this.infoProduitService.checkProject(idProjet)
+    //         ).subscribe(async (res) => {
+    //           if (res) {
+    //             await this.checkProject(res);
+    //           }
+    //         });
+    //       } else {
+    //         const res = (
+    //           await this.infoProduitService.checkProject(idProjet)
+    //         ).subscribe(async (res) => {
+    //           if (res) {
+    //             await this.checkProject(res);
+    //           }
+    //         });
+    //       }
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   selectionChange(ev: any) {
@@ -165,6 +187,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       'number',
       'select',
       'List_Page_Label',
+      'Number_of_Item',
       'List_Page_Main_Query',
       'Item_Type',
       '_1st_Property',
@@ -196,6 +219,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
       this.common.hideSpinner('root');
       this.common.isLoading$.next(false);
+      
     } else if (data[0].length > 0 && data[1].length == 0) {
       this.selectedStepperIndex = 1;
       this.stepper.steps.forEach((step, index) => {

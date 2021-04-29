@@ -106,6 +106,7 @@ export class LpValidatorService {
             'number',
             'select',
             'List_Page_Label',
+            'Number_of_Item',
             'List_Page_Main_Query',
             'Item_Type',
             '_1st_Property',

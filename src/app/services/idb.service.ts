@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { openDB, deleteDB, wrap, unwrap, IDBPDatabase } from 'idb';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +36,7 @@ export class IdbService {
     });
   }
 
-  addItems(storeName: string, value: any[], id: any) {
+  public addItems(storeName: string, value: any[], id: any) {
     this._dbPromise
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readwrite');
@@ -57,9 +57,19 @@ export class IdbService {
       .then(function () {
         // console.log('added item to the store os!');
       })
-      .catch((error) => {
-        // console.log('error', error);
-      });
+      .catch((error) => {return throwError(error)});
+  }
+
+  public updateItems(storeName: string, value: any[], id: any) {
+    this._dbPromise
+      .then((db: any) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        store.put({ id, value });
+        return tx.complete;
+      })
+      .then(function () {})
+      .catch((error) => {return throwError(error)});
   }
 
   getAllData(storeName: string) {
@@ -72,7 +82,8 @@ export class IdbService {
       .then((values: any) => {
         this._dataChange.next(values);
         return values;
-      });
+      })
+      .catch((error) => {return throwError(error)});
   }
 
   // demo1: Getting started
@@ -89,7 +100,8 @@ export class IdbService {
           return;
         }
         return cursor && cursor.key;
-      });
+      })
+      .catch((error) => {return throwError(error)});
   }
 
   getItem(storeName: string, id: any): Promise<string> {

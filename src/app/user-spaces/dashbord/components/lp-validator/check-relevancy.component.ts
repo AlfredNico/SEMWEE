@@ -128,6 +128,7 @@ export class CheckRelevancyComponent
   ngOnChanges() {
     if (this.dataInferList !== undefined) {
       if (this.dataView.data.length > 0) {
+        this.commonServices.showSpinner('root');
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
         this.displayColumns = [];
       }
@@ -145,7 +146,7 @@ export class CheckRelevancyComponent
       //création formControl Dynamics
       // this.displayColumns.push(key);
     });
-    // this.commonServices.hideSpinner();
+    this.commonServices.hideSpinner();
     // this.commonServices.isLoading$.next(false);
   }
 
@@ -279,6 +280,8 @@ export class CheckRelevancyComponent
     else
       this.numberSelected = 0;
 
+    //save data into indexDB
+    this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);  
   }
 
   public selectRow(row: any) {
@@ -319,6 +322,8 @@ export class CheckRelevancyComponent
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
     this.dataSource.data = this.dataView.data;
     this.numberSelected = 0;
+    //save data into indexDB
+    this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);  
     this.dataView.data.forEach(s => {
       if (s.select === true) {
         this.numberSelected++

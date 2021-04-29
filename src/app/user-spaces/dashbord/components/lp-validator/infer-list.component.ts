@@ -31,6 +31,7 @@ import { NotificationService } from '@app/services/notification.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
 import { DomSanitizer } from '@angular/platform-browser';
+import { IdbService } from '@app/services/idb.service';
 
 @Component({
   selector: 'app-infer-list',
@@ -73,7 +74,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   providers: [FormBuilder],
 })
 export class InferListComponent
-  implements OnInit, AfterViewInit, OnChanges, AfterViewChecked, OnDestroy {
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() data: DataTypes;
   public dataView: DataTypes = {
     displayColumns: [],
@@ -139,7 +140,8 @@ export class InferListComponent
     private lpValidatorServices: LpValidatorService,
     private auth: AuthService,
     private notifs: NotificationService,
-    public senitizer: DomSanitizer
+    public senitizer: DomSanitizer,
+    private idb: IdbService
   ) {
     this.user = this.auth.currentUserSubject.value;
   }
@@ -147,6 +149,7 @@ export class InferListComponent
   ngOnChanges() {
     if (this.data !== undefined) {
       if (this.dataView.data.length > 0) {
+        this.commonServices.showSpinner('root');
         this.dataView = { displayColumns: [], hideColumns: [], data: [] }; // initialize dataSources
         this.displayColumns = []; //display columns tables
         this.checklist = []; // initialize setting uptions
@@ -171,13 +174,10 @@ export class InferListComponent
         if (!key.includes('Value') && key.includes('Facet')) {
           this.selectedOptions.push(key);
           this.checklist.push(key);
-          // if (key.includes('Facet') && !key.includes('Value')) {
-            //   this.checklist.push(key);
-            // }
           }
         }
       });
-      // this.commonServices.hideSpinner();
+    this.commonServices.hideSpinner();
     // this.commonServices.isLoading$.next(false);
   }
 
@@ -242,8 +242,6 @@ export class InferListComponent
       )
       .subscribe();
   }
-
-  public ngAfterViewChecked(): void {}
 
   onClick(item: any) {}
 
@@ -380,6 +378,8 @@ export class InferListComponent
       this.numberSelected = this.dataView.data.length
     else
       this.numberSelected = 0;
+    
+    this.idb.updateItems('infetList', this.dataView.data, this.idProjet);  //save data into indexDB
   }
 
   public selectRow(row: any) {
@@ -420,6 +420,7 @@ export class InferListComponent
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
     this.dataSource.data = this.dataView.data;
     this.numberSelected = 0;
+    this.idb.updateItems('infetList', this.dataView.data, this.idProjet); //save data into indexDB
     this.dataView.data.forEach(s => {
       if (s.select === true) {
         this.numberSelected++
@@ -461,19 +462,7 @@ export class InferListComponent
     }
   }
 
-  // @HostListener('keydown.shift.control', ['$event']) onKeyDown(event: any) {
-  //   console.log('handeol');
-  // }
-
-  // @HostListener('keydown', ['$event']) onKeyDown(e) {
-  //   if (e.shiftKey && e.keyCode == 9) {
-  //     console.log('shift and tab');
-  //   }
-  //   console.log('key', e.keyCode);
-  // }
-
   ngOnDestroy() {
-    console.log('destrout')
     this.dataView = { displayColumns: ['select'], hideColumns: [], data: [] };
     this.dataSource.data = [];
   }
@@ -540,16 +529,3 @@ export class InferListComponent
     return url.toString()
   }
 }
-
-// onResizeEnd(event: ResizeEvent, columnName): void {
-//   if (event.edges.right) {
-//     const cssValue = event.rectangle.width + 'px';
-//     const columnElts = document.getElementsByClassName(
-//       'mat-column-' + columnName
-//     );
-//     for (let i = 0; i < columnElts.length; i++) {
-//       const currentEl = columnElts[i] as HTMLDivElement;
-//       currentEl.style.width = cssValue;
-//     }
-//   }
-// }sle

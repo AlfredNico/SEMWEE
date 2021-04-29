@@ -61,6 +61,7 @@ export class CommonService {
         tap((spinner) => {
           if (spinner) {
             this.isLoading$.subscribe((res) => {
+              this.count++;
               if (res === true) {
                 this.isLoading = true;
                 this.subscription$ = this.intervalCount
@@ -72,15 +73,16 @@ export class CommonService {
                 this._bottomSheet.dismiss();
                 this.onDestroy$.next();
                 this.onDestroy$.complete();
-                this.subscription$.unsubscribe();
+                // this.subscription$.unsubscribe();
               }
             });
             if (spinner.show === true) {
+             this.count = 0;
               this.isLoading = false;
               this._bottomSheet.dismiss();
               this.onDestroy$.next();
               this.onDestroy$.complete();
-              this.subscription$.unsubscribe();
+              // this.subscription$.unsubscribe();
               this.spinner.hide(name);
             }
           }
@@ -96,7 +98,7 @@ export class CommonService {
   }
 
   private checkAlerts(response: number, isRes: boolean): void {
-    if (response === 10 && this.isLoading === true && !this.coockie.check('info')) {
+    if (this.count === 10 && this.isLoading === true && !this.coockie.check('info')) {
       this._bottomSheet.open(InformationSheetButtomComponent);
     }
   }

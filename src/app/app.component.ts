@@ -41,6 +41,13 @@ export class AppComponent {
   ) {
     // this.interrupted.isInterrompted.next(false);
     this.idb.connectToIDB();
+    // this.common.isLoading$.subscribe(res => {
+    //   if (res === true) {
+    //     this.common.showSpinner('root')
+    //   }else{
+    //     this.common.hideSpinner('root')
+    //   }
+    // })
 
     // this.router.events.subscribe((event: Event) => {
     //   switch (true) {

@@ -13,22 +13,19 @@
         class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center"
-    style="margin-left:2em;margin-right:2em;" class="py-2">
-    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-      <span>Table inter list</span>
-      <div>
-        {{ numberSelected }} lines selected from {{ dataView?.data?.length }} items
-      </div>
-    </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-3">
+    <h3 class="text-dark font-weight-bold my-1 mr-5">
+      Selected: {{ numberSelected }} / {{ dataView?.data?.length }} 
+    </h3>
+
     <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-      <span>Table options </span>
+      <span style="ont-size: 1em;" class="menu-text">Table options </span>
     </a>
   </div>
-  <div class="px-2 m-3 table-container" role="tables">
+  <div class="px-0 my-0 table-container" role="tables">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
-      class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"
+      class="w-100 p-0 m-0 datatable " cdkDropList [cdkDropListData]="dataView.data"
       (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
       <div *ngFor="let column of displayColumns; let i = index">
@@ -117,8 +114,8 @@
                   <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                     [formControlName]="column" autocomplete="off">
                   <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                    *ngIf="search.value" (click)="clearInput(column)">
-                    <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                  [ngClass]="{'invisible': !search.value }" (click)="clearInput(column)">
+                    <mat-icon *ngIf="search.value" class="bg-light rounded-circle" color="warn">close</mat-icon>
                   </button>
                 </mat-form-field>
               </div>
@@ -129,12 +126,12 @@
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd"
             class="table-container-td" [class.active]="isRowSelected(row)">
             <span *ngIf="isValidURL(row[column], column) === false; else templeteURL"
-              [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
+              [ngClass]="{'m-auto text-center': isNumberOrString(row[column]) }" role="row">
               {{ row[column] }}
               <div *ngIf="row[column] === ''" class="text-center" style="opacity: 0.5;"> - </div>
             </span>
             <ng-template #templeteURL>
-              <a #templeteURL [href]="senitizer.bypassSecurityTrustUrl(row[column])"
+              <a #templeteURL [href]="senitizer.bypassSecurityTrustResourceUrl(row[column])"
                 target="_blank">{{row[column]}}</a>
             </ng-template>
 

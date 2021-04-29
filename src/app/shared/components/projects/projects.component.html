@@ -11,7 +11,7 @@
         <!--end::Symbol-->
         <!--begin::Text-->
         <a (click)="triggerServices.switchproject$.next(project._id)"
-        [routerLink]="['/user-space/lp-validator', project._id]" class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content">
+        (click)="navigateURL(project._id)" class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content">
           <div class="text-dark mb-1 font-size-lg">{{ project.name_project }}</div>
           <span class="text-muted">Created At {{ project.created_project | date: 'medium' }}</span>
         </a>

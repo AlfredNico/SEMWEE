@@ -14,24 +14,21 @@
     </mat-form-field>
   </div>
 
-  <div fxLayout="row" fxLayoutAlign="space-between center"
-    style="margin-left:22px;margin-right:10px;">
-    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-      <span>Table inter list</span>
-      <div>
-        {{ numberSelected }} lines selected from {{ dataView?.data?.length }} items
-      </div>
-    </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="pb-3">
+    <h3 class="text-dark font-weight-bold my-1 mr-5">
+      Selected: {{ numberSelected }} / {{ dataView?.data?.length }} 
+    </h3>
+
     <a mat-list-item style="cursor: pointer;" (click)="tableOpons()">
       <mat-icon aria-hidden="false" aria-label="settings icon">settings_suggest</mat-icon>
-      <span>Table options </span>
+      <span style="ont-size: 1em;" class="menu-text">Table options </span>
     </a>
   </div>
 
-  <div class="px-2 m-3 table-container" role="tables">
+  <div class="px-0 my-0 table-container" role="tables">
 
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
-      class="w-100 p-4 m-3 datatable " cdkDropList [cdkDropListData]="dataView.data"
+      class="w-100 p-0 m-0 datatable " cdkDropList [cdkDropListData]="dataView.data"
       (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
       <div *ngFor="let column of displayColumns; let i = index">
@@ -123,8 +120,8 @@
                   <input matInput type="search" #search placeholder="Smart Query or Regex ready"
                     [formControlName]="column" autocomplete="off">
                   <button mat-button matSuffix mat-icon-button aria-label="Clear"
-                    *ngIf="search.value" (click)="clearInput(column)">
-                    <mat-icon class="bg-light rounded-circle" color="warn">close</mat-icon>
+                    (click)="clearInput(column)" [ngClass]="{'invisible': !search.value }" >
+                    <mat-icon *ngIf="search.value" class="bg-light rounded-circle" color="warn">close</mat-icon>
                   </button>
                 </mat-form-field>
               </div>
@@ -138,14 +135,14 @@
             <!-- [ngClass]="{'pointer_item': isPopTuneIt(column, row[column])}"  -->
             <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"
               style="padding-right: 10px;">
-              <span class="w-100" [ngClass]="{'m-auto': isNumberOrString(row[column]) }" role="row">
+              <span class="w-100" [ngClass]="{'m-auto text-center': isNumberOrString(row[column]) }" role="row">
                 {{ row[column] }}
                 <div *ngIf="row[column] === ''" class="text-center" style="opacity: 0.5;"> - </div>
               </span>
               <button #button style="display: none; color: #fff; background-color: #3b85fe;"
                 mat-stroked-button *ngIf="isPopTuneIt(column, row[column])"
                 (click)="isPopTuneIt(column, row[column]) ? openTuneIt(i+'_'+indexRow, row, $event, column) : ''">
-                Tune it!
+                Tune it !
               </button>
               <div #content style="padding: 0 20px;" class="Test" [id]="i+'revelancy'+indexRow">
                 {{ row[column] }}
