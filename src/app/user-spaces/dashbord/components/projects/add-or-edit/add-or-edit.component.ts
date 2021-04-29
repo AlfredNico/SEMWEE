@@ -122,7 +122,7 @@ export class AddOrEditComponent implements OnInit {
       country_project: ['', [Validators.required]],
       language_project: ['', [Validators.required]],
       path_project: ['', [Validators.required]],
-      protocol_project: ['', [Validators.required]],
+      protocol_project: [false],
       user_id: ['', Validators.required],
       letter_thumbnails_project: this.fb.group({
         letter: [
