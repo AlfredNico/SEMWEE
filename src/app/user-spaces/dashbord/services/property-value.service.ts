@@ -9,7 +9,7 @@ import { environment } from '@environments/environment';
 export class PropertyValueService {
   constructor(private http: HttpClient) {}
 
-  public appyPropertyValue(data: PropertyType): Promise<{ message: string }> {
+  public appyPropertyValue(data: PropertyType) {
     return this.http
       .put<{ message: string }>(
         `${environment.baseUrl}/validator/put-item-property`,

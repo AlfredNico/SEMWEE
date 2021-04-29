@@ -1,3 +1,4 @@
+import { IdbService } from './../../../../services/idb.service';
 import { PropertyValueService } from './../../services/property-value.service';
 import { ItemTypeService } from './../../services/item-type.service';
 import { NotificationService } from '@app/services/notification.service';
@@ -39,7 +40,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         display: revert;
       }
       .drag_n_drop {
-        cursor: move !important;
+        cursor: cell !important;
       }
       .Test {
         position: absolute;
@@ -51,6 +52,15 @@ import { HttpErrorResponse } from '@angular/common/http';
       .active {
         background: #b6e1ff !important;
       }
+      ::ng-deep #formTable {
+    padding: 0 !important;
+    height: 4vh;
+    margin: 0 !important;
+}
+
+      .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 1em 0 1em 0 !important;
+}
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -90,12 +100,16 @@ export class CheckRelevancyComponent
   public icon = '';
   public active: any = '';
 
+  //idProduit
+  @Input() idProjet: string = '';
+
   // multipleSelect tables
   isKeyPressed: boolean = false;
   selectedRow: any;
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
+  numberSelected: number = 0;
 
   //resizable
   mawWidth: number = 0;
@@ -106,12 +120,11 @@ export class CheckRelevancyComponent
     public dialog: MatDialog,
     private itemService: ItemTypeService,
     private propertyService: PropertyValueService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    private idb: IdbService
   ) {}
 
   ngOnChanges() {
-    this.commonServices.showSpinner();
-
     if (this.dataInferList !== undefined) {
       if (this.dataView.data.length > 0) {
         this.dataView = { displayColumns: [], hideColumns: [], data: [] };
@@ -130,7 +143,8 @@ export class CheckRelevancyComponent
       //création formControl Dynamics
       // this.displayColumns.push(key);
     });
-    this.commonServices.hideSpinner();
+    //  this.commonServices.hideSpinner();
+    // this.commonServices.isLoading$.next(false);
   }
 
   ngOnInit(): void {}
@@ -259,28 +273,34 @@ export class CheckRelevancyComponent
     this.dataView.data.forEach((t) => (t.select = completed));
   }
 
-  public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x._id === row._id);
+public selectRow(row: any) {
+    const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow >= i && i >= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
       else
         this.dataView.data.forEach((t, i) => {
           if (this.indexSelectedRow <= i && i <= index) {
+            this.dataView.data[i] = {
+              ...this.dataView.data[i],
+              select: this.selectedItem,
+            };
             this.selectedRowsArray.push(this.dataView.data[i]);
-            return (t.select = this.selectedItem);
           }
         });
     } else {
       this.selectedRowsArray = [];
       this.dataView.data[index] = {
-        ...row,
+        ...this.dataView.data[index],
         select: row['select'] == true ? false : true,
       };
       this.selectedRowsArray.push(this.dataView.data[index]);
@@ -318,10 +338,10 @@ export class CheckRelevancyComponent
     this.isKeyPressed = false;
   }
 
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(
+   @HostListener('document:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    if (event.keyCode === 17 || event.ctrlKey) this.isKeyPressed = true;
+    if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) this.isKeyPressed = true;
     else this.isKeyPressed = false;
   }
 
@@ -336,11 +356,23 @@ export class CheckRelevancyComponent
     const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = el;
     const postLeft: number = offsetLeft + offsetWidth;
     const { clientX, clientY } = event;
+    let indexRow: any[] = [];
 
-    // '1rest property hugy'.match(/property$/);
+    this.dataView.data.forEach((element, index) => {
+      if (
+        (element[itemSeleted.match(/Item[^]*Type$/)?.toString()] ||
+          element['_1st_Property'] ||
+          element['_2st_Property'] ||
+          element['_3st_Property'] ||
+          element['_4st_Property'] ||
+          element['_5st_Property']) === row[itemSeleted]
+      ) {
+        indexRow.push(index);
+      }
+    });
 
     let val: any = '';
-    const index = this.dataView.data.findIndex((x) => x._id === row._id);
+    // const index = this.dataView.data.findIndex((x) => x._id === row._id);
 
     try {
       if (this.toLowerCase(itemSeleted).match(/item[^]*type$/))
@@ -362,14 +394,22 @@ export class CheckRelevancyComponent
         .pipe(
           map((result: any) => {
             if (result) {
-              const data = this.dataView.data[index];
-              const val = (data[itemSeleted] = result['Editspelling']);
-              const newVla = {
-                ...data,
-                val,
-              };
+              indexRow.forEach((index) => {
+                const data = this.dataView.data[index];
+                const val = (data[itemSeleted] = result['Editspelling']);
+                const newVla = {
+                  ...data,
+                  val,
+                };
 
-              this.dataView.data[index] = newVla;
+                this.dataView.data[index] = newVla;
+              });
+
+              this.idb.addItems(
+                'checkRevelancy',
+                this.dataView.data,
+                this.idProjet
+              );
             }
           })
         )
@@ -396,7 +436,7 @@ export class CheckRelevancyComponent
     switch (true) {
       case this.toLowerCase(column) == '_id':
       // case this.toLowerCase(column) == 'id':
-      // case this.toLowerCase(column) == 'idproduct':
+      case this.toLowerCase(column) == 'idproduct':
       case this.toLowerCase(column) == '__v':
       case this.toLowerCase(column) == 'select':
         // case this.toLowerCase(column) == 'ID':
