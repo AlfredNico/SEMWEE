@@ -90,11 +90,10 @@ export class ProjectsService {
         nameProject: control.value,
         idUser: this.auth.currentUserSubject.value['_id'],
       };
-      // console.log(created_at);
 
       if (isAddItem === true) {
         return this.http
-          .post(`${environment.baseUrl}/project/checkProject`, val, {})
+          .get(`${environment.baseUrl}/project/checkProject/${val.idUser}/${control.value}`)
           .pipe(
             map((res: any) =>
               (res.message && isAddItem) === true ? { projectName: true } : null

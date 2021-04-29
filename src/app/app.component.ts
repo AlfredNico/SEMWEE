@@ -1,3 +1,5 @@
+import { BottonSheetComponent } from './shared/components/botton-sheet/botton-sheet.component';
+import { IdbService } from './services/idb.service';
 import { InterruptedService } from './shared/services/interrupted.service';
 import { Component, HostListener } from '@angular/core';
 import {
@@ -9,12 +11,13 @@ import {
   Router,
 } from '@angular/router';
 import { CommonService } from './shared/services/common.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-root',
   template: `
     <ngx-spinner name="root">
-      <p [style.color]="'white'">loading ...</p>
+      <p [style.color]="'white'">Loading ...</p>
     </ngx-spinner>
     <router-outlet></router-outlet>
   `,
@@ -32,23 +35,23 @@ export class AppComponent {
   constructor(
     private router: Router,
     private common: CommonService,
-    private interrupted: InterruptedService
+    private interrupted: InterruptedService,
+    private readonly idb: IdbService,
+    private _bottomSheet: MatBottomSheet
   ) {
     // this.interrupted.isInterrompted.next(false);
+    this.idb.connectToIDB();
 
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
-          this.common.showSpinner('root');
+          this.common.showSpinner();
           break;
         }
         case event instanceof NavigationEnd:
-        case event instanceof NavigationError:
-        case event instanceof NavigationCancel: {
+        case event instanceof NavigationCancel:
+        case event instanceof NavigationError: {
           this.common.hideSpinner();
-          break;
-        }
-        default: {
           break;
         }
       }
@@ -59,8 +62,9 @@ export class AppComponent {
     event: KeyboardEvent
   ) {
     if (event.keyCode === 27) {
+      this._bottomSheet.open(BottonSheetComponent);
       // this.interrupted.isInterrompted.next(true);
-      this.common.hideSpinner();
+      // this.common.hideSpinner();
     }
   }
 }

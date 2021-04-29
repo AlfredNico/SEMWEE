@@ -1,3 +1,4 @@
+import { CommonService } from '@app/shared/services/common.service';
 import { NotificationService } from './services/notification.service';
 import { switchMap, tap, finalize, map, take, delay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -20,25 +21,13 @@ export class InterruptedInterceptor implements HttpInterceptor {
   timer: any;
   pendingRequestsCount = 0;
   isLoading = false;
-  constructor(
-    private interrupted: InterruptedService,
-    private notifs: NotificationService,
-    private spinner: NgxSpinnerService
-  ) {}
+  constructor() {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    setInterval(() => {
-      this.count++;
-    }, 1000);
-    this.pendingRequestsCount++;
-    return next.handle(request).pipe(
-      finalize(() => {
-        this.pendingRequestsCount--;
-      })
-    );
+    return next.handle(request);
   }
 }
 

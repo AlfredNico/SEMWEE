@@ -1,8 +1,9 @@
+import { IdbService } from './../../../services/idb.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class LpValidatorService {
   public progressBarValue: number = 0;
   public trigger$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private readonly idb: IdbService) {}
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
@@ -31,9 +32,13 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
+          this.idb.addItems('infetList', results, idProjet);
           const head: string[] = Object.keys(results[0]);
-          head.splice(head.indexOf('select'), 1);
-          head.unshift('select');
+          if (head.indexOf('select') !== -1) {
+            head.splice(head.indexOf('select'), 1);
+          }
+
+          head.unshift('number', 'select');
           return {
             displayColumns: head,
             data: results,
@@ -61,7 +66,7 @@ export class LpValidatorService {
             const tmp = {
               Valid: result.valid,
               Popular_Search_Queries: result.psq,
-              Website_Browser: result.webSitePosition,
+              Website_Best_Position: result.webSitePosition,
             };
             data[result._id] = tmp;
             assign(this.converDataMatching(dataSources, data, true));
@@ -88,7 +93,7 @@ export class LpValidatorService {
     });
   }
 
-  public postInferList(value: any) {
+  public postInferList(idProjet: any, value: any) {
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,
@@ -96,11 +101,24 @@ export class LpValidatorService {
       )
       .pipe(
         map((results: any) => {
-          const head: string[] = Object.keys(results[0]);
-          head.splice(head.indexOf('select'), 1);
-          head.unshift('select');
+          this.idb.addItems('checkRevelancy', results, idProjet);
+          const headers = [
+            'number',
+            'select',
+            'List_Page_Label',
+            'List_Page_Main_Query',
+            'Item_Type',
+            '_1st_Property',
+            '_2nd_Property',
+            '_3rd_Property',
+            '_4th_Property',
+            '_5th_Property',
+            'Property_Schema',
+            '_id',
+            'idProduct',
+          ];
           return {
-            displayColumns: head,
+            displayColumns: headers,
             data: results,
             hideColumns: [],
           };
@@ -122,25 +140,39 @@ export class LpValidatorService {
     obj: any = {},
     afterSearch: boolean = false
   ): DataTypes {
-    const columnAdd: string[] = [
+    const headers = [
+      'number',
+      'select',
       'Valid',
+      'List_Page_Label',
       'Popular_Search_Queries',
-      'Website_Browser',
+      'Number_of_Item',
+      'List_Page_Main_Query',
+      'Website_Best_Position',
+      'Item_Type',
+      '_1st_Property',
+      '_2nd_Property',
+      '_3rd_Property',
+      '_4th_Property',
+      '_5th_Property',
+      'property_Schema',
+      '_id',
+      'idProduct',
     ];
 
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
-      Object.keys(values).map((key: string, index: number) => {
-        //console.log(key, index);
-        if (!this.matching.displayColumns.includes(key)) {
-          if (index === 0)
-            this.matching.displayColumns.push('select', columnAdd[0]);
-          if (index === 2) this.matching.displayColumns.push(columnAdd[1]);
-          if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
+      // Object.keys(values).map((key: string, index: number) => {
+      //   //console.log(key, index);
+      //   if (!this.matching.displayColumns.includes(key)) {
+      //     if (index === 0)
+      //       this.matching.displayColumns.push('select', columnAdd[0]);
+      //     if (index === 1) this.matching.displayColumns.push(columnAdd[1]);
+      //     if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
 
-          this.matching.displayColumns.push(key);
-        }
-      });
+      //     this.matching.displayColumns.push(key);
+      //   }
+      // });
 
       if (values['select'] === true) {
         const tmp =
@@ -149,7 +181,7 @@ export class LpValidatorService {
             : {
                 Valid: 'loadingQuery',
                 Popular_Search_Queries: 'loadingQuery',
-                Website_Browser: 'loadingQuery',
+                Website_Best_Position: 'loadingQuery',
               };
         // if (afterSearch && obj[values['_id']] == undefined) {
         //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
@@ -161,7 +193,7 @@ export class LpValidatorService {
     });
 
     return (this.matching = {
-      displayColumns: this.matching.displayColumns,
+      displayColumns: headers,
       hideColumns: [],
       data: dataValue,
     });

@@ -208,16 +208,17 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       );
       if (result) {
         this.uploadFiles.emit(result);
+         this.common.isLoading$.next(false);
       } else {
         this.notifs.warn('Server is not responding');
       }
-      this.common.hideSpinner();
       this.common.isLoading$.next(false);
+      this.common.hideSpinner();
     } catch (error) {
       // this.notifs.warn('Server is not responding');
       // console.log('error ', error);
-      this.common.hideSpinner();
       this.common.isLoading$.next(false);
+      this.common.hideSpinner();
       throw error;
     }
   }
