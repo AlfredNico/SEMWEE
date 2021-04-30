@@ -93,7 +93,7 @@ export class GoogleMachingComponent
     private commonServices: CommonService,
     private lpValidator: LpValidatorService,
     private ref: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnChanges() {
     if (this.dataSources.data.length > 0) {
@@ -111,21 +111,21 @@ export class GoogleMachingComponent
       this.numberSelected = value.data.length;
       this.displayColumns = value.displayColumns;
     }
-    
+
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
+
     this.dataView.displayColumns.map((key: string, index: number) => {
       if (key != 'select') this.filters.addControl(key, new FormControl(''));
       // this.displayColumns.push(key);
     });
-    
+
     this.checkValid();
     // this.commonServices.hideSpinner();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.lpValidator.trigger$
@@ -221,20 +221,20 @@ export class GoogleMachingComponent
     );
   }
 
-   setAll(completed: boolean) {
+  setAllGoogle(completed: boolean) {
     this.selectedRowsArray = [];
     this.allSelect = completed;
     if (this.dataView.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) =>(t.select = completed));
-    if(completed === true )
+    this.dataView.data.forEach((t) => (t.select = completed));
+    if (completed === true)
       this.numberSelected = this.dataView.data.length
     else
       this.numberSelected = 0;
   }
 
-    public selectRow(row: any) {
+  public selectRowGoogle(row: any) {
     const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
@@ -245,7 +245,7 @@ export class GoogleMachingComponent
               ...this.dataView.data[i],
               select: this.selectedItem,
             };
-            this.selectedRowsArray.push(this.dataView.data[i]);
+            this.selectedRowsArray.push(this.dataView.data[i]['_id']);
           }
         });
       else
@@ -255,7 +255,7 @@ export class GoogleMachingComponent
               ...this.dataView.data[i],
               select: this.selectedItem,
             };
-            this.selectedRowsArray.push(this.dataView.data[i]);
+            this.selectedRowsArray.push(this.dataView.data[i]['_id']);
           }
         });
     } else {
@@ -264,13 +264,14 @@ export class GoogleMachingComponent
         ...this.dataView.data[index],
         select: row['select'] == true ? false : true,
       };
-      this.selectedRowsArray.push(this.dataView.data[index]);
+      this.selectedRowsArray.push(this.dataView.data[index]['_id']);
     }
 
     this.selectedRow = row;
     this.indexSelectedRow = index;
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
-    this.dataSource.data = this.dataView.data;
+    // const val = this.dataView.data;
+
     this.numberSelected = 0;
     this.dataView.data.forEach(s => {
       if (s.select === true) {
@@ -280,7 +281,7 @@ export class GoogleMachingComponent
   }
 
   isRowSelected(row: any) {
-    if (this.selectedRowsArray.indexOf(row) != -1) {
+    if (this.selectedRowsArray.indexOf(row['_id']) != -1) {
       return true;
     }
     return false;
@@ -300,9 +301,9 @@ export class GoogleMachingComponent
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
- @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-   this.isKeyPressed = false
+    this.isKeyPressed = false
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
@@ -318,8 +319,8 @@ export class GoogleMachingComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 

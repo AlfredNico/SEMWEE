@@ -79,7 +79,9 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
   public dataInferList: DataTypes;
 
-  async ngOnInit() {
+  ngOnInit(): void { }
+
+  async ngAfterViewInit() {
     await this.common.showSpinner('root');
     this.triggerServices.switchproject$
       .pipe(
@@ -106,38 +108,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  async ngAfterViewInit() {
-    // await this.common.showSpinner('root');
-    // this.triggerServices.switchproject$
-    //   .pipe(
-    //     tap(async (idProjet: any) => {
-    //       if (idProjet) {
-    //         const res = (
-    //           await this.infoProduitService.checkProject(idProjet)
-    //         ).subscribe(async (res) => {
-    //           if (res) {
-    //             await this.checkProject(res);
-    //           }
-    //         });
-    //       } else {
-    //         const res = (
-    //           await this.infoProduitService.checkProject(idProjet)
-    //         ).subscribe(async (res) => {
-    //           if (res) {
-    //             await this.checkProject(res);
-    //           }
-    //         });
-    //       }
-    //     })
-    //   )
-    //   .subscribe();
-  }
-
-  selectionChange(ev: any) {
-    // if (ev.selectedIndex == 3) {
-    //   this.googleMatching.checkValid();
-    // }
-  }
+  selectionChange(ev: any) { }
 
   // Upload file ok
   public nextInfterList(event: any) {
@@ -219,7 +190,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
       this.common.hideSpinner('root');
       this.common.isLoading$.next(false);
-      
+
     } else if (data[0].length > 0 && data[1].length == 0) {
       this.selectedStepperIndex = 1;
       this.stepper.steps.forEach((step, index) => {

@@ -19,7 +19,7 @@ export class LpValidatorService {
   public progressBarValue: number = 0;
   public trigger$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient, private readonly idb: IdbService) {}
+  constructor(private http: HttpClient, private readonly idb: IdbService) { }
 
   public getUpload(idProjet: string, files: File) {
     const formData: FormData = new FormData();
@@ -141,6 +141,7 @@ export class LpValidatorService {
     obj: any = {},
     afterSearch: boolean = false
   ): DataTypes {
+    console.log('data', dataSurces)
     const headers = [
       'number',
       'select',
@@ -180,10 +181,10 @@ export class LpValidatorService {
           obj[values['_id']] != undefined
             ? obj[values['_id']]
             : {
-                Valid: 'loadingQuery',
-                Popular_Search_Queries: 'loadingQuery',
-                Website_Best_Position: 'loadingQuery',
-              };
+              Valid: 'loadingQuery',
+              Popular_Search_Queries: 'loadingQuery',
+              Website_Best_Position: 'loadingQuery',
+            };
         // if (afterSearch && obj[values['_id']] == undefined) {
         //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
         // }
