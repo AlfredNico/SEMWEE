@@ -80,7 +80,7 @@ export class GoogleMachingComponent
   indexSelectedRow: any;
   selectedItem = true;
   selectedRowsArray = [];
-  numberSelected: number = 0;
+  countGoogle: number = 0;
 
   // selection toggle
   allSelect: boolean = true;
@@ -108,7 +108,7 @@ export class GoogleMachingComponent
         this.resultData
       );
       Object.assign(this.dataView, value);
-      this.numberSelected = value.data.length;
+      this.countGoogle = value.data.length;
       this.displayColumns = value.displayColumns;
     }
 
@@ -128,20 +128,21 @@ export class GoogleMachingComponent
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-    this.lpValidator.trigger$
-      .pipe(
-        tap((res) => {
-          if (res == true)
-            this.progressBarValue = this.lpValidator.progressBarValue;
-        })
-      )
-      .subscribe();
+    // this.lpValidator.trigger$
+    //   .pipe(
+    //     tap((res) => {
+    //       if (res == true)
+    //         this.progressBarValue = this.lpValidator.progressBarValue;
+    //     })
+    //   )
+    //   .subscribe();
 
     //Query search field
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          let data = this.dataView.data.filter((item: any) => {
+
+          this.dataSource.data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
@@ -185,7 +186,7 @@ export class GoogleMachingComponent
               });
             }
           });
-          this.dataSource.data = data;
+          this.counterSelected();
         })
       )
       .subscribe();
@@ -194,6 +195,7 @@ export class GoogleMachingComponent
     this.search.valueChanges
       .pipe(
         map((query) => {
+          this.counterSelected();
           this.dataSource.filter = query;
         })
       )
@@ -224,58 +226,83 @@ export class GoogleMachingComponent
   setAllGoogle(completed: boolean) {
     this.selectedRowsArray = [];
     this.allSelect = completed;
-    if (this.dataView.data == null) {
+    if (this.dataSource.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) => (t.select = completed));
+    this.dataSource.data.forEach((t: any) => {
+      const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+      this.dataView.data[_id] = { ...t, select: this.selectedItem };
+
+      t.select = completed
+    });
+
     if (completed === true)
-      this.numberSelected = this.dataView.data.length
+      this.countGoogle = this.dataSource.data.length
     else
-      this.numberSelected = 0;
+      this.countGoogle = 0;
+
+    this.dataView.data = this.dataView.data;
+    this.dataSource.data = this.dataSource.data;
   }
 
   public selectRowGoogle(row: any) {
-    const index = this.dataView.data.findIndex((x) => x._id == row._id);
+    const index = this.dataSource.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
-      if (this.indexSelectedRow > index)
-        this.dataView.data.forEach((t: any, i: number) => {
-          if (this.indexSelectedRow >= i && i >= index) {
-            this.dataView.data[i] = {
-              ...this.dataView.data[i],
-              select: this.selectedItem,
-            };
-            this.selectedRowsArray.push(this.dataView.data[i]['_id']);
+
+      if (this.indexSelectedRow > index) {
+        this.dataSource.data.forEach((t: any, i: number) => {
+
+          if (this.indexSelectedRow >= i && index <= i) {
+            this.dataSource.data[i] = { ...t, select: this.selectedItem };
+            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            this.dataView.data[_id] = { ...t, select: this.selectedItem };
+            this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
-      else
-        this.dataView.data.forEach((t: any, i: number) => {
-          if (this.indexSelectedRow <= i && i <= index) {
-            this.dataView.data[i] = {
-              ...this.dataView.data[i],
-              select: this.selectedItem,
-            };
-            this.selectedRowsArray.push(this.dataView.data[i]['_id']);
+      }
+      else {
+        this.dataSource.data.forEach((t: any, i: number) => {
+          if (index >= i && this.indexSelectedRow <= i) {
+            this.dataSource.data[i] = { ...t, select: this.selectedItem };
+            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            this.dataView.data[_id] = { ...t, select: this.selectedItem };
+            this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
+      }
     } else {
       this.selectedRowsArray = [];
-      this.dataView.data[index] = {
-        ...this.dataView.data[index],
+      this.dataSource.data[index] = {
+        ...this.dataSource.data[index],
         select: row['select'] == true ? false : true,
       };
-      this.selectedRowsArray.push(this.dataView.data[index]['_id']);
+      const _id = this.dataView.data.findIndex((x: any) => x._id == row._id);
+      this.dataView.data[_id] = {
+        ...this.dataSource.data[index],
+        select: row['select'] == true ? false : true,
+      };
+      this.selectedRowsArray.push(this.dataSource.data[index]['_id']);
     }
 
-    this.selectedRow = row;
-    this.indexSelectedRow = index;
-    this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
-    // const val = this.dataView.data;
+    this.dataSource.data = this.dataSource.data;
+    this.dataView.data = this.dataView.data;
 
-    this.numberSelected = 0;
-    this.dataView.data.forEach(s => {
+    this.selectedRow = row;
+    this.indexSelectedRow = this.indexSelectedRow ? this.indexSelectedRow : index;
+    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
+    this.indexSelectedRow = index;
+    this.countGoogle = 0;
+    //save data into indexDB
+    this.counterSelected();
+
+
+  }
+  private counterSelected(): void {
+    this.countGoogle = 0;
+    this.dataSource.data.forEach(s => {
       if (s.select === true) {
-        this.numberSelected++
+        this.countGoogle++
       }
     })
   }
