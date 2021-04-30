@@ -11,11 +11,11 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
 @Component({
   selector: 'app-new-projects',
   template: `
-    <mat-card tabindex="-1" class="w-100">
+    <mat-card tabindex="-1" class="w-100" style="padding: 45px 45px 0 45px;">
       <mat-card-header>
         <mat-card-title>Add New Project</mat-card-title>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content style="padding: 15px 25px 0 25px">
         <app-add-or-edit
           [userId]="userId"
           [isAddItem]="true"
@@ -81,7 +81,7 @@ export class NewProjectsComponent implements DoCheck {
           this.common.hideSpinner();
           this.router.navigateByUrl('/user-space/all-projects');
         } else {
-          console.log('not valid');
+          console.log('not valid', result);
           this.notis.warn('input required');
           this.common.hideSpinner();
         }
