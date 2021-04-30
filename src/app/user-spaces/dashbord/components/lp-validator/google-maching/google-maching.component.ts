@@ -239,7 +239,7 @@ export class GoogleMachingComponent
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index)
-        this.dataView.data.forEach((t, i) => {
+        this.dataView.data.forEach((t: any, i: number) => {
           if (this.indexSelectedRow >= i && i >= index) {
             this.dataView.data[i] = {
               ...this.dataView.data[i],
@@ -249,7 +249,7 @@ export class GoogleMachingComponent
           }
         });
       else
-        this.dataView.data.forEach((t, i) => {
+        this.dataView.data.forEach((t: any, i: number) => {
           if (this.indexSelectedRow <= i && i <= index) {
             this.dataView.data[i] = {
               ...this.dataView.data[i],
