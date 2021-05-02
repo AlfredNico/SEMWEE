@@ -1,6 +1,6 @@
 import { CommonService } from '@app/shared/services/common.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ForgotPwdService } from '@app/authentification/services/forgot-pwd.service';
@@ -12,7 +12,7 @@ import { CustomValidationService } from '@app/shared/services/custom-validation.
   templateUrl: './resetpassword.component.html',
   styleUrls: ['./resetpassword.component.scss'],
 })
-export class ResetpasswordComponent implements DoCheck {
+export class ResetpasswordComponent {
   hide = true;
   submitted = false;
 
@@ -43,17 +43,13 @@ export class ResetpasswordComponent implements DoCheck {
     private custumValidator: CustomValidationService,
     private forgetPwdService: ForgotPwdService,
     private notifs: NotificationService,
-    private readonly common: CommonService
+    public readonly common: CommonService
   ) {
     // const value = this.route.queryParamMap.subscribe(tokenValue => {
     // })
     this.form.patchValue({
       token: this.route.snapshot.queryParamMap.get('token'),
     });
-  }
-
-  ngDoCheck(): void {
-    this.common.hideSpinner();
   }
 
   async onSubmit() {

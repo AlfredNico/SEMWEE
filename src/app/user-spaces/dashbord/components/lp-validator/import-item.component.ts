@@ -168,9 +168,9 @@ export class ImportItemComponent implements OnInit, OnDestroy {
     private lpValidatorServices: LpValidatorService,
     private common: CommonService,
     private notifs: NotificationService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   public onFileChange(event: any) {
     const target: DataTransfer = event.target
@@ -208,10 +208,11 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       );
       if (result) {
         this.uploadFiles.emit(result);
-         this.common.isLoading$.next(false);
-      } else {
-        this.notifs.warn('Server is not responding');
+        this.common.isLoading$.next(false);
       }
+      // else {
+      //   this.notifs.warn('Server is not responding');
+      // }
       this.common.isLoading$.next(false);
       this.common.hideSpinner();
     } catch (error) {

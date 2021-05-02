@@ -60,7 +60,7 @@ export class AddOrEditComponent implements OnInit {
     private projetctService: ProjectsService,
     private notis: NotificationService,
     private custumValidator: CustomValidationService
-  ) {}
+  ) { }
 
   get name_project() {
     return this.form.get('name_project');
@@ -127,7 +127,8 @@ export class AddOrEditComponent implements OnInit {
       letter_thumbnails_project: this.fb.group({
         letter: [
           this.ProjectLetter ? this.ProjectLetter : '',
-          [Validators.maxLength(1)],
+          [Validators.maxLength(1),
+          this.custumValidator.thunderValidator],
         ],
         color: this.ProjectColor ? this.ProjectColor : ['#66ACFF'],
         background: this.ProjectBackground

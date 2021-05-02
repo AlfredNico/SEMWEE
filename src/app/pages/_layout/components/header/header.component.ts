@@ -19,13 +19,14 @@ import KTLayoutHeader from '../../../../../assets/js/layout/base/header';
 import KTLayoutHeaderMenu from '../../../../../assets/js/layout/base/header-menu';
 import { KTUtil } from '../../../../../assets/js/components/util';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { CommonService } from '@app/shared/services/common.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HeaderComponent implements OnInit, AfterViewInit {
   headerContainerCSSClasses: string;
   headerMenuSelfDisplay: boolean;
   headerMenuSelfStatic: boolean;
@@ -37,39 +38,39 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   routerLoaderTimout: any;
 
   @ViewChild('ktHeaderMenu', { static: true }) ktHeaderMenu: ElementRef;
-  loader$: Observable<number>;
+  // loader$: Observable<number>;
 
-  private loaderSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
-    0
-  );
-  private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
+  // private loaderSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
+  //   0
+  // );
+  // private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
-  constructor(private layout: LayoutService, private router: Router) {
-    this.loader$ = this.loaderSubject;
-    // page progress bar percentage
-    const routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        // set page progress bar loading to start on NavigationStart event router
-        this.loaderSubject.next(10);
-      }
-      if (event instanceof RouteConfigLoadStart) {
-        this.loaderSubject.next(65);
-      }
-      if (event instanceof RouteConfigLoadEnd) {
-        this.loaderSubject.next(90);
-      }
-      if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
-        // set page progress bar loading to end on NavigationEnd event router
-        this.loaderSubject.next(100);
-        if (this.routerLoaderTimout) {
-          clearTimeout(this.routerLoaderTimout);
-        }
-        this.routerLoaderTimout = setTimeout(() => {
-          this.loaderSubject.next(0);
-        }, 300);
-      }
-    });
-    this.unsubscribe.push(routerSubscription);
+  constructor(private layout: LayoutService, private router: Router, public common: CommonService) {
+    // this.loader$ = this.loaderSubject;
+    // // page progress bar percentage
+    // const routerSubscription = this.router.events.subscribe((event) => {
+    //   if (event instanceof NavigationStart) {
+    //     // set page progress bar loading to start on NavigationStart event router
+    //     this.loaderSubject.next(10);
+    //   }
+    //   if (event instanceof RouteConfigLoadStart) {
+    //     this.loaderSubject.next(65);
+    //   }
+    //   if (event instanceof RouteConfigLoadEnd) {
+    //     this.loaderSubject.next(90);
+    //   }
+    //   if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
+    //     // set page progress bar loading to end on NavigationEnd event router
+    //     this.loaderSubject.next(100);
+    //     if (this.routerLoaderTimout) {
+    //       clearTimeout(this.routerLoaderTimout);
+    //     }
+    //     this.routerLoaderTimout = setTimeout(() => {
+    //       this.loaderSubject.next(0);
+    //     }, 300);
+    //   }
+    // });
+    // this.unsubscribe.push(routerSubscription);
   }
 
   ngOnInit(): void {
@@ -122,10 +123,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.unsubscribe.forEach((sb) => sb.unsubscribe());
-    if (this.routerLoaderTimout) {
-      clearTimeout(this.routerLoaderTimout);
-    }
-  }
+  // ngOnDestroy() {
+  //   this.unsubscribe.forEach((sb) => sb.unsubscribe());
+  //   if (this.routerLoaderTimout) {
+  //     clearTimeout(this.routerLoaderTimout);
+  //   }
+  // }
 }

@@ -3,7 +3,7 @@
   [ngClass]="headerContainerCSSClasses"
   class="d-flex align-items-stretch justify-content-between shad"
 >
-  <ng-container *ngIf="loader$ | async as _loader">
+  <ng-container *ngIf="common.loader$ | async as _loader">
     <ngb-progressbar
       class="loading-bar"
       height="5px"

@@ -1,20 +1,15 @@
-import { DOCUMENT } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
-  DoCheck,
   ElementRef,
-  OnChanges,
   OnInit,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReCapchaService } from '@app/services/re-capcha.service';
 import { CommonService } from '@app/shared/services/common.service';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -22,7 +17,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
-export class SignInComponent implements OnInit, AfterViewInit, DoCheck {
+export class SignInComponent implements OnInit, AfterViewInit {
   hide = true;
   @ViewChild('recaptch', { static: true }) public recaptch: ElementRef;
 
@@ -40,18 +35,14 @@ export class SignInComponent implements OnInit, AfterViewInit, DoCheck {
     private fb: FormBuilder,
     private router: Router,
     public recaptcha: ReCapchaService,
-    private common: CommonService
-  ) {}
+    public common: CommonService
+  ) { }
 
   get getemail() {
     return this.loginForm.controls.email;
   }
   get getpassword() {
     return this.loginForm.controls.password;
-  }
-
-  ngDoCheck(): void {
-    this.common.hideSpinner();
   }
 
   ngOnChanges(): void {
@@ -62,7 +53,7 @@ export class SignInComponent implements OnInit, AfterViewInit, DoCheck {
     this.recaptch.nativeElement.style.display = 'none';
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   public async onSubmit() {
     this.common.showSpinner('root');

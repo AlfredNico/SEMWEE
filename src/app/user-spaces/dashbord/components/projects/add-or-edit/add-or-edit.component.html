@@ -194,14 +194,14 @@
             formControlName="letter" maxlength="1" autocomplete="off" class="form-control" />
 
           <div
-            *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase; else showInstrLogo">
+            *ngIf="(letter.touched && letter.errors?.required) || letter.errors?.uppercase || letter.errors?.invalidThunder; else showInstrLogo">
             <span class="form-text text-muted text-error" mat-error
               *ngIf="letter.touched && letter.errors?.required">
               Letter is required
             </span>
             <span class="form-text text-muted text-error" mat-error
-              *ngIf="letter.errors?.uppercase">
-              Letter is uppercase or it is not valid
+              *ngIf="letter.errors?.invalidThunder">
+              Invalid letter thumbnail
             </span>
           </div>
           <ng-template #showInstrLogo>

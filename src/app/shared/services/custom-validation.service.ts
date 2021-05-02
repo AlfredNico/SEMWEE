@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root',
 })
 export class CustomValidationService {
-  constructor() {}
+  constructor() { }
 
   public patternValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
@@ -46,9 +46,9 @@ export class CustomValidationService {
     };
   }
 
-  uppercaseValidator(c: FormControl) {
-    const regex = /[A-Z]/g;
-    if (!regex.test(c.value) && c.value) return { uppercase: true };
+  thunderValidator(c: FormControl) {
+    const regex = /[A-z]/g;
+    if (!regex.test(c.value) && c.value) return { invalidThunder: true };
     else return null;
   }
 

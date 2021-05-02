@@ -21,7 +21,7 @@ import { environment } from '@environments/environment';
         [style.background]="projects.letter_thumbnails_project[0]['background']"
         [style.color]="projects.letter_thumbnails_project[0]['color']"
       >
-        {{ letter }}
+        {{ letter?.toUpperCase() }}
       </div>
     </ng-template>
   `,
@@ -32,7 +32,7 @@ export class AvatarComponent implements OnInit {
   public urlImg: string = '';
   public letter: string = '';
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.urlImg = `${environment.baseUrlImg}${this.projects.image_project_Squared}`;

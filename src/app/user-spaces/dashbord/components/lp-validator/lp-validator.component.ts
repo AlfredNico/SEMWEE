@@ -188,7 +188,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
       this.dataSources = this.inferList(data[0]);
       this.dataInferList = this.checkRevelancy(data[1]);
       this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
-      this.common.hideSpinner('root');
+      // this.common.hideSpinner('root');
       this.common.isLoading$.next(false);
 
     } else if (data[0].length > 0 && data[1].length == 0) {
@@ -205,7 +205,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
 
       this.dataSources = this.inferList(data[0]);
       this.isNextStepp = this.stepper?.steps.toArray()[0].completed;
-      this.common.hideSpinner('root');
+      // this.common.hideSpinner('root');
       this.common.isLoading$.next(false);
     } else {
       this.selectedStepperIndex = 0;
@@ -214,7 +214,7 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
         step.editable = true;
       });
       this.isNextStepp = false;
-      this.common.hideSpinner('root');
+      // this.common.hideSpinner('root');
       this.common.isLoading$.next(false);
     }
   }

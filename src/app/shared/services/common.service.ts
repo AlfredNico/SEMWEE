@@ -3,7 +3,7 @@ import { NotificationService } from '@app/services/notification.service';
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
-import { BehaviorSubject, interval, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
 import { startWith, take, takeUntil, takeWhile, tap, timeInterval } from 'rxjs/operators';
 import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material/bottom-sheet';
 import { CookieService } from 'ngx-cookie-service';
@@ -20,16 +20,14 @@ export class CommonService {
   intervalCount = interval(1000);
   private onDestroy$ = new Subject<number>();
   isLoading = false;
-  public isEcs$ = new BehaviorSubject<boolean>(false);
+  // public isEcs$ = new BehaviorSubject<boolean>(false);
 
   public subscription$: Subscription = new Subscription();
-  // private readonly spinnerOptions: Spinner = {
-  //   type: 'ball-spin-clockwise',
-  //   size: 'medium',
-  //   bdColor: 'rgba(131,128,128,0.8)',
-  //   color: 'white',
-  //   fullScreen: true,
-  // };
+  public loaderSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
+    0
+  );
+  public loader$: Observable<number>;
+
 
   readonly config: MatBottomSheetConfig = {
     hasBackdrop: false,
@@ -75,6 +73,8 @@ export class CommonService {
                 this.isLoading = true;
                 this.subscription$ = this.intervalCount
                   .pipe(
+                    take(11),
+                    startWith(0),
                     takeUntil(this.onDestroy$))
                   .subscribe((x) => {
                     if (x === 10) {
@@ -85,13 +85,18 @@ export class CommonService {
                     }
                   });
               } else {
+                this.isLoading = false;
                 this.subscription$.unsubscribe();
                 this.onDestroy$.next();
                 this.onDestroy$.complete();
+                // this.intervalCount = interval(1000);
+                this._bottomSheet.dismiss();
               }
             });
             if (spinner.show === true) {
-              // this._bottomSheet.dismiss();
+              this._bottomSheet.dismiss();
+              this.isLoading = false;
+              // this.intervalCount = interval(1000);
               this.onDestroy$.next();
               this.onDestroy$.complete();
               this.subscription$.unsubscribe();
@@ -110,7 +115,9 @@ export class CommonService {
 
   private checkAlerts(response: number, isRes: boolean): void {
     if (response === 10 && this.isLoading === true && !this.coockie.check('info')) {
+      this.intervalCount = interval(1000);
       this.subscription$.unsubscribe();
+      this.isLoading = false;
       this._bottomSheet.open(InformationSheetButtomComponent, this.config);
     }
   }

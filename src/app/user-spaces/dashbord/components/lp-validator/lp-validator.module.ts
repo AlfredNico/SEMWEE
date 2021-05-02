@@ -26,6 +26,7 @@ import { TuniItDirective } from './../../directives/tuni-it.directive';
 import { CapitalizeFirstPipePipe } from 'src/app/user-spaces/dashbord/pipe/capitalize-first-pipe.pipe';
 import { RemoveUnderscorePipe } from 'src/app/user-spaces/dashbord/pipe/remove-underscore.pipe';
 import { StepperIconDirective } from '../../directives/stepper-icon.directive';
+import { HttpCancelService } from '@app/shared/services/http-cancel.service';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { StepperIconDirective } from '../../directives/stepper-icon.directive';
     ItemTypeService,
     PropertyValueService,
     IdbService,
+    HttpCancelService
   ],
   entryComponents: [
     TableOptionsComponent,
@@ -75,4 +77,4 @@ import { StepperIconDirective } from '../../directives/stepper-icon.directive';
     TuneItComponent,
   ],
 })
-export class LpValidatorModule {}
+export class LpValidatorModule { }

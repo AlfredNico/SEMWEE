@@ -4,6 +4,7 @@ import { LandingPageModule } from '../../../shared/modules/landing-page.module';
 import { SharedModule } from '../../../shared/modules/shared.module';
 import { SignInComponent } from './sign-in.component';
 import { AuthService } from '../../services/auth.service';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -12,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
   imports: [
     LandingPageModule,
     SharedModule,
+    NgbProgressbarModule, //ProgressBar module
     RouterModule.forChild([
       { path: '', component: SignInComponent }
     ])

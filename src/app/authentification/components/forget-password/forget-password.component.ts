@@ -1,5 +1,5 @@
 import { CommonService } from '@app/shared/services/common.service';
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ForgotPwdService } from '@app/authentification/services/forgot-pwd.service';
 import { NotificationService } from '@app/services/notification.service';
@@ -9,7 +9,7 @@ import { NotificationService } from '@app/services/notification.service';
   templateUrl: './forget-password.component.html',
   styleUrls: ['./forget-password.component.scss'],
 })
-export class ForgetPasswordComponent implements DoCheck {
+export class ForgetPasswordComponent {
   public form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
   });
@@ -17,12 +17,8 @@ export class ForgetPasswordComponent implements DoCheck {
   constructor(
     private forgetPwdService: ForgotPwdService,
     private nofits: NotificationService,
-    private readonly common: CommonService
-  ) {}
-
-  ngDoCheck(): void {
-    this.common.hideSpinner();
-  }
+    public readonly common: CommonService
+  ) { }
 
   async onSubmit() {
     // console.log(location.origin);
