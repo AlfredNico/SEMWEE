@@ -58,7 +58,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         margin: 0 !important;
       }
       .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {min-width: auto;}
-      
+
       .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 1em 0 1em 0 !important;
 }
@@ -123,7 +123,7 @@ export class CheckRelevancyComponent
     private propertyService: PropertyValueService,
     private notifs: NotificationService,
     private idb: IdbService
-  ) {}
+  ) { }
 
   ngOnChanges() {
     if (this.dataInferList !== undefined) {
@@ -140,7 +140,7 @@ export class CheckRelevancyComponent
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
+
     this.dataView.displayColumns.map((key: any, index: number) => {
       if (key != 'select') this.filters.addControl(key, new FormControl(''));
       //création formControl Dynamics
@@ -150,7 +150,7 @@ export class CheckRelevancyComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     //Query search field
@@ -205,9 +205,9 @@ export class CheckRelevancyComponent
       .subscribe();
   }
 
-  public ngAfterViewChecked(): void {}
+  public ngAfterViewChecked(): void { }
 
-  onClick(item: any) {}
+  onClick(item: any) { }
 
   //Deop item list
   public drop(event: CdkDragDrop<string[]>) {
@@ -268,27 +268,23 @@ export class CheckRelevancyComponent
       .subscribe();
   }
 
-    setAll(completed: boolean) {
+  setAll(completed: boolean) {
     this.selectedRowsArray = [];
     this.allSelect = completed;
     if (this.dataView.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) =>(t.select = completed));
-    if(completed === true )
+    this.dataView.data.forEach((t) => (t.select = completed));
+    if (completed === true)
       this.numberSelected = this.dataView.data.length
     else
       this.numberSelected = 0;
 
     //save data into indexDB
-    this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);  
+    this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);
   }
 
-<<<<<<< HEAD
   public selectRow(row: any) {
-=======
-public selectRow(row: any) {
->>>>>>> c2ed7219692f7e0d20300de2b25b85d708e70edb
     const index = this.dataView.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
@@ -327,7 +323,7 @@ public selectRow(row: any) {
     this.dataSource.data = this.dataView.data;
     this.numberSelected = 0;
     //save data into indexDB
-    this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);  
+    this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);
     this.dataView.data.forEach(s => {
       if (s.select === true) {
         this.numberSelected++
@@ -356,9 +352,9 @@ public selectRow(row: any) {
       this.dataView.data != null && this.dataView.data.every((t) => t.select);
   }
 
- @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-   this.isKeyPressed = false
+    this.isKeyPressed = false
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
@@ -451,8 +447,8 @@ public selectRow(row: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 

@@ -24,7 +24,7 @@ import { Users } from '@app/models/users';
 import { SettingTableComponent } from '@app/shared/components/setting-table/setting-table.component';
 import { TableOptionsComponent } from '@app/shared/components/table-options/table-options.component';
 import { CommonService } from '@app/shared/services/common.service';
-import { map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { NotificationService } from '@app/services/notification.service';
@@ -65,7 +65,7 @@ import { IdbService } from '@app/services/idb.service';
   padding: 1em 0 1em 0 !important;
 }
     /* ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
-        top: .25em; 
+        top: .25em;
         padding: 1.5em 0 .5em;
     }*/
     `,
@@ -156,32 +156,32 @@ export class InferListComponent
         this.selectedOptions = []; // initialize list items selected on options
         this.checked = true;
       }
-      
+
       Object.assign(this.dataView, this.data);
       this.numberSelected = this.dataView.data.length;
       this.displayColumns = this.data.displayColumns;
     }
-    
+
     this.dataSource.data = this.dataView.data;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
+
     this.dataView.displayColumns.map((key: string, index: number) => {
       if (key != 'select') {
         //création formControl Dynamics
         this.filters.addControl(key, new FormControl(''));
-        
+
         if (!key.includes('Value') && key.includes('Facet')) {
           this.selectedOptions.push(key);
           this.checklist.push(key);
-          }
         }
-      });
+      }
+    });
     this.commonServices.hideSpinner();
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     // Query search field
@@ -243,7 +243,7 @@ export class InferListComponent
       .subscribe();
   }
 
-  onClick(item: any) {}
+  onClick(item: any) { }
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
@@ -321,7 +321,7 @@ export class InferListComponent
   async tableReady() {
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner('root');
-    
+
 
     this.dataView.data.forEach((value: any, currentIndex: number) => {
       let object = {};
@@ -373,12 +373,12 @@ export class InferListComponent
     if (this.dataView.data == null) {
       return;
     }
-   this.dataView.data.forEach((t) =>(t.select = completed));
-    if(completed === true )
+    this.dataView.data.forEach((t) => (t.select = completed));
+    if (completed === true)
       this.numberSelected = this.dataView.data.length
     else
       this.numberSelected = 0;
-    
+
     this.idb.updateItems('infetList', this.dataView.data, this.idProjet);  //save data into indexDB
   }
 
@@ -418,7 +418,7 @@ export class InferListComponent
     this.selectedRow = row;
     this.indexSelectedRow = index;
     this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
-    this.dataSource.data = this.dataView.data;
+    // this.dataSource.data = this.dataView.data;
     this.numberSelected = 0;
     this.idb.updateItems('infetList', this.dataView.data, this.idProjet); //save data into indexDB
     this.dataView.data.forEach(s => {
@@ -451,7 +451,7 @@ export class InferListComponent
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-   this.isKeyPressed = false
+    this.isKeyPressed = false
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
@@ -481,8 +481,8 @@ export class InferListComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 
@@ -491,7 +491,7 @@ export class InferListComponent
   // }
 
   public getWidth(id: any) {
-  console.log('cokes', id)
+    console.log('cokes', id)
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
@@ -524,7 +524,7 @@ export class InferListComponent
     this.filters.controls[column].reset('');
   }
 
-  transformURL(url: string): string{
+  transformURL(url: string): string {
     console.log('rul', url)
     return url.toString()
   }
