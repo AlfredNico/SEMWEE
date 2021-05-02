@@ -11,7 +11,8 @@ import {
   Router,
 } from '@angular/router';
 import { CommonService } from './shared/services/common.service';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material/bottom-sheet';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +32,12 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 })
 export class AppComponent {
   title = 'SEMWEE';
+  readonly config: MatBottomSheetConfig = {
+    hasBackdrop: false,
+    disableClose: false,
+    panelClass: 'bottom-sheet-container',
+    direction: 'ltr'
+  };
 
   constructor(
     private router: Router,
@@ -69,9 +76,10 @@ export class AppComponent {
     event: KeyboardEvent
   ) {
     if (event.keyCode === 27) {
-      this._bottomSheet.open(BottonSheetComponent);
+      this._bottomSheet.open(BottonSheetComponent, this.config);
+      this.common.isEcs$.next(true);
       // this.interrupted.isInterrompted.next(true);
-      // this.common.hideSpinner();
+      this.common.isLoading$.next(false)
     }
   }
 }

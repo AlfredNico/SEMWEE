@@ -196,7 +196,8 @@ export class InferListComponent
           //   }
           // });
           // console.log('params', query);
-          let data = this.dataView.data.filter((item: any) => {
+
+          this.dataSource.data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
             } else {
@@ -229,7 +230,7 @@ export class InferListComponent
               });
             }
           });
-          this.dataSource.data = data;
+          this.counterSelected();
         })
       )
       .subscribe();
@@ -237,6 +238,7 @@ export class InferListComponent
     this.search.valueChanges
       .pipe(
         map((query) => {
+          this.counterSelected();
           this.dataSource.filter = query;
         })
       )
@@ -370,58 +372,84 @@ export class InferListComponent
   setAll(completed: boolean) {
     this.selectedRowsArray = [];
     this.allSelect = completed;
-    if (this.dataView.data == null) {
+    if (this.dataSource.data == null) {
       return;
     }
-    this.dataView.data.forEach((t) => (t.select = completed));
+    this.dataSource.data.forEach((t: any) => {
+      const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+      this.dataView.data[_id] = { ...t, select: this.selectedItem };
+
+      t.select = completed
+    });
+
     if (completed === true)
-      this.numberSelected = this.dataView.data.length
+      this.numberSelected = this.dataSource.data.length
     else
       this.numberSelected = 0;
+
+    this.dataView.data = this.dataView.data;
+    this.dataSource.data = this.dataSource.data;
 
     this.idb.updateItems('infetList', this.dataView.data, this.idProjet);  //save data into indexDB
   }
 
   public selectRow(row: any) {
-    const index = this.dataView.data.findIndex((x) => x.ID == row.ID);
+    const index = this.dataSource.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
-      if (this.indexSelectedRow > index)
-        this.dataView.data.forEach((t, i) => {
-          if (this.indexSelectedRow >= i && i >= index) {
-            this.dataView.data[i] = {
-              ...this.dataView.data[i],
-              select: this.selectedItem,
-            };
-            this.selectedRowsArray.push(this.dataView.data[i]);
+
+      if (this.indexSelectedRow > index) {
+        this.dataSource.data.forEach((t: any, i: number) => {
+
+          if (this.indexSelectedRow >= i && index <= i) {
+            this.dataSource.data[i] = { ...t, select: this.selectedItem };
+            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            this.dataView.data[_id] = { ...t, select: this.selectedItem };
+            this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
-      else
-        this.dataView.data.forEach((t, i) => {
-          if (this.indexSelectedRow <= i && i <= index) {
-            this.dataView.data[i] = {
-              ...this.dataView.data[i],
-              select: this.selectedItem,
-            };
-            this.selectedRowsArray.push(this.dataView.data[i]);
+      }
+      else {
+        this.dataSource.data.forEach((t: any, i: number) => {
+          if (index >= i && this.indexSelectedRow <= i) {
+            this.dataSource.data[i] = { ...t, select: this.selectedItem };
+            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            this.dataView.data[_id] = { ...t, select: this.selectedItem };
+            this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
+      }
     } else {
       this.selectedRowsArray = [];
-      this.dataView.data[index] = {
-        ...this.dataView.data[index],
+      this.dataSource.data[index] = {
+        ...this.dataSource.data[index],
         select: row['select'] == true ? false : true,
       };
-      this.selectedRowsArray.push(this.dataView.data[index]);
+      const _id = this.dataView.data.findIndex((x: any) => x._id == row._id);
+      this.dataView.data[_id] = {
+        ...this.dataSource.data[index],
+        select: row['select'] == true ? false : true,
+      };
+      this.selectedRowsArray.push(this.dataSource.data[index]['_id']);
     }
 
+    this.dataSource.data = this.dataSource.data;
+    this.dataView.data = this.dataView.data;
+
     this.selectedRow = row;
+    this.indexSelectedRow = this.indexSelectedRow ? this.indexSelectedRow : index;
+    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.indexSelectedRow = index;
-    this.selectedItem = this.dataView.data[this.indexSelectedRow]['select'];
-    // this.dataSource.data = this.dataView.data;
     this.numberSelected = 0;
+    //save data into indexDB
     this.idb.updateItems('infetList', this.dataView.data, this.idProjet); //save data into indexDB
-    this.dataView.data.forEach(s => {
+    this.counterSelected();
+
+
+  }
+  private counterSelected(): void {
+    this.numberSelected = 0
+    this.dataSource.data.forEach(s => {
       if (s.select === true) {
         this.numberSelected++
       }
@@ -429,7 +457,7 @@ export class InferListComponent
   }
 
   isRowSelected(row: any) {
-    if (this.selectedRowsArray.indexOf(row) != -1) {
+    if (this.selectedRowsArray.indexOf(row['ID']) != -1) {
       return true;
     }
     return false;

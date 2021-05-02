@@ -15,7 +15,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
     <h3 class="text-dark font-weight-bold my-1 mr-5">
-      Selected: {{ numberSelected }} / {{ dataView?.data?.length }} 
+      Selected: {{ countGoogle }} / {{ dataSource?.data?.length }}
     </h3>
   </div>
 
@@ -44,7 +44,7 @@
           </th>
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+            [class.active]="isRowSelected(row)" class="p-0 text-center">
             <div class="bg-whire">
               {{ indexRow + 1 }}
             </div>
@@ -68,7 +68,7 @@
                 </div>
               </div>
               <div style="padding: 17px;" class="text-center bg-white">
-                <mat-checkbox color="accent" [checked]="allSelect" (change)="setAll($event.checked)"
+                <mat-checkbox color="accent" [checked]="allSelect" (change)="setAllGoogle($event.checked)"
                   [indeterminate]="someComplete()"></mat-checkbox>
               </div>
             </span>
@@ -77,7 +77,7 @@
           <!-- (ngModelChange)="updateAllComplete()" (click)="selectRow(row)"  -->
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRowGoogle(row)">
             <div class="bg-whire">
               <mat-checkbox color="accent" [(ngModel)]="row[column]"
                 (ngModelChange)="updateAllComplete()">

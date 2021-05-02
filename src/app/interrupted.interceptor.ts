@@ -10,8 +10,6 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { EMPTY, interval, NEVER, Observable, Subscription } from 'rxjs';
-import { InterruptedService } from './shared/services/interrupted.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable()
 export class InterruptedInterceptor implements HttpInterceptor {
@@ -21,13 +19,25 @@ export class InterruptedInterceptor implements HttpInterceptor {
   timer: any;
   pendingRequestsCount = 0;
   isLoading = false;
-  constructor() {}
+  constructor(private common: CommonService) { }
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return next.handle(request);
+    return next.handle(request).pipe(
+      finalize(() => {
+        this.common.isEcs$.pipe(
+          switchMap((res: boolean) => {
+            if (res === true) {
+              console.log('ok')
+              this.common.isEcs$.next(false);
+              return EMPTY;
+            }
+          })
+        )
+      })
+    )
   }
 }
 
