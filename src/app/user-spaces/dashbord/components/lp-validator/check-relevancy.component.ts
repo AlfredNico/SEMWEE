@@ -411,7 +411,7 @@ export class CheckRelevancyComponent
     const { clientX, clientY } = event;
     let indexRow: any[] = [];
 
-    this.dataView.data.forEach((element, index) => {
+    this.dataSource.data.forEach((element, index) => {
       if (
         (element[itemSeleted.match(/Item[^]*Type$/)?.toString()] ||
           element['_1st_Property'] ||
@@ -420,7 +420,7 @@ export class CheckRelevancyComponent
           element['_4st_Property'] ||
           element['_5st_Property']) === row[itemSeleted]
       ) {
-        indexRow.push(index);
+        indexRow.push(element['_id']);
       }
     });
 
@@ -447,16 +447,23 @@ export class CheckRelevancyComponent
         .pipe(
           map((result: any) => {
             if (result) {
-              indexRow.forEach((index) => {
-                const data = this.dataView.data[index];
+              indexRow.forEach((_id: any) => {
+                const _idDataSource = this.dataSource.data.findIndex((x: any) => x._id === _id);
+                const data = this.dataSource.data[_idDataSource];
                 const val = (data[itemSeleted] = result['Editspelling']);
+
                 const newVla = {
                   ...data,
                   val,
                 };
 
-                this.dataView.data[index] = newVla;
+                const _idDataView = this.dataView.data.findIndex((x: any) => x._id == _id);
+                this.dataSource.data[_idDataSource] = { ...newVla };
+                this.dataView.data[_idDataView] = { ...newVla };
               });
+
+              this.dataSource.data = this.dataSource.data;
+              this.dataView.data = this.dataView.data;
 
               this.idb.addItems(
                 'checkRevelancy',
