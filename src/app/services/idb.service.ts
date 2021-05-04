@@ -41,15 +41,6 @@ export class IdbService {
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readwrite');
         const store = tx.objectStore(storeName);
-        // this.getAllData(storeName).then((values: any) => {
-        //   if (values.length > 1) {
-        //     this.getItemIntoDB(storeName).then((res) => {
-        //       if (res === id) {
-        //         this.deleteItem(storeName, res);
-        //       }
-        //     });
-        //   }
-        // });
         store.add({ id, value });
         // this._dataChange.next(items);
         return tx.complete;
@@ -87,7 +78,7 @@ export class IdbService {
   }
 
   // demo1: Getting started
-  getItemIntoDB(storeName: string): Promise<string> {
+  getItemIntoDB(storeName: string): Promise<any> {
     return this._dbPromise
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readonly');
@@ -104,7 +95,7 @@ export class IdbService {
       .catch((error) => {return throwError(error)});
   }
 
-  getItem(storeName: string, id: any): Promise<string> {
+  getItem(storeName: string, id: any): Promise<any> {
     return this._dbPromise
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readonly');
