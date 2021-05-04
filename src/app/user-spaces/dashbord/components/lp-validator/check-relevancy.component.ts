@@ -517,10 +517,6 @@ export class CheckRelevancyComponent
     else return false;
   }
 
-  // hideTooltip(event: number) {
-  //   if (!this.rowIndex.includes(event)) this.rowIndex.push(event);
-  // }
-
   public getWidth(id: any) {
     this.mawWidth = 0;
 

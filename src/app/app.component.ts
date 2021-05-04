@@ -64,21 +64,6 @@ export class AppComponent implements OnDestroy {
       // }
     })
 
-    // this.router.events.subscribe((event: Event) => {
-    //   switch (true) {
-    //     case event instanceof NavigationStart: {
-    //       this.common.showSpinner();
-    //       break;
-    //     }
-    //     case event instanceof NavigationEnd:
-    //     case event instanceof NavigationCancel:
-    //     case event instanceof NavigationError: {
-    //       this.common.hideSpinner();
-    //       break;
-    //     }
-    //   }
-    // });
-
     this.common.loader$ = this.common.loaderSubject;
     // page progress bar percentage
     const routerSubscription = this.router.events.subscribe((event) => {
@@ -118,9 +103,6 @@ export class AppComponent implements OnDestroy {
   ) {
     if (event.keyCode === 27) {
       this._bottomSheet.open(BottonSheetComponent, this.config);
-      // this.common.isEcs$.next(true);
-      // this.interrupted.isInterrompted.next(true);
-      // this.common.isLoading$.next(false)
     }
   }
 }

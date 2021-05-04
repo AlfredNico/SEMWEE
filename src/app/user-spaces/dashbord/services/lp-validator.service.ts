@@ -94,7 +94,6 @@ export class LpValidatorService {
   }
 
   public postInferList(idProjet: any, value: any) {
-    console.log('val', value)
     return this.http
       .post<{ displayColumns: string[]; hideColumns: string[]; data: [] }>(
         `${environment.baseUrl}/validator/post-infer-list`,

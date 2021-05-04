@@ -97,9 +97,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         loadChildren: () =>
           import('./user-spaces/dashbord.module').then((m) => m.DashbordModule),
         canActivate: [AuthGuard, IsLoggedInGuard],
-      },
-      // { path: '**', component: PageNotFoundComponent },
-      // { path: '', pathMatch: 'full', redirectTo: 'home' },
+      }
     ]),
   ],
   exports: [RouterModule],

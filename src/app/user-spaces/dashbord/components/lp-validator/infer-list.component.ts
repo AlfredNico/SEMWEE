@@ -1,6 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -519,7 +518,6 @@ export class InferListComponent
   // }
 
   public getWidth(id: any) {
-    console.log('cokes', id)
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
@@ -544,16 +542,16 @@ export class InferListComponent
     return false;
   }
 
-  onPaginateChange(event) {
-    console.log('Current page index: ' + JSON.stringify(event));
-  }
 
   public clearInput(column: any) {
     this.filters.controls[column].reset('');
   }
 
   transformURL(url: string): string {
-    console.log('rul', url)
     return url.toString()
   }
+
+  // onPaginateChange(event) {
+  //   console.log('Current page index: ' + JSON.stringify(event));
+  // }
 }

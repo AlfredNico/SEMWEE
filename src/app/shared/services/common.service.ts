@@ -42,10 +42,6 @@ export class CommonService {
     private coockie: CookieService
   ) { }
 
-  // public hideSpinner(name = 'root') {
-  //   return this.spinner.hide(name);
-  // }
-
   public showSpinner(name = 'root', fullScreen = true, template?: any) {
     const options: Spinner = {
       type: 'ball-spin-clockwise',
