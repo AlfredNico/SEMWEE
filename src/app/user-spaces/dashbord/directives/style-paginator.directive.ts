@@ -247,7 +247,7 @@ export class StylePaginatorDirective {
   }
   //Helper function to switch page on non first, last, next and previous buttons only.
   private switchPage(i: number): void {
-    console.log('switch', i);
+    // console.log('switch', i);
     const previousPageIndex = this.matPag.pageIndex;
     this.matPag.pageIndex = i;
     this.matPag['_emitPageEvent'](previousPageIndex);

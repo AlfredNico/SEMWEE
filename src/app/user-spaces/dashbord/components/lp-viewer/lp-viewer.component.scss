@@ -1,18 +1,18 @@
 ::ng-deep {
   /* Styles for tab labels */
   .mat-tab-labels {
-    background-color: rgb(147, 205, 255);
+    background-color: #cae2f9;;
     height: 50px;
     div {
       padding: 5px;
       margin-top: 5px;
       min-width: 5px !important;
-      margin: 5px 5px 0 5px;
+      margin: 10px 5px 0 5px;
     }
   }
 
   aside {
-    min-height: calc(100vh - 14rem) !important;
+    min-height: calc(100vh - 17rem) !important;
   }
   /* Styles for the active tab label */
   .mat-tab-label.mat-tab-label-active {
@@ -20,13 +20,16 @@
     min-width: 5px !important;
     padding: 5px;
     background-color: #f0f1f6;
-    margin: 5px 5px 0 5px;
+    margin: 10px 5px 0 5px;
   }
 }
 
 :host {
-  md-icon.size-40 {
-    font-size: 40px !important;
+  mat-icon.option-icon {
+    font-size: 20px !important;
+    border: 1px solid #3f4254;
+    border-radius: 15%;
+    cursor: pointer;
   }
 }
 
@@ -48,6 +51,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 2em;
+    padding-right: 24px;
     span[role="row"] {
       display: block;
       overflow: hidden;
@@ -66,12 +70,13 @@
     //   top: 65px !important;
     top: 0 !important;
     z-index: 2 !important;
+    border-bottom: 4px solid #93cdff;
     span > div {
-      background: #42425e;
+      // background: #42425e;
+      font-size: 17px;
       color: #a1a2b5;
       width: 100%;
       font-weight: 600;
-      font-size: 13px;
     }
     //   background: rgb(40, 224, 53);
     &:not(:last-child) {
@@ -84,6 +89,9 @@
         top: 0;
         z-index: 1;
       }
+    }
+    &:last-child{
+      border-right: 4px solid #93cdff;
     }
   }
   .mat-cell,
