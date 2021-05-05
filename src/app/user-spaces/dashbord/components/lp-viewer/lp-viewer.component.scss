@@ -1,0 +1,96 @@
+::ng-deep {
+  /* Styles for tab labels */
+  .mat-tab-labels {
+    background-color: rgb(147, 205, 255);
+    height: 50px;
+    div {
+      padding: 5px;
+      margin-top: 5px;
+      min-width: 5px !important;
+      margin: 5px 5px 0 5px;
+    }
+  }
+
+  aside {
+    min-height: calc(100vh - 14rem) !important;
+  }
+  /* Styles for the active tab label */
+  .mat-tab-label.mat-tab-label-active {
+    // min-width: 25px !important;
+    min-width: 5px !important;
+    padding: 5px;
+    background-color: #f0f1f6;
+    margin: 5px 5px 0 5px;
+  }
+}
+
+:host {
+  md-icon.size-40 {
+    font-size: 40px !important;
+  }
+}
+
+.mat-table {
+  .odd {
+    background: #fff;
+  }
+  .even {
+    background: #f5f6fa;
+  }
+  &.resizing {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: col-resize;
+  }
+  .mat-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 2em;
+    span[role="row"] {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 1em 0 1em 0 !important;
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+  .mat-header-cell {
+    /* : relative; */
+    position: -webkit-sticky;
+    position: sticky !important;
+    //   top: 65px !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    span > div {
+      background: #42425e;
+      color: #a1a2b5;
+      width: 100%;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    //   background: rgb(40, 224, 53);
+    &:not(:last-child) {
+      .resize-holder {
+        cursor: col-resize;
+        width: 20px;
+        height: 100%;
+        position: absolute;
+        right: -10px;
+        top: 0;
+        z-index: 1;
+      }
+    }
+  }
+  .mat-cell,
+  .mat-header-cell {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+    &:not(:nth-child(1)) {
+      padding: 0 10px;
+    }
+  }
+}
