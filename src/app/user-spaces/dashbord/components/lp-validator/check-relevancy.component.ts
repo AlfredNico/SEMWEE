@@ -318,7 +318,6 @@ export class CheckRelevancyComponent
             const _id = this.dataView.data.findIndex(
               (x: any) => x._id == t._id
             );
-            console.log('ind', _id);
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
@@ -340,8 +339,6 @@ export class CheckRelevancyComponent
 
     this.dataSource.data = this.dataSource.data;
     this.dataView.data = this.dataView.data;
-
-    console.log(this.dataView.data);
 
     this.selectedRow = row;
     this.indexSelectedRow = index;

@@ -377,7 +377,7 @@ export class InferListComponent
       return;
     }
     this.dataSource.data.forEach((t: any) => {
-      const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+      const _id = this.dataView.data.findIndex((x: any) => x.ID == t.ID);
       this.dataView.data[_id] = { ...t, select: completed };
       t.select = completed;
     });
@@ -392,29 +392,25 @@ export class InferListComponent
   }
 
   public selectRow(row: any) {
-    const index = this.dataSource.data.findIndex((x) => x._id == row._id);
+    const index = this.dataSource.data.findIndex((x) => x.ID == row.ID);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
       if (this.indexSelectedRow > index) {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (this.indexSelectedRow >= i && index <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex(
-              (x: any) => x._id == t._id
-            );
+            const _id = this.dataView.data.findIndex((x: any) => x.ID == t.ID);
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
-            this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
+            this.selectedRowsArray.push(this.dataSource.data[i]['ID']);
           }
         });
       } else {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (index >= i && this.indexSelectedRow <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex(
-              (x: any) => x._id == t._id
-            );
+            const _id = this.dataView.data.findIndex((x: any) => x.ID == t.ID);
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
-            this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
+            this.selectedRowsArray.push(this.dataSource.data[i]['ID']);
           }
         });
       }
@@ -424,12 +420,12 @@ export class InferListComponent
         ...this.dataSource.data[index],
         select: row['select'] == true ? false : true,
       };
-      const _id = this.dataView.data.findIndex((x: any) => x._id == row._id);
+      const _id = this.dataView.data.findIndex((x: any) => x.ID == row.ID);
       this.dataView.data[_id] = {
         ...this.dataSource.data[index],
         select: row['select'] == true ? false : true,
       };
-      this.selectedRowsArray.push(this.dataSource.data[index]['_id']);
+      this.selectedRowsArray.push(this.dataSource.data[index]['ID']);
     }
 
     this.dataSource.data = this.dataSource.data;
