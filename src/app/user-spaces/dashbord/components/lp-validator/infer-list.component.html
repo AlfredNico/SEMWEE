@@ -79,7 +79,7 @@
           </th>
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRowInfer(row)">
             <div class="bg-whire">
               <mat-checkbox color="accent" [(ngModel)]="row[column]"
                 (ngModelChange)="updateAllComplete()">

@@ -21,7 +21,7 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public event: any;
+  // public event: any;
 
   constructor(public dialog: MatDialog) {}
 
@@ -32,16 +32,19 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  public openEditorDialog(index: number): void {
-    // const { clientX, clientY } = event;
-    // const doc = document.getElementById(`${index}_td`);
-    // const { offsetLeft, offsetTop } = doc;
-    // console.log(this.event);
+  public openEditorDialog(event: any, index: number, indexRow: number): void {
+    const { clientX, clientY } = event;
+    // const doc = document.getElementById(`${index + 1}_td_${indexRow}`);
+    // const { offsetLeft } = doc;
+    // console.log(offsetLeft, '//node_modules', clientX, '//', doc);
 
     const dialogRef = this.dialog.open(EditorDialogComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       width: '250px',
-      // position: { left: `${offsetLeft}px`, top: `${offsetTop}px` },
+      position: {
+        left: `${clientX}px`,
+        top: `${clientY + 5}px`,
+      },
       hasBackdrop: true,
     });
   }

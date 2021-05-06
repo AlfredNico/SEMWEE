@@ -52,6 +52,7 @@
     white-space: nowrap;
     max-width: 2em;
     padding-right: 24px !important;
+    padding-left: 24px !important;
     span[role="row"] {
       display: block;
       overflow: hidden;
@@ -72,6 +73,7 @@
     z-index: 2 !important;
     border-bottom: 4px solid #93cdff;
     padding-right: 24px !important;
+    padding-left: 24px !important;
     span > div {
       // background: #42425e;
       font-size: 17px;

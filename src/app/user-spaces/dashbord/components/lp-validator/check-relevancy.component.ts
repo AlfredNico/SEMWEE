@@ -299,7 +299,7 @@ export class CheckRelevancyComponent
   public selectRowRelevency(row: any) {
     const index = this.dataSource.data.findIndex((x) => x._id == row._id);
 
-    if (this.isKeyPressed == true && this.indexSelectedRow) {
+    if (this.isKeyPressed === true && this.indexSelectedRow != undefined) {
       if (this.indexSelectedRow > index) {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (this.indexSelectedRow >= i && index <= i) {
@@ -323,7 +323,7 @@ export class CheckRelevancyComponent
           }
         });
       }
-    } else {
+    } else if (this.isKeyPressed == false) {
       this.selectedRowsArray = [];
       this.dataSource.data[index] = {
         ...this.dataSource.data[index],

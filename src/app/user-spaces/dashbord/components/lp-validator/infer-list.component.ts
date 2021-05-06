@@ -31,6 +31,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IdbService } from '@app/services/idb.service';
+import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-infer-list',
@@ -391,10 +392,10 @@ export class InferListComponent
     this.idb.updateItems('infetList', this.dataView.data, this.idProjet); //save data into indexDB
   }
 
-  public selectRow(row: any) {
+  public selectRowInfer(row: any) {
     const index = this.dataSource.data.findIndex((x) => x.ID == row.ID);
 
-    if (this.isKeyPressed == true && this.indexSelectedRow) {
+    if (this.isKeyPressed === true && this.indexSelectedRow !== undefined) {
       if (this.indexSelectedRow > index) {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (this.indexSelectedRow >= i && index <= i) {
@@ -404,7 +405,7 @@ export class InferListComponent
             this.selectedRowsArray.push(this.dataSource.data[i]['ID']);
           }
         });
-      } else {
+      } else if (0 < index) {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (index >= i && this.indexSelectedRow <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
