@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { EditorDialogComponent } from './editor-dialog.component';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  Input,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,14 +21,29 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  public event: any;
 
-  constructor() {}
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  public openEditorDialog(index: number): void {
+    // const { clientX, clientY } = event;
+    // const doc = document.getElementById(`${index}_td`);
+    // const { offsetLeft, offsetTop } = doc;
+    // console.log(this.event);
+
+    const dialogRef = this.dialog.open(EditorDialogComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      width: '250px',
+      // position: { left: `${offsetLeft}px`, top: `${offsetTop}px` },
+      hasBackdrop: true,
+    });
   }
 }
 export interface PeriodicElement {

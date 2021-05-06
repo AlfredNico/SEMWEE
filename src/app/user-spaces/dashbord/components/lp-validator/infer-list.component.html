@@ -9,7 +9,7 @@
       <input matInput type="search" #searchInput placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
       <mat-icon *ngIf="searchInput.value == ''" matPrefix>search</mat-icon>
-      <mat-icon *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix
+      <mat-icon style="cursor: pointer;" *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix
         class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>

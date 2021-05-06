@@ -54,16 +54,16 @@ import { IdbService } from '@app/services/idb.service';
       .active {
         background: #b6e1ff !important;
       }
-    ::ng-deep #formTable {
-    padding: 0 !important;
-    height: 4vh;
-    margin: 0 !important;
-}
+      ::ng-deep #formTable {
+        padding: 0 !important;
+        height: 4vh;
+        margin: 0 !important;
+      }
 
-.mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 1em 0 1em 0 !important;
-}
-    /* ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
+      .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 1em 0 1em 0 !important;
+      }
+      /* ::ng-deep.mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix {
         top: .25em;
         padding: 1.5em 0 .5em;
     }*/
@@ -180,7 +180,7 @@ export class InferListComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     // Query search field
@@ -244,7 +244,7 @@ export class InferListComponent
       .subscribe();
   }
 
-  onClick(item: any) { }
+  onClick(item: any) {}
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
@@ -280,7 +280,10 @@ export class InferListComponent
         map((result: SettingRowsTable) => {
           if (result) {
             if (result.noHiddenRows.indexOf('select') !== -1) {
-              result.noHiddenRows.splice(result.noHiddenRows.indexOf('select'), 1);
+              result.noHiddenRows.splice(
+                result.noHiddenRows.indexOf('select'),
+                1
+              );
             }
             result.noHiddenRows.unshift('number', 'select');
 
@@ -305,7 +308,7 @@ export class InferListComponent
         data: {
           selectedOptions: this.selectedOptions,
           checklist: this.checklist,
-          checked: this.checked
+          checked: this.checked,
         },
         width: '600px',
       })
@@ -322,7 +325,6 @@ export class InferListComponent
   async tableReady() {
     this.commonServices.isLoading$.next(true);
     this.commonServices.showSpinner('root');
-
 
     this.dataView.data.forEach((value: any, currentIndex: number) => {
       let object = {};
@@ -376,43 +378,41 @@ export class InferListComponent
     }
     this.dataSource.data.forEach((t: any) => {
       const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
-      this.dataView.data[_id] = { ...t, select: this.selectedItem };
-
-      t.select = completed
+      this.dataView.data[_id] = { ...t, select: completed };
+      t.select = completed;
     });
 
-    if (completed === true)
-      this.numberSelected = this.dataSource.data.length
-    else
-      this.numberSelected = 0;
+    if (completed === true) this.numberSelected = this.dataSource.data.length;
+    else this.numberSelected = 0;
 
     this.dataView.data = this.dataView.data;
     this.dataSource.data = this.dataSource.data;
 
-    this.idb.updateItems('infetList', this.dataView.data, this.idProjet);  //save data into indexDB
+    this.idb.updateItems('infetList', this.dataView.data, this.idProjet); //save data into indexDB
   }
 
   public selectRow(row: any) {
     const index = this.dataSource.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
-
       if (this.indexSelectedRow > index) {
         this.dataSource.data.forEach((t: any, i: number) => {
-
           if (this.indexSelectedRow >= i && index <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            const _id = this.dataView.data.findIndex(
+              (x: any) => x._id == t._id
+            );
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
-      }
-      else {
+      } else {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (index >= i && this.indexSelectedRow <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            const _id = this.dataView.data.findIndex(
+              (x: any) => x._id == t._id
+            );
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
@@ -436,23 +436,21 @@ export class InferListComponent
     this.dataView.data = this.dataView.data;
 
     this.selectedRow = row;
-    this.indexSelectedRow = this.indexSelectedRow ? this.indexSelectedRow : index;
-    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.indexSelectedRow = index;
+    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.numberSelected = 0;
     //save data into indexDB
     this.idb.updateItems('infetList', this.dataView.data, this.idProjet); //save data into indexDB
     this.counterSelected();
-
-
   }
+
   private counterSelected(): void {
-    this.numberSelected = 0
-    this.dataSource.data.forEach(s => {
+    this.numberSelected = 0;
+    this.dataSource.data.forEach((s) => {
       if (s.select === true) {
-        this.numberSelected++
+        this.numberSelected++;
       }
-    })
+    });
   }
 
   isRowSelected(row: any) {
@@ -478,14 +476,14 @@ export class InferListComponent
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false
+    this.isKeyPressed = false;
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
     if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
-      this.isKeyPressed = true
+      this.isKeyPressed = true;
     }
   }
 
@@ -508,8 +506,8 @@ export class InferListComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-        ? (this.icon = 'desc')
-        : (this.icon = '');
+      ? (this.icon = 'desc')
+      : (this.icon = '');
     this.active = $e.active;
   }
 
@@ -542,13 +540,12 @@ export class InferListComponent
     return false;
   }
 
-
   public clearInput(column: any) {
     this.filters.controls[column].reset('');
   }
 
   transformURL(url: string): string {
-    return url.toString()
+    return url.toString();
   }
 
   // onPaginateChange(event) {

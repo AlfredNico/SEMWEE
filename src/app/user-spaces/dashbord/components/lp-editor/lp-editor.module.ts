@@ -1,3 +1,4 @@
+import { EditorDialogComponent } from './editor-dialog.component';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { NgModule } from '@angular/core';
@@ -6,7 +7,7 @@ import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.mo
 import { LpEditorComponent } from './lp-editor.component';
 
 @NgModule({
-  declarations: [LpEditorComponent],
+  declarations: [LpEditorComponent, EditorDialogComponent],
   imports: [
     SharedModule,
     LandingPageModule,
@@ -14,5 +15,6 @@ import { LpEditorComponent } from './lp-editor.component';
     RouterModule.forChild([{ path: '', component: LpEditorComponent }]),
   ],
   exports: [RouterModule],
+  entryComponents: [EditorDialogComponent],
 })
 export class LpEditorModule {}
