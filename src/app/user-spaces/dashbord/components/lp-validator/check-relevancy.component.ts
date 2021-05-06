@@ -57,11 +57,16 @@ import { HttpErrorResponse } from '@angular/common/http';
         height: 4vh;
         margin: 0 !important;
       }
-      .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {min-width: auto;}
+      .mat-button,
+      .mat-icon-button,
+      .mat-stroked-button,
+      .mat-flat-button {
+        min-width: auto;
+      }
 
       .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 1em 0 1em 0 !important;
-}
+        padding: 1em 0 1em 0 !important;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -123,7 +128,7 @@ export class CheckRelevancyComponent
     private propertyService: PropertyValueService,
     private notifs: NotificationService,
     private idb: IdbService
-  ) { }
+  ) {}
 
   ngOnChanges() {
     if (this.dataInferList !== undefined) {
@@ -150,7 +155,7 @@ export class CheckRelevancyComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     //Query search field
@@ -205,12 +210,11 @@ export class CheckRelevancyComponent
         })
       )
       .subscribe();
-
   }
 
-  public ngAfterViewChecked(): void { }
+  public ngAfterViewChecked(): void {}
 
-  onClick(item: any) { }
+  onClick(item: any) {}
 
   //Deop item list
   public drop(event: CdkDragDrop<string[]>) {
@@ -279,18 +283,15 @@ export class CheckRelevancyComponent
     }
     this.dataSource.data.forEach((t: any) => {
       const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
-      this.dataView.data[_id] = { ...t, select: this.selectedItem };
-
-      t.select = completed
+      this.dataView.data[_id] = { ...t, select: completed };
+      t.select = completed;
     });
 
-    if (completed === true)
-      this.countRevelancy = this.dataSource.data.length
-    else
-      this.countRevelancy = 0;
+    if (completed === true) this.countRevelancy = this.dataSource.data.length;
+    else this.countRevelancy = 0;
 
-    this.dataView.data = this.dataView.data;
     this.dataSource.data = this.dataSource.data;
+    this.dataView.data = this.dataView.data;
 
     this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);
   }
@@ -299,23 +300,24 @@ export class CheckRelevancyComponent
     const index = this.dataSource.data.findIndex((x) => x._id == row._id);
 
     if (this.isKeyPressed == true && this.indexSelectedRow) {
-
       if (this.indexSelectedRow > index) {
         this.dataSource.data.forEach((t: any, i: number) => {
-
           if (this.indexSelectedRow >= i && index <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            const _id = this.dataView.data.findIndex(
+              (x: any) => x._id == t._id
+            );
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
-      }
-      else {
+      } else {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (index >= i && this.indexSelectedRow <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            const _id = this.dataView.data.findIndex(
+              (x: any) => x._id == t._id
+            );
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
@@ -339,23 +341,20 @@ export class CheckRelevancyComponent
     this.dataView.data = this.dataView.data;
 
     this.selectedRow = row;
-    this.indexSelectedRow = this.indexSelectedRow ? this.indexSelectedRow : index;
-    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.indexSelectedRow = index;
+    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.countRevelancy = 0;
     //save data into indexDB
     this.counterSelected();
     this.idb.updateItems('checkRevelancy', this.dataView.data, this.idProjet);
-
-
   }
   private counterSelected(): void {
     this.countRevelancy = 0;
-    this.dataSource.data.forEach(s => {
+    this.dataSource.data.forEach((s) => {
       if (s.select === true) {
-        this.countRevelancy++
+        this.countRevelancy++;
       }
-    })
+    });
   }
 
   isRowSelected(row: any) {
@@ -381,14 +380,14 @@ export class CheckRelevancyComponent
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false
+    this.isKeyPressed = false;
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
     if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
-      this.isKeyPressed = true
+      this.isKeyPressed = true;
     }
   }
 
@@ -397,7 +396,7 @@ export class CheckRelevancyComponent
       displayColumns: this.dataView.displayColumns,
       hideColumns: this.dataView.hideColumns,
       data: this.dataSource.data,
-    }
+    };
     this.dataMatching.emit(value);
     // this.dataMatching.emit(this.dataView);
   }
@@ -448,7 +447,9 @@ export class CheckRelevancyComponent
           map((result: any) => {
             if (result) {
               indexRow.forEach((_id: any) => {
-                const _idDataSource = this.dataSource.data.findIndex((x: any) => x._id === _id);
+                const _idDataSource = this.dataSource.data.findIndex(
+                  (x: any) => x._id === _id
+                );
                 const data = this.dataSource.data[_idDataSource];
                 const val = (data[itemSeleted] = result['Editspelling']);
 
@@ -457,7 +458,9 @@ export class CheckRelevancyComponent
                   val,
                 };
 
-                const _idDataView = this.dataView.data.findIndex((x: any) => x._id == _id);
+                const _idDataView = this.dataView.data.findIndex(
+                  (x: any) => x._id == _id
+                );
                 this.dataSource.data[_idDataSource] = { ...newVla };
                 this.dataView.data[_idDataView] = { ...newVla };
               });
@@ -487,8 +490,8 @@ export class CheckRelevancyComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-        ? (this.icon = 'desc')
-        : (this.icon = '');
+      ? (this.icon = 'desc')
+      : (this.icon = '');
     this.active = $e.active;
   }
 

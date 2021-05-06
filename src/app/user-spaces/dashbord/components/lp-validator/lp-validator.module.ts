@@ -1,3 +1,4 @@
+import { SharedDirectivesModule } from './../../../../shared/modules/shared-directives.module';
 import { IdbService } from './../../../../services/idb.service';
 import { PropertyValueService } from './../../services/property-value.service';
 import { ItemTypeService } from './../../services/item-type.service';
@@ -23,8 +24,6 @@ import { DragDropDirective } from '../../directives/drag-drop.directive';
 import { ResizableDirective } from '../../directives/resizable.directive';
 import { TuniItDirective } from './../../directives/tuni-it.directive';
 
-import { CapitalizeFirstPipePipe } from 'src/app/user-spaces/dashbord/pipe/capitalize-first-pipe.pipe';
-import { RemoveUnderscorePipe } from 'src/app/user-spaces/dashbord/pipe/remove-underscore.pipe';
 import { StepperIconDirective } from '../../directives/stepper-icon.directive';
 import { HttpCancelService } from '@app/shared/services/http-cancel.service';
 
@@ -45,10 +44,6 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
     ResizableDirective,
     TuniItDirective,
     StepperIconDirective,
-
-    /* PIPE DECLARATORS */
-    CapitalizeFirstPipePipe,
-    RemoveUnderscorePipe,
   ],
   imports: [
     CommonModule,
@@ -58,14 +53,15 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
     LandingPageModule,
     ResizableModule,
     RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
+    SharedDirectivesModule,
   ],
-  exports: [RouterModule, CapitalizeFirstPipePipe],
+  exports: [RouterModule],
   providers: [
     LpValidatorService,
     ItemTypeService,
     PropertyValueService,
     IdbService,
-    HttpCancelService
+    HttpCancelService,
   ],
   entryComponents: [
     TableOptionsComponent,
@@ -77,4 +73,4 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
     TuneItComponent,
   ],
 })
-export class LpValidatorModule { }
+export class LpValidatorModule {}

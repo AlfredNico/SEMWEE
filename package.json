@@ -60,12 +60,14 @@
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.1100.7",
-        "@types/jasmine": "~3.6.0",
-        "@angular/cli": "~11.0.7",
+        "@angular/cli": "^11.2.11",
         "@angular/compiler-cli": "~11.0.9",
+        "@types/jasmine": "~3.6.0",
         "@types/jasminewd2": "~2.0.8",
         "@types/node": "^12.11.1",
         "codelyzer": "^6.0.0",
+        "cross-env": "^5.0.5",
+        "increase-memory-limit": "^1.0.3",
         "jasmine-core": "~3.6.0",
         "jasmine-spec-reporter": "~5.0.0",
         "karma": "~5.1.0",
@@ -79,9 +81,7 @@
         "typescript": "~4.0.2",
         "webpack-cli": "^3.3.12",
         "webpack-messages": "^2.0.4",
-        "webpack-rtl-plugin": "^2.0.0",
-        "increase-memory-limit": "^1.0.3",
-        "cross-env": "^5.0.5"
+        "webpack-rtl-plugin": "^2.0.0"
     },
     "engines": {
         "node": "14.15.4",
