@@ -158,6 +158,13 @@ export class InferListComponent
 
       Object.assign(this.dataView, this.data);
       this.numberSelected = this.dataView.data.length;
+
+      //chanage the name of the attributs
+      this.dataView.data = this.dataView.data.map(({ ID, ...reste }) => ({ iddb: ID, ...reste }));
+      this.dataView.data = this.dataView.data.map(({ idcsv, ...reste }) => ({ id: idcsv, ...reste }));
+      this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "ID")] = "iddb";
+      this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "idcsv")] = "id";
+
       this.displayColumns = this.data.displayColumns;
     }
 
@@ -496,9 +503,8 @@ export class InferListComponent
 
   public isColumnDisplay(column: any): boolean {
     switch (true) {
-      case column.toLowerCase().includes('_id'):
+      case column.toLowerCase().includes('_id') || column == ('iddb'):
         return true;
-
       default:
         return false;
     }
