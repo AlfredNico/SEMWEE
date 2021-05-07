@@ -35,6 +35,7 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   public openEditorDialog(event: any, index: number, indexRow: number): void {
     const { clientX, clientY } = event;
     // const doc = document.getElementById(`${index + 1}_td_${indexRow}`);
+    // const doc = window.;
     // const { offsetLeft } = doc;
     // console.log(offsetLeft, '//node_modules', clientX, '//', doc);
 
