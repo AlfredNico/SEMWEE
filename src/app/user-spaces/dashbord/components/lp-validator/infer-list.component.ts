@@ -159,13 +159,15 @@ export class InferListComponent
       Object.assign(this.dataView, this.data);
       this.numberSelected = this.dataView.data.length;
 
-      //chanage the name of the attributs
-      this.dataView.data = this.dataView.data.map(({ ID, ...reste }) => ({ iddb: ID, ...reste }));
-      this.dataView.data = this.dataView.data.map(({ idcsv, ...reste }) => ({ id: idcsv, ...reste }));
+      //change the name of the attributs
+      this.dataView.data = this.dataView.data.map(({ ID, ...reste }) => ({ iddbb: ID, ...reste }));
       this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "ID")] = "iddb";
-      this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "idcsv")] = "id";
+      this.dataView.data = this.dataView.data.map(({ idcsv, ...reste }) => ({ ID: idcsv, ...reste }));
+      this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "idcsv")] = "ID";
+
 
       this.displayColumns = this.data.displayColumns;
+      console.log("hehe=" + this.displayColumns);
     }
 
     this.dataSource.data = this.dataView.data;
@@ -187,7 +189,7 @@ export class InferListComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     // Query search field
@@ -251,7 +253,7 @@ export class InferListComponent
       .subscribe();
   }
 
-  onClick(item: any) {}
+  onClick(item: any) { }
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
@@ -497,7 +499,7 @@ export class InferListComponent
 
   public isColumnDisplay(column: any): boolean {
     switch (true) {
-      case column.toLowerCase().includes('_id') || column == ('iddb'):
+      case column.toLowerCase().includes('_id') || column == ('iddb') || column == ('idproject'):
         return true;
       default:
         return false;
@@ -508,8 +510,8 @@ export class InferListComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 
