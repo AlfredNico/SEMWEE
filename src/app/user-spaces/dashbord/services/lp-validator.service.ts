@@ -141,7 +141,6 @@ export class LpValidatorService {
     obj: any = {},
     afterSearch: boolean = false
   ): DataTypes {
-    console.log('data', dataSurces)
     const headers = [
       'number',
       'select',
