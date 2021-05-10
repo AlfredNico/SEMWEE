@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-lp-editor',
@@ -23,32 +24,41 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   // public event: any;
 
-  constructor(public dialog: MatDialog) {}
+  private menuTrigger: MatMenuTrigger;
 
-  ngOnInit(): void {}
+  constructor(public dialog: MatDialog) { }
+
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  public openEditorDialog(event: any, index: number, indexRow: number): void {
-    const { clientX, clientY } = event;
-    // const doc = document.getElementById(`${index + 1}_td_${indexRow}`);
-    // const doc = window.;
-    // const { offsetLeft } = doc;
-    // console.log(offsetLeft, '//node_modules', clientX, '//', doc);
+  public openEditorDialog(element: any, possition: string, isLast: boolean): void {
+    const { left, top } = this.getOffset(element);
+    const width = element.offsetWidth;
+
 
     const dialogRef = this.dialog.open(EditorDialogComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       width: '250px',
       position: {
-        left: `${clientX}px`,
-        top: `${clientY + 5}px`,
+        left: (possition === 'left' || isLast === true) ? `${left - 250}px` : `${left + width}px`,
+        top: `${top}px`,
       },
       hasBackdrop: true,
     });
   }
+
+  private getOffset(el: HTMLElement) {
+    const rect = el.getBoundingClientRect();
+    return {
+      left: rect.left + window.scrollX,
+      top: rect.top + window.scrollY
+    };
+  }
+
 }
 export interface PeriodicElement {
   name: string;

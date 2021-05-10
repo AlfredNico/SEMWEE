@@ -5,9 +5,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.module';
 import { LpEditorComponent } from './lp-editor.component';
+import { FacetFilterComponent } from './facet-filter.component';
+import { UndoRedoComponent } from './undo-redo.component';
+import { FluidHeightDirective } from '../../directives/fluid-height.directive';
 
 @NgModule({
-  declarations: [LpEditorComponent, EditorDialogComponent],
+  declarations: [LpEditorComponent, EditorDialogComponent, FacetFilterComponent, UndoRedoComponent, FluidHeightDirective],
   imports: [
     SharedModule,
     LandingPageModule,
@@ -17,4 +20,4 @@ import { LpEditorComponent } from './lp-editor.component';
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],
 })
-export class LpEditorModule {}
+export class LpEditorModule { }

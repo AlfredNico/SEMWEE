@@ -22,6 +22,12 @@
     background-color: #f0f1f6;
     margin: 10px 5px 0 5px;
   }
+
+  mat-tab-group.mat-tab-group{
+    div>.mat-tab-body{
+      height: 100% !important;
+    }
+  }
 }
 
 :host {
