@@ -25,16 +25,20 @@
 
   mat-tab-group.mat-tab-group{
     div>.mat-tab-body{
-      height: 100% !important;
+      // height: 100% !important;
+      max-height: calc(100vh - 270px);
     }
   }
 }
 
-:host {
+::ng-deep {
   mat-icon.option-icon {
     font-size: 20px !important;
     border: 1px solid #3f4254;
     border-radius: 15%;
+    // cursor: pointer;
+  }
+  mat-icon{
     cursor: pointer;
   }
 

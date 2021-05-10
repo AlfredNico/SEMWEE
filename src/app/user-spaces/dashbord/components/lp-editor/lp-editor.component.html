@@ -19,7 +19,7 @@
     <button class="rounded" color="primary">RefinePro dashbord</button>
   </div>
   <div class="row p-0">
-    <aside class="col p-0" fxFlex="20%" style="border-right: 4px solid #93cdff">
+    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff">
       <mat-tab-group
         mat-align-tabs="start"
         [color]="'#f0f1f6'"
@@ -27,7 +27,7 @@
         class="mat-group"
       >
         <mat-tab label="Facet/Filter">
-          <app-facet-filter></app-facet-filter>
+          <app-facet-filter [items]="items"></app-facet-filter>
         </mat-tab>
         <mat-tab label="Undo/Redo">
           <app-undo-redo></app-undo-redo>
@@ -35,7 +35,7 @@
       </mat-tab-group>
     </aside>
 
-    <aside class="col p-0" fxFlex="80%">
+    <aside class="col p-0" fxFlex="75%">
       <div class="px-5" style="background: #93cdff; height: 50px">
         <h2 class="m-auto font-weight-bold">matching rows</h2>
         <h4 class="m-auto font-weight-normal">(1000 total)</h4>
@@ -60,9 +60,14 @@
                 </span>
               </th>
               <mat-menu #tableOptionMenu="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="sousItem1">Comumns</button>
                 <button mat-menu-item>Item 1</button>
                 <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 2</button>
                 <button mat-menu-item>Item 3</button>
+              </mat-menu>
+              <mat-menu #sousItem1="matMenu">
+                <button mat-menu-item (click)="filterColumn(column)">Sous item 1</button>
+                <button mat-menu-item>Soous item 2</button>
               </mat-menu>
               <mat-menu #sousItem2="matMenu">
                 <button mat-menu-item>Sous item 1</button>

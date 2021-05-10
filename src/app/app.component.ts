@@ -24,6 +24,7 @@ import { HttpCancelService } from './shared/services/http-cancel.service';
     <ngx-spinner name="root">
       <p [style.color]="'white'">Loading ...</p>
     </ngx-spinner>
+    <ngx-spinner name="table" [template]="payTemplate"></ngx-spinner>
     <router-outlet></router-outlet>
   `,
   styles: [
@@ -36,6 +37,13 @@ import { HttpCancelService } from './shared/services/http-cancel.service';
 })
 export class AppComponent implements OnDestroy {
   title = 'SEMWEE';
+  public readonly payTemplate = `
+    <div class="bg-white row justify-content-md-center" style="border-radius: 20px; padding: 50px">
+      <img src="assets/images/gif/loading.gif" width="50"/>
+      <h1 class="px-4 my-auto">Please wait ...</h1>
+    </div>
+  `;
+
   readonly config: MatBottomSheetConfig = {
     hasBackdrop: false,
     disableClose: false,

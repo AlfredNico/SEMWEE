@@ -11,6 +11,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { interval } from 'rxjs';
+import { startWith, take } from 'rxjs/operators';
+import { CommonService } from '@app/shared/services/common.service';
 
 @Component({
   selector: 'app-lp-editor',
@@ -26,7 +29,9 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
 
   private menuTrigger: MatMenuTrigger;
 
-  constructor(public dialog: MatDialog) { }
+  public items: any[] = []
+
+  constructor(public dialog: MatDialog, private commonService: CommonService) { }
 
   ngOnInit(): void { }
 
@@ -57,6 +62,35 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
       left: rect.left + window.scrollX,
       top: rect.top + window.scrollY
     };
+  }
+
+  public filterColumn(column: any) {
+    // this.commonService.showSpinner('table');
+
+    let distances = {}, isExist = false;
+    this.dataSource.data.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
+
+    let valu = Object.entries(distances).map((val: any) => {
+      return { ...val }
+    })
+
+    this.items.map(value => {
+      if (value['head'] && value['head'] === column) {
+        isExist = true;
+        return;
+      }
+    })
+
+    if (isExist === false) {
+      this.items.push({
+        head: column,
+        content: valu
+      });
+    }
+
+    // this.commonService.hideSpinner('table');
   }
 
 }
