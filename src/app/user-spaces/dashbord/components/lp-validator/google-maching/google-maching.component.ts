@@ -93,7 +93,7 @@ export class GoogleMachingComponent
     private commonServices: CommonService,
     private lpValidator: LpValidatorService,
     private ref: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnChanges() {
     if (this.dataSources.data.length > 0) {
@@ -125,7 +125,7 @@ export class GoogleMachingComponent
     // this.commonServices.hideSpinner();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     // this.lpValidator.trigger$
@@ -141,7 +141,6 @@ export class GoogleMachingComponent
     this.filters.valueChanges
       .pipe(
         map((query) => {
-
           this.dataSource.data = this.dataView.data.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataView.data;
@@ -231,15 +230,13 @@ export class GoogleMachingComponent
     }
     this.dataSource.data.forEach((t: any) => {
       const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
-      this.dataView.data[_id] = { ...t, select: this.selectedItem };
+      this.dataView.data[_id] = { ...t, select: completed };
 
-      t.select = completed
+      t.select = completed;
     });
 
-    if (completed === true)
-      this.countGoogle = this.dataSource.data.length
-    else
-      this.countGoogle = 0;
+    if (completed === true) this.countGoogle = this.dataSource.data.length;
+    else this.countGoogle = 0;
 
     this.dataView.data = this.dataView.data;
     this.dataSource.data = this.dataSource.data;
@@ -248,24 +245,25 @@ export class GoogleMachingComponent
   public selectRowGoogle(row: any) {
     const index = this.dataSource.data.findIndex((x) => x._id == row._id);
 
-    if (this.isKeyPressed == true && this.indexSelectedRow) {
-
+    if (this.isKeyPressed === true && this.indexSelectedRow !== undefined) {
       if (this.indexSelectedRow > index) {
         this.dataSource.data.forEach((t: any, i: number) => {
-
           if (this.indexSelectedRow >= i && index <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            const _id = this.dataView.data.findIndex(
+              (x: any) => x._id == t._id
+            );
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
         });
-      }
-      else {
+      } else {
         this.dataSource.data.forEach((t: any, i: number) => {
           if (index >= i && this.indexSelectedRow <= i) {
             this.dataSource.data[i] = { ...t, select: this.selectedItem };
-            const _id = this.dataView.data.findIndex((x: any) => x._id == t._id);
+            const _id = this.dataView.data.findIndex(
+              (x: any) => x._id == t._id
+            );
             this.dataView.data[_id] = { ...t, select: this.selectedItem };
             this.selectedRowsArray.push(this.dataSource.data[i]['_id']);
           }
@@ -289,22 +287,19 @@ export class GoogleMachingComponent
     this.dataView.data = this.dataView.data;
 
     this.selectedRow = row;
-    this.indexSelectedRow = this.indexSelectedRow ? this.indexSelectedRow : index;
-    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.indexSelectedRow = index;
+    this.selectedItem = this.dataSource.data[this.indexSelectedRow]['select'];
     this.countGoogle = 0;
     //save data into indexDB
     this.counterSelected();
-
-
   }
   private counterSelected(): void {
     this.countGoogle = 0;
-    this.dataSource.data.forEach(s => {
+    this.dataSource.data.forEach((s) => {
       if (s.select === true) {
-        this.countGoogle++
+        this.countGoogle++;
       }
-    })
+    });
   }
 
   isRowSelected(row: any) {
@@ -330,24 +325,23 @@ export class GoogleMachingComponent
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false
+    this.isKeyPressed = false;
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
     if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
-      this.isKeyPressed = true
+      this.isKeyPressed = true;
     }
   }
-
 
   sortData($e: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-        ? (this.icon = 'desc')
-        : (this.icon = '');
+      ? (this.icon = 'desc')
+      : (this.icon = '');
     this.active = $e.active;
   }
 

@@ -22,7 +22,7 @@ import { HttpCancelService } from './shared/services/http-cancel.service';
   selector: 'app-root',
   template: `
     <ngx-spinner name="root">
-      <p [style.color]="'white'">Loading ...</p>
+      <p [style.color]="'white'">Loading...</p>
     </ngx-spinner>
     <router-outlet></router-outlet>
   `,

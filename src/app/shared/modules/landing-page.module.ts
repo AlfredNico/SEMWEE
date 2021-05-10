@@ -9,7 +9,7 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -46,7 +46,6 @@ import { MatDividerModule } from '@angular/material/divider';
     MatIconModule,
   ],
   exports: [
-    
     MatInputModule,
     MatFormFieldModule,
     MatDatepickerModule,
@@ -88,7 +87,7 @@ import { MatDividerModule } from '@angular/material/divider';
     ReactiveFormsModule,
     // MatBottomSheetModule,
 
-    
+
     MatExpansionModule,
   ]
 })

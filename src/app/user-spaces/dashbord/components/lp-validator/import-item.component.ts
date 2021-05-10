@@ -18,24 +18,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
     <!-- fxLayoutAlign="space-around space-between center" -->
     <div class="w-100 bg-white" style="padding: 4em 3em;">
       <form [formGroup]="form">
-        <div
-          class="w-100"
-          *ngIf="
-            fileName !== undefined &&
-            fileName?.length > 0 &&
-            isExcelFile === true
-          "
-          fxLayout="row"
-          fxLayoutAlign="space-around center"
-        >
-          <div style="width: 100%;text-align: center;">
-            <h1>{{ fileName }}</h1>
-            <h1>Is uploaded !</h1>
-          </div>
-          <img class="img_uploaded" src="assets/images/items.png" />
-        </div>
-
-        <div *ngIf="fileName?.length >= 0 && isExcelFile === false">
+        <div *ngIf="fileName?.length >= 0">
           <div
             class="uploaded_file w-100"
             fxLayout="column"
@@ -108,15 +91,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
         >
           Remove upload
         </button>
-        <button
-          style="margin: 25px 0 0 10px"
-          mat-raised-button
-          color="accent"
-          (click)="form.valid && onSubmit()"
-        >
-          <span *ngIf="isNextStep == true">Updates Items</span>
-          <span *ngIf="isNextStep == false">Display Items</span>
-        </button>
+       
       </form>
     </div>
   `,
@@ -194,6 +169,12 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       // const fileReader = new FileReader();
       // fileReader.onload = this.onFileLoad;
       // fileReader.readAsText(fileToRead, 'UTF-8');
+    }
+    if (this.isExcelFile) {
+      this.onSubmit();
+      this.removeUpload();
+      event.target.value = null;
+
     }
   }
 

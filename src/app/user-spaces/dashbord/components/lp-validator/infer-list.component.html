@@ -9,7 +9,7 @@
       <input matInput type="search" #searchInput placeholder="Quick Search" autocomplete="off"
         [formControl]="search">
       <mat-icon *ngIf="searchInput.value == ''" matPrefix>search</mat-icon>
-      <mat-icon *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix
+      <mat-icon style="cursor: pointer;" *ngIf="searchInput.value != ''" (click)="search.reset()" matPrefix
         class="bg-light rounded-circle" color="warn">close</mat-icon>
     </mat-form-field>
   </div>
@@ -81,7 +81,7 @@
           </th>
           <td mat-cell [class.odd]="odd" [class.even]="even"
             *matCellDef="let row; let indexRow = index; let even = even; let odd = odd" class="px-5"
-            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRow(row)">
+            [class.active]="isRowSelected(row)" class="p-0 text-center" (click)="selectRowInfer(row)">
             <div class="bg-whire">
               <mat-checkbox color="accent" [(ngModel)]="row[column]"
                 (ngModelChange)="updateAllComplete()">
@@ -101,9 +101,12 @@
                 <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1"
                   id="columnInferHead" mat-sort-header>
-                  <div>
-                    {{ column | removeUnderscore | capitalizeFirstPipe }}
-                  </div>
+                    <div *ngIf="column == 'idcsv';else other_ccolumn">
+                      ID
+                    </div>
+                    <ng-template #other_ccolumn>
+                      {{ column | removeUnderscore | capitalizeFirstPipe }}
+                    </ng-template>
                   <div class="pl-3">
                     <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
                     <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>

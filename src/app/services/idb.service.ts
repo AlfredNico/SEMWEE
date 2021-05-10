@@ -96,6 +96,7 @@ export class IdbService {
   }
 
   getItem(storeName: string, id: any): Promise<any> {
+
     return this._dbPromise
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readonly');
