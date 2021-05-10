@@ -3,8 +3,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 @Component({
   selector: 'app-facet-filter',
   template: `
-    <div class="mx-1">
-      <div class="p-5" style="border: 4px solid #93cdff">
+    <div class="mx-1" appFluidHeight [minHeight]="50">
+      <div class="p-5" style="border: 4px solid #93cdff; border-radius: 5%;">
         facet-filter works!
       </div>
       <div class="w-100 resizable"></div>

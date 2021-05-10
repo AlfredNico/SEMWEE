@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
+  HostListener,
   Input,
   Renderer2,
 } from "@angular/core";
@@ -17,11 +18,11 @@ export class FluidHeightDirective {
 
   private domElement: HTMLElement;
   private pressed: boolean;
+  private startY: number = 0;
+  private startHeigth: number = 0;
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
     this.domElement = this.elementRef.nativeElement as HTMLElement;
-
-    console.log('loges');
 
     // register on window resize event
     fromEvent(window, "resize")
@@ -33,36 +34,72 @@ export class FluidHeightDirective {
     this.setHeight();
   }
 
-  onMouseDown = (event: MouseEvent) => {
-    console.log('pressed');
+  // @HostListener('mouseenter', ['$event']) onEnter(e: MouseEvent) {
+  //   console.log('mouse enter');
+  // }
+
+  // @HostListener('mouseleave', ['$event']) onLeave(e: MouseEvent) {
+  //   console.log('mouse leave');
+  // }
+
+  @HostListener('mousedown', ['$event'])
+  mouseHandling(event) {
+    event.preventDefault();
     this.pressed = true;
-  };
+    // console.log(event.pageX, '//', event.pageY);
+    this.startY = event.pageY;
+    this.startHeigth = this.domElement.offsetHeight;
 
-  onMouseMove = (event: MouseEvent) => {
-    const offset = 35;
+    // this.startX = event.pageX;
+  }
+
+  // onMouseMove = (event: MouseEvent) => {
+  //   const offset = 35;
+  //   if (this.pressed) {
+  //     console.log('pressed');
+
+  //   }
+  // };
+
+  @HostListener('mousemove', ['$event'])
+  onMousemove(event: MouseEvent) {
     if (this.pressed) {
-      console.log('pressed');
+      // this.setHeight(event);
+      // console.log();
+      // console.log(event.screenY, ' - ', this.startY)
+      const height = this.startHeigth + (event.screenY - this.startY)
 
+      // console.log('heie', height)
+
+      const dom = this.domElement.childNodes;
+      this.renderer.setStyle(dom[0], "height", `${height}px`);
     }
-  };
+  }
 
-  onMouseUp = (event: MouseEvent) => {
+
+  @HostListener('window:mouseup', ['$event'])
+  onMouseUp(event) {
     if (this.pressed) {
       this.pressed = false;
     }
-  };
+  }
 
   private setHeight() {
-    const windowHeight = window?.innerHeight;
-    const topOffset = this.topOffset || this.calcTopOffset();
-    let height = windowHeight - topOffset;
+    // const windowHeight = window?.innerHeight;
+    // const topOffset = this.topOffset || this.calcTopOffset();
+    // let height = windowHeight - topOffset;
 
-    // set min height instead of the calculated
-    if (this.minHeight && height < this.minHeight) {
-      height = this.minHeight;
-    }
+    // // set min height instead of the calculated
+    // if (this.minHeight && height < this.minHeight) {
+    //   height = this.minHeight;
+    // }
+    // const dom = this.domElement.childNodes;
+    // const height = startHeigth + (event)
 
-    this.renderer.setStyle(this.domElement, "height", `${height}px`);
+    // console.log('heie', height)
+    // console.log(dom[0])
+
+    // this.renderer.setStyle(dom[0], "height", `${height}px`);
   }
 
   private calcTopOffset(): number {
