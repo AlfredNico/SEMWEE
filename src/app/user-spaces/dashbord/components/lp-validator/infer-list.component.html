@@ -99,9 +99,12 @@
                 <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1"
                   id="columnInferHead" mat-sort-header>
-                  <div>
-                    {{ column | removeUnderscore | capitalizeFirstPipe }}
-                  </div>
+                    <div *ngIf="column == 'idcsv';else other_ccolumn">
+                      ID
+                    </div>
+                    <ng-template #other_ccolumn>
+                      {{ column | removeUnderscore | capitalizeFirstPipe }}
+                    </ng-template>
                   <div class="pl-3">
                     <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
                     <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>
