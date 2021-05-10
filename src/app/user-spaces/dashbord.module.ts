@@ -44,7 +44,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GeneralModule } from '@app/_metronic/partials/content/general/general.module';
 import { HighlightModule } from 'ngx-highlightjs';
-import { NgbNavModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbNavModule,
+  NgbProgressbarModule,
+  NgbTooltipModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/search-dropdown-inner/search-result/search-result.component';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
@@ -113,6 +117,20 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
         path: 'user-space',
         component: LayoutComponent,
         children: [
+          {
+            path: 'lp-viewer',
+            loadChildren: () =>
+              import('./dashbord/components/lp-viewer/lp-viewer.module').then(
+                (m) => m.LpViewerModule
+              ),
+          },
+          {
+            path: 'lp-editor',
+            loadChildren: () =>
+              import('./dashbord/components/lp-editor/lp-editor.module').then(
+                (m) => m.LpEditorModule
+              ),
+          },
           {
             path: 'lp-validator/:idProduit',
             loadChildren: () =>
