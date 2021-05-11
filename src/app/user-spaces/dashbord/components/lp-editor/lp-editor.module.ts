@@ -8,9 +8,12 @@ import { FacetFilterComponent } from './facet-filter.component';
 import { UndoRedoComponent } from './undo-redo.component';
 import { FluidHeightDirective } from '../../directives/fluid-height.directive';
 import { LpEditorComponent } from './lp-editor.component';
+import { ImportFileComponent } from './import-file.component';
+import { PreviewFileComponent } from './preview-file.component';
+import { ReadViewFileComponent } from './read-view-file.component';
 
 @NgModule({
-  declarations: [LpEditorComponent, EditorDialogComponent, FacetFilterComponent, UndoRedoComponent, FluidHeightDirective],
+  declarations: [LpEditorComponent, EditorDialogComponent, FacetFilterComponent, UndoRedoComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent],
   imports: [
     SharedModule,
     LandingPageModule,

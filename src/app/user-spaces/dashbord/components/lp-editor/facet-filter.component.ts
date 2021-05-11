@@ -10,17 +10,17 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
           <mat-icon aria-label="close icon">remove_circle_outline</mat-icon>
           <span style="font-weight: 600;">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div>change</div>
+          <div class="pointer">change</div>
         </div>
         <div fxLayout="row" class="py-3 px-2" style="background: #e3e9ff;">
-          <div class="pr-3"> 1 choices</div>
-          <div> Sort by : <span class="px-1"></span>name<span class="px-1">count</span> </div>
+          <div class="pr-3 pointer"> 1 choices</div>
+          <div> Sort by : <span class="px-1 pointer">name</span><span class="px-1 pointer">count</span> </div>
         </div>
         <div class="py-2" style="height: 200px; overflow: auto;let index = index">
           <div fxLayout="row" class="py-2 px-2 list-content" fxLayoutAlign="space-between center"
           *ngFor="let content of item?.content">
             <div> {{ content[0] }}  <span> {{ content[1] }} </span> </div>
-            <span class="only-show-on-hover">include</span>
+            <span class="only-show-on-hover pointer">include</span>
           </div>
         </div>
       </div>
