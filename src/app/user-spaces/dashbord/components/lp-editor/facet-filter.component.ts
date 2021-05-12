@@ -3,7 +3,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-facet-filter',
   template: `
-    <div class="mx-1 pb-2" appFluidHeight [minHeight]="50" *ngFor="let item of items">
+    <div class="mx-1 pb-2" appFluidHeight *ngFor="let item of items">
       <div class="p-0 w-100" style="border: 4px solid #93cdff; border-radius: 5%;">
         <div fxLayout="row" class="py-3 px-2" style="background: #bbccff; position: relative; top: -1px">
           <mat-icon aria-label="close icon" (click)="removeFromItem(item)">highlight_off</mat-icon>

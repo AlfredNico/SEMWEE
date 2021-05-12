@@ -1,26 +1,28 @@
+import { SharedComponentsModule } from './../../../../shared/modules/shared-components.module';
 import { EditorDialogComponent } from './editor-dialog.component';
-import { LandingPageModule } from '@app/shared/modules/landing-page.module';
-import { SharedModule } from '@app/shared/modules/shared.module';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.module';
-import { FacetFilterComponent } from './facet-filter.component';
-import { UndoRedoComponent } from './undo-redo.component';
 import { FluidHeightDirective } from '../../directives/fluid-height.directive';
 import { LpEditorComponent } from './lp-editor.component';
-import { ImportFileComponent } from './import-file.component';
-import { PreviewFileComponent } from './preview-file.component';
-import { ReadViewFileComponent } from './read-view-file.component';
+import { ReadViewFileComponent } from './read-view-file/read-view-file.component';
+import { ImportFileComponent } from './import-file/import-file.component';
+import { PreviewFileComponent } from './preview-file/preview-file.component';
+import { LandingPageModule } from '@app/shared/modules/landing-page.module';
+import { SharedModule } from '@app/shared/modules/shared.module';
 
 @NgModule({
-  declarations: [LpEditorComponent, EditorDialogComponent, FacetFilterComponent, UndoRedoComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent],
+  declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent],
   imports: [
+    SharedComponentsModule,
     SharedModule,
     LandingPageModule,
-    SharedDirectivesModule,
     RouterModule.forChild([{ path: '', component: LpEditorComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class LpEditorModule { }

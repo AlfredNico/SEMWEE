@@ -1,42 +1,82 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatHorizontalStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { CommonService } from '@app/shared/services/common.service';
 
 @Component({
-  selector: 'app-lp-viewer',
-  templateUrl: './lp-viewer.component.html',
-  styleUrls: ['./lp-viewer.component.scss'],
+  selector: 'app-viwer-read-import',
+  templateUrl: './viwer-read-import.component.html',
+  styleUrls: ['./viwer-read-import.component.scss']
 })
-export class LpViewerComponent implements OnInit, AfterViewInit {
+export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChanges {
+
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
-  public dataAfterUploaded: any | undefined;
+  @Input('dataAfterUploaded') dataAfterUploaded: any;
 
+  public items: any[] = [];
 
-  constructor() { }
+  constructor(public dialog: MatDialog, private commonService: CommonService) { }
 
-  ngOnInit(): void { }
+  ngOnChanges(): void {
+    console.log('val', this.dataAfterUploaded);
+  }
+
+  ngOnInit(): void { 
+    console.log('val', this.dataAfterUploaded);
+  }
 
   ngAfterViewInit() {
+    console.log('val', this.dataAfterUploaded);
+    
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  public nextReadFile(value: any) {
-    this.dataAfterUploaded = value;
 
-    this.stepper.selected.completed = true;
-    this.stepper.selected.editable = true;
-    this.stepper.next();
+  public filterColumn(column: any) {
+    // this.commonService.showSpinner('table');
+
+    let distances = {}, isExist = false;
+    this.dataSource.data.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
+
+    let valu = Object.entries(distances).map((val: any) => {
+      return { ...val }
+    })
+
+    this.items.map(value => {
+      if (value['head'] && value['head'] === column) {
+        isExist = true;
+        return;
+      }
+    })
+
+    if (isExist === false) {
+      this.items.push({
+        head: column,
+        content: valu
+      });
+    }
+
+    // this.commonService.hideSpinner('table');
   }
-}
 
+}
 export interface PeriodicElement {
   name: string;
   position: number;

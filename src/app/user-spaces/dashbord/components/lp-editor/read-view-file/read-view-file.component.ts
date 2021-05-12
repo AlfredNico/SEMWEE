@@ -1,18 +1,14 @@
-import { EditorDialogComponent } from './editor-dialog.component';
+import { EditorDialogComponent } from '../editor-dialog.component';
 import {
   Component,
   OnInit,
   ViewChild,
-  AfterViewInit,
-  Input,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { interval } from 'rxjs';
-import { startWith, take } from 'rxjs/operators';
 import { CommonService } from '@app/shared/services/common.service';
 
 @Component({
