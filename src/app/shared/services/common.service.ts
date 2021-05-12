@@ -4,9 +4,11 @@ import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
-import { startWith, take, takeUntil, takeWhile, tap, timeInterval } from 'rxjs/operators';
+import { map, startWith, take, takeUntil, takeWhile, tap, timeInterval } from 'rxjs/operators';
 import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material/bottom-sheet';
 import { CookieService } from 'ngx-cookie-service';
+import { Users } from '@app/models/users';
+import { AuthService } from '@app/authentification/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,7 @@ export class CommonService {
   public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
+  public user: Users;
   count: number = 0;
   private timer: any;
   intervalCount = interval(1000);
@@ -37,10 +40,21 @@ export class CommonService {
   };
 
   constructor(
+    private userService: AuthService,
     private readonly spinner: NgxSpinnerService,
     private _bottomSheet: MatBottomSheet,
     private coockie: CookieService
-  ) { }
+  ) {
+    this.userService.currentUserSubject
+      .pipe(
+        map((user: Users) => {
+          if (user) {
+            this.user = user;
+          }
+        })
+      )
+      .subscribe();
+  }
 
   public showSpinner(name = 'root', fullScreen = true, template?: any) {
     const options: Spinner = {
@@ -77,7 +91,12 @@ export class CommonService {
                       this.subscription$.unsubscribe();
                       this.onDestroy$.next();
                       this.onDestroy$.complete();
-                      this.checkAlerts(x, res)
+                      //if users.understand == undefined/null/empty  || users.understand = 0
+                      console.log("understand00=" + this.user.understand);
+                      if (this.user.understand != 1) {
+                        //console.log("understand1=" + this.user.understand);
+                        this.checkAlerts(x, res);
+                      }
                     }
                   });
               } else {
@@ -110,7 +129,7 @@ export class CommonService {
   }
 
   private checkAlerts(response: number, isRes: boolean): void {
-    if (response === 10 && this.isLoading === true && !this.coockie.check('info')) {
+    if (response === 10 && this.isLoading === true) {
       this.intervalCount = interval(1000);
       this.subscription$.unsubscribe();
       this.isLoading = false;

@@ -76,9 +76,9 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
-  uploadPdp(e: any) {}
+  uploadPdp(e: any) { }
 
   public uploadChanged(event: any): void {
     if (event.target.files && event.target.files[0]) {

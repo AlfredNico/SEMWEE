@@ -15,7 +15,7 @@ export class ProfilesService {
     private http: HttpClient,
     private cookieService: CookieService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   public editUser(_id: any, user: Users): Observable<{ message: any }> {
     // console.log('user', user);
@@ -42,6 +42,24 @@ export class ProfilesService {
       .post<{ message: string }>(
         `${environment.baseUrl}/user/add-imageUser`,
         formData,
+        { headers: headers }
+      )
+      .toPromise();
+  }
+
+  public updateUnderstand(num: any, userId: any): Promise<{ message: any }> {
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      `Bearer ${this.cookieService.get('SEMEWEE')}`
+    );
+
+    return this.http
+      .post<{ message: string }>(
+        `${environment.baseUrl}/user/updateUnderstand`,
+        {
+          "id": userId,
+          "understand": num
+        },
         { headers: headers }
       )
       .toPromise();

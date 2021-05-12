@@ -17,7 +17,6 @@ import { InferListComponent } from './infer-list.component';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { GoogleMachingComponent } from './google-maching/google-maching.component';
-import { ResizableModule } from 'angular-resizable-element';
 import { TuneItComponent } from './dialog/tune-it.component';
 
 import { DragDropDirective } from '../../directives/drag-drop.directive';
@@ -51,7 +50,6 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
     LandingModule,
     MatStepperModule, // stepper module
     LandingPageModule,
-    ResizableModule,
     RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
     SharedDirectivesModule,
   ],
@@ -73,4 +71,4 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
     TuneItComponent,
   ],
 })
-export class LpValidatorModule {}
+export class LpValidatorModule { }

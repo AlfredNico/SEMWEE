@@ -166,7 +166,7 @@ export class InferListComponent
       // this.dataView.data = this.dataView.data.map(({ idcsv, ...reste }) => ({ ID: idcsv, ...reste }));
       // this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "idcsv")] = "ID";
       this.displayColumns = this.data.displayColumns;
-      console.log("hoho=" + this.displayColumns);
+      //console.log("hoho=" + this.displayColumns);
     }
 
     this.dataSource.data = this.dataView.data;

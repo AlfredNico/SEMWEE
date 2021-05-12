@@ -23,7 +23,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   public getAllUsers() {
     return this.http
@@ -96,6 +96,15 @@ export class AuthService {
           this.cookieService.set(
             'role',
             JSON.stringify(user.role),
+            0.2,
+            '/',
+            undefined,
+            false,
+            'Strict'
+          );
+          this.cookieService.set(
+            'understand',
+            JSON.stringify(user.understand),
             0.2,
             '/',
             undefined,
