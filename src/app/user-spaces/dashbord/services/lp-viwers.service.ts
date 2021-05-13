@@ -9,7 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class LpViwersService {
 
-  public itemsSubject$ = new Subject<boolean>();
+  public dataSources$ = new BehaviorSubject<any>([]);
+
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
 
   constructor(private http: HttpClient) { }

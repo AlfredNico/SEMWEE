@@ -37,7 +37,6 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      console.log(this.dataAfterUploaded);
       this.displayedColumns = this.dataAfterUploaded.columns;
       this.dataSource.data = this.dataAfterUploaded.data;
     }
@@ -114,6 +113,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     const value = Object.entries(distances).map((val: any) => {
       return { ...val }
     })
+
     this.lpEditor.itemsObservables$.next({
       type: 'facet',
       isMinimize: false,

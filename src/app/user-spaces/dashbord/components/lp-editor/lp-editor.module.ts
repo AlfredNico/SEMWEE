@@ -1,4 +1,5 @@
-import { SharedComponentsModule } from './../../../../shared/modules/shared-components.module';
+import { UndoRedoComponent } from './undo-redo.component';
+import { FacetFilterComponent } from './facet-filter.component';
 import { EditorDialogComponent } from './editor-dialog.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -10,13 +11,14 @@ import { PreviewFileComponent } from './preview-file/preview-file.component';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { LpEditorService } from '../../services/lp-editor.service';
+import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.module';
 
 @NgModule({
-  declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent],
+  declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent, FacetFilterComponent, UndoRedoComponent],
   imports: [
-    SharedComponentsModule,
     SharedModule,
     LandingPageModule,
+    SharedDirectivesModule,
     RouterModule.forChild([{ path: '', component: LpEditorComponent }]),
   ],
   exports: [RouterModule],

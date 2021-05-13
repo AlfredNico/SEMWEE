@@ -35,6 +35,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
   public tabIndex = 0;
 
   public undoRedoLabel = 'Undo/Redo 0/0';
+  public dataViews: any[] = [];
 
   constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService) { }
 
@@ -42,6 +43,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     if (this.dataAfterUploaded != undefined) {
       this.displayedColumns = this.dataAfterUploaded.columns;
       this.dataSource.data = this.dataAfterUploaded.data;
+      this.dataViews = this.dataAfterUploaded.data;
     }
   }
 
@@ -50,6 +52,12 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.lpViewer.dataSources$.subscribe(res => {
+      if (res) {
+        this.dataSource.data = res;
+      }
+    })
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -66,7 +74,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     })
 
     const value = Object.entries(distances).map((val: any) => {
-      return { ...val }
+      return { ...val, include: false }
     })
 
     // this.items.map(value => {
