@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
+import { DataSources } from '../../interfaces/data-sources';
 
 @Component({
   selector: 'app-lp-viewer',
@@ -16,7 +17,7 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
-  public dataAfterUploaded: any | undefined;
+  public dataAfterUploaded: DataSources | undefined;
 
 
   constructor() { }

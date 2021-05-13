@@ -31,7 +31,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IdbService } from '@app/services/idb.service';
-import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-infer-list',

@@ -26,7 +26,6 @@ import { Upload } from '@app/user-spaces/dashbord/interfaces/upload';
       </button>
     </div>
   `,
-  styleUrls: ['./viwer-import.component.scss']
 })
 export class ViwerImportComponent implements OnInit, OnDestroy {
 
@@ -39,7 +38,7 @@ export class ViwerImportComponent implements OnInit, OnDestroy {
   @Output() importFile = new EventEmitter<any>();
 
   private subscription$: Subscription | undefined
-  
+
   constructor(private lpViewerService: LpViwersService) { }
 
   ngOnInit(): void {
