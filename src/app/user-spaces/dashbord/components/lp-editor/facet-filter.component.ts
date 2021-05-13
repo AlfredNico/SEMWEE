@@ -2,11 +2,12 @@ import { LpViwersService } from './../../services/lp-viwers.service';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Component, HostListener, Input, OnInit, AfterViewInit, OnChanges } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-facet-filter',
   template: `
-  <div *ngIf="items.length > 0">
+  <div *ngIf="items.length > 0; else noItems">
     <div class="w-100 px-2 pb-3">
       <button class="rounded">Refresh</button>
       <span fxFlex></span>
@@ -57,38 +58,50 @@ import { map } from 'rxjs/operators';
       </ng-template>
 
       <ng-template #filterTemplate let-currentValue="value">
-         <div class="mx-1 pb-2">
-        <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
-          <div class="py-2 px-2 rounded-top" style="background: #bbccff;" fxLayout="row">
-            <mat-icon aria-label="close icon" (click)="removeFromItem(item)">
-              highlight_off
-            </mat-icon>
-            <mat-icon *ngIf="item['isMinimize'] === false" aria-label="close icon" (click)="minimize(item)">
-              remove_circle_outline
-            </mat-icon>
-            <mat-icon *ngIf="item['isMinimize'] === true" aria-label="close icon" (click)="minimize(item)">
-              add_circle_outline
-            </mat-icon>
-            <span style="font-weight: 600;">{{ item['head'] }}</span>
-            <span fxFlex></span>
-            <div class="pointer px-1">invert</div>
-            <div class="pointer px-1">reset</div>
-          </div>
-          <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="filters">
-            <mat-form-field appearance="fill" class="w-100">
-              <input matInput placeholder="filter ..." [formControlName]="item['head']" appearance="outline">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3"
-          style="background: #e3e9ff;" *ngIf="item['isMinimize'] === false">
-            <mat-checkbox>case sensitive</mat-checkbox>
-            <mat-checkbox>regular expression</mat-checkbox>
+        <div class="mx-1 pb-2">
+          <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
+            <div class="py-2 px-2 rounded-top" style="background: #bbccff;" fxLayout="row">
+              <mat-icon aria-label="close icon" (click)="removeFromItem(item)">
+                highlight_off
+              </mat-icon>
+              <mat-icon *ngIf="item['isMinimize'] === false" aria-label="close icon" (click)="minimize(item)">
+                remove_circle_outline
+              </mat-icon>
+              <mat-icon *ngIf="item['isMinimize'] === true" aria-label="close icon" (click)="minimize(item)">
+                add_circle_outline
+              </mat-icon>
+              <span style="font-weight: 600;">{{ item['head'] }}</span>
+              <span fxFlex></span>
+              <div class="pointer px-1">invert</div>
+              <div class="pointer px-1">reset</div>
+            </div>
+            <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="filters">
+              <input autocomplete="off" type="search" class="w-100" placeholder="filter ..." [formControlName]="item['head']" appearance="outline">
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3"
+            style="background: #e3e9ff;" *ngIf="item['isMinimize'] === false">
+              <mat-checkbox>case sensitive</mat-checkbox>
+              <mat-checkbox>regular expression</mat-checkbox>
+            </div>
           </div>
         </div>
-      </div>
       </ng-template>
     </div>
   </div>
+
+  <ng-template #noItems>
+    <div style="background: #e3e9ff;" class="rounded w-100 px-3 py-5">
+      <h1>Using facets and filters</h1>
+      <p class="m-0">
+        Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
+      </p>
+      <p class="m-0">Not sure how to get started?<br>
+      <a href="https://github.com/OpenRefine/OpenRefine/wiki/Screencasts" target="_blank">
+        <b>Watch these screencasts</b>
+      </a>
+    </p>
+  </div>
+  </ng-template>
   `,
   styles: [`
       div.resizable{
@@ -106,7 +119,7 @@ import { map } from 'rxjs/operators';
   `]
 })
 export class FacetFilterComponent implements OnInit, AfterViewInit {
-  @Input() public items: any[];
+  @Input() public items: any[] = [];
   changeText: boolean;
 
   public filters = this.fb.group([]);
@@ -116,18 +129,32 @@ export class FacetFilterComponent implements OnInit, AfterViewInit {
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-    this.lpViewer.itemsSubject$.subscribe(() => {
-      this.items.map((value: any) => {
-        if (value['type'] === 'filter') {
-          this.filters.addControl(value['head'], new FormControl(''));
-        }
-      })
+    this.lpViewer.itemsObservables$.subscribe((res: any) => {
+      if (res !== undefined) {
+        this.items.push(res);
+
+        this.items.map((value: any) => {
+          if (value['type'] === 'filter') {
+            this.filters.addControl(value['head'], new FormControl(''));
+          }
+        })
+      }
     });
 
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          console.log('filter', query);
+          let httpParams = new HttpParams();
+          Object.entries(query).map((val: any) => {
+            if (val[1]) {
+              httpParams = httpParams.append(val[0], val[1]);
+              // console.log('params', query, '// ', val);
+            }
+          });
+
+          // this.lpViewer.getAllData(httpParams).subscribe(
+          //   value => { console.log('fe'); }),
+          //   error => console.warn(error)
         })
       )
       .subscribe();

@@ -1,35 +1,9 @@
 <mat-horizontal-stepper [linear]="true" #stepper>
-  <mat-step completed="false" editable="false">
-    <form>
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Last name, First name" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
   <mat-step completed="false" editable="false" label="Fill out your address">
-    <form>
-      <mat-form-field>
-        <mat-label>Address</mat-label>
-        <input matInput placeholder="Ex. 1 Main St, New York, NY"
-               required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
+    <app-import-file (importFile)=nextReadFile($event)></app-import-file>
   </mat-step>
-  <mat-step>
+  <mat-step completed="false" editable="false">
     <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
+    <app-read-view-file [dataAfterUploaded]="dataAfterUploaded"></app-read-view-file>
   </mat-step>
 </mat-horizontal-stepper>

@@ -27,7 +27,6 @@ import { map } from 'rxjs/operators';
 import { LpValidatorService } from '../../services/lp-validator.service';
 import { DataTypes } from '@app/user-spaces/interfaces/data-types';
 import { NotificationService } from '@app/services/notification.service';
-import { BehaviorSubject, Subject } from 'rxjs';
 import { SemweeDataSource } from '@app/shared/class/semwee-data-source';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IdbService } from '@app/services/idb.service';
@@ -128,8 +127,6 @@ export class InferListComponent
    * subscribe to it and call `next()` to refresh the list in the table.
    * so that we don't have to rewrite the initial subscription for the datasource
    */
-  private destroy$ = new Subject<any>();
-  private trigger = new BehaviorSubject<any>(null);
   public dataSources = new SemweeDataSource<any>();
 
   constructor(

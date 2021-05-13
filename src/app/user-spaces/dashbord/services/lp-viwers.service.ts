@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -10,8 +10,13 @@ import { map } from 'rxjs/operators';
 export class LpViwersService {
 
   public itemsSubject$ = new Subject<boolean>();
+  public itemsObservables$ = new BehaviorSubject<any>(undefined);
 
   constructor(private http: HttpClient) { }
+
+  getAllData(params: HttpParams) {
+    return this.http.get(`${environment.baseUrl}/validator/-getimport-viewer`, { params });
+  }
 
   upload(file: File): Observable<any> {
     const data = new FormData()

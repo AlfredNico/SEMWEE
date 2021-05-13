@@ -9,6 +9,7 @@ import { ImportFileComponent } from './import-file/import-file.component';
 import { PreviewFileComponent } from './preview-file/preview-file.component';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
+import { LpEditorService } from '../../services/lp-editor.service';
 
 @NgModule({
   declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent],
@@ -23,6 +24,9 @@ import { SharedModule } from '@app/shared/modules/shared.module';
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
+  ],
+  providers: [
+    LpEditorService
   ]
 })
 export class LpEditorModule { }

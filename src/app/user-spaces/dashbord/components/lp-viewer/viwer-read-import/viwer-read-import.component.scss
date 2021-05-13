@@ -1,5 +1,12 @@
+.rotateimg180 {
+  transform: scaleX(-1) !important;
+}
 ::ng-deep {
   /* Styles for tab labels */
+  aside {
+    min-height: calc(100vh - 17rem) !important;
+  }
+
   .mat-tab-labels {
     background-color: #cae2f9;;
     height: 50px;
@@ -11,9 +18,6 @@
     }
   }
 
-  aside {
-    min-height: calc(100vh - 17rem) !important;
-  }
   /* Styles for the active tab label */
   .mat-tab-label.mat-tab-label-active {
     // min-width: 25px !important;
@@ -21,6 +25,9 @@
     padding: 5px;
     background-color: #f0f1f6;
     margin: 10px 5px 0 5px;
+    &div{
+      font-weight: bold;
+    }
   }
 
   mat-tab-group.mat-tab-group{
@@ -30,16 +37,16 @@
     }
   }
 
-  .mat-paginator-range-actions{
-    white-space: nowrap !important;
-  }
+  // .mat-paginator-range-actions{
+  //   white-space: nowrap !important;
+  // }
 
 }
 
 ::ng-deep {
   mat-icon.option-icon {
     font-size: 20px !important;
-    border: 1px solid #3f4254;
+    border: 1px solid #b1d3ff;
     border-radius: 15%;
     // cursor: pointer;
   }
@@ -81,7 +88,10 @@
     user-select: none;
     cursor: col-resize;
   }
-  .mat-cell {
+  .mat-cell:first-child {
+    padding: 0 !important;
+  }
+  .mat-cell:not(:first-of-type) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

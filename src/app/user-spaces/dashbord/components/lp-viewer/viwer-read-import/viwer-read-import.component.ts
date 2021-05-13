@@ -14,6 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -23,7 +24,6 @@ import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChanges {
 
   displayedColumns: string[] = [];
-  columns: string[] = [];
   dataSource = new MatTableDataSource<DataSources>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,14 +32,16 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
 
   public items: any[] = [];
 
+  public tabIndex = 0;
+
+  public undoRedoLabel = 'Undo/Redo 0/0';
+
   constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
       this.displayedColumns = this.dataAfterUploaded.columns;
-      this.columns = this.dataAfterUploaded.columns;
       this.dataSource.data = this.dataAfterUploaded.data;
-      this.columns.push('numer', 'start')
     }
   }
 
@@ -48,6 +50,10 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    this.tabIndex = tabChangeEvent.index;
   }
 
 
@@ -71,23 +77,32 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     // })
 
     // if (isExist === false) {
-    this.items.push({
+    // this.items.push({
+    //   type: 'facet',
+    //   isMinimize: false,
+    //   head: column,
+    //   content: value
+    // });
+    this.lpViewer.itemsObservables$.next({
       type: 'facet',
       isMinimize: false,
       head: column,
       content: value
     });
-    this.lpViewer.itemsSubject$.next();
     // }
   }
 
   public textFilter(column: any) {
-    this.items.push({
+    // this.items.push({
+    //   type: 'filter',
+    //   isMinimize: false,
+    //   head: column,
+    // });
+    this.lpViewer.itemsObservables$.next({
       type: 'filter',
       isMinimize: false,
       head: column,
     });
-    this.lpViewer.itemsSubject$.next();
   }
 
 }
