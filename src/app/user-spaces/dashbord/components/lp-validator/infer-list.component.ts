@@ -181,7 +181,7 @@ export class InferListComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     // Query search field
@@ -245,7 +245,7 @@ export class InferListComponent
       .subscribe();
   }
 
-  onClick(item: any) {}
+  onClick(item: any) { }
 
   //Deop item list
   public drop(event: CdkDragDrop<any>) {
@@ -426,6 +426,7 @@ export class InferListComponent
         ...this.dataSource.data[index],
         select: row['select'] == true ? false : true,
       };
+      console.log('index', this.dataSource.data[index]['ID'])
       this.selectedRowsArray.push(this.dataSource.data[index]['ID']);
     }
 
@@ -503,8 +504,8 @@ export class InferListComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 
