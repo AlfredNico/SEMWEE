@@ -66,6 +66,7 @@ export class ProfilesService {
   }
 
   public checkUserInfo(user: Users): void {
+    console.log("etoooo")
     if (localStorage.getItem('currentUser') !== null) {
       localStorage.removeItem('currentUser');
       localStorage.setItem('currentUser', JSON.stringify(user));
@@ -114,6 +115,15 @@ export class ProfilesService {
       this.cookieService.set(
         'image',
         user.image,
+        0.2,
+        '/',
+        undefined,
+        false,
+        'Strict'
+      );
+      this.cookieService.set(
+        'understand',
+        '' + user.understand,
         0.2,
         '/',
         undefined,

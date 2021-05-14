@@ -92,7 +92,7 @@ export class CommonService {
                       this.onDestroy$.next();
                       this.onDestroy$.complete();
                       //if users.understand == undefined/null/empty  || users.understand = 0
-                      console.log("understand00=" + this.user.understand);
+                      console.log("und=" + this.user.understand);
                       if (this.user.understand != 1) {
                         //console.log("understand1=" + this.user.understand);
                         this.checkAlerts(x, res);

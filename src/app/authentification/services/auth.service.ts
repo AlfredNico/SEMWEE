@@ -38,6 +38,7 @@ export class AuthService {
       .post<Users>(`${environment.baseUrl}/auth/login`, value)
       .pipe(
         map((user: Users) => {
+          console.log({ user })
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           this.cookieService.set(
             'SEMEWEE',
@@ -104,7 +105,7 @@ export class AuthService {
           );
           this.cookieService.set(
             'understand',
-            JSON.stringify(user.understand),
+            '' + user.understand,
             0.2,
             '/',
             undefined,
@@ -121,7 +122,7 @@ export class AuthService {
           //   'Strict'
           // );
 
-          // this.currentUserSubject.next(new User(user));
+          //this.currentUserSubject.next(new User(user));
           this.isAuthenticatedSubject.next(true);
           return user;
         }),

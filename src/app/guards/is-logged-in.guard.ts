@@ -47,6 +47,7 @@ export class IsLoggedInGuard implements CanActivate {
             token: this.cookieService.get('SEMEWEE'),
             image: this.cookieService.get('image'),
             role: JSON.parse(this.cookieService.get('role')),
+            understand: parseInt(this.cookieService.get('understand') ?? '0'),
             // projet: JSON.parse(this.cookieService.get('projet')),
           });
 
@@ -63,5 +64,5 @@ export class IsLoggedInGuard implements CanActivate {
     private authService: AuthService,
     private router: Router,
     private cookieService: CookieService
-  ) {}
+  ) { }
 }

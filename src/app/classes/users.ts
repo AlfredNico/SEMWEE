@@ -11,7 +11,7 @@ export class User {
   token!: string;
   role: getRoles[];
   projet: userProject[];
-  understand!: number;
+  understand?: number;
 
   constructor(user?: Users) {
     Object.assign(this, user);
@@ -27,6 +27,7 @@ export class User {
 
   // get projets() {
   //     return JSON.parse(this.projet as any);
+  //
   // }
 
   get roles() {

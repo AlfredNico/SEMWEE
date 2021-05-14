@@ -34,19 +34,23 @@ export class InformationSheetButtomComponent implements OnInit {
   ngOnInit(): void { }
 
   async noSee() {
-    console.log("idUser=" + this.user._id);
     //appel api update user.understand to 1
     this._bottomSheetRef.dismiss();
-    await this.profileService.updateUnderstand(1, this.user._id);
-    this.user.understand = 1;
-    // this.coockie.set(
-    //   'info',
-    //   'hide',
-    //   30,
-    //   '/',
-    //   undefined,
-    //   false,
-    //   'Strict'
-    // );
+    let newUnderstand = 1;
+    await this.profileService.updateUnderstand(newUnderstand, this.user._id);
+    this.user.understand = newUnderstand;
+    this.coockie.set(
+      'understand',
+      '' + newUnderstand,
+      0.2,
+      '/',
+      undefined,
+      false,
+      'Strict'
+    );
+    // let localSto = JSON.parse(localStorage.getItem("currentUser"));
+    // console.log("sto=" + localSto.understand);
+    // localSto.understand = newUnderstand;
+    // localStorage.setItem("currentUser", localSto);
   }
 }
