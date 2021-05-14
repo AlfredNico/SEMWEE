@@ -1,7 +1,7 @@
 <main class="w-100 p-0" fxLayout="column">
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
     <button class="rounded" color="primary">Open</button>
-    <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
+    <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu" (click)="downloadCSV()">
       Export
       <mat-icon aria-hidden="false" aria-label="keyboard arrow down icon">
         keyboard_arrow_down

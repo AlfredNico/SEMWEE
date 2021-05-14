@@ -17,14 +17,15 @@ import { CommonService } from '@app/shared/services/common.service';
 import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
+import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 
 @Component({
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
-  styleUrls: ['./viwer-read-import.component.scss']
+  styleUrls: ['./viwer-read-import.component.scss'],
 })
-export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChanges {
-
+export class ViwerReadImportComponent
+  implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<DataSources>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,7 +40,11 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
 
-  constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService) { }
+  constructor(
+    public dialog: MatDialog,
+    private commonService: CommonService,
+    private lpViewer: LpViwersService
+  ) {}
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
@@ -50,17 +55,17 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     this.lpViewer.checkInfoSubject$.next();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    this.lpViewer.dataSources$.subscribe(res => {
+    this.lpViewer.dataSources$.subscribe((res) => {
       if (res) {
         this.dataSource.data = res;
       }
-    })
+    });
   }
 
   public openTablesOptionns() {
@@ -69,7 +74,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
         data: {
           // noHiddenRows: this.displayColumns,
           noHiddenRows: this.displayedColumns,
-          hiddenRows: []
+          hiddenRows: [],
         },
         width: '70%',
       })
@@ -88,18 +93,18 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     this.tabIndex = tabChangeEvent.index;
   }
 
-
   public textFacet(column: any) {
     // this.commonService.showSpinner('table');
 
-    let distances = {}, isExist = false;
+    let distances = {},
+      isExist = false;
     this.dataSource.data.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
-    })
+    });
 
     const value = Object.entries(distances).map((val: any) => {
-      return { ...val, include: false }
-    })
+      return { ...val, include: false };
+    });
 
     // this.items.map(value => {
     //   if (value['head'] && value['head'] === column && value['type'] === column) {
@@ -119,7 +124,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
       type: 'facet',
       isMinimize: false,
       head: column,
-      content: value
+      content: value,
     });
     // }
   }
@@ -149,4 +154,32 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     }
   }
 
+  downloadCSV() {
+    let csvOptions = {
+      fieldSeparator: ';',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: false,
+      useBom: false,
+      noDownload: false,
+      headers: [],
+    };
+    this.displayedColumns.splice(this.displayedColumns.indexOf('all'), 1);
+    this.displayedColumns.splice(this.displayedColumns.indexOf('__v'), 1);
+    this.displayedColumns.splice(this.displayedColumns.indexOf('_id'), 1);
+
+    const tabnewObject = [];
+    this.dataSource.data.forEach((valueObject) => {
+      const object = {};
+      this.displayedColumns.forEach((key) => {
+        object[key] = valueObject[key];
+      });
+      tabnewObject.push(object);
+    });
+    // console.log(tabnewObject);
+    // console.log(this.displayedColumns);
+    csvOptions.headers = this.displayedColumns; // ity lay ao @ front actuellement
+    new AngularCsv(tabnewObject, 'HolidayList', csvOptions);
+  }
 }
