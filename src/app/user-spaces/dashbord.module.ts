@@ -181,4 +181,4 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
   //   InferListComponent
   // ]
 })
-export class DashbordModule {}
+export class DashbordModule { }

@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { Users } from './models/users';
 import { of } from 'rxjs/internal/observable/of';
 import * as INFERLIST from 'src/app/shared/fake-data/inferlist.json';
-import * as PRODUCT from 'src/app/shared/fake-data/product.json';
+import * as LPVIEWER from 'src/app/shared/fake-data/Lp-viewer.json';
 import * as PROJECT from 'src/app/shared/fake-data/project.json';
 
 
@@ -120,13 +120,14 @@ export const projects: Projects[] = [
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor() { }
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
+
 
     switch (true) {
       /* case url.includes('auth/login') && method === 'POST':
@@ -140,33 +141,6 @@ export class MockInterceptor implements HttpInterceptor {
           });
         return of(new HttpResponse({ status: 200, body: user as Users }));
 
-      case url.includes('/get-project-product/1'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array(
-              (INFERLIST as any)['default'],
-              (FILE as any)['default']
-            ),
-          })
-        );
-
-      case url.includes('/get-project-product/2'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array((INFERLIST as any)['default'], []),
-          })
-        );
-
-      case url.includes('/get-project-product/3'):
-        return of(
-          new HttpResponse({
-            status: 200,
-            body: Array([], []),
-          })
-        );
-
       // case url.includes('project/get-project'):
       //   return of(
       //     new HttpResponse({
@@ -175,13 +149,13 @@ export class MockInterceptor implements HttpInterceptor {
       //     })
       //   ); */
 
-      // case url.includes('validator/import-csv') && method === 'POST':
-      //   return of(
-      //     new HttpResponse({
-      //       status: 200,
-      //       body: (INFERLIST as any)['default'],
-      //     })
-      //   );
+      case url.includes('validator/import-viewer'):
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: (LPVIEWER as any)['default'],
+          })
+        );
 
       // case url.includes('validator/post-infer-list') && method === 'POST':
       //   return of(

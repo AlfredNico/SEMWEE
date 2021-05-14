@@ -163,17 +163,6 @@ export class LpValidatorService {
 
     let dataValue: any[] = [];
     dataSurces.map((values: any) => {
-      // Object.keys(values).map((key: string, index: number) => {
-      //   //console.log(key, index);
-      //   if (!this.matching.displayColumns.includes(key)) {
-      //     if (index === 0)
-      //       this.matching.displayColumns.push('select', columnAdd[0]);
-      //     if (index === 1) this.matching.displayColumns.push(columnAdd[1]);
-      //     if (index === 3) this.matching.displayColumns.push(columnAdd[2]);
-
-      //     this.matching.displayColumns.push(key);
-      //   }
-      // });
 
       if (values['select'] === true) {
         const tmp =
@@ -184,10 +173,6 @@ export class LpValidatorService {
               Popular_Search_Queries: 'loadingQuery',
               Website_Best_Position: 'loadingQuery',
             };
-        // if (afterSearch && obj[values['_id']] == undefined) {
-        //   tmp = { 'Valid': false, 'Popular Search Queries': 0, 'Website Browser': 0 }
-        // }
-        //console.log(obj[values['idProduct']] + " : ", tmp);
 
         dataValue.push({ ...values, ...tmp });
       }

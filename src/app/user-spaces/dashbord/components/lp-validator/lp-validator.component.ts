@@ -66,7 +66,6 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   constructor(
-    private auth: AuthService,
     private route: ActivatedRoute,
     private infoProduitService: CheckUserInfoService,
     private common: CommonService,
