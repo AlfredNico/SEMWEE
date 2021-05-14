@@ -147,9 +147,10 @@ export class FacetFilterComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // this.lpViewer.checkInfoSubject$.subscribe(res =>{
-    //   console.log('e', res);
-    // })
+    this.lpViewer.checkInfoSubject$.subscribe(_ => {
+      console.log('es');
+    });
+
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);

@@ -47,6 +47,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
       this.dataSource.data = this.dataAfterUploaded.data;
       this.dataViews = this.dataAfterUploaded.data;
     }
+    this.lpViewer.checkInfoSubject$.next();
   }
 
   ngOnInit(): void { }
