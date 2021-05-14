@@ -1,3 +1,4 @@
+import { UpdatesHeaderComponent } from './viwer-read-import/updates-header.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LpViewerComponent } from './lp-viewer.component';
@@ -12,7 +13,7 @@ import { HeaderOptionsComponent } from './viwer-read-import/header-options.compo
 import { LandingModule } from '@app/shared/modules/landing.module';
 import { MatStepperModule } from '@angular/material/stepper';
 @NgModule({
-  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent],
+  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
   imports: [
     SharedModule,
     LandingPageModule,
@@ -27,7 +28,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     ViwerImportComponent,
     ViwerReadImportComponent,
     FacetFilterComponent,
-    HeaderOptionsComponent
+    HeaderOptionsComponent,
+    UpdatesHeaderComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
