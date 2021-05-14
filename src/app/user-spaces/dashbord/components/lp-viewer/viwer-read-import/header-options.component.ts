@@ -1,19 +1,65 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SettingRowsTable } from '@app/models/setting-table';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
 import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-table-options',
-  templateUrl: './table-options.component.html',
-  styleUrls: ['./table-options.component.scss'],
+  selector: 'app-header-options',
+  template: `
+    <div fxLayout="column" class="w-100">
+      <div mat-dialog-content cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-evenly start">
+          <div class="container-box" class="w-50 h-100">
+              <h2>Avalable columns</h2>
+              <div class="table-columns">
+                  <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event) " class="containt-list">
+                      <div *ngFor="let item of hidden">
+                          <div *ngIf="!item?.includes('Value')" class="box" [ngClass]="{'setItem': selectedItems.includes(item)}" cdkDrag (click)="setClickedItem(item, hidden)">
+                              {{ item.split('_').join(' ') }}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div fxLayout="column" style="margin: auto 4em;">
+              <button [disabled]="btnToRigth" (click)="moveToRigth()" type="button" mat-raised-button class="m-1">
+                  Display
+                  <mat-icon>keyboard_arrow_right</mat-icon>
+              </button>
+              <button [disabled]="btnToLeft" (click)="moveToLeft()" type="button" mat-raised-button class="m-1">
+                  Hide
+                  <mat-icon>keyboard_arrow_left</mat-icon>
+              </button>
+              <mat-checkbox color="accent">
+                  But keep hiding properties labels
+              </mat-checkbox>
+          </div>
+
+          <div class="container-box" class="w-50 h-100">
+              <h2>Table columns</h2>
+            <!--  && !item.includes('ID') -->
+              <div class="table-columns">
+                  <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
+                      <div *ngFor="let item of noHidden">
+                          <div *ngIf="!item?.includes('Value')" class="box" cdkDrag (click)="setClickedItem(item, noHidden)" [ngClass]="{'setItem': selectedItems.includes(item)}">
+                              {{ item.split('_').join(' ') }}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div mat-dialog-actions align='center'>
+          <button (click)="onClick()" mat-raised-button
+          color="accent" tabindex="-1">CLOSE</button>
+      </div>
+  </div>
+
+  `,
+  styleUrls: ['./header-options.component.scss']
 })
-export class TableOptionsComponent implements OnInit {
+export class HeaderOptionsComponent implements OnInit {
+
   public hidden: string[] = [];
   public noHidden: string[] = [];
   // Generate form builder rows
@@ -25,20 +71,17 @@ export class TableOptionsComponent implements OnInit {
   isKeyPressed: boolean = false;
 
   infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
-
-  private isDrop = false;
-
-  public displayRows: SettingRowsTable = { hiddenRows: [], noHiddenRows: [] };
+  public displayRows = { hiddenRows: [], noHiddenRows: [] };
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
-    public dialogRef: MatDialogRef<SettingRowsTable>,
+    public dialogRef: MatDialogRef<any>,
     private fb: FormBuilder
   ) {
     this.displayRows = this.data;
 
-    if (this.data.noHiddenRows.includes('select')) {
-      const value = this.data.noHiddenRows.shift();
-    }
+    // if (this.data.noHiddenRows.includes('select')) {
+    //   const value = this.data.noHiddenRows.shift();
+    // }
 
     this.hidden = this.data.hiddenRows;
     this.noHidden = this.data.noHiddenRows;
@@ -75,9 +118,9 @@ export class TableOptionsComponent implements OnInit {
   }
 
   onClick(): void {
-    if (!this.noHidden.includes('select')) {
-      const value = this.noHidden.unshift('select');
-    }
+    // if (!this.noHidden.includes('select')) {
+    //   const value = this.noHidden.unshift('select');
+    // }
     this.dialogRef.close(this.displayRows);
   }
 
@@ -218,4 +261,5 @@ export class TableOptionsComponent implements OnInit {
       this.isKeyPressed = true
     }
   }
+
 }

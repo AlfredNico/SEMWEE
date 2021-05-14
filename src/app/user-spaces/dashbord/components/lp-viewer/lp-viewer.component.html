@@ -1,6 +1,6 @@
 <mat-horizontal-stepper [linear]="true" #stepper>
   <mat-step completed="false" editable="false" label="Fill out your address">
-    <app-viwer-import (importFile)=nextReadFile($event)></app-viwer-import>
+    <app-viwer-import [user]='user' (importFile)=nextReadFile($event)></app-viwer-import>
   </mat-step>
   <mat-step completed="false" editable="false">
     <ng-template matStepLabel>Done</ng-template>

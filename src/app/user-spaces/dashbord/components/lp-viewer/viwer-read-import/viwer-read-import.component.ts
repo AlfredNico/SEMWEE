@@ -1,3 +1,4 @@
+import { HeaderOptionsComponent } from './header-options.component';
 import { LpViwersService } from './../../../services/lp-viwers.service';
 import {
   AfterViewInit,
@@ -15,6 +16,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -58,6 +60,27 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
         this.dataSource.data = res;
       }
     })
+  }
+
+  public openTablesOptionns() {
+    this.dialog
+      .open(HeaderOptionsComponent, {
+        data: {
+          // noHiddenRows: this.displayColumns,
+          noHiddenRows: this.displayedColumns,
+          hiddenRows: []
+        },
+        width: '70%',
+      })
+      .afterClosed()
+      .pipe(
+        map((result: any) => {
+          if (result) {
+            this.displayedColumns = result.noHiddenRows;
+          }
+        })
+      )
+      .subscribe();
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -111,6 +134,18 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
       isMinimize: false,
       head: column,
     });
+  }
+
+  public isColumnDisplay(column: any): boolean {
+    switch (true) {
+      case column.toLowerCase().includes('idproject'):
+      case column.toLowerCase().includes('_id'):
+      case column.toLowerCase().includes('_v'):
+        return true;
+
+      default:
+        return false;
+    }
   }
 
 }

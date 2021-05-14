@@ -66,7 +66,8 @@ export class AppComponent implements OnDestroy {
     this.common.isLoading$.subscribe(res => {
       if (res === false) {
         // this.common.showSpinner('root')
-        this.common.hideSpinner('root')
+        this.common.hideSpinner('root');
+        this.common.hideSpinner('table');
       }
       // else {
       // }

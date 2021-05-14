@@ -1,8 +1,10 @@
+import { CommonService } from './../../../../../shared/services/common.service';
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EMPTY, Observable, Subscription } from 'rxjs';
 import { Upload } from '@app/user-spaces/dashbord/interfaces/upload';
+import { User } from '@app/classes/users';
 
 @Component({
   selector: 'app-viwer-import',
@@ -36,10 +38,11 @@ export class ViwerImportComponent implements OnInit, OnDestroy {
   file: File | null | undefined;
 
   @Output() importFile = new EventEmitter<any>();
+  @Input() user: User = undefined;
 
   private subscription$: Subscription | undefined
 
-  constructor(private lpViewerService: LpViwersService) { }
+  constructor(private lpViewerService: LpViwersService, private readonly common: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -51,12 +54,16 @@ export class ViwerImportComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    // this.common.showSpinner('table', true, '');
+    this.lpViewerService.isLoading$.next(true);
     if (this.file) {
       this.subscription$ = this.lpViewerService
-        .upload(this.file).subscribe(res => {
+        .upload(this.file, this.user._id).subscribe(res => {
           if (res) {
             this.importFile.emit(res);
+            this.lpViewerService.isLoading$.next(false);
           }
+          this.lpViewerService.isLoading$.next(false);
         })
     }
   }

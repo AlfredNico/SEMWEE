@@ -137,11 +137,22 @@ export class FacetFilterComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  private removeQuery(query: string): string {
+    const unique = [...new Set(this.states.split('||'))];
+    if (unique.indexOf(query) !== -1) {
+      unique.splice(unique.indexOf(query), 1);
+    }
+    this.states = unique.join("||");
+    return unique.join("||");
+  }
+
   ngAfterViewInit() {
+    // this.lpViewer.checkInfoSubject$.subscribe(res =>{
+    //   console.log('e', res);
+    // })
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
-
         this.items.map((value: any) => {
           if (value['type'] === 'filter') {
             this.filters.addControl(value['head'], new FormControl(''));
@@ -153,6 +164,7 @@ export class FacetFilterComponent implements OnInit {
     this.filters.valueChanges
       .pipe(
         map((query) => {
+
           this.dataSources = this.dataViews.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataViews;
@@ -186,16 +198,14 @@ export class FacetFilterComponent implements OnInit {
               });
             }
           });
-
           this.lpViewer.dataSources$.next(this.dataSources);
         })
       )
       .subscribe();
   }
 
-  public include(item: any, contentName: string) {
-    this.common.showSpinner('table');
-    const index = this.items.indexOf(item);
+  public include(headName: any, contentName: string) {
+    const index = this.items.indexOf(headName);
     if (index !== -1) {
       const obj = {};
 
@@ -205,7 +215,7 @@ export class FacetFilterComponent implements OnInit {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include']
           }
-          obj[this.items[index].content[i][0]] = item['head'];
+          obj[this.items[index].content[i][0]] = headName['head'];
           this.facetFilter.push(obj);
         }
       });
@@ -219,6 +229,7 @@ export class FacetFilterComponent implements OnInit {
         let x = this.facetFilter.map(res => {
           if (item[property] !== undefined || item[property] !== '') {
             Object.entries(res).forEach((val) => {
+
               if (val[0] && val[1] && s !== val[0]) {
                 this.indexes++;
                 if (this.indexes == 1) {
@@ -226,7 +237,7 @@ export class FacetFilterComponent implements OnInit {
                 } else {
                   this.states =
                     this.states +
-                    `|| item["${val[1]}"].toString().includes("${val[0]}")`;
+                    `||item["${val[1]}"].toString().includes("${val[0]}")`;
                 }
               }
               s = val[0];
@@ -238,12 +249,13 @@ export class FacetFilterComponent implements OnInit {
       });
     });
     this.lpViewer.dataSources$.next(this.dataSources);
-    this.common.hideSpinner('table');
 
   }
 
-  public exclude(item: any, contentName: string) {
-    const index = this.items.indexOf(item);
+  public exclude(headName: any, contentName: string) {
+    let v = '';
+
+    const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val: any, i: number) => {
         if (val[0] === contentName) {
@@ -255,6 +267,20 @@ export class FacetFilterComponent implements OnInit {
       });
     }
     this.items = this.items;
+
+    let s = '';
+    this.dataSources = this.dataViews.filter((item: any) => {
+      return Object.keys(item).some((property) => {
+        let x = this.facetFilter.map(res => {
+          if (item[property] !== undefined || item[property] !== '') {
+            const x = `item["${headName['head']}"].toString().includes("${contentName}")`;
+            return eval(this.removeQuery(x));
+          }
+        })
+        return x[x.length - 1];
+      });
+    });
+    this.lpViewer.dataSources$.next(this.dataSources);
   }
 
   public removeFromItem(item: any) {

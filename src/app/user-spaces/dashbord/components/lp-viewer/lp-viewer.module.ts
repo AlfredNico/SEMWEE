@@ -8,20 +8,26 @@ import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { FacetFilterComponent } from './facet-filter.component';
-
+import { HeaderOptionsComponent } from './viwer-read-import/header-options.component';
+import { LandingModule } from '@app/shared/modules/landing.module';
+import { MatStepperModule } from '@angular/material/stepper';
 @NgModule({
-  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent],
+  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent],
   imports: [
     SharedModule,
     LandingPageModule,
     SharedDirectivesModule,
+    LandingModule,
+    MatStepperModule, // stepper module
+    LandingPageModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }])
   ],
   exports: [RouterModule],
   entryComponents: [
     ViwerImportComponent,
     ViwerReadImportComponent,
-    FacetFilterComponent
+    FacetFilterComponent,
+    HeaderOptionsComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

@@ -1,8 +1,7 @@
+import { User } from '@app/classes/users';
+import { AuthService } from '@app/authentification/services/auth.service';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatHorizontalStepper } from '@angular/material/stepper';
-import { MatTableDataSource } from '@angular/material/table';
 import { DataSources } from '../../interfaces/data-sources';
 
 @Component({
@@ -12,11 +11,14 @@ import { DataSources } from '../../interfaces/data-sources';
 })
 export class LpViewerComponent implements OnInit, AfterViewInit {
 
+  user: User = undefined;
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: DataSources | undefined;
 
 
-  constructor() { }
+  constructor(private auth: AuthService) {
+    this.user = this.auth.currentUserSubject.value;
+  }
 
   ngOnInit(): void { }
 

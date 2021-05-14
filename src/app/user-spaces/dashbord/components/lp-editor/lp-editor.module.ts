@@ -12,9 +12,10 @@ import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { LpEditorService } from '../../services/lp-editor.service';
 import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.module';
+import { OpenHeaderOptionsComponent } from './read-view-file/open-header-options.component';
 
 @NgModule({
-  declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent, FacetFilterComponent, UndoRedoComponent],
+  declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent, FacetFilterComponent, UndoRedoComponent, OpenHeaderOptionsComponent],
   imports: [
     SharedModule,
     LandingPageModule,
