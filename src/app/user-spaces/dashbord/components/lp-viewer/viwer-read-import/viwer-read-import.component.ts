@@ -29,6 +29,7 @@ import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
 })
+
 export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
@@ -213,7 +214,7 @@ export class ViwerReadImportComponent
     const tabnewObject = [];
     this.dataSource.data.forEach((valueObject) => {
       const object = {};
-      this.displayedColumns.forEach((key) => {
+      this.edidtableColumns.forEach((key) => {
         object[key] = valueObject[key];
       });
       tabnewObject.push(object);

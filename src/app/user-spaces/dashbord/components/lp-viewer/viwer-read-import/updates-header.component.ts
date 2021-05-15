@@ -56,7 +56,6 @@ export class UpdatesHeaderComponent implements OnInit {
 
   public oldname: string = '';
   public loading: boolean = false;
-  header: header[] = [];
   edidtableColumns: string[] = [];
   public index: number = 0;
 
@@ -65,15 +64,15 @@ export class UpdatesHeaderComponent implements OnInit {
   });
 
   constructor(public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) private data: { index: number, header: header[] }) {
+    @Inject(MAT_DIALOG_DATA) private data: { index: number, edidtableColumns: string[] }) {
     if (this.data) {
-      console.log(this.data.header);
+      console.log(this.data.edidtableColumns);
 
       this.form.patchValue({
-        columName: this.data.header[this.data.index]['editableHead']
+        columName: this.data.edidtableColumns[this.data.index]
       })
       this.index = this.data.index;
-      this.header = this.data.header;
+      this.edidtableColumns = this.data.edidtableColumns;
     }
   }
 
@@ -81,15 +80,9 @@ export class UpdatesHeaderComponent implements OnInit {
   }
 
   public onClick() {
-    this.header[this.index] = {
-      ...this.header[this.index],
-      editableHead: Object.values(this.form.value).toString()
-    };
+    this.edidtableColumns[this.index] = Object.values(this.form.value).toString();
 
-    this.header = [
-      ...this.header
-    ]
-    this.dialogRef.close(this.header);
+    this.dialogRef.close(true);
   }
 
 }

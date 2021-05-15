@@ -63,4 +63,12 @@ export class LpViwersService {
       }))
   }
 
+  public putDisplayColums(header: string) {
+    // return this.http.post(`${environment.baseUrl}/lpviewer/put-lpviewer-header`, filter).pipe
+    //   (map(res => {
+    //     console.log('res', res);
+    //   }))
+    // router.put("http://localhost:3000/api/lpviewer/put-lpviewer-header/:idheader", lpviewerCtrl.putlpviewerHeader);
+  }
+
 }

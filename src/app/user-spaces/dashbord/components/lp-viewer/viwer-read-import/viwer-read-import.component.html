@@ -1,7 +1,7 @@
 <main class="w-100 p-0" fxLayout="column">
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
     <button class="rounded" color="primary">Open</button>
-    <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu" (click)="downloadCSV()">
+    <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
       Export
       <mat-icon aria-hidden="false" aria-label="keyboard arrow down icon">
         keyboard_arrow_down
@@ -9,8 +9,9 @@
     </button>
     <mat-menu #importMenu="matMenu">
       <button mat-menu-item (click)="openTablesOptionns()">Table options</button>
-      <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 2</button>
-      <button mat-menu-item>Item 3</button>
+      <button mat-menu-item  (click)="downloadCSV()">Export to csv</button>
+      <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 1</button>
+      <button mat-menu-item>Item 2</button>
     </mat-menu>
     <mat-menu #sousItem2="matMenu">
       <button mat-menu-item>Sous item 1</button>
