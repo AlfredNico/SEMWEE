@@ -35,17 +35,19 @@ export class LpViwersService {
     data.append('files', file)
     return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
       .pipe(
-        map(result => {
-          const header = JSON.stringify(result[0][0]['nameOrigin']).split(',');
-          const editableColumns = JSON.stringify(result[0][0]['nameUpdate']).split(',');
-          header.unshift('all');
-          editableColumns.unshift('all');
-          return {
-            columns: header,
-            editableColumns: editableColumns,
-            data: result[1]
-          }
-        })
+        map(result => result)
+        //   {
+        //   const header = JSON.stringify(result[0][0]['nameOrigin']).split(',');
+        //   const editableColumns = JSON.stringify(result[0][0]['nameUpdate']).split(',');
+        //   header.unshift('all');
+        //   editableColumns.unshift('all');
+        //   return {
+        //     columns: header,
+        //     editableColumns: editableColumns,
+        //     data: result[1]
+        //   }
+        // }
+        // )
       )
   }
 
@@ -63,11 +65,8 @@ export class LpViwersService {
       }))
   }
 
-  public putDisplayColums(header: string) {
-    // return this.http.post(`${environment.baseUrl}/lpviewer/put-lpviewer-header`, filter).pipe
-    //   (map(res => {
-    //     console.log('res', res);
-    //   }))
+  public putDisplayColums(_idHeader: any, header: string) {
+    return this.http.put(`${environment.baseUrl}/lpviewer/put-lpviewer-header/${_idHeader}`, header);
     // router.put("http://localhost:3000/api/lpviewer/put-lpviewer-header/:idheader", lpviewerCtrl.putlpviewerHeader);
   }
 

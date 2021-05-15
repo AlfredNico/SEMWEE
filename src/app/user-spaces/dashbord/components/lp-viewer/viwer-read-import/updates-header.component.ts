@@ -2,6 +2,7 @@ import { header } from './../../../interfaces/data-sources';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
 
 @Component({
   selector: 'app-updates-header',
@@ -63,8 +64,8 @@ export class UpdatesHeaderComponent implements OnInit {
     columName: new FormControl(''),
   });
 
-  constructor(public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) private data: { index: number, edidtableColumns: string[] }) {
+  constructor(public dialogRef: MatDialogRef<any>, private lpViwer: LpViwersService,
+    @Inject(MAT_DIALOG_DATA) private data: { index: number,idHeader: any, edidtableColumns: string[] }) {
     if (this.data) {
       console.log(this.data.edidtableColumns);
 
@@ -82,6 +83,8 @@ export class UpdatesHeaderComponent implements OnInit {
   public onClick() {
     this.edidtableColumns[this.index] = Object.values(this.form.value).toString();
 
+    this.edidtableColumns = [...this.edidtableColumns];
+    this.lpViwer.putDisplayColums(this.data.idHeader, JSON.stringify(this.edidtableColumns))
     this.dialogRef.close(true);
   }
 

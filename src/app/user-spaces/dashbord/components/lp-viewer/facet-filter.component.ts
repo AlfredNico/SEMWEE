@@ -159,7 +159,6 @@ export class FacetFilterComponent implements OnInit {
             this.filters.addControl(value['head'], new FormControl(''));
           }
         });
-        console.log(JSON.stringify(this.items));
 
         this.lpViewer.addFacetFilter(JSON.stringify(this.items))
       }
@@ -256,8 +255,7 @@ export class FacetFilterComponent implements OnInit {
       });
     });
     this.lpViewer.addFilter(this.states)
-    console.log(this.states);
-    
+
     this.lpViewer.dataSources$.next(this.dataSources);
 
   }
@@ -279,21 +277,24 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
 
     let s = '';
-    this.dataSources = this.dataViews.filter((item: any) => {
-      return Object.keys(item).some((property) => {
-        let x = this.facetFilter.map(res => {
-          if (item[property] !== undefined || item[property] !== '') {
-            const x = `item["${headName['head']}"].toString().includes("${contentName}")`;
-            return eval(this.removeQuery(x));
-          }
-        })
-        return x[x.length - 1];
+    if (this.states !== undefined || this.states !== null) {
+      this.lpViewer.dataSources$.next(this.dataViews);
+    } else {
+      this.dataSources = this.dataViews.filter((item: any) => {
+        return Object.keys(item).some((property) => {
+          let x = this.facetFilter.map(res => {
+            if (item[property] !== undefined || item[property] !== '') {
+              const x = `item["${headName['head']}"].toString().includes("${contentName}")`;
+              return eval(this.removeQuery(x));
+            }
+          })
+          return x[x.length - 1];
+        });
       });
-    });
 
-    this.lpViewer.addFilter(this.states)
-    console.log(this.states);
-    this.lpViewer.dataSources$.next(this.dataSources);
+      this.lpViewer.addFilter(this.states)
+      this.lpViewer.dataSources$.next(this.dataSources);
+    }
   }
 
   public removeFromItem(item: any) {

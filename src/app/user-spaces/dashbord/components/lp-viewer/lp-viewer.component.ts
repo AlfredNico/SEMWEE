@@ -13,7 +13,7 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
 
   user: User = undefined;
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
-  public dataAfterUploaded: DataSources | undefined;
+  public dataAfterUploaded: any | undefined;
 
 
   constructor(private auth: AuthService) {

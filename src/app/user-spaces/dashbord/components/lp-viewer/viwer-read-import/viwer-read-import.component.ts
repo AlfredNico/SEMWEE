@@ -52,12 +52,27 @@ export class ViwerReadImportComponent
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
 
-      this.displayedColumns = this.dataAfterUploaded.columns;
-      this.edidtableColumns = this.dataAfterUploaded.editableColumns;
-      this.dataSource.data = this.dataAfterUploaded.data;
-      this.dataViews = this.dataAfterUploaded.data;
+      const header = JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin']).split(',');
+      const editableColumns = JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate']).split(',');
+      const values = this.dataAfterUploaded[1];
+      header.unshift('all');
+      editableColumns.unshift('all');
+      // return {
+      //   columns: header,
+      //   editableColumns: editableColumns,
+      //   data: result[1]
+      // }
+      this.displayedColumns = header;
+      this.edidtableColumns = editableColumns;
+      this.dataSource.data = values;
+      this.dataViews = values;
 
-      console.log(this.edidtableColumns);
+      // this.displayedColumns = this.dataAfterUploaded.columns;
+      // this.edidtableColumns = this.dataAfterUploaded.editableColumns;
+      // this.dataSource.data = this.dataAfterUploaded.data;
+      // this.dataViews = this.dataAfterUploaded.data;
+
+      console.log(this.dataAfterUploaded);
     }
     this.lpViewer.checkInfoSubject$.next();
 
@@ -104,6 +119,7 @@ export class ViwerReadImportComponent
       .open(UpdatesHeaderComponent, {
         data: {
           index,
+          idHeader: this.dataAfterUploaded[0][0]['nameOrigin'],
           edidtableColumns: this.edidtableColumns
         }
       })
