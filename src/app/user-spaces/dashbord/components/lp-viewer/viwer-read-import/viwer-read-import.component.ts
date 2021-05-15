@@ -52,8 +52,10 @@ export class ViwerReadImportComponent
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
 
-      const header = JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin']).split(',');
-      const editableColumns = JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate']).split(',');
+      const header = JSON.parse(JSON.stringify( this.dataAfterUploaded[ 0 ][ 0 ][ 'nameOrigin' ].split( '"' ).join( '' ) )).split( ',' );
+      // console.log("dataAfterUploaded : ",this.dataAfterUploaded[0][0]['nameOrigin']);
+      // console.log("header : ",header);
+      const editableColumns = JSON.parse(JSON.stringify( this.dataAfterUploaded[ 0 ][ 0 ][ 'nameUpdate' ].split( '"' ).join( '' ) )).split( ',' );
       const values = this.dataAfterUploaded[1];
       header.unshift('all');
       editableColumns.unshift('all');
