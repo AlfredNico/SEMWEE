@@ -138,12 +138,15 @@ export class FacetFilterComponent implements OnInit {
   ngOnInit(): void { }
 
   private removeQuery(query: string): string {
-    const unique = [...new Set(this.states.split('||'))];
-    if (unique.indexOf(query) !== -1) {
-      unique.splice(unique.indexOf(query), 1);
+    if (this.states) {
+      const unique = [...new Set(this.states.split('||'))];
+      if (unique.indexOf(query) !== -1) {
+        unique.splice(unique.indexOf(query), 1);
+      }
+      this.states = unique.join("||");
+      return unique.join("||");
     }
-    this.states = unique.join("||");
-    return unique.join("||");
+    return '';
   }
 
   ngAfterViewInit() {
@@ -230,6 +233,7 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
 
     let s = '';
+
     this.dataSources = this.dataViews.filter((item: any) => {
       return Object.keys(item).some((property) => {
         let x = this.facetFilter.map(res => {
@@ -263,6 +267,8 @@ export class FacetFilterComponent implements OnInit {
   public exclude(headName: any, contentName: string) {
     let v = '';
 
+    console.log(this.states);
+
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val: any, i: number) => {
@@ -276,10 +282,8 @@ export class FacetFilterComponent implements OnInit {
     }
     this.items = this.items;
 
-    let s = '';
-    if (this.states !== undefined || this.states !== null) {
-      this.lpViewer.dataSources$.next(this.dataViews);
-    } else {
+    if (this.states) {
+      let s = '';
       this.dataSources = this.dataViews.filter((item: any) => {
         return Object.keys(item).some((property) => {
           let x = this.facetFilter.map(res => {
@@ -294,7 +298,10 @@ export class FacetFilterComponent implements OnInit {
 
       this.lpViewer.addFilter(this.states)
       this.lpViewer.dataSources$.next(this.dataSources);
+    } else {
+      this.lpViewer.dataSources$.next(this.dataViews);
     }
+
   }
 
   public removeFromItem(item: any) {
