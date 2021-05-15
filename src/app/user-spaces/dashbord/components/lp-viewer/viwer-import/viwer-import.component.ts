@@ -58,13 +58,17 @@ export class ViwerImportComponent implements OnInit, OnDestroy {
     this.lpViewerService.isLoading$.next(true);
     if (this.file) {
       this.subscription$ = this.lpViewerService
-        .upload(this.file, this.user._id).subscribe(res => {
-          if (res) {
-            this.importFile.emit(res);
+        .upload(this.file, this.user._id).subscribe(
+          res => {
+            if (res) {
+              this.importFile.emit(res);
+              this.lpViewerService.isLoading$.next(false);
+            }
             this.lpViewerService.isLoading$.next(false);
-          }
-          this.lpViewerService.isLoading$.next(false);
-        })
+          }),
+        error => {
+          console.warn(error)
+        }
     }
   }
 

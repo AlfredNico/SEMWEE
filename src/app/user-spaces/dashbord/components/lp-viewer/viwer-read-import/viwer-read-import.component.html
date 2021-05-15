@@ -105,7 +105,7 @@
                       arrow_drop_down
                     </mat-icon>
                     <div mat-sort-header>
-                      {{ column | removeUnderscore | capitalizeFirstPipe }}
+                      {{  column | removeUnderscore | capitalizeFirstPipe }}
                     </div>
                   </span>
                 </th>
@@ -113,7 +113,7 @@
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">Facet</button>
                   <button mat-menu-item (click)="textFilter(column)">Text filter</button>
                   <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 2</button>
-                  <button mat-menu-item>Item 3</button>
+                  <button mat-menu-item (click)="openEditColumn(column)">Update column</button>
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
                   <button mat-menu-item (click)="textFacet(column)">Text facet</button>
@@ -139,7 +139,12 @@
 
                   <ng-template #stringTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate">
-                      <p class="text-left"> {{currentValue}} </p>
+                      <!-- (currentValue | isURL) -->
+                      <p class="text-left" *ngIf="(currentValue | isURL) === false; else templeteURL"> {{currentValue}} </p>
+                    <ng-template #templeteURL>
+                      <a #templeteURL [href]="senitizer.bypassSecurityTrustResourceUrl(currentValue)"
+                        target="_blank">{{currentValue}}</a>
+                    </ng-template>
                     </div>
                   </ng-template>
 

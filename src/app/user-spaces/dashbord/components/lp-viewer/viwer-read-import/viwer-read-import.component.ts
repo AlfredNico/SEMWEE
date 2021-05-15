@@ -1,3 +1,5 @@
+import { header } from './../../../interfaces/data-sources';
+import { UpdatesHeaderComponent } from './updates-header.component';
 import { HeaderOptionsComponent } from './header-options.component';
 import { LpViwersService } from './../../../services/lp-viwers.service';
 import {
@@ -17,6 +19,9 @@ import { CommonService } from '@app/shared/services/common.service';
 import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
+import { DomSanitizer } from '@angular/platform-browser';
+import value from '*.json';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -26,6 +31,7 @@ import { map } from 'rxjs/operators';
 export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChanges {
 
   displayedColumns: string[] = [];
+  edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<DataSources>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -39,15 +45,20 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
 
-  constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService) { }
+  constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService, public senitizer: DomSanitizer) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
+      
       this.displayedColumns = this.dataAfterUploaded.columns;
+      this.edidtableColumns = this.dataAfterUploaded.editableColumns;
       this.dataSource.data = this.dataAfterUploaded.data;
       this.dataViews = this.dataAfterUploaded.data;
+      
+      console.log(this.edidtableColumns);
     }
     this.lpViewer.checkInfoSubject$.next();
+
   }
 
   ngOnInit(): void { }
@@ -82,6 +93,28 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
         })
       )
       .subscribe();
+  }
+
+
+  public openEditColumn(columnName: string) {
+    const index = this.displayedColumns.indexOf(columnName);
+    this.dialog
+      .open(UpdatesHeaderComponent, {
+        data: {
+          index,
+          edidtableColumns: this.edidtableColumns
+        }
+      })
+      .afterClosed()
+    // .pipe(
+    //   map((result: any) => {
+    //     if (result) {
+    //       this.displayedColumns = this.displayedColumns;
+    //       // this.dataSource.data = [];
+    //     }
+    //   })
+    // )
+    // .subscribe();
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -147,6 +180,18 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
       default:
         return false;
     }
+  }
+
+  public isValidURL(value: any,): boolean {
+    const res = value.match(
+      /(http(s)?:\/\/.)?([A-z]\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+    );
+    console.log(res);
+
+    if (res !== null) {
+      return true;
+    }
+    return false;
   }
 
 }

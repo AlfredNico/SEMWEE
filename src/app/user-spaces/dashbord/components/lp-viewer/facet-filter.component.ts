@@ -158,14 +158,17 @@ export class FacetFilterComponent implements OnInit {
           if (value['type'] === 'filter') {
             this.filters.addControl(value['head'], new FormControl(''));
           }
-        })
+        });
+        console.log(JSON.stringify(this.items));
+
+        this.lpViewer.addFacetFilter(JSON.stringify(this.items))
       }
     });
 
     this.filters.valueChanges
       .pipe(
         map((query) => {
-
+          let q = ';'
           this.dataSources = this.dataViews.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
               return this.dataViews;
@@ -194,11 +197,14 @@ export class FacetFilterComponent implements OnInit {
                       }
                     }
                   });
+                  q = s;
                   return eval(s);
                 }
               });
             }
           });
+
+          this.lpViewer.addFilter(JSON.stringify(q))
           this.lpViewer.dataSources$.next(this.dataSources);
         })
       )
@@ -249,6 +255,9 @@ export class FacetFilterComponent implements OnInit {
         return x[x.length - 1];
       });
     });
+    this.lpViewer.addFilter(this.states)
+    console.log(this.states);
+    
     this.lpViewer.dataSources$.next(this.dataSources);
 
   }
@@ -281,6 +290,9 @@ export class FacetFilterComponent implements OnInit {
         return x[x.length - 1];
       });
     });
+
+    this.lpViewer.addFilter(this.states)
+    console.log(this.states);
     this.lpViewer.dataSources$.next(this.dataSources);
   }
 

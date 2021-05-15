@@ -36,14 +36,31 @@ export class LpViwersService {
     return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
       .pipe(
         map(result => {
-          const header = Object.keys(result[0]);
+          const header = JSON.stringify(result[0][0]['nameOrigin']).split(',');
+          const editableColumns = JSON.stringify(result[0][0]['nameUpdate']).split(',');
           header.unshift('all');
+          editableColumns.unshift('all');
           return {
             columns: header,
-            data: result
+            editableColumns: editableColumns,
+            data: result[1]
           }
         })
       )
+  }
+
+  public addFacetFilter(facetFilter: string) {
+    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametreFilter1-lpviewer`, facetFilter).pipe
+      (map(res => {
+        console.log('res', res);
+      }))
+  }
+
+  public addFilter(filter: string) {
+    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`, filter).pipe
+      (map(res => {
+        console.log('res', res);
+      }))
   }
 
 }

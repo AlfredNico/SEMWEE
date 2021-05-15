@@ -189,7 +189,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         fileName: file?.name,
       });
 
-      //Read CSV file
+      // Read CSV file
       // const fileToRead = file;
       // const fileReader = new FileReader();
       // fileReader.onload = this.onFileLoad;
