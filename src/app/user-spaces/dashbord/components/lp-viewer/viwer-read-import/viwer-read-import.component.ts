@@ -22,14 +22,15 @@ import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import value from '*.json';
 import { Observable, of } from 'rxjs';
+import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 
 @Component({
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
-  styleUrls: ['./viwer-read-import.component.scss']
+  styleUrls: ['./viwer-read-import.component.scss'],
 })
-export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChanges {
-
+export class ViwerReadImportComponent
+  implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<DataSources>([]);
@@ -49,12 +50,12 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      
+
       this.displayedColumns = this.dataAfterUploaded.columns;
       this.edidtableColumns = this.dataAfterUploaded.editableColumns;
       this.dataSource.data = this.dataAfterUploaded.data;
       this.dataViews = this.dataAfterUploaded.data;
-      
+
       console.log(this.edidtableColumns);
     }
     this.lpViewer.checkInfoSubject$.next();
@@ -67,11 +68,11 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    this.lpViewer.dataSources$.subscribe(res => {
+    this.lpViewer.dataSources$.subscribe((res) => {
       if (res) {
         this.dataSource.data = res;
       }
-    })
+    });
   }
 
   public openTablesOptionns() {
@@ -80,7 +81,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
         data: {
           // noHiddenRows: this.displayColumns,
           noHiddenRows: this.displayedColumns,
-          hiddenRows: []
+          hiddenRows: [],
         },
         width: '70%',
       })
@@ -121,18 +122,18 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     this.tabIndex = tabChangeEvent.index;
   }
 
-
   public textFacet(column: any) {
     // this.commonService.showSpinner('table');
 
-    let distances = {}, isExist = false;
+    let distances = {},
+      isExist = false;
     this.dataSource.data.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
-    })
+    });
 
     const value = Object.entries(distances).map((val: any) => {
-      return { ...val, include: false }
-    })
+      return { ...val, include: false };
+    });
 
     // this.items.map(value => {
     //   if (value['head'] && value['head'] === column && value['type'] === column) {
@@ -152,7 +153,7 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
       type: 'facet',
       isMinimize: false,
       head: column,
-      content: value
+      content: value,
     });
     // }
   }
@@ -194,4 +195,32 @@ export class ViwerReadImportComponent implements OnInit, AfterViewInit, OnChange
     return false;
   }
 
+  downloadCSV() {
+    let csvOptions = {
+      fieldSeparator: ';',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: false,
+      useBom: false,
+      noDownload: false,
+      headers: [],
+    };
+    this.displayedColumns.splice(this.displayedColumns.indexOf('all'), 1);
+    this.displayedColumns.splice(this.displayedColumns.indexOf('__v'), 1);
+    this.displayedColumns.splice(this.displayedColumns.indexOf('_id'), 1);
+
+    const tabnewObject = [];
+    this.dataSource.data.forEach((valueObject) => {
+      const object = {};
+      this.displayedColumns.forEach((key) => {
+        object[key] = valueObject[key];
+      });
+      tabnewObject.push(object);
+    });
+    // console.log(tabnewObject);
+    // console.log(this.displayedColumns);
+    csvOptions.headers = this.displayedColumns; // ity lay ao @ front actuellement
+    new AngularCsv(tabnewObject, 'HolidayList', csvOptions);
+  }
 }
