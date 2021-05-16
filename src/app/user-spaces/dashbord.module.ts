@@ -118,6 +118,13 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
         component: LayoutComponent,
         children: [
           {
+            path: 'all-lp-viewer-projects',
+            loadChildren: () =>
+              import('./dashbord/components/lp-viewer/all-lp-viewer-projects/all-lp-viewer-projects.module').then(
+                (m) => m.AllLPViewerProjectsModule
+              ),
+          },
+          {
             path: 'lp-viewer',
             loadChildren: () =>
               import('./dashbord/components/lp-viewer/lp-viewer.module').then(

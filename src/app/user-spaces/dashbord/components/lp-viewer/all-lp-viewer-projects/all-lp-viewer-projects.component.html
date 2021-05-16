@@ -7,8 +7,16 @@
           projects</span>
             </h3>
         </div>
+        <div>
+            <button mat-raised-button color="primary">
+            <a routerLinkActive="active" routerLink="/user-space/lp-viewer"
+              style="color: white!important;">
+              <span class="menu-text">Import</span>
+            </a>
+          </button>
+        </div>
     </mat-card-header>
     <mat-card-content class="mx-5">
-        <app-projects [allProjects$]="allProjects$"></app-projects>
+        <app-lp-viewer-projects [allProjects$]="allProjects$"></app-lp-viewer-projects>
     </mat-card-content>
 </mat-card>
