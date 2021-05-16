@@ -119,7 +119,7 @@ export class ViwerReadImportComponent
       .open(UpdatesHeaderComponent, {
         data: {
           index,
-          idHeader: this.dataAfterUploaded[0][0]['nameOrigin'],
+          idHeader: this.dataAfterUploaded[0][0]['_id'],
           edidtableColumns: this.edidtableColumns
         }
       })
