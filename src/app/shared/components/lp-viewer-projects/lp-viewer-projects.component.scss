@@ -1,0 +1,26 @@
+.symbol {
+    margin-right: 75px!important;
+}
+
+.content-project {
+    padding: 20px 30px;
+}
+
+.content-project:hover {
+    background: rgba(0,0,0,0.05);
+    border-radius: 10px;
+}
+
+.txt-project-content:hover a {
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    color: #3699FF !important;
+}
+
+.txt-project-content:hover {
+    cursor: pointer;
+}
+
+.txt-project-content {
+    border: none!important;
+    outline: none!important;
+}

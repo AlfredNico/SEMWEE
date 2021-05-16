@@ -1,0 +1,14 @@
+<mat-card>
+    <mat-card-header>
+        <div class="card-header border-0">
+            <h3 class="card-title align-items-start" fxLayout="column">
+                <span class="card-label font-weight-bolder text-dark">LPViewer Projects Overview</span>
+                <span class="text-muted mt-0 font-weight-bold font-size-sm">{{ (allProjects$ | async)?.length }}
+          projects</span>
+            </h3>
+        </div>
+    </mat-card-header>
+    <mat-card-content class="mx-5">
+        <app-projects [allProjects$]="allProjects$"></app-projects>
+    </mat-card-content>
+</mat-card>
