@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { LPViewerProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
-import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
+import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
 
@@ -18,7 +18,7 @@ export class LPViewerProjectsComponent implements OnInit {
     LPViewerProjects[]
   >(undefined);
   constructor(
-    private LpViwersService: LpViwersService,
+    private LPViewerProjectsService: LPViewerProjectsService,
     public dialog: MatDialog,
     private common: CommonService,
     private notifs: NotificationService,

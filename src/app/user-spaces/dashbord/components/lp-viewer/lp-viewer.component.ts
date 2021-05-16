@@ -3,6 +3,7 @@ import { AuthService } from '@app/authentification/services/auth.service';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { DataSources } from '../../interfaces/data-sources';
+import { CommonService } from '@app/shared/services/common.service';
 
 @Component({
   selector: 'app-lp-viewer',
@@ -16,8 +17,12 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
   public dataAfterUploaded: any | undefined;
 
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService,private common: CommonService) {
     this.user = this.auth.currentUserSubject.value;
+  }
+
+  ngDoCheck(): void {
+    this.common.hideSpinner();
   }
 
   ngOnInit(): void { }
