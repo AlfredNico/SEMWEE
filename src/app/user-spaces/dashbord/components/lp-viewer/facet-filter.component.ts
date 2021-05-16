@@ -2,7 +2,7 @@ import { CommonService } from './../../../../shared/services/common.service';
 import { HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
 
 @Component({
@@ -131,24 +131,27 @@ export class FacetFilterComponent implements OnInit {
 
   public filters = this.fb.group([]);
   private indexes = 0;
-  private states = '';
-  private queries:string[] = [];
+  private states: any[] = [];
+  private queries: string[] = [];
+  private searchQuery: any[][] = [];
+  private searchQueries: any[] = [];
+  // private querie: string[] = [];
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
   ngOnInit(): void { }
 
-  private removeQuery(query?: string): string {
-    if (this.states !== (null || undefined) && query !== undefined) {
-      const unique = [...new Set(this.states?.split('||'))];
-      if (unique.indexOf(query) !== -1) {
-        unique.splice(unique.indexOf(query), 1);
-      }
-      this.states = unique.join("||");
-      return unique.join("||");
-    }
-    return '';
-  }
+  // private removeQuery(query?: string): string {
+  //   if (this.states !== (null || undefined) && query !== undefined) {
+  //     const unique = [...new Set(this.states?.split('||'))];
+  //     if (unique.indexOf(query) !== -1) {
+  //       unique.splice(unique.indexOf(query), 1);
+  //     }
+  //     this.states = unique.join("||");
+  //     return unique.join("||");
+  //   }
+  //   return '';
+  // }
 
   ngAfterViewInit() {
     this.lpViewer.checkInfoSubject$.subscribe(_ => {
@@ -217,52 +220,22 @@ export class FacetFilterComponent implements OnInit {
   public include(headName: any, contentName: string) {
     const index = this.items.indexOf(headName);
     if (index !== -1) {
-      const obj = {};
-
       this.items[index].content.map((val: any, i: number) => {
         if (val[0] === contentName) {
           this.items[index].content[i] = {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include']
           }
-          obj[this.items[index].content[i][0]] = headName['head'];
-
-          this.facetFilter.push(obj);
         }
-      });
+      })
     }
-
     this.items = this.items;
 
-    let s = '';
-
-    this.dataSources = this.dataViews.filter((item: any) => {
-      return Object.keys(item).some((property) => {
-        let x = this.facetFilter.map(res => {
-          if (item[property] !== undefined || item[property] !== '') {
-            Object.entries(res).forEach((val) => {
-              if (val[0] && val[1] && s !== val[0] && !this.queries.includes(`item["${val[1]}"].toString().includes("${val[0]}")`)) {
-                this.queries.push(`item["${val[1]}"].toString().includes("${val[0]}")`);
-                this.states = this.queries.join("||");
-              }
-
-              s = val[0];
-            });
-            return eval(this.states);
-          }
-        })
-
-        return x[x.length - 1];
-      });
-    });
-
-    this.lpViewer.addFilter(this.states); //save states into DB
-    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-
+    this.checkIncludesExcludes();
   }
 
   public exclude(headName: any, contentName: string) {
-    let v = '';
+
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val: any, i: number) => {
@@ -273,45 +246,12 @@ export class FacetFilterComponent implements OnInit {
           }
         };
 
-
-        const facetIndex = this.facetFilter.findIndex(x => {
-          return x[Object.keys(x).toString()] !== contentName
-        });
-        if (facetIndex !== -1) {
-          this.facetFilter.splice(i, 1);
-        }
       });
     };
-
     this.items = this.items;
-      let s = '';
 
-      if (this.facetFilter.length === 0) {
-        this.lpViewer.dataSources$.next(this.dataViews);
-      }else{
-        this.dataSources = this.dataViews.filter((item: any) => {
-          return Object.keys(item).some((property) => {
-            let x = this.facetFilter.map(res => {
-              if (item[property] !== undefined || item[property] !== '') {
-                const i = this.queries.indexOf(`item["${headName['head']}"].toString().includes("${contentName}")`);
-                if (i !== -1) this.queries.splice(i, 1);
+    this.checkIncludesExcludes();
 
-                const x = `item["${headName['head']}"].toString().includes("${contentName}")`;
-                return eval(this.removeQuery(x));
-              }
-            })
-
-            return this.states!==(null||undefined|| '') ? x[x.length - 1] : () =>{
-              this.indexes = 0;
-              this.states ='';
-              this.queries = [];
-              return true;
-            };
-          });
-        });
-        this.lpViewer.dataSources$.next(this.dataSources);
-      }
-      this.lpViewer.addFilter(this.states);
   }
 
   public removeFromItem(item: any) {
@@ -323,7 +263,6 @@ export class FacetFilterComponent implements OnInit {
   public removeAll() {
     this.lpViewer.dataSources$.next(this.dataViews);
     this.indexes = 0;
-    this.states ='';
     this.queries = [];
     this.items = [];
   }
@@ -339,6 +278,40 @@ export class FacetFilterComponent implements OnInit {
     }
 
     this.items = this.items;
+  }
+
+  private checkIncludesExcludes() {
+    let search: boolean, last: boolean;
+
+    this.dataSources = this.dataViews.filter((value: any) => {
+      return Object.keys(value).some((property) => {
+        if (value[property] !== (undefined || null)) {
+          let i1: number = 0;
+          let queries: boolean;
+          const q = this.items.map((item: any): void => {
+            let i2: number = 0;
+            let str = '';
+            item['content'].map((element: any) => {
+              ; if (element['include'] === true) {
+
+                const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
+                if (i2 === 0) str = q;
+                else str = `${str}||${q}`;
+                i2++;
+              }
+            });
+            search = str !== '' ? eval(str) : true;
+            if (i1 === 0) queries = search;
+            else queries = queries && search;
+            i1++;
+          });
+          last = queries;
+          return queries;
+        }
+      })
+    });
+    // this.lpViewer.addFilter(this.states); //save states into DB
+    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
   }
 
 }
