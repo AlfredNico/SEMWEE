@@ -125,37 +125,24 @@ export class FacetFilterComponent implements OnInit {
   @Input() public items: any[] = [];
   @Input() public dataViews: any[] = [];
   @Input() public dataSources: any[] = [];
+  @Input() public dataToFiltering: any[] = [];
   private facetFilter: any[] = [];
 
   changeText: boolean;
 
   public filters = this.fb.group([]);
-  private indexes = 0;
-  private states: any[] = [];
-  private queries: string[] = [];
-  private searchQuery: any[][] = [];
-  private searchQueries: any[] = [];
+  // private indexes = 0;
+  // private queries: string[] = [];
+  // private searchQuery: any[][] = [];
+  // private searchQueries: any[] = [];
   // private querie: string[] = [];
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
   ngOnInit(): void { }
 
-  // private removeQuery(query?: string): string {
-  //   if (this.states !== (null || undefined) && query !== undefined) {
-  //     const unique = [...new Set(this.states?.split('||'))];
-  //     if (unique.indexOf(query) !== -1) {
-  //       unique.splice(unique.indexOf(query), 1);
-  //     }
-  //     this.states = unique.join("||");
-  //     return unique.join("||");
-  //   }
-  //   return '';
-  // }
-
   ngAfterViewInit() {
     this.lpViewer.checkInfoSubject$.subscribe(_ => {
-      // console.log('es');
     });
 
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
@@ -175,9 +162,9 @@ export class FacetFilterComponent implements OnInit {
       .pipe(
         map((query) => {
           let q = ';'
-          this.dataSources = this.dataViews.filter((item: any) => {
+          this.dataSources = this.dataToFiltering.filter((item: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
-              return this.dataViews;
+              return this.dataToFiltering;
             } else {
               return Object.keys(item).some((property) => {
                 if (
@@ -212,6 +199,7 @@ export class FacetFilterComponent implements OnInit {
 
           this.lpViewer.addFilter(JSON.stringify(q))
           this.lpViewer.dataSources$.next(this.dataSources);
+
         })
       )
       .subscribe();
@@ -262,8 +250,6 @@ export class FacetFilterComponent implements OnInit {
 
   public removeAll() {
     this.lpViewer.dataSources$.next(this.dataViews);
-    this.indexes = 0;
-    this.queries = [];
     this.items = [];
   }
 
@@ -291,7 +277,7 @@ export class FacetFilterComponent implements OnInit {
           const q = this.items.map((item: any): void => {
             let i2: number = 0;
             let str = '';
-            item['content'].map((element: any) => {
+            item['content']?.map((element: any) => {
               ; if (element['include'] === true) {
 
                 const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
@@ -312,6 +298,7 @@ export class FacetFilterComponent implements OnInit {
     });
     // this.lpViewer.addFilter(this.states); //save states into DB
     this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+    this.dataToFiltering = this.dataSources;
   }
 
 }
