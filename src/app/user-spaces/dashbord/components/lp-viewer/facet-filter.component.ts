@@ -132,14 +132,15 @@ export class FacetFilterComponent implements OnInit {
   public filters = this.fb.group([]);
   private indexes = 0;
   private states = '';
+  private queries:string[] = [];
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
   ngOnInit(): void { }
 
-  private removeQuery(query: string): string {
-    if (this.states) {
-      const unique = [...new Set(this.states.split('||'))];
+  private removeQuery(query?: string): string {
+    if (this.states !== (null || undefined) && query !== undefined) {
+      const unique = [...new Set(this.states?.split('||'))];
       if (unique.indexOf(query) !== -1) {
         unique.splice(unique.indexOf(query), 1);
       }
@@ -151,7 +152,7 @@ export class FacetFilterComponent implements OnInit {
 
   ngAfterViewInit() {
     this.lpViewer.checkInfoSubject$.subscribe(_ => {
-      console.log('es');
+      // console.log('es');
     });
 
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
@@ -225,6 +226,7 @@ export class FacetFilterComponent implements OnInit {
             include: !this.items[index].content[i]['include']
           }
           obj[this.items[index].content[i][0]] = headName['head'];
+
           this.facetFilter.push(obj);
         }
       });
@@ -239,36 +241,28 @@ export class FacetFilterComponent implements OnInit {
         let x = this.facetFilter.map(res => {
           if (item[property] !== undefined || item[property] !== '') {
             Object.entries(res).forEach((val) => {
-
-              if (val[0] && val[1] && s !== val[0]) {
-                this.indexes++;
-                if (this.indexes == 1) {
-                  this.states = `item["${val[1]}"].toString().includes("${val[0]}")`;
-                } else {
-                  this.states =
-                    this.states +
-                    `||item["${val[1]}"].toString().includes("${val[0]}")`;
-                }
+              if (val[0] && val[1] && s !== val[0] && !this.queries.includes(`item["${val[1]}"].toString().includes("${val[0]}")`)) {
+                this.queries.push(`item["${val[1]}"].toString().includes("${val[0]}")`);
+                this.states = this.queries.join("||");
               }
+
               s = val[0];
             });
             return eval(this.states);
           }
         })
+
         return x[x.length - 1];
       });
     });
-    this.lpViewer.addFilter(this.states)
 
-    this.lpViewer.dataSources$.next(this.dataSources);
+    this.lpViewer.addFilter(this.states); //save states into DB
+    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
 
   }
 
   public exclude(headName: any, contentName: string) {
     let v = '';
-
-    console.log(this.states);
-
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val: any, i: number) => {
@@ -277,31 +271,47 @@ export class FacetFilterComponent implements OnInit {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include']
           }
+        };
+
+
+        const facetIndex = this.facetFilter.findIndex(x => {
+          return x[Object.keys(x).toString()] !== contentName
+        });
+        if (facetIndex !== -1) {
+          this.facetFilter.splice(i, 1);
         }
       });
-    }
+    };
+
     this.items = this.items;
-
-    if (this.states) {
       let s = '';
-      this.dataSources = this.dataViews.filter((item: any) => {
-        return Object.keys(item).some((property) => {
-          let x = this.facetFilter.map(res => {
-            if (item[property] !== undefined || item[property] !== '') {
-              const x = `item["${headName['head']}"].toString().includes("${contentName}")`;
-              return eval(this.removeQuery(x));
-            }
-          })
-          return x[x.length - 1];
+
+      if (this.facetFilter.length === 0) {
+        this.lpViewer.dataSources$.next(this.dataViews);
+      }else{
+        this.dataSources = this.dataViews.filter((item: any) => {
+          return Object.keys(item).some((property) => {
+            let x = this.facetFilter.map(res => {
+              if (item[property] !== undefined || item[property] !== '') {
+                const i = this.queries.indexOf(`item["${headName['head']}"].toString().includes("${contentName}")`);
+                if (i !== -1) this.queries.splice(i, 1);
+
+                const x = `item["${headName['head']}"].toString().includes("${contentName}")`;
+                return eval(this.removeQuery(x));
+              }
+            })
+
+            return this.states!==(null||undefined|| '') ? x[x.length - 1] : () =>{
+              this.indexes = 0;
+              this.states ='';
+              this.queries = [];
+              return true;
+            };
+          });
         });
-      });
-
-      this.lpViewer.addFilter(this.states)
-      this.lpViewer.dataSources$.next(this.dataSources);
-    } else {
-      this.lpViewer.dataSources$.next(this.dataViews);
-    }
-
+        this.lpViewer.dataSources$.next(this.dataSources);
+      }
+      this.lpViewer.addFilter(this.states);
   }
 
   public removeFromItem(item: any) {
@@ -311,6 +321,10 @@ export class FacetFilterComponent implements OnInit {
   }
 
   public removeAll() {
+    this.lpViewer.dataSources$.next(this.dataViews);
+    this.indexes = 0;
+    this.states ='';
+    this.queries = [];
     this.items = [];
   }
 
