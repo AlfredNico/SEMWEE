@@ -3,10 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
+import { RemoveComponent } from '@app/user-spaces/dashbord/components/projects/dialog/remove.component';
 import { LPViewerProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lp-viewer-projects',
@@ -18,7 +20,7 @@ export class LPViewerProjectsComponent implements OnInit {
     LPViewerProjects[]
   >(undefined);
   constructor(
-    private LPViewerProjectsService: LPViewerProjectsService,
+    private lPViewerProjectsService: LPViewerProjectsService,
     public dialog: MatDialog,
     private common: CommonService,
     private notifs: NotificationService,
@@ -44,28 +46,28 @@ export class LPViewerProjectsComponent implements OnInit {
   }
 
   onDelete(item: LPViewerProjects) {
-    // this.dialog
-    //   .open(RemoveComponent, {
-    //     data: {
-    //       message: 'Are you sure to delete this project ?',
-    //     },
-    //     width: '600px',
-    //   })
-    //   .afterClosed()
-    //   .pipe(
-    //     map((result) => {
-    //       if (result === true) {
-    //         this.projectServices
-    //           .deleteProjects(item._id)
-    //           .subscribe((result) => {
-    //             if (result && result.message) {
-    //               this.notifs.sucess(result.message);
-    //             }
-    //           });
-    //       }
-    //     })
-    //   )
-    //   .subscribe();
+    this.dialog
+      .open(RemoveComponent, {
+        data: {
+          message: 'Are you sure to delete this project ?',
+        },
+        width: '600px',
+      })
+      .afterClosed()
+      .pipe(
+        map((result) => {
+          if (result === true) {
+            this.lPViewerProjectsService
+              .deleteProjects(item._id)
+              .subscribe((result) => {
+                if (result && result.message) {
+                  this.notifs.sucess(result.message);
+                }
+              });
+          }
+        })
+      )
+      .subscribe();
   }
 
   onEdit(item: LPViewerProjects) {

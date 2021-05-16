@@ -34,6 +34,12 @@ export class LPViewerProjectsService {
     );
   }
 
+  public deleteProjects(project_id: string) {
+    return this.http.delete<{ message: string }>(
+      `${environment.baseUrl}/lpviewer/delete-lpviewer/${project_id}`
+    );
+  }
+
   // public addProjects(data: any) {
   //   return this.http
   //     .post<{ message: string }>(
