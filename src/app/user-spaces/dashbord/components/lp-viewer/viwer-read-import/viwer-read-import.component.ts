@@ -52,29 +52,16 @@ export class ViwerReadImportComponent
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
 
-      const header = JSON.parse(JSON.stringify( this.dataAfterUploaded[ 0 ][ 0 ][ 'nameOrigin' ].split( '"' ).join( '' ) )).split( ',' );
-      // console.log("dataAfterUploaded : ",this.dataAfterUploaded[0][0]['nameOrigin']);
-      // console.log("header : ",header);
-      const editableColumns = JSON.parse(JSON.stringify( this.dataAfterUploaded[ 0 ][ 0 ][ 'nameUpdate' ].split( '"' ).join( '' ) )).split( ',' );
+      const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
+      const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
       const values = this.dataAfterUploaded[1];
       header.unshift('all');
       editableColumns.unshift('all');
-      // return {
-      //   columns: header,
-      //   editableColumns: editableColumns,
-      //   data: result[1]
-      // }
+
       this.displayedColumns = header;
       this.edidtableColumns = editableColumns;
       this.dataSource.data = values;
       this.dataViews = values;
-
-      // this.displayedColumns = this.dataAfterUploaded.columns;
-      // this.edidtableColumns = this.dataAfterUploaded.editableColumns;
-      // this.dataSource.data = this.dataAfterUploaded.data;
-      // this.dataViews = this.dataAfterUploaded.data;
-
-      console.log(this.dataAfterUploaded);
     }
     this.lpViewer.checkInfoSubject$.next();
 
@@ -125,16 +112,7 @@ export class ViwerReadImportComponent
           edidtableColumns: this.edidtableColumns
         }
       })
-      .afterClosed()
-    // .pipe(
-    //   map((result: any) => {
-    //     if (result) {
-    //       this.displayedColumns = this.displayedColumns;
-    //       // this.dataSource.data = [];
-    //     }
-    //   })
-    // )
-    // .subscribe();
+      .afterClosed();
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -154,20 +132,6 @@ export class ViwerReadImportComponent
       return { ...val, include: false };
     });
 
-    // this.items.map(value => {
-    //   if (value['head'] && value['head'] === column && value['type'] === column) {
-    //     isExist = true;
-    //     return;
-    //   }
-    // })
-
-    // if (isExist === false) {
-    // this.items.push({
-    //   type: 'facet',
-    //   isMinimize: false,
-    //   head: column,
-    //   content: value
-    // });
     this.lpViewer.itemsObservables$.next({
       type: 'facet',
       isMinimize: false,
@@ -178,11 +142,6 @@ export class ViwerReadImportComponent
   }
 
   public textFilter(column: any) {
-    // this.items.push({
-    //   type: 'filter',
-    //   isMinimize: false,
-    //   head: column,
-    // });
     this.lpViewer.itemsObservables$.next({
       type: 'filter',
       isMinimize: false,
