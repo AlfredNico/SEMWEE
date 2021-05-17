@@ -178,7 +178,6 @@ export class FacetFilterComponent implements OnInit {
                   query[property] !== undefined &&
                   value[property] !== undefined
                 ) {
-                  console.log('query', query[property]);
                   const lower = (query[property] as any).toLowerCase();
                   const ss = `value["${property}"].toString().toLowerCase().includes("${lower}")`;
                   if (i2 === 0) s = ss;
@@ -192,8 +191,6 @@ export class FacetFilterComponent implements OnInit {
               return eval(qqq);
             }
           });
-
-          console.log(qqq);
 
           this.searchQueries = qqq;
           this.lpViewer.addFilter(JSON.stringify(qqq))
@@ -290,7 +287,6 @@ export class FacetFilterComponent implements OnInit {
               }
             });
             const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
-            console.log('vdvd', xxx);
 
             search = str !== '' ? eval(xxx) : true;
             if (i1 === 0) queries = search;
@@ -298,6 +294,8 @@ export class FacetFilterComponent implements OnInit {
             i1++;
           });
           last = queries;
+          console.log('vdvd', search);
+
           return queries;
         }
       })
