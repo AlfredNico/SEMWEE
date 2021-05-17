@@ -48,7 +48,7 @@ export class IdbService {
       .then(function () {
         // console.log('added item to the store os!');
       })
-      .catch((error) => {return throwError(error)});
+      .catch((error) => { return throwError(error) });
   }
 
   public updateItems(storeName: string, value: any[], id: any) {
@@ -59,8 +59,8 @@ export class IdbService {
         store.put({ id, value });
         return tx.complete;
       })
-      .then(function () {})
-      .catch((error) => {return throwError(error)});
+      .then(function () { })
+      .catch((error) => { return throwError(error) });
   }
 
   getAllData(storeName: string) {
@@ -74,7 +74,7 @@ export class IdbService {
         this._dataChange.next(values);
         return values;
       })
-      .catch((error) => {return throwError(error)});
+      .catch((error) => { return throwError(error) });
   }
 
   // demo1: Getting started
@@ -92,11 +92,10 @@ export class IdbService {
         }
         return cursor && cursor.key;
       })
-      .catch((error) => {return throwError(error)});
+      .catch((error) => { return throwError(error) });
   }
 
   getItem(storeName: string, id: any): Promise<any> {
-
     return this._dbPromise
       .then((db: any) => {
         const tx = db.transaction(storeName, 'readonly');

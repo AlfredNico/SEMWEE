@@ -2,7 +2,7 @@ import { User } from '@app/classes/users';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
-import { DataSources } from '../../interfaces/data-sources';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-lp-viewer',
@@ -15,9 +15,19 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: any | undefined;
 
-
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute) {
     this.user = this.auth.currentUserSubject.value;
+
+    this.route.queryParams
+      .subscribe(params => {
+        if (params) {
+          if (params['idProduct']) {
+            this.router.navigate(['user-space/lp-viewer'],
+              { queryParams: { idProduct: params['idProduct'] } });
+          }
+        }
+      });
+
   }
 
   ngOnInit(): void { }
@@ -26,7 +36,9 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
 
   public nextReadFile(value: any) {
     this.dataAfterUploaded = value;
-
+    this.router.navigate(['user-space/lp-viewer'], {
+      queryParams: { idProduct: value[0][0]['_id'] }
+    });
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
     this.stepper.next();
