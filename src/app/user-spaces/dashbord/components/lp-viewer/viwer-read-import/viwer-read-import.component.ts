@@ -118,12 +118,8 @@ export class ViwerReadImportComponent
   public textFacet(column: any) {
     // this.commonService.showSpinner('table');
 
-<<<<<<< HEAD
-    let distances = {};
-=======
     let distances = {},
       isExist = false;
->>>>>>> checkout-tables
     this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });
