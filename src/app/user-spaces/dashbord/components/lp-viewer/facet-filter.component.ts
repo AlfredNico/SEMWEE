@@ -136,7 +136,7 @@ export class FacetFilterComponent implements OnInit {
   // private queries: string[] = [];
   // private searchQuery: any[][] = [];
   // private searchQueries: any[] = [];
-  private querie: string = '';
+  private searchQueries: string = '';
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
@@ -162,44 +162,41 @@ export class FacetFilterComponent implements OnInit {
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          let q = '';
+          let qqq = '', i1 = 0;
+          console.log('e', query);
+
           this.dataSources = this.dataViews.filter((value: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
-              return this.checkIncludesExcludes();
+              // return this.checkIncludesExcludes();
+              return this.dataViews;
             } else {
-              return Object.keys(value).some((property) => {
+              let s = '', i2 = 0;
+              Object.keys(value).some((property) => {
                 if (
                   query[property] != '' &&
                   typeof value[property] === 'string' &&
                   query[property] !== undefined &&
                   value[property] !== undefined
                 ) {
-                  let i = 0,
-                    s = '';
-                  Object.entries(query).map((val) => {
-                    if (val[1]) {
-                      i++;
-                      const lower = (val[1] as any).toLowerCase();
-                      if (i == 1) {
-                        s =
-                          s +
-                          `value["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
-                      } else {
-                        s =
-                          s +
-                          `&& value["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
-                      }
-                    }
-                  });
-                  q = s;
-                  return eval(s);
+                  console.log('query', query[property]);
+                  const lower = (query[property] as any).toLowerCase();
+                  const ss = `value["${property}"].toString().toLowerCase().includes("${lower}")`;
+                  if (i2 === 0) s = ss;
+                  else s = s + '&&' + ss;
+                  i2++;
                 }
               });
+              if (i1 === 0) qqq = s;
+              else qqq = qqq + '&&' + s;
+              i2++;
+              return eval(qqq);
             }
           });
 
-          this.querie = q;
-          this.lpViewer.addFilter(JSON.stringify(q))
+          console.log(qqq);
+
+          this.searchQueries = qqq;
+          this.lpViewer.addFilter(JSON.stringify(qqq))
           this.lpViewer.dataSources$.next(this.dataSources);
 
         })
@@ -272,7 +269,7 @@ export class FacetFilterComponent implements OnInit {
 
   private checkIncludesExcludes(): any[] {
     let search: boolean, last: boolean;
-    console.log('s', this.querie);
+    console.log('s', this.searchQueries);
 
 
     this.dataSources = this.dataViews.filter((value: any) => {
@@ -287,13 +284,13 @@ export class FacetFilterComponent implements OnInit {
               ; if (element['include'] === true) {
 
                 const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
-                if (i2 === 0) str = this.querie !== '' ? q + '&&' + this.querie : q;
+                if (i2 === 0) str = q;
                 else str = `${str}||${q}`;
                 i2++;
               }
             });
-            const xxx = this.querie !== '' ? str + '&&' + this.querie : str;
-            console.log(xxx);
+            const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
+            console.log('vdvd', xxx);
 
             search = str !== '' ? eval(xxx) : true;
             if (i1 === 0) queries = search;
