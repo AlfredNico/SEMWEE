@@ -71,4 +71,4 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
     TuneItComponent,
   ],
 })
-export class LpValidatorModule {}
+export class LpValidatorModule { }

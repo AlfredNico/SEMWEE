@@ -31,7 +31,7 @@
         "@ngx-translate/http-loader": "^6.0.0",
         "@types/object-path": "^0.11.0",
         "angular-in-memory-web-api": "^0.11.0",
-        "angular-resizable-element": "^3.3.5",
+        "angular7-csv": "^0.2.12",
         "apexcharts": "^3.20.0",
         "bootstrap": "^4.6.0",
         "clipboard": "^2.0.6",
@@ -60,7 +60,7 @@
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.1100.7",
-        "@angular/cli": "^11.2.11",
+        "@angular/cli": "^11.2.12",
         "@angular/compiler-cli": "~11.0.9",
         "@types/jasmine": "~3.6.0",
         "@types/jasminewd2": "~2.0.8",

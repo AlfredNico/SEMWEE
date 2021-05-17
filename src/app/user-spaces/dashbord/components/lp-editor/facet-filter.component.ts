@@ -1,14 +1,13 @@
-import { CommonService } from './../../../../shared/services/common.service';
-import { HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { LpEditorService } from './../../services/lp-editor.service';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { first, map } from 'rxjs/operators';
-import { LpViwersService } from '../../services/lp-viwers.service';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-facet-filter',
   template: `
- <div *ngIf="items.length > 0; else noItems">
+  <div *ngIf="items.length > 0; else noItems">
     <div class="w-100 px-2 pb-3">
       <button class="rounded">Refresh</button>
       <span fxFlex></span>
@@ -47,11 +46,10 @@ import { LpViwersService } from '../../services/lp-viwers.service';
             <div fxLayout="row" class="py-0 px-2 list-content" fxLayoutAlign="space-between center"
             *ngFor="let content of item?.content">
               <div fxLayout="row">
-                <p class="font-weight-bold m-0 pr-2 pointer" [ngStyle]="{'color':content['include'] === false ? '#3d5be2' : '#ff6a00' }">{{ content[0] }}</p>
+                <p class="font-weight-bold m-0 pr-2 pointer" style="color: #3d5be2">{{ content[0] }}</p>
                 <span style="color: #a89ca2"> {{ content[1] }} </span>
               </div>
-              <span class="only-show-on-hover pointer" *ngIf="content['include'] === false" (click)="include(item, content[0])">include</span>
-              <span class="pointer" *ngIf="content['include'] === true" (click)="exclude(item, content[0])">exclude</span>
+              <span class="only-show-on-hover pointer">include</span>
             </div>
           </div>
         </div>
@@ -120,126 +118,46 @@ import { LpViwersService } from '../../services/lp-viwers.service';
       }
   `]
 })
-export class FacetFilterComponent implements OnInit {
-
+export class FacetFilterComponent implements OnInit, AfterViewInit {
   @Input() public items: any[] = [];
-  @Input() public dataViews: any[] = [];
-  @Input() public dataSources: any[] = [];
-  @Input() public dataToFiltering: any[] = [];
-  private facetFilter: any[] = [];
-
   changeText: boolean;
 
   public filters = this.fb.group([]);
-  // private indexes = 0;
-  // private queries: string[] = [];
-  // private searchQuery: any[][] = [];
-  // private searchQueries: any[] = [];
-  // private querie: string[] = [];
 
-  constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
+  constructor(private fb: FormBuilder, private lpEditor: LpEditorService) { }
 
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-    this.lpViewer.checkInfoSubject$.subscribe(_ => {
-    });
-
-    this.lpViewer.itemsObservables$.subscribe((res: any) => {
+    this.lpEditor.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
+
         this.items.map((value: any) => {
           if (value['type'] === 'filter') {
             this.filters.addControl(value['head'], new FormControl(''));
           }
-        });
-
-        this.lpViewer.addFacetFilter(JSON.stringify(this.items))
+        })
       }
     });
 
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          let q = ';'
-          this.dataSources = this.dataToFiltering.filter((item: any) => {
-            if (Object.values(query).every((x) => x === null || x === '')) {
-              return this.dataToFiltering;
-            } else {
-              return Object.keys(item).some((property) => {
-                if (
-                  query[property] != '' &&
-                  typeof item[property] === 'string' &&
-                  query[property] !== undefined &&
-                  item[property] !== undefined
-                ) {
-                  let i = 0,
-                    s = '';
-                  Object.entries(query).map((val) => {
-                    if (val[1]) {
-                      i++;
-                      const lower = (val[1] as any).toLowerCase();
-                      if (i == 1) {
-                        s =
-                          s +
-                          `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
-                      } else {
-                        s =
-                          s +
-                          `&& item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
-                      }
-                    }
-                  });
-                  q = s;
-                  return eval(s);
-                }
-              });
+          let httpParams = new HttpParams();
+          Object.entries(query).map((val: any) => {
+            if (val[1]) {
+              httpParams = httpParams.append(val[0], val[1]);
+              // console.log('params', query, '// ', val);
             }
           });
 
-          this.lpViewer.addFilter(JSON.stringify(q))
-          this.lpViewer.dataSources$.next(this.dataSources);
-
+          // this.lpViewer.getAllData(httpParams).subscribe(
+          //   value => { console.log('fe'); }),
+          //   error => console.warn(error)
         })
       )
       .subscribe();
-  }
-
-  public include(headName: any, contentName: string) {
-    const index = this.items.indexOf(headName);
-    if (index !== -1) {
-      this.items[index].content.map((val: any, i: number) => {
-        if (val[0] === contentName) {
-          this.items[index].content[i] = {
-            ...this.items[index].content[i],
-            include: !this.items[index].content[i]['include']
-          }
-        }
-      })
-    }
-    this.items = this.items;
-
-    this.checkIncludesExcludes();
-  }
-
-  public exclude(headName: any, contentName: string) {
-
-    const index = this.items.indexOf(headName);
-    if (index !== -1) {
-      this.items[index].content.map((val: any, i: number) => {
-        if (val[0] === contentName) {
-          this.items[index].content[i] = {
-            ...this.items[index].content[i],
-            include: !this.items[index].content[i]['include']
-          }
-        };
-
-      });
-    };
-    this.items = this.items;
-
-    this.checkIncludesExcludes();
-
   }
 
   public removeFromItem(item: any) {
@@ -249,7 +167,6 @@ export class FacetFilterComponent implements OnInit {
   }
 
   public removeAll() {
-    this.lpViewer.dataSources$.next(this.dataViews);
     this.items = [];
   }
 
@@ -264,41 +181,6 @@ export class FacetFilterComponent implements OnInit {
     }
 
     this.items = this.items;
-  }
-
-  private checkIncludesExcludes() {
-    let search: boolean, last: boolean;
-
-    this.dataSources = this.dataViews.filter((value: any) => {
-      return Object.keys(value).some((property) => {
-        if (value[property] !== (undefined || null)) {
-          let i1: number = 0;
-          let queries: boolean;
-          const q = this.items.map((item: any): void => {
-            let i2: number = 0;
-            let str = '';
-            item['content']?.map((element: any) => {
-              ; if (element['include'] === true) {
-
-                const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
-                if (i2 === 0) str = q;
-                else str = `${str}||${q}`;
-                i2++;
-              }
-            });
-            search = str !== '' ? eval(str) : true;
-            if (i1 === 0) queries = search;
-            else queries = queries && search;
-            i1++;
-          });
-          last = queries;
-          return queries;
-        }
-      })
-    });
-    // this.lpViewer.addFilter(this.states); //save states into DB
-    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-    this.dataToFiltering = this.dataSources;
   }
 
 }
