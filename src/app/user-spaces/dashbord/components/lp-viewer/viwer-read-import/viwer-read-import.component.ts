@@ -124,7 +124,7 @@ export class ViwerReadImportComponent
 
     let distances = {},
       isExist = false;
-    this.dataSource.data.map((item: any) => {
+    this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });
 
