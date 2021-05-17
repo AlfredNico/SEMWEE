@@ -1,10 +1,5 @@
 import { CommonService } from './../../../../shared/services/common.service';
-<<<<<<< HEAD
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-=======
-import { HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
->>>>>>> checkout-tables
 import { FormBuilder, FormControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
