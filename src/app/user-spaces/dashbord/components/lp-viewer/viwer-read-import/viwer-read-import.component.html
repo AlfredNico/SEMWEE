@@ -24,7 +24,7 @@
       <mat-tab-group mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
         class="mat-group">
         <mat-tab label="Facet/Filter">
-          <app-facet-filter [dataViews]="dataViews" [dataSources]="dataSource.data"></app-facet-filter>
+          <app-facet-filter [dataToFiltering]="dataViews" [dataViews]="dataViews" [dataSources]="dataSource.data"></app-facet-filter>
         </mat-tab>
         <!-- <mat-tab [label]="undoRedoLabel">
           <app-undo-redo></app-undo-redo>
