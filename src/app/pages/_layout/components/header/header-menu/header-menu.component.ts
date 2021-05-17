@@ -78,7 +78,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   getMenuItemActive(url) {
     return this.checkIsActive(url) ? 'menu-item-active' : '';

@@ -1,5 +1,10 @@
 import { CommonService } from './../../../../shared/services/common.service';
-import { Component, Input, OnInit } from '@angular/core';
+<<<<<<< HEAD
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+=======
+import { HttpParams } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+>>>>>>> checkout-tables
 import { FormBuilder, FormControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
@@ -125,10 +130,13 @@ export class FacetFilterComponent implements OnInit {
   @Input() public dataViews: any[] = [];
   @Input() public dataSources: any[] = [];
   @Input() public dataToFiltering: any[] = [];
+  @Output() public itemsFilters = new EventEmitter<any[]>();
+  private facetFilter: any[] = [];
 
   changeText: boolean;
 
   public filters = this.fb.group([]);
+  private searchQueries: string = '';
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
@@ -154,43 +162,41 @@ export class FacetFilterComponent implements OnInit {
     this.filters.valueChanges
       .pipe(
         map((query) => {
-          let q = ';'
-          this.dataSources = this.dataToFiltering.filter((item: any) => {
+          let qqq = '', i1 = 0;
+          console.log('e', query);
+
+          this.dataSources = this.dataViews.filter((value: any) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
-              return this.dataToFiltering;
+              // return this.checkIncludesExcludes();
+              return this.dataViews;
             } else {
-              return Object.keys(item).some((property) => {
+              let s = '', i2 = 0;
+              Object.keys(value).some((property) => {
                 if (
                   query[property] != '' &&
-                  typeof item[property] === 'string' &&
+                  typeof value[property] === 'string' &&
                   query[property] !== undefined &&
-                  item[property] !== undefined
+                  value[property] !== undefined
                 ) {
-                  let i = 0,
-                    s = '';
-                  Object.entries(query).map((val) => {
-                    if (val[1]) {
-                      i++;
-                      const lower = (val[1] as any).toLowerCase();
-                      if (i == 1) {
-                        s =
-                          s +
-                          `item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
-                      } else {
-                        s =
-                          s +
-                          `&& item["${val[0]}"].toString().toLowerCase().includes("${lower}")`;
-                      }
-                    }
-                  });
-                  q = s;
-                  return eval(s);
+                  console.log('query', query[property]);
+                  const lower = (query[property] as any).toLowerCase();
+                  const ss = `value["${property}"].toString().toLowerCase().includes("${lower}")`;
+                  if (i2 === 0) s = ss;
+                  else s = s + '&&' + ss;
+                  i2++;
                 }
               });
+              if (i1 === 0) qqq = s;
+              else qqq = qqq + '&&' + s;
+              i2++;
+              return eval(qqq);
             }
           });
 
-          this.lpViewer.addFilter(JSON.stringify(q))
+          console.log(qqq);
+
+          this.searchQueries = qqq;
+          this.lpViewer.addFilter(JSON.stringify(qqq))
           this.lpViewer.dataSources$.next(this.dataSources);
 
         })
@@ -199,6 +205,7 @@ export class FacetFilterComponent implements OnInit {
   }
 
   public include(headName: any, contentName: string) {
+
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val: any, i: number) => {
@@ -244,6 +251,7 @@ export class FacetFilterComponent implements OnInit {
   public removeAll() {
     this.lpViewer.dataSources$.next(this.dataViews);
     this.items = [];
+    this.itemsFilters.emit(this.items);
   }
 
   public minimize(item: any) {
@@ -259,8 +267,10 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
   }
 
-  private checkIncludesExcludes() {
+  private checkIncludesExcludes(): any[] {
     let search: boolean, last: boolean;
+    console.log('s', this.searchQueries);
+
 
     this.dataSources = this.dataViews.filter((value: any) => {
       return Object.keys(value).some((property) => {
@@ -279,7 +289,10 @@ export class FacetFilterComponent implements OnInit {
                 i2++;
               }
             });
-            search = str !== '' ? eval(str) : true;
+            const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
+            console.log('vdvd', xxx);
+
+            search = str !== '' ? eval(xxx) : true;
             if (i1 === 0) queries = search;
             else queries = queries && search;
             i1++;
@@ -291,7 +304,7 @@ export class FacetFilterComponent implements OnInit {
     });
     // this.lpViewer.addFilter(this.states); //save states into DB
     this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-    this.dataToFiltering = this.dataSources;
+    return this.dataToFiltering = this.dataSources;
   }
 
 }
