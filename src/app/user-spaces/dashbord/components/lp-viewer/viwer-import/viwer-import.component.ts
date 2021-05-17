@@ -20,8 +20,6 @@ import { User } from '@app/classes/users';
         </button>
         <input hidden type="file" id="file" name="file" class="py-2" formControlName="fileSource" #fileInput (change)="onFileInput(fileInput.files)" />
       </div>
-
-
       <button type="submit" mat-raised-button (click)="form.valid && onSubmit()">
         Next
         <mat-icon aria-label="close icon">double_arrow</mat-icon>

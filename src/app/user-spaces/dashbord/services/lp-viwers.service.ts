@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LPViewerProjects } from '../interfaces/lp-viewer-projects';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,12 @@ export class LpViwersService {
         this.common.hideSpinner('table');
       }
     })
+  }
+
+  public getAllProjects(_idUsers): Observable<LPViewerProjects[]> {
+    return this.http.get<LPViewerProjects[]>(
+      `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
+    );
   }
 
   getAllData(params: HttpParams) {
