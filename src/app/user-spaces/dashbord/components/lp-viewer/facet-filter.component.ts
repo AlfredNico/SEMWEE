@@ -98,9 +98,6 @@ import { LpViwersService } from '../../services/lp-viwers.service';
         Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
       </p>
       <p class="m-0">Not sure how to get started?<br>
-      <a href="https://github.com/OpenRefine/OpenRefine/wiki/Screencasts" target="_blank">
-        <b>Watch these screencasts</b>
-      </a>
     </p>
   </div>
   </ng-template>
