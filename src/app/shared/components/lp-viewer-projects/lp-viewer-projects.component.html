@@ -48,9 +48,8 @@
                   </svg>
                   </span>
             </a> -->
-            <a (click)="onDelete(project)" class="btn btn-icon btn-light btn-hover-primary btn-sm">
+            <!-- <a (click)="onDelete(project)" class="btn btn-icon btn-light btn-hover-primary btn-sm">
                 <span class="svg-icon svg-icon-md svg-icon-primary" [matTooltip]="'Delete project'">
-              <!--begin::Svg Icon | path:assets/media/svg/icons/General/Trash.svg-->
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -65,9 +64,10 @@
                     opacity="0.3" />
                   </g>
                   </svg>
-                  <!--end::Svg Icon-->
                   </span>
-            </a>
+            </a> -->
+            <div (click)="onDelete(project)" class="btn btn-danger">Delete
+            </div>
         </div>
         <!--end::Dropdown-->
     </div>
