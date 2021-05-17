@@ -9,8 +9,8 @@ export const environment = {
   isMockEnabled: false,
   // baseUrl: 'https://api.semwee.app:3000/api',
   // baseUrlImg: 'https://api.semwee.app:3000',
-  baseUrl: 'http://192.168.43.119:3000/api',
-  baseUrlImg: 'http://192.168.43.119:3000/',
+  baseUrl: 'http://192.168.100.2:3000/api',
+  baseUrlImg: 'http://192.168.100.2:3000/',
 };
 
 /*
