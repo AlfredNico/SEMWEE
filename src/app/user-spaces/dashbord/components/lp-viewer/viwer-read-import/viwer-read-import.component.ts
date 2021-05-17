@@ -1,4 +1,3 @@
-import { header } from './../../../interfaces/data-sources';
 import { UpdatesHeaderComponent } from './updates-header.component';
 import { HeaderOptionsComponent } from './header-options.component';
 import { LpViwersService } from './../../../services/lp-viwers.service';
@@ -14,14 +13,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import value from '*.json';
-import { Observable, of } from 'rxjs';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 
 @Component({
@@ -122,8 +118,7 @@ export class ViwerReadImportComponent
   public textFacet(column: any) {
     // this.commonService.showSpinner('table');
 
-    let distances = {},
-      isExist = false;
+    let distances = {};
     this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });

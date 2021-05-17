@@ -88,12 +88,15 @@ export class GoogleMachingComponent
   //resizable
   mawWidth: number = 0;
 
+  // doubles clicked
+  isDoubleclicedBtn = false;
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
     private lpValidator: LpValidatorService,
     private ref: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnChanges() {
     if (this.dataSources.data.length > 0) {
@@ -125,7 +128,7 @@ export class GoogleMachingComponent
     // this.commonServices.hideSpinner();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     // this.lpValidator.trigger$
@@ -340,8 +343,8 @@ export class GoogleMachingComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 
@@ -375,6 +378,7 @@ export class GoogleMachingComponent
   // }
 
   public getWidth(id: any) {
+    this.isDoubleclicedBtn = true;
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {

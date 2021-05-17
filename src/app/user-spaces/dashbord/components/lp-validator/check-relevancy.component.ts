@@ -120,6 +120,9 @@ export class CheckRelevancyComponent
   //resizable
   mawWidth: number = 0;
 
+  // doubles clicked
+  isDoubleclicedBtn = false;
+
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
@@ -128,7 +131,7 @@ export class CheckRelevancyComponent
     private propertyService: PropertyValueService,
     private notifs: NotificationService,
     private idb: IdbService
-  ) {}
+  ) { }
 
   ngOnChanges() {
     if (this.dataInferList !== undefined) {
@@ -155,7 +158,7 @@ export class CheckRelevancyComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     //Query search field
@@ -212,9 +215,9 @@ export class CheckRelevancyComponent
       .subscribe();
   }
 
-  public ngAfterViewChecked(): void {}
+  public ngAfterViewChecked(): void { }
 
-  onClick(item: any) {}
+  onClick(item: any) { }
 
   //Deop item list
   public drop(event: CdkDragDrop<string[]>) {
@@ -490,8 +493,8 @@ export class CheckRelevancyComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 
@@ -521,6 +524,7 @@ export class CheckRelevancyComponent
   }
 
   public getWidth(id: any) {
+    this.isDoubleclicedBtn = true;
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {

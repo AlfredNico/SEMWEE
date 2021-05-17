@@ -1,8 +1,7 @@
 import { CommonService } from './../../../../shared/services/common.service';
-import { HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
 
 @Component({
@@ -126,16 +125,10 @@ export class FacetFilterComponent implements OnInit {
   @Input() public dataViews: any[] = [];
   @Input() public dataSources: any[] = [];
   @Input() public dataToFiltering: any[] = [];
-  private facetFilter: any[] = [];
 
   changeText: boolean;
 
   public filters = this.fb.group([]);
-  // private indexes = 0;
-  // private queries: string[] = [];
-  // private searchQuery: any[][] = [];
-  // private searchQueries: any[] = [];
-  // private querie: string[] = [];
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 

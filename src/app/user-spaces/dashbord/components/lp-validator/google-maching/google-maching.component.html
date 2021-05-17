@@ -94,19 +94,22 @@
             cdkDragBoundary=".datatable" cdkDragLockAxis="x" cdkDrag
             [ngClass]="{'hide-rows': isColumnDisplay(column)}">
             <span fxLayout="column" fxLayoutAlign="space-between center" [formGroup]="filters"
-              class="w-100 bg-white" [resizeColumn]="true" [index]="i" [maxWidth]="mawWidth">
-              <div fxLayout="column" class="w-100">
+              class="w-100 bg-white" [resizeColumn]="true" [index]="i" [isDoubleclicedBtn]="isDoubleclicedBtn" [maxWidth]="mawWidth" (isDoubleclicedBtnEvent)="isDoubleclicedBtn = $event">
+              <div fxLayout="column" class="w-100"  #div>
                 <div class="drag_n_drop  pt-3" cdkDragHandle (click)="getWidth(i)"></div>
-                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1"
-                  mat-sort-header>
-                  <div>
-                    {{ column | removeUnderscore | capitalizeFirstPipe }}
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="px-4 pb-3 pt-1">
+                  <div mat-sort-header>
+                    <div>
+                      {{ column | removeUnderscore | capitalizeFirstPipe }}
+                    </div>
+                    <div class="pl-3">
+                      <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
+                      <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>
+                      <i *ngIf="icon === 'desc' && active === column" class="fas fa-sort-down"></i>
+                    </div>
                   </div>
-                  <div class="pl-3">
-                    <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i>
-                    <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-up"></i>
-                    <i *ngIf="icon === 'desc' && active === column" class="fas fa-sort-down"></i>
-                  </div>
+                  <span fxFlex></span>
+                  <div class="drag_n_drop px-3" [style.height.px]="div.offsetHeight" style="position: absolute; right: 0;top: -1px;" cdkDragHandle (dblclick)="getWidth(i)"></div>
                 </div>
               </div>
               <div style="height: 4em;" class="bg-white">

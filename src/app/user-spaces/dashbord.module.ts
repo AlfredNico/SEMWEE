@@ -96,7 +96,7 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
     CartDropdownInnerComponent,
     LanguageSelectorComponent,
     SearchResultComponent,
-    UserDropdownInnerComponent,
+    UserDropdownInnerComponent
   ],
   imports: [
     LandingPageModule,

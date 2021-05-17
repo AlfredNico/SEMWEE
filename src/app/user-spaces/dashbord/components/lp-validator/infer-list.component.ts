@@ -123,6 +123,9 @@ export class InferListComponent
   //resizable
   public mawWidth: number = 0;
 
+  // doubles clicked
+  isDoubleclicedBtn = false;
+
   /**
    * subscribe to it and call `next()` to refresh the list in the table.
    * so that we don't have to rewrite the initial subscription for the datasource
@@ -516,6 +519,7 @@ export class InferListComponent
   // }
 
   public getWidth(id: any) {
+    this.isDoubleclicedBtn = true;
     this.mawWidth = 0;
 
     for (let index = 0; index < this.dataView.data.length; index++) {
