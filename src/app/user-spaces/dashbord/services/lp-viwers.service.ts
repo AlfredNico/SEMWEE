@@ -33,6 +33,12 @@ export class LpViwersService {
     );
   }
 
+  public getSavedProjects(idProject): Observable<LPViewerProjects[]> {
+    return this.http.get<any>(
+      `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
+    );
+  }
+
   getAllData(params: HttpParams) {
     return this.http.get(`${environment.baseUrl}/validator/-getimport-viewer`, { params });
   }
@@ -43,18 +49,6 @@ export class LpViwersService {
     return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
       .pipe(
         map(result => result)
-        //   {
-        //   const header = JSON.stringify(result[0][0]['nameOrigin']).split(',');
-        //   const editableColumns = JSON.stringify(result[0][0]['nameUpdate']).split(',');
-        //   header.unshift('all');
-        //   editableColumns.unshift('all');
-        //   return {
-        //     columns: header,
-        //     editableColumns: editableColumns,
-        //     data: result[1]
-        //   }
-        // }
-        // )
       )
   }
 

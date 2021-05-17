@@ -24,9 +24,9 @@ export class LPViewerProjectsComponent implements OnInit {
     private notifs: NotificationService,
     public triggerServices: TriggerService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onDeteils(item: LPViewerProjects) {
     // this.dialog
@@ -87,8 +87,11 @@ export class LPViewerProjectsComponent implements OnInit {
     //   .subscribe();
   }
 
-  public navigateURL(_id: any){
-    this.common.isLoading$.next(true);
-    this.router.navigate(['/user-space/lp-viewer', _id]);
+  public navigateURL(_id: any) {
+    // this.common.isLoading$.next(true);
+    // this.router.navigate(['/user-space/lp-viewer', _id]);
+    this.router.navigate(['user-space/lp-viewer'], {
+      queryParams: { idProduct: _id }
+    });
   }
 }

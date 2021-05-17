@@ -139,7 +139,7 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
               ),
           },
           {
-            path: 'lp-validator/:idProduit',
+            path: 'lp-validator/?:idProduit',
             loadChildren: () =>
               import(
                 './dashbord/components/lp-validator/lp-validator.module'

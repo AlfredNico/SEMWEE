@@ -26,7 +26,7 @@ export class LPViewerProjectsService {
     private http: HttpClient,
     private auth: AuthService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   public getAllProjects(_idUsers): Observable<LPViewerProjects[]> {
     return this.http.get<LPViewerProjects[]>(

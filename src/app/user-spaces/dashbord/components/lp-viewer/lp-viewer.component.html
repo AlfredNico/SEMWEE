@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
+<mat-horizontal-stepper [linear]="true" #stepper [selectedIndex]="selectedStepperIndex">
   <mat-step completed="false" editable="false" label="Fill out your address">
     <app-viwer-import [user]='user' (importFile)=nextReadFile($event)></app-viwer-import>
   </mat-step>
