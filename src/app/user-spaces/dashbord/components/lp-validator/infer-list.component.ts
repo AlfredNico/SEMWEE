@@ -41,9 +41,9 @@ import { FlexAlignStyleBuilder } from '@angular/flex-layout';
       .datatable:not(.table) {
         display: revert;
       }
-      .drag_n_drop {
+      /* .drag_n_drop {
         cursor: cell !important;
-      }
+      } */
 
       .Test {
         position: absolute;

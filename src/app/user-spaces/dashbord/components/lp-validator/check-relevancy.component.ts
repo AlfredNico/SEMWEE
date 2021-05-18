@@ -39,9 +39,9 @@ import { HttpErrorResponse } from '@angular/common/http';
       .datatable:not(.table) {
         display: revert;
       }
-      .drag_n_drop {
+      /* .drag_n_drop {
         cursor: cell !important;
-      }
+      } */
       .Test {
         position: absolute;
         visibility: hidden;
@@ -128,7 +128,7 @@ export class CheckRelevancyComponent
     private propertyService: PropertyValueService,
     private notifs: NotificationService,
     private idb: IdbService
-  ) {}
+  ) { }
 
   ngOnChanges() {
     if (this.dataInferList !== undefined) {
@@ -155,7 +155,7 @@ export class CheckRelevancyComponent
     // this.commonServices.isLoading$.next(false);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     //Query search field
@@ -212,9 +212,9 @@ export class CheckRelevancyComponent
       .subscribe();
   }
 
-  public ngAfterViewChecked(): void {}
+  public ngAfterViewChecked(): void { }
 
-  onClick(item: any) {}
+  onClick(item: any) { }
 
   //Deop item list
   public drop(event: CdkDragDrop<string[]>) {
@@ -490,8 +490,8 @@ export class CheckRelevancyComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 

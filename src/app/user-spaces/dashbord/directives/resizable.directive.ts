@@ -77,15 +77,15 @@ export class ResizableDirective {
       // render for input sreach field
       const div = this.column.childNodes[0] as HTMLElement;
       div.style.width = `${width}px`;
-      
+
       const chiled = div.childNodes[1] as HTMLElement;
       chiled.style.width = `${width}px`;
 
-     
-      
+
+
       let formSearch = this.column.childNodes[1] as HTMLElement;
 
-       const chi = formSearch.childNodes[0] as HTMLElement;
+      const chi = formSearch.childNodes[0] as HTMLElement;
       chi.style.width = `${width}px`;
 
       if (width > 30) formSearch.style.width = `${width}px`;
