@@ -288,6 +288,8 @@ export class FacetFilterComponent implements OnInit {
 
             if (str !== '') {
               queries = str;
+              console.log('qqqqq=', queries);
+
             }
           });
 
@@ -295,7 +297,7 @@ export class FacetFilterComponent implements OnInit {
           else search = search && queries;
           i1++;
           last = search;
-          console.log('queries=', last);
+          console.log('search=', search);
 
           return eval(last);
         }
