@@ -135,8 +135,8 @@ export class FacetFilterComponent implements OnInit {
   // private indexes = 0;
   // private queries: string[] = [];
   // private searchQuery: any[][] = [];
-  // private searchQueries: any[] = [];
-  private searchQueries: string = '';
+  private facetQueries: boolean[] = [];
+  private searchQueries: boolean[] = [];
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
@@ -163,12 +163,14 @@ export class FacetFilterComponent implements OnInit {
       .pipe(
         map((query) => {
           let qqq = '', i1 = 0;
-          console.log('e', query);
+          let lastquery: boolean;
 
-          this.dataSources = this.dataViews.filter((value: any) => {
+          this.dataSources = this.dataViews.filter((value: any, i: number) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
-              // return this.checkIncludesExcludes();
-              return this.dataViews;
+              this.searchQueries[i] = true;
+              return this.facetQueries.length > 0
+                ? this.searchQueries[i] && this.facetQueries[i]
+                : this.searchQueries[i];
             } else {
               let s = '', i2 = 0;
               Object.keys(value).some((property) => {
@@ -185,14 +187,15 @@ export class FacetFilterComponent implements OnInit {
                   i2++;
                 }
               });
-              if (i1 === 0) qqq = s;
-              else qqq = qqq + '&&' + s;
+              if (i1 === 0) qqq = eval(s);
+              else qqq = qqq + '&&' + eval(s);
               i2++;
-              return eval(qqq);
+              lastquery = this.facetQueries.length > 0 ? this.facetQueries[i] && eval(qqq) : eval(qqq);
+              this.searchQueries[i] = eval(qqq);
+              return lastquery;
             }
           });
 
-          this.searchQueries = qqq;
           this.lpViewer.addFilter(JSON.stringify(qqq))
           this.lpViewer.dataSources$.next(this.dataSources);
 
@@ -264,12 +267,10 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
   }
 
-  private checkIncludesExcludes(): any[] {
+  private checkIncludesExcludes() {
     let search: boolean, last: boolean;
-    console.log('s', this.searchQueries);
 
-
-    this.dataSources = this.dataViews.filter((value: any) => {
+    this.dataSources = this.dataViews.filter((value: any, iii: number) => {
       return Object.keys(value).some((property) => {
         if (value[property] !== (undefined || null)) {
           let i1: number = 0;
@@ -286,23 +287,60 @@ export class FacetFilterComponent implements OnInit {
                 i2++;
               }
             });
-            const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
-
-            search = str !== '' ? eval(xxx) : true;
+            search = str !== '' ? eval(str) : true;
             if (i1 === 0) queries = search;
             else queries = queries && search;
             i1++;
           });
-          last = queries;
-          console.log('vdvd', search);
-
-          return queries;
+          last = this.searchQueries.length > 0 ? queries && this.searchQueries[iii] : queries;
+          this.facetQueries[iii] = last;
+          return last;
         }
       })
     });
     // this.lpViewer.addFilter(this.states); //save states into DB
     this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-    return this.dataToFiltering = this.dataSources;
+    this.dataToFiltering = this.dataSources;
   }
-
 }
+// private checkIncludesExcludes(): any[] {
+//   let search: boolean, last: boolean;
+
+//   this.dataSources = this.dataViews.filter((value: any) => {
+//     return Object.keys(value).some((property) => {
+//       let i1: number = 0;
+//       if (value[property] !== (undefined || null)) {
+//         let queries: boolean;
+//         const q = this.items.map((item: any): void => {
+//           let str = '';
+//           let i2: number = 0;
+//           item['content']?.map((element: any) => {
+//             if (element['include'] === true) {
+//               const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
+//               if (i2 === 0) str = q;
+//               else str = `${str}||${q}`;
+//               i2++;
+//             }
+//           });
+//           // const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
+//           queries = str === '' ? false : eval(str);
+//           // if (str !== '') {
+//           //   queries = str;
+//           //   console.log('qqqqq=', queries);
+//           // }
+//           if (i1 === 0) search = queries;
+//           else search = search && queries;
+//           i1++;
+//         });
+
+//         last = search;
+//         console.log('search=', search);
+
+//         return last;
+//       }
+//     })
+//   });
+//   // this.lpViewer.addFilter(this.states); //save states into DB
+//   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+//   return this.dataToFiltering = this.dataSources;
+// }
