@@ -135,13 +135,8 @@ export class FacetFilterComponent implements OnInit {
   // private indexes = 0;
   // private queries: string[] = [];
   // private searchQuery: any[][] = [];
-<<<<<<< HEAD
-  private facetQueries: any[] = [];
-  private searchQueries: string = '';
-=======
   private facetQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
->>>>>>> checkout-tables
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
@@ -272,51 +267,26 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
   }
 
-<<<<<<< HEAD
-  private checkIncludesExcludes(): any[] {
-    let search: string = '', last: string = '';
-
-    this.dataSources = this.dataViews.filter((value: any) => {
-=======
   private checkIncludesExcludes() {
     let search: boolean, last: boolean;
 
     this.dataSources = this.dataViews.filter((value: any, iii: number) => {
->>>>>>> checkout-tables
       return Object.keys(value).some((property) => {
-        let i1: number = 0;
         if (value[property] !== (undefined || null)) {
-          let queries: string = '';
+          let i1: number = 0;
+          let queries: boolean;
           const q = this.items.map((item: any): void => {
-            let str = '';
             let i2: number = 0;
+            let str = '';
             item['content']?.map((element: any) => {
-              if (element['include'] === true) {
+              ; if (element['include'] === true) {
+
                 const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
                 if (i2 === 0) str = q;
                 else str = `${str}||${q}`;
                 i2++;
-                console.log('i2', item['head']);
               }
             });
-<<<<<<< HEAD
-            // const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
-
-            if (str !== '') {
-              queries = str;
-              console.log('qqqqq=', queries);
-
-            }
-          });
-
-          if (i1 === 0) search = queries;
-          else search = search && queries;
-          i1++;
-          last = search;
-          console.log('search=', search);
-
-          return eval(last);
-=======
             search = str !== '' ? eval(str) : true;
             if (i1 === 0) queries = search;
             else queries = queries && search;
@@ -325,7 +295,6 @@ export class FacetFilterComponent implements OnInit {
           last = this.searchQueries.length > 0 ? queries && this.searchQueries[iii] : queries;
           this.facetQueries[iii] = last;
           return last;
->>>>>>> checkout-tables
         }
       })
     });
@@ -334,44 +303,3 @@ export class FacetFilterComponent implements OnInit {
     this.dataToFiltering = this.dataSources;
   }
 }
-// private checkIncludesExcludes(): any[] {
-//   let search: boolean, last: boolean;
-
-//   this.dataSources = this.dataViews.filter((value: any) => {
-//     return Object.keys(value).some((property) => {
-//       let i1: number = 0;
-//       if (value[property] !== (undefined || null)) {
-//         let queries: boolean;
-//         const q = this.items.map((item: any): void => {
-//           let str = '';
-//           let i2: number = 0;
-//           item['content']?.map((element: any) => {
-//             if (element['include'] === true) {
-//               const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
-//               if (i2 === 0) str = q;
-//               else str = `${str}||${q}`;
-//               i2++;
-//             }
-//           });
-//           // const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
-//           queries = str === '' ? false : eval(str);
-//           // if (str !== '') {
-//           //   queries = str;
-//           //   console.log('qqqqq=', queries);
-//           // }
-//           if (i1 === 0) search = queries;
-//           else search = search && queries;
-//           i1++;
-//         });
-
-//         last = search;
-//         console.log('search=', search);
-
-//         return last;
-//       }
-//     })
-//   });
-//   // this.lpViewer.addFilter(this.states); //save states into DB
-//   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-//   return this.dataToFiltering = this.dataSources;
-// }
