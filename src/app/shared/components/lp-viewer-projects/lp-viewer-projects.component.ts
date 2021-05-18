@@ -93,7 +93,7 @@ export class LPViewerProjectsComponent implements OnInit {
     // this.common.isLoading$.next(true);
     // this.router.navigate(['/user-space/lp-viewer', _id]);
     this.router.navigate(['user-space/lp-viewer'], {
-      queryParams: { idProduct: _id }
+      queryParams: { idProject: _id }
     });
   }
 }

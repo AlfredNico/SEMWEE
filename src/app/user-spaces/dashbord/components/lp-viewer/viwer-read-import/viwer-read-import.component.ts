@@ -14,14 +14,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { CommonService } from '@app/shared/services/common.service';
 import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
-import value from '*.json';
-import { Observable, of } from 'rxjs';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 
 @Component({
@@ -37,10 +34,11 @@ export class ViwerReadImportComponent
   dataSource = new MatTableDataSource<DataSources>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  @Input('idProject') idProject = undefined;
+  @Input('inputFilter') inputFilter: any[] = [];
+  @Input('filtersData') filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
   @Input('dataAfterUploaded') dataAfterUploaded: DataSources = undefined;
-
-  public items: any[] = [];
+  @Input('inputFilters') inputFilters: any = undefined;
 
   public tabIndex = 0;
 
@@ -51,7 +49,6 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-
       const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
       const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
       const values = this.dataAfterUploaded[1];
@@ -60,7 +57,7 @@ export class ViwerReadImportComponent
 
       this.displayedColumns = header;
       this.edidtableColumns = editableColumns;
-      this.dataSource.data = values;
+      this.dataSource.data = this.checkFilter(values);
       this.dataViews = values;
     }
     this.lpViewer.checkInfoSubject$.next();
@@ -70,6 +67,7 @@ export class ViwerReadImportComponent
   ngOnInit(): void { }
 
   ngAfterViewInit() {
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
@@ -95,6 +93,7 @@ export class ViwerReadImportComponent
         map((result: any) => {
           if (result) {
             this.displayedColumns = result.noHiddenRows;
+            this.lpViewer.putDisplayColums(this.idProject, JSON.stringify(this.displayedColumns))
           }
         })
       )
@@ -122,8 +121,8 @@ export class ViwerReadImportComponent
   public textFacet(column: any) {
     // this.commonService.showSpinner('table');
 
-    let distances = {},
-      isExist = false;
+    let distances = {};
+    // isExist = false;
     this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });
@@ -200,5 +199,29 @@ export class ViwerReadImportComponent
     // console.log(this.displayedColumns);
     csvOptions.headers = this.displayedColumns; // ity lay ao @ front actuellement
     new AngularCsv(tabnewObject, 'HolidayList', csvOptions);
+  }
+
+  private checkFilter(val: any[]): any[] {
+    if (this.filtersData !== undefined) {
+      const length1 = this.filtersData['facetQueries']?.length;
+      const length2 = this.filtersData['searchQueries']?.length;
+
+      const dataFilter = val.filter((x: any, i: number) => {
+        switch (true) {
+          case (length1 > 0 && length2 > 0):
+            return this.filtersData['facetQueries'][i] && this.filtersData['searchQueries'][i];
+
+          case (length1 === 0 && length2 > 0):
+            return this.filtersData['searchQueries'][i];
+
+          case (length1 > 0 && length2 === 0):
+            return this.filtersData['facetQueries'][i];
+
+          // default: return false;
+        }
+      });
+
+      return dataFilter;
+    } else return val;
   }
 }

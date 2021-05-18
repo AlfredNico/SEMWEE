@@ -1,9 +1,21 @@
-<mat-horizontal-stepper [linear]="true" #stepper [selectedIndex]="selectedStepperIndex">
+<mat-horizontal-stepper
+  [linear]="true"
+  #stepper
+  [selectedIndex]="selectedStepperIndex"
+>
   <mat-step completed="false" editable="false" label="Fill out your address">
-    <app-viwer-import [user]='user' (importFile)=nextReadFile($event)></app-viwer-import>
+    <app-viwer-import
+      [user]="user"
+      (importFile)="nextReadFile($event)"
+    ></app-viwer-import>
   </mat-step>
   <mat-step completed="false" editable="false">
     <ng-template matStepLabel>Done</ng-template>
-    <app-viwer-read-import [dataAfterUploaded]="dataAfterUploaded"></app-viwer-read-import>
+    <app-viwer-read-import
+      [inputFilters]="inputFilters"
+      [filtersData]="filtersData"
+      [idProject]="idProject"
+      [dataAfterUploaded]="dataAfterUploaded"
+    ></app-viwer-read-import>
   </mat-step>
 </mat-horizontal-stepper>

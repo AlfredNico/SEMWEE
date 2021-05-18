@@ -1,8 +1,7 @@
 import { CommonService } from './../../../../shared/services/common.service';
-import { HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
 
 @Component({
@@ -12,7 +11,7 @@ import { LpViwersService } from '../../services/lp-viwers.service';
     <div class="w-100 px-2 pb-3">
       <button class="rounded">Refresh</button>
       <span fxFlex></span>
-      <button class="rounded">Reset All</button>
+      <button class="rounded" (click)="resetAll()">Reset All</button>
       <button class="rounded" (click)="removeAll()">Remove All</button>
     </div>
     <div *ngFor="let item of items">
@@ -117,32 +116,37 @@ import { LpViwersService } from '../../services/lp-viwers.service';
       }
   `]
 })
-export class FacetFilterComponent implements OnInit {
+export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() public items: any[] = [];
+  public items: any[] = [];
+  @Input() public inputFilters: any = undefined;
   @Input() public dataViews: any[] = [];
   @Input() public dataSources: any[] = [];
   @Input() public dataToFiltering: any[] = [];
-  @Output() public itemsFilters = new EventEmitter<any[]>();
-  private facetFilter: any[] = [];
+  @Input() public idProject: any = undefined;
+  @Input() public filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
 
   changeText: boolean;
 
   public filters = this.fb.group([]);
-  // private indexes = 0;
-  // private queries: string[] = [];
-  // private searchQuery: any[][] = [];
   private facetQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
+
+
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
   ngOnInit(): void { }
 
-  ngAfterViewInit() {
-    this.lpViewer.checkInfoSubject$.subscribe(_ => {
-    });
+  ngOnChanges() {
+    if (this.filtersData !== undefined) {
+      this.items = this.filtersData['items'];
+      this.facetQueries = this.filtersData['facetQueries'];
+      this.searchQueries = this.filtersData['searchQueries'];
+    }
+  }
 
+  ngAfterViewInit() {
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
@@ -152,7 +156,12 @@ export class FacetFilterComponent implements OnInit {
           }
         });
 
-        this.lpViewer.addFacetFilter(JSON.stringify(this.items))
+        if (this.inputFilters !== undefined) {
+          this.filters.patchValue({ ...this.inputFilters });
+        }
+
+        //save all parames into DB
+        this.saveParams();
       }
     });
 
@@ -161,6 +170,10 @@ export class FacetFilterComponent implements OnInit {
         map((query) => {
           let qqq = '', i1 = 0;
           let lastquery: boolean;
+          this.lpViewer.addFacetFilter({
+            idProject: this.idProject,
+            value: JSON.stringify(query)
+          });
 
           this.dataSources = this.dataViews.filter((value: any, i: number) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
@@ -193,12 +206,13 @@ export class FacetFilterComponent implements OnInit {
             }
           });
 
-          this.lpViewer.addFilter(JSON.stringify(qqq))
+          // this.lpViewer.addFilter(JSON.stringify(qqq))
           this.lpViewer.dataSources$.next(this.dataSources);
 
         })
       )
       .subscribe();
+
   }
 
   public include(headName: any, contentName: string) {
@@ -217,6 +231,8 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
 
     this.checkIncludesExcludes();
+    //save all parames into DB
+    this.saveParams();
   }
 
   public exclude(headName: any, contentName: string) {
@@ -230,12 +246,14 @@ export class FacetFilterComponent implements OnInit {
             include: !this.items[index].content[i]['include']
           }
         };
-
       });
     };
     this.items = this.items;
 
     this.checkIncludesExcludes();
+
+    //save all parames into DB
+    this.saveParams();
 
   }
 
@@ -248,7 +266,38 @@ export class FacetFilterComponent implements OnInit {
   public removeAll() {
     this.lpViewer.dataSources$.next(this.dataViews);
     this.items = [];
-    this.itemsFilters.emit(this.items);
+    this.facetQueries = [];
+    this.searchQueries = [];
+    // this.itemsFilters.emit(this.items);
+
+    //save all parames into DB
+    this.saveParams();
+  }
+
+  public resetAll() {
+    this.facetQueries = [];
+    this.searchQueries = [];
+    this.filters.reset();
+    this.items.map((item: any) => {
+      item['content']?.map((value: any, i: number) => {
+        item['content'][i] = {
+          ...item['content'][i],
+          include: false
+        }
+      });
+    });
+
+    this.items = this.items;
+    this.checkIncludesExcludes();
+
+    //save all parames into DB
+    if (this.filters.value) {
+      this.lpViewer.addFacetFilter({
+        idProject: this.idProject,
+        value: JSON.stringify(this.filters.value)
+      });
+    }
+    this.saveParams();
   }
 
   public minimize(item: any) {
@@ -291,53 +340,29 @@ export class FacetFilterComponent implements OnInit {
           });
           last = this.searchQueries.length > 0 ? queries && this.searchQueries[iii] : queries;
           this.facetQueries[iii] = last;
+
           return last;
         }
       })
     });
-    // this.lpViewer.addFilter(this.states); //save states into DB
-    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+
+    //save all parames into DB
+    this.saveParams();
     this.dataToFiltering = this.dataSources;
+    this.lpViewer.dataSources$.next(this.dataSources);
+  }
+
+  private saveParams() {
+    this.filtersData = {
+      items: this.items,
+      facetQueries: this.facetQueries,
+      searchQueries: this.searchQueries
+    };
+
+    this.lpViewer.addFilter({
+      idProject: this.idProject,
+      value: JSON.stringify(this.filtersData)
+    });;
+    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
   }
 }
-// private checkIncludesExcludes(): any[] {
-//   let search: boolean, last: boolean;
-
-//   this.dataSources = this.dataViews.filter((value: any) => {
-//     return Object.keys(value).some((property) => {
-//       let i1: number = 0;
-//       if (value[property] !== (undefined || null)) {
-//         let queries: boolean;
-//         const q = this.items.map((item: any): void => {
-//           let str = '';
-//           let i2: number = 0;
-//           item['content']?.map((element: any) => {
-//             if (element['include'] === true) {
-//               const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
-//               if (i2 === 0) str = q;
-//               else str = `${str}||${q}`;
-//               i2++;
-//             }
-//           });
-//           // const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
-//           queries = str === '' ? false : eval(str);
-//           // if (str !== '') {
-//           //   queries = str;
-//           //   console.log('qqqqq=', queries);
-//           // }
-//           if (i1 === 0) search = queries;
-//           else search = search && queries;
-//           i1++;
-//         });
-
-//         last = search;
-//         console.log('search=', search);
-
-//         return last;
-//       }
-//     })
-//   });
-//   // this.lpViewer.addFilter(this.states); //save states into DB
-//   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-//   return this.dataToFiltering = this.dataSources;
-// }

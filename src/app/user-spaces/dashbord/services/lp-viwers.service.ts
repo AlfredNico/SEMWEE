@@ -14,8 +14,10 @@ export class LpViwersService {
   public dataSources$ = new BehaviorSubject<any>([]);
 
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
+  public filtersData$ = new BehaviorSubject<any>(undefined);
   public isLoading$ = new BehaviorSubject<boolean>(true);
   public checkInfoSubject$ = new Subject();
+
 
   constructor(private http: HttpClient, private readonly common: CommonService) {
     this.isLoading$.subscribe(res => {
@@ -39,10 +41,6 @@ export class LpViwersService {
     );
   }
 
-  getAllData(params: HttpParams) {
-    return this.http.get(`${environment.baseUrl}/validator/-getimport-viewer`, { params });
-  }
-
   upload(file: File, idUser: any): Observable<any> {
     const data = new FormData()
     data.append('files', file)
@@ -52,23 +50,16 @@ export class LpViwersService {
       )
   }
 
-  public addFacetFilter(facetFilter: string) {
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametreFilter1-lpviewer`, facetFilter).pipe
-      (map(res => {
-        console.log('res', res);
-      }))
+  public addFacetFilter(value: { idProject: any, value: string }) {
+    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer`, value)
   }
 
-  public addFilter(filter: string) {
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`, filter).pipe
-      (map(res => {
-        console.log('res', res);
-      }))
+  public addFilter(value: { idProject: any, value: any }) {
+    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`, value)
   }
 
   public putDisplayColums(_idHeader: any, header: string) {
     return this.http.put(`${environment.baseUrl}/lpviewer/put-lpviewer-header/${_idHeader}`, header);
-    // router.put("http://localhost:3000/api/lpviewer/put-lpviewer-header/:idheader", lpviewerCtrl.putlpviewerHeader);
   }
 
 }

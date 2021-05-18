@@ -1,168 +1,277 @@
 <main class="w-100 p-0" fxLayout="column">
-    <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-        <button class="rounded" color="primary">Open</button>
-        <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
+  <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
+    <button class="rounded" color="primary">Open</button>
+    <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
       Export
       <mat-icon aria-hidden="false" aria-label="keyboard arrow down icon">
         keyboard_arrow_down
       </mat-icon>
     </button>
-        <mat-menu #importMenu="matMenu">
-            <button mat-menu-item (click)="openTablesOptionns()">Table options</button>
-            <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
-            <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 1</button>
-            <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <mat-menu #sousItem2="matMenu">
-            <button mat-menu-item>Sous item 1</button>
-            <button mat-menu-item>Soous item 2</button>
-        </mat-menu>
-        <button class="rounded" color="primary">RefinePro dashbord</button>
-    </div>
-    <div class="row p-0">
-        <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff">
-            <mat-tab-group mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'" class="mat-group">
-                <mat-tab label="Facet/Filter">
-                    <app-facet-filter [dataToFiltering]="dataViews" [dataViews]="dataViews" [dataSources]="dataSource.data"></app-facet-filter>
-                </mat-tab>
-                <!-- <mat-tab [label]="undoRedoLabel">
+    <mat-menu #importMenu="matMenu">
+      <button mat-menu-item (click)="openTablesOptionns()">
+        Table options
+      </button>
+      <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
+      <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 1</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+    <mat-menu #sousItem2="matMenu">
+      <button mat-menu-item>Sous item 1</button>
+      <button mat-menu-item>Soous item 2</button>
+    </mat-menu>
+    <button class="rounded" color="primary">RefinePro dashbord</button>
+  </div>
+  <div class="row p-0">
+    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff">
+      <mat-tab-group
+        mat-align-tabs="start"
+        [color]="'#f0f1f6'"
+        [backgroundColor]="'#f0f1f6'"
+        class="mat-group"
+      >
+        <mat-tab label="Facet/Filter">
+          <app-facet-filter
+            [filtersData]='filtersData'
+            [idProject]="idProject"
+            [dataToFiltering]="dataViews"
+            [dataViews]="dataViews"
+            [dataSources]="dataSource.data"
+          ></app-facet-filter>
+        </mat-tab>
+        <!-- <mat-tab [label]="undoRedoLabel">
           <app-undo-redo></app-undo-redo>
         </mat-tab> -->
-            </mat-tab-group>
-        </aside>
+      </mat-tab-group>
+    </aside>
 
-        <aside class="col p-0" fxFlex="75%">
-            <div class="px-5" style="background: #93cdff; height: 50px">
-                <!-- <h2 class="m-auto font-weight-bold">matching rows</h2>
+    <aside class="col p-0" fxFlex="75%">
+      <div class="px-5" style="background: #93cdff; height: 50px">
+        <!-- <h2 class="m-auto font-weight-bold">matching rows</h2>
         <h4 class="m-auto font-weight-normal">(1000 total)</h4> -->
-                <span fxFlex></span>
-                <h4 class="m-auto font-weight-normal">Extensions</h4>
-            </div>
-            <div class="p-0">
-                <div class="w-100" style="max-width: 100%;overflow: auto; max-height: calc(100vh - 300px)">
-                    <table mat-table [dataSource]="dataSource" matSort class="w-100">
-
-                        <div *ngFor="let column of displayedColumns; let index = index; let last = last">
-                            <!-- dynamics Column -->
-                            <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
-                                <th mat-header-cell *matHeaderCellDef>
-                                    <span fxLayout fxLayoutGap="15px">
-                    <mat-icon style="color: #006dfb;" [inline]="true" aria-hidden="false"
+        <span fxFlex></span>
+        <h4 class="m-auto font-weight-normal">Extensions</h4>
+      </div>
+      <div class="p-0">
+        <div
+          class="w-100"
+          style="
+            max-width: 100%;
+            overflow: auto;
+            max-height: calc(100vh - 300px);
+          "
+        >
+          <table mat-table [dataSource]="dataSource" matSort class="w-100">
+            <div
+              *ngFor="
+                let column of displayedColumns;
+                let index = index;
+                let last = last
+              "
+            >
+              <!-- dynamics Column -->
+              <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
+                <th mat-header-cell *matHeaderCellDef>
+                  <span fxLayout fxLayoutGap="15px">
+                    <mat-icon
+                      style="color: #006dfb"
+                      [inline]="true"
+                      aria-hidden="false"
                       class="option-icon bg-light"
-                      [matMenuTriggerFor]="tableOptionMenu">
+                      [matMenuTriggerFor]="tableOptionMenu"
+                    >
+                      arrow_drop_down
+                    </mat-icon>
+                    <div mat-sort-header>All</div>
+                  </span>
+                </th>
+                <mat-menu #tableOptionMenu="matMenu">
+                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                    Facet
+                  </button>
+                  <button mat-menu-item (click)="textFilter(column)">
+                    Text filter
+                  </button>
+                  <button mat-menu-item [matMenuTriggerFor]="sousItem2">
+                    Item 2
+                  </button>
+                  <button mat-menu-item>Item 3</button>
+                </mat-menu>
+                <mat-menu #sousItem1="matMenu">
+                  <button mat-menu-item (click)="textFacet(column)">
+                    Text facet
+                  </button>
+                  <button mat-menu-item>Numeric facet</button>
+                  <button mat-menu-item>Timeline facet</button>
+                  <button mat-menu-item>Scatterplot facet</button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item>Custum text facet</button>
+                  <button mat-menu-item>Custum Numeric facet</button>
+                  <button mat-menu-item>Custumized facet</button>
+                </mat-menu>
+                <mat-menu #sousItem2="matMenu">
+                  <button mat-menu-item>Sous item 1</button>
+                  <button mat-menu-item>Soous item 2</button>
+                </mat-menu>
+
+                <td
+                  mat-cell
+                  *matCellDef="
+                    let indexRow = index;
+                    let even = even;
+                    let odd = odd
+                  "
+                  [class.odd]="odd"
+                  [class.even]="even"
+                  #td
+                  class="th-content p-0"
+                >
+                  <div fxLayout="row" fxLayoutAlign="space-around center">
+                    <!-- <i class='rotateimg180 fas fa-flag fa-lg'></i> -->
+                    <i
+                      style="color: #b1d3ff"
+                      class="rotateimg180 far fa-flag fa-lg"
+                    ></i>
+                    <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
+                    <i style="color: #b1d3ff" class="far fa-star fa-lg"></i>
+
+                    <p class="text-center">{{ indexRow + 1 }}.</p>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- dynamics Column -->
+              <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  [ngClass]="{ 'd-none': isColumnDisplay(column) }"
+                >
+                  <span fxLayout fxLayoutGap="15px">
+                    <mat-icon
+                      style="color: #006dfb"
+                      [inline]="true"
+                      aria-hidden="false"
+                      class="option-icon bg-light"
+                      [matMenuTriggerFor]="tableOptionMenu"
+                    >
                       arrow_drop_down
                     </mat-icon>
                     <div mat-sort-header>
-                      All
+                      {{ column | removeUnderscore | capitalizeFirstPipe }}
                     </div>
                   </span>
-                                </th>
-                                <mat-menu #tableOptionMenu="matMenu">
-                                    <button mat-menu-item [matMenuTriggerFor]="sousItem1">Facet</button>
-                                    <button mat-menu-item (click)="textFilter(column)">Text filter</button>
-                                    <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 2</button>
-                                    <button mat-menu-item>Item 3</button>
-                                </mat-menu>
-                                <mat-menu #sousItem1="matMenu">
-                                    <button mat-menu-item (click)="textFacet(column)">Text facet</button>
-                                    <button mat-menu-item>Numeric facet</button>
-                                    <button mat-menu-item>Timeline facet</button>
-                                    <button mat-menu-item>Scatterplot facet</button>
-                                    <mat-divider></mat-divider>
-                                    <button mat-menu-item>Custum text facet</button>
-                                    <button mat-menu-item>Custum Numeric facet</button>
-                                    <button mat-menu-item>Custumized facet</button>
-                                </mat-menu>
-                                <mat-menu #sousItem2="matMenu">
-                                    <button mat-menu-item>Sous item 1</button>
-                                    <button mat-menu-item>Soous item 2</button>
-                                </mat-menu>
+                </th>
+                <mat-menu #tableOptionMenu="matMenu">
+                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                    Facet
+                  </button>
+                  <button mat-menu-item (click)="textFilter(column)">
+                    Text filter
+                  </button>
+                  <button mat-menu-item [matMenuTriggerFor]="sousItem2">
+                    Item 2
+                  </button>
+                  <button mat-menu-item (click)="openEditColumn(column)">
+                    Update column
+                  </button>
+                </mat-menu>
+                <mat-menu #sousItem1="matMenu">
+                  <button mat-menu-item (click)="textFacet(column)">
+                    Text facet
+                  </button>
+                  <button mat-menu-item>Numeric facet</button>
+                  <button mat-menu-item>Timeline facet</button>
+                  <button mat-menu-item>Scatterplot facet</button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item>Custum text facet</button>
+                  <button mat-menu-item>Custum Numeric facet</button>
+                  <button mat-menu-item>Custumized facet</button>
+                </mat-menu>
+                <mat-menu #sousItem2="matMenu">
+                  <button mat-menu-item>Sous item 1</button>
+                  <button mat-menu-item>Soous item 2</button>
+                </mat-menu>
 
-                                <td mat-cell *matCellDef="let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" #td class="th-content p-0">
-                                    <div fxLayout="row" fxLayoutAlign="space-around center">
-                                        <!-- <i class='rotateimg180 fas fa-flag fa-lg'></i> -->
-                                        <i style="color: #b1d3ff;" class='rotateimg180 far fa-flag fa-lg'></i>
-                                        <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
-                                        <i style="color: #b1d3ff;" class="far fa-star fa-lg"></i>
+                <td
+                  mat-cell
+                  *matCellDef="
+                    let element;
+                    let indexRow = index;
+                    let even = even;
+                    let odd = odd
+                  "
+                  [class.odd]="odd"
+                  [class.even]="even"
+                  [ngClass]="{ 'd-none': isColumnDisplay(column) }"
+                  #td
+                  class="th-content text-truncate"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      (element[column] | typeof) === 'string'
+                        ? stringTemplate
+                        : numberTemplate;
+                      context: { value: element[column] }
+                    "
+                  >
+                  </ng-container>
 
-                                        <p class="text-center"> {{indexRow + 1}}. </p>
-                                    </div>
-
-                                </td>
-                            </ng-container>
-
-                            <!-- dynamics Column -->
-                            <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
-                                <th mat-header-cell *matHeaderCellDef [ngClass]="{'d-none': isColumnDisplay(column)}">
-                                    <span fxLayout fxLayoutGap="15px">
-                    <mat-icon style="color: #006dfb;" [inline]="true" aria-hidden="false"
-                      class="option-icon bg-light"
-                      [matMenuTriggerFor]="tableOptionMenu">
-                      arrow_drop_down
-                    </mat-icon>
-                    <div mat-sort-header>
-                      {{  column | removeUnderscore | capitalizeFirstPipe }}
+                  <ng-template #stringTemplate let-currentValue="value">
+                    <div class="row justify-content-between px-3 text-truncate">
+                      <!-- (currentValue | isURL) -->
+                      <p
+                        class="text-left"
+                        *ngIf="
+                          (currentValue | isURL) === false;
+                          else templeteURL
+                        "
+                      >
+                        {{ currentValue }}
+                      </p>
+                      <ng-template #templeteURL>
+                        <a
+                          #templeteURL
+                          [href]="
+                            senitizer.bypassSecurityTrustResourceUrl(
+                              currentValue
+                            )
+                          "
+                          target="_blank"
+                          >{{ currentValue }}</a
+                        >
+                      </ng-template>
                     </div>
-                  </span>
-                                </th>
-                                <mat-menu #tableOptionMenu="matMenu">
-                                    <button mat-menu-item [matMenuTriggerFor]="sousItem1">Facet</button>
-                                    <button mat-menu-item (click)="textFilter(column)">Text filter</button>
-                                    <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 2</button>
-                                    <button mat-menu-item (click)="openEditColumn(column)">Update column</button>
-                                </mat-menu>
-                                <mat-menu #sousItem1="matMenu">
-                                    <button mat-menu-item (click)="textFacet(column)">Text facet</button>
-                                    <button mat-menu-item>Numeric facet</button>
-                                    <button mat-menu-item>Timeline facet</button>
-                                    <button mat-menu-item>Scatterplot facet</button>
-                                    <mat-divider></mat-divider>
-                                    <button mat-menu-item>Custum text facet</button>
-                                    <button mat-menu-item>Custum Numeric facet</button>
-                                    <button mat-menu-item>Custumized facet</button>
-                                </mat-menu>
-                                <mat-menu #sousItem2="matMenu">
-                                    <button mat-menu-item>Sous item 1</button>
-                                    <button mat-menu-item>Soous item 2</button>
-                                </mat-menu>
+                  </ng-template>
 
-                                <td mat-cell *matCellDef="let element; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" [ngClass]="{'d-none': isColumnDisplay(column)}" #td class="th-content text-truncate">
-                                    <ng-container *ngTemplateOutlet="(element[column] | typeof) === 'string' ? stringTemplate: numberTemplate; context:{value: element[column]}">
-                                    </ng-container>
-
-                                    <ng-template #stringTemplate let-currentValue="value">
-                                        <div class="row justify-content-between px-3 text-truncate">
-                                            <!-- (currentValue | isURL) -->
-                                            <p class="text-left" *ngIf="(currentValue | isURL) === false; else templeteURL"> {{currentValue}} </p>
-                                            <ng-template #templeteURL>
-                                                <a #templeteURL [href]="senitizer.bypassSecurityTrustResourceUrl(currentValue)" target="_blank">{{currentValue}}</a>
-                                            </ng-template>
-                                        </div>
-                                    </ng-template>
-
-                                    <ng-template #numberTemplate let-currentValue="value">
-                                        <div class="row justify-content-between px-3 text-truncate">
-                                            <p class="text-right">{{currentValue}} </p>
-                                        </div>
-                                    </ng-template>
-
-                                </td>
-                            </ng-container>
-                        </div>
-
-
-                        <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="text-center" [colSpan]="displayedColumns.length">No data</td>
-                        </tr>
-                    </table>
-
-                </div>
-                <mat-paginator appStylePaginator showFirstLastButtons [showTotalPages]="3" [length]="dataSource.data.length" [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"></mat-paginator>
+                  <ng-template #numberTemplate let-currentValue="value">
+                    <div class="row justify-content-between px-3 text-truncate">
+                      <p class="text-right">{{ currentValue }}</p>
+                    </div>
+                  </ng-template>
+                </td>
+              </ng-container>
             </div>
-        </aside>
-    </div>
+
+            <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="text-center" [colSpan]="displayedColumns?.length">
+                No data
+              </td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator
+          appStylePaginator
+          showFirstLastButtons
+          [showTotalPages]="3"
+          [length]="dataSource.data.length"
+          [pageSize]="10"
+          [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
+        ></mat-paginator>
+      </div>
+    </aside>
+  </div>
 </main>
