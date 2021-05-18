@@ -12,7 +12,7 @@ import { LpViwersService } from '../../services/lp-viwers.service';
     <div class="w-100 px-2 pb-3">
       <button class="rounded">Refresh</button>
       <span fxFlex></span>
-      <button class="rounded">Reset All</button>
+      <button class="rounded" (click)="resetAll()">Reset All</button>
       <button class="rounded" (click)="removeAll()">Remove All</button>
     </div>
     <div *ngFor="let item of items">
@@ -233,7 +233,6 @@ export class FacetFilterComponent implements OnInit {
             include: !this.items[index].content[i]['include']
           }
         };
-
       });
     };
     this.items = this.items;
@@ -251,7 +250,26 @@ export class FacetFilterComponent implements OnInit {
   public removeAll() {
     this.lpViewer.dataSources$.next(this.dataViews);
     this.items = [];
+    this.facetQueries = [];
+    this.searchQueries = [];
     this.itemsFilters.emit(this.items);
+  }
+
+  public resetAll() {
+    this.facetQueries = [];
+    this.searchQueries = [];
+    this.filters.reset();
+    this.items.map((item: any) => {
+      item['content']?.map((value: any, i: number) => {
+        item['content'][i] = {
+          ...item['content'][i],
+          include: false
+        }
+      });
+    });
+
+    this.items = this.items;
+    this.checkIncludesExcludes();
   }
 
   public minimize(item: any) {
