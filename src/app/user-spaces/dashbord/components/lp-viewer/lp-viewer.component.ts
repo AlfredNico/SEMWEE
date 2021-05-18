@@ -51,10 +51,6 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
           } if (res[2].length > 0) {
             this.inputFilters = JSON.parse(res[2][0]['value']);
           };
-          // this.lpviewer.filtersData$.next({
-          //   inputFilter: this.inputFilter,
-          //   filtersData: this.filtersData
-          // });
 
           this.stepper.steps.forEach((step, index) => {
 
@@ -71,20 +67,25 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
         }
         else this.router.navigateByUrl('user-space/lp-viewer');
       });
-      this.router.navigate(['user-space/lp-viewer'],
-        { queryParams: { idProject: this.idProject } });
+      // this.router.navigate(['user-space/lp-viewer'],
+      //   { queryParams: { idProject: this.idProject } });
     }
   }
 
   public nextReadFile(value: any) {
-    console.log(value);
+    this.dataAfterUploaded = value;
 
-    // this.dataAfterUploaded = value;
-    // this.router.navigate(['user-space/lp-viewer'], {
-    //   queryParams: { idProject: value[0][0]['_id'] }
-    // });
-    // this.stepper.selected.completed = true;
-    // this.stepper.selected.editable = true;
-    // this.stepper.next();
+    if (value[0] !== undefined) {
+      this.router.navigate(['user-space/lp-viewer'], {
+        queryParams: { idProject: value[0][0]['_id'] }
+      });
+    } else {
+      this.router.navigate(['user-space/lp-viewer'], {
+        queryParams: { idProject: '238343766dh' }
+      });
+    }
+    this.stepper.selected.completed = true;
+    this.stepper.selected.editable = true;
+    this.stepper.next();
   }
 }

@@ -1,8 +1,8 @@
 import { CommonService } from './../../../../../shared/services/common.service';
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { EMPTY, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subscription } from 'rxjs';
 import { Upload } from '@app/user-spaces/dashbord/interfaces/upload';
 import { User } from '@app/classes/users';
 
@@ -18,7 +18,7 @@ import { User } from '@app/classes/users';
         <button mat-raised-button (click)="fileInput.click()">
           {{ file ? file.name : 'Select' }}
         </button>
-        <input hidden type="file" id="file" name="file" class="py-2" formControlName="fileSource" #fileInput (change)="onFileInput(fileInput.files)" />
+        <input hidden type="file" id="file" name="file" class="py-2" formControlName="fileSource" #fileInput (change)="convertFile($event)" />
       </div>
       <button type="submit" mat-raised-button (click)="form.valid && onSubmit()">
         Next
@@ -27,7 +27,7 @@ import { User } from '@app/classes/users';
     </div>
   `,
 })
-export class ViwerImportComponent implements OnInit, OnDestroy {
+export class ViwerImportComponent implements OnInit {
 
   public form = new FormGroup({
     fileSource: new FormControl('', [Validators.required]),
@@ -35,119 +35,67 @@ export class ViwerImportComponent implements OnInit, OnDestroy {
 
   file: File | null | undefined;
 
-  @Output() importFile = new EventEmitter<any>();
+  @Output() dataImported = new EventEmitter<any>(null);
+  private data: { header: string[], content: any[] } = { header: [], content: [] };
   @Input() user: User = undefined;
-
-  private subscription$: Subscription | undefined;
 
   //////////////
   csvContent: string;
   parsedCsv: string[][];
 
-  private dataFileImport: { header: string[], content: any[] } = undefined;
-
   constructor(private lpViewerService: LpViwersService, private readonly common: CommonService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  processCsv(content) {
+    return content.split('\n');
   }
 
-  onFileInput(files: FileList | null): void {
-    if (files) {
-      this.file = files.item(0);
+  convertFile(event: any) {
+    const file = event.target.files[0];
+    this.file = event.target.files[0];
 
-      // Read CSV file
-      const fileToRead = this.file;
-      const fileReader = new FileReader();
-      fileReader.onload = this.onFileLoad;
-      fileReader.readAsText(fileToRead, 'UTF-8');
-    }
+    console.log('name', event.target.files[0]['name'])
+    this.readFileContent(file).then(csvContent => {
+      const csv = [];
+      const csvSeparator = ';';
+      const lines = this.processCsv(csvContent);
+      lines.forEach((element) => {
+        const cols: string[] = element.split(csvSeparator);
+        csv.push(cols);
+      });
+      this.parsedCsv = csv;
+      this.parsedCsv.pop();
+      const header = this.parsedCsv.shift().toString().split(',');
+      const content = this.parsedCsv.map(value => value.reduce((tdObj, td, index) => {
+        tdObj[header[index]] = td;
+        tdObj['start'] = false;
+        tdObj['flag'] = false;
+        return tdObj;
+      }, {}));
 
+      this.data.header = header;
+      this.data.header.unshift('all');
+      this.data.content = content;
+      this.onSubmit();
+
+    }).catch(error => console.log(error))
+  }
+
+  readFileContent(file) {
+    const reader = new FileReader()
+    return new Promise((resolve, reject) => {
+      reader.onload = event => resolve(event.target.result)
+      reader.onerror = error => reject(error)
+      reader.readAsText(file)
+    })
   }
 
   public onSubmit() {
-    // this.common.showSpinner('table', true, '');
-    // this.lpViewerService.isLoading$.next(true);
     if (this.file) {
+      this.dataImported.emit(this.data);
       this.lpViewerService.upload(this.file, this.user._id);
-      this.importFile.emit(this.dataFileImport);
-
-      // .subscribe(
-      //   res => {
-      //     if (res) {
-      //       this.importFile.emit(res);
-      //       this.lpViewerService.isLoading$.next(false);
-      //     }
-      //     this.lpViewerService.isLoading$.next(false);
-      //   }),
-      // error => {
-      //   console.warn(error);
-      // }
     }
-  }
-
-  ngOnDestroy() {
-    this.subscription$?.unsubscribe()
-  }
-
-  private onFileLoad(fileLoadedEvent): void {
-    console.log('file', fileLoadedEvent);
-    const csvSeparator = ';';
-    const textFromFileLoaded = fileLoadedEvent.target.result;
-    this.csvContent = textFromFileLoaded;
-
-    const txt = textFromFileLoaded;
-    const csv = [];
-    const lines = txt.split('\n');
-    lines.forEach((element) => {
-      const cols: string[] = element.split(csvSeparator);
-      csv.push(cols);
-    });
-    this.parsedCsv = csv;
-    // this.dataFileImport = {
-    //   header: this.parsedCsv[0],
-    //   content: this.parsedCsv.shift()
-    // };
-
-    const header = this.parsedCsv.shift();
-    const content = this.parsedCsv.map(value => value.reduce((tdObj, td, index) => {
-      tdObj[header[index]] = td;
-      return tdObj;
-    }, {}));
-
-    this.dataFileImport = {
-      header: header,
-      content: content
-    }
-
-    // const content = this.parsedCsv.map(value => {
-    //   console.log('value=', value)
-    // });
-
-    // console.log('header=', header);
-    // console.log('content=', content);
-    // console.log(this.dataFileImport);
-    if (this.dataFileImport !== undefined) {
-      // console.log('dd', this.dataFileImport);
-      this.importFile.emit(this.dataFileImport);
-    }
-
-
-
-
-    // this.onSubmit();
-
-    // demo output as alert
-    // var output: string = '';
-    // csv.forEach((row) => {
-    //   output += '\n';
-    //   var colNo = 0;
-    //   row.forEach((col) => {
-    //     if (colNo > 0) output += '; ';
-    //     output += col;
-    //     colNo++;
-    //   });
-    // });
-    // console.log('output', this.parsedCsv[0]);
   }
 
 }

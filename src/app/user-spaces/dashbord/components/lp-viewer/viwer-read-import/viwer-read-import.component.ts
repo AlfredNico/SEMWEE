@@ -1,4 +1,3 @@
-import { header } from './../../../interfaces/data-sources';
 import { UpdatesHeaderComponent } from './updates-header.component';
 import { HeaderOptionsComponent } from './header-options.component';
 import { LpViwersService } from './../../../services/lp-viwers.service';
@@ -15,7 +14,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CommonService } from '@app/shared/services/common.service';
-import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -31,13 +29,13 @@ export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
-  dataSource = new MatTableDataSource<DataSources>([]);
+  dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input('idProject') idProject = undefined;
   @Input('inputFilter') inputFilter: any = {};
   @Input('filtersData') filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
-  @Input('dataAfterUploaded') dataAfterUploaded: DataSources = undefined;
+  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
 
   public tabIndex = 0;
@@ -49,17 +47,24 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      console.log(this.dataAfterUploaded)
-      // const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
-      // const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
-      // const values = this.dataAfterUploaded[1];
-      // header.unshift('all');
-      // editableColumns.unshift('all');
+      if ((this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined) {
+        const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
+        const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
+        const values = this.dataAfterUploaded[1];
+        header.unshift('all');
+        editableColumns.unshift('all');
 
-      // this.displayedColumns = header;
-      // this.edidtableColumns = editableColumns;
-      // this.dataSource.data = this.checkFilter(values);
-      // this.dataViews = values;
+        this.displayedColumns = header;
+        this.edidtableColumns = editableColumns;
+        this.dataSource.data = this.checkFilter(values);
+        this.dataViews = values;
+      } else {
+
+        this.displayedColumns = this.dataAfterUploaded['header'];
+        this.edidtableColumns = this.displayedColumns;
+        this.dataSource.data = this.dataAfterUploaded['content'];
+        this.dataViews = this.dataAfterUploaded['content'];
+      }
     }
     this.lpViewer.checkInfoSubject$.next();
   }

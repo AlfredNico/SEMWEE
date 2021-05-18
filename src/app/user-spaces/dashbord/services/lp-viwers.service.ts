@@ -43,7 +43,7 @@ export class LpViwersService {
 
   upload(file: File, idUser: any): Observable<any> {
     const data = new FormData()
-    data.append('files', file)
+    data.append('files', file);
     return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
       .pipe(
         map(result => result)
@@ -55,7 +55,7 @@ export class LpViwersService {
   }
 
   public addFilter(value: { idProject: any, value: any }) {
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`, value)
+    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`, value);
   }
 
   public putDisplayColums(_idHeader: any, header: string) {
