@@ -148,7 +148,7 @@ export class LpValidatorService {
       'Valid',
       'List_Page_Label',
       'Popular_Search_Queries',
-      'Number_of_Item',
+      'Number_of_Items',
       'List_Page_Main_Query',
       'Website_Best_Position',
       'Item_Type',
