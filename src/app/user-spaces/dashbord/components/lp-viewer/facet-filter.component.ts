@@ -135,7 +135,7 @@ export class FacetFilterComponent implements OnInit {
   // private indexes = 0;
   // private queries: string[] = [];
   // private searchQuery: any[][] = [];
-  // private searchQueries: any[] = [];
+  private facetQueries: any[] = [];
   private searchQueries: string = '';
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
@@ -265,38 +265,39 @@ export class FacetFilterComponent implements OnInit {
   }
 
   private checkIncludesExcludes(): any[] {
-    let search: boolean, last: boolean;
-    console.log('s', this.searchQueries);
-
+    let search: string = '', last: string = '';
 
     this.dataSources = this.dataViews.filter((value: any) => {
       return Object.keys(value).some((property) => {
+        let i1: number = 0;
         if (value[property] !== (undefined || null)) {
-          let i1: number = 0;
-          let queries: boolean;
+          let queries: string = '';
           const q = this.items.map((item: any): void => {
-            let i2: number = 0;
             let str = '';
+            let i2: number = 0;
             item['content']?.map((element: any) => {
-              ; if (element['include'] === true) {
-
+              if (element['include'] === true) {
                 const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
                 if (i2 === 0) str = q;
                 else str = `${str}||${q}`;
                 i2++;
+                console.log('i2', item['head']);
               }
             });
-            const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
+            // const xxx = this.searchQueries !== '' ? str + '&&' + this.searchQueries : str;
 
-            search = str !== '' ? eval(xxx) : true;
-            if (i1 === 0) queries = search;
-            else queries = queries && search;
-            i1++;
+            if (str !== '') {
+              queries = str;
+            }
           });
-          last = queries;
-          console.log('vdvd', search);
 
-          return queries;
+          if (i1 === 0) search = queries;
+          else search = search && queries;
+          i1++;
+          last = search;
+          console.log('queries=', last);
+
+          return eval(last);
         }
       })
     });
