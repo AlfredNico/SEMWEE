@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { first, map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
+import value from '*.json';
 
 @Component({
   selector: 'app-facet-filter',
@@ -316,7 +317,9 @@ export class FacetFilterComponent implements OnInit {
         }
       })
     });
-    // this.lpViewer.addFilter(this.states); //save states into DB
+    console.log(JSON.stringify(this.searchQueries));
+
+    this.lpViewer.addFilter(JSON.stringify(this.searchQueries)); //save states into DB
     this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
     this.dataToFiltering = this.dataSources;
   }
