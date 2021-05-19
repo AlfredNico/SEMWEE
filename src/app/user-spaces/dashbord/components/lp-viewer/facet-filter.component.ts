@@ -157,7 +157,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
         });
 
         if (this.inputFilters !== undefined) {
-          console.log('daa=', this.inputFilters);
           this.filters.patchValue({ ...this.inputFilters });
         }
 
