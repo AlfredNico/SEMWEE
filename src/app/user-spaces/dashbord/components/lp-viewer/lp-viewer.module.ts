@@ -12,9 +12,14 @@ import { FacetFilterComponent } from './facet-filter.component';
 import { HeaderOptionsComponent } from './viwer-read-import/header-options.component';
 import { LandingModule } from '@app/shared/modules/landing.module';
 import { MatStepperModule } from '@angular/material/stepper';
+import { HttpClientModule } from '@angular/common/http';
+import { tokenInterceptor } from '@app/token.interceptor';
+import { errorInterceptor } from '@app/error.interceptor';
+
 @NgModule({
   declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
   imports: [
+    HttpClientModule,
     SharedModule,
     LandingPageModule,
     SharedDirectivesModule,
@@ -33,10 +38,12 @@ import { MatStepperModule } from '@angular/material/stepper';
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
-    NO_ERRORS_SCHEMA
+    // NO_ERRORS_SCHEMA
   ],
   providers: [
-    LpViwersService
+    LpViwersService,
+    tokenInterceptor,
+    errorInterceptor
   ]
 })
 export class LpViewerModule { }

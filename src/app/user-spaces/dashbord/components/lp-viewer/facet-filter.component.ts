@@ -1,8 +1,10 @@
 import { CommonService } from './../../../../shared/services/common.service';
-import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
+import { FacetFilter } from '../../interfaces/facet-filter';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-facet-filter',
@@ -76,7 +78,7 @@ import { LpViwersService } from '../../services/lp-viwers.service';
               <div class="pointer px-1">invert</div>
               <div class="pointer px-1">reset</div>
             </div>
-            <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="filters">
+            <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="formGroup">
               <input autocomplete="off" type="search" class="w-100" placeholder="filter ..." [formControlName]="item['head']" appearance="outline">
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3"
@@ -118,17 +120,22 @@ import { LpViwersService } from '../../services/lp-viwers.service';
 })
 export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
 
-  public items: any[] = [];
+  @Input() items: any[] = [];
   @Input() public inputFilters: any = undefined;
   @Input() public dataViews: any[] = [];
   @Input() public dataSources: any[] = [];
   @Input() public dataToFiltering: any[] = [];
   @Input() public idProject: any = undefined;
-  @Input() public filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
+  @Input() public filtersData: FacetFilter = undefined;
+  // @Input() public formGroup = new FormGroup({});
+  @Input() public formGroup = this.fb.group({});
+  @Output() public filtersDataEmited = new EventEmitter<FacetFilter>();
 
   changeText: boolean;
 
-  public filters = this.fb.group([]);
+  // public filters = this.fb.group([]);
+  // public filters = this.fb.group([]);
+
   private facetQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
 
@@ -139,8 +146,13 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void { }
 
   ngOnChanges() {
+    this.formGroup.valueChanges.pipe(
+      map(query => {
+        console.log('quer');
+      })
+    )
     if (this.filtersData !== undefined) {
-      this.items = this.filtersData['items'];
+      // this.items = this.filtersData['items'];
       this.facetQueries = this.filtersData['facetQueries'];
       this.searchQueries = this.filtersData['searchQueries'];
     }
@@ -151,29 +163,27 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
       if (res !== undefined) {
         this.items.push(res);
         this.items.map((value: any) => {
+          console.log('log')
           if (value['type'] === 'filter') {
-            this.filters.addControl(value['head'], new FormControl(''));
+            this.formGroup.addControl(value['head'], new FormControl(''));
           }
         });
-
-        if (this.inputFilters !== undefined) {
-          this.filters.patchValue({ ...this.inputFilters });
-        }
 
         //save all parames into DB
         this.saveParams();
       }
     });
 
-    this.filters.valueChanges
+    this.formGroup.valueChanges
       .pipe(
         map((query) => {
+          console.log('OK', query);
           let qqq = '', i1 = 0;
           let lastquery: boolean;
           this.lpViewer.addFacetFilter({
             idProject: this.idProject,
             value: JSON.stringify(query)
-          });
+          }).subscribe();
 
           this.dataSources = this.dataViews.filter((value: any, i: number) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
@@ -231,8 +241,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.items = this.items;
 
     this.checkIncludesExcludes();
-    //save all parames into DB
-    this.saveParams();
   }
 
   public exclude(headName: any, contentName: string) {
@@ -251,9 +259,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.items = this.items;
 
     this.checkIncludesExcludes();
-
-    //save all parames into DB
-    this.saveParams();
 
   }
 
@@ -277,7 +282,7 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
   public resetAll() {
     this.facetQueries = [];
     this.searchQueries = [];
-    this.filters.reset();
+    this.formGroup.reset();
     this.items.map((item: any) => {
       item['content']?.map((value: any, i: number) => {
         item['content'][i] = {
@@ -291,10 +296,10 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.checkIncludesExcludes();
 
     //save all parames into DB
-    if (this.filters.value) {
+    if (this.formGroup.value) {
       this.lpViewer.addFacetFilter({
         idProject: this.idProject,
-        value: JSON.stringify(this.filters.value)
+        value: JSON.stringify(this.formGroup.value)
       });
     }
     this.saveParams();
@@ -358,11 +363,12 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
       facetQueries: this.facetQueries,
       searchQueries: this.searchQueries
     };
+    // this.filtersDataEmited.emit(this.filtersData);
 
     this.lpViewer.addFilter({
       idProject: this.idProject,
       value: JSON.stringify(this.filtersData)
-    });;
-    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+    }).subscribe();
+    //   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
   }
 }

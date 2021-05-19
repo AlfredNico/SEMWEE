@@ -50,6 +50,25 @@ export class LpViwersService {
       )
   }
 
+  sendProjectNames(value: { idUser: any, ProjectName: string }): Observable<{ idProject: any }> {
+    return this.http.post<{ idProject: any }>(`${environment.baseUrl}/lpviewer/post-project/${value.ProjectName}/${value.idUser}`, value);
+  }
+
+  sendFiles(value: { idProject: any, file: File }) {
+    const data = new FormData()
+    data.append('files', value.file);
+    return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${value.idProject}`, data);
+  }
+
+  // upload(file: File, idUser: any): Observable<any> {
+  //   const data = new FormData()
+  //   data.append('files', file);
+  //   return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
+  //     .pipe(
+  //       map(result => result)
+  //     )
+  // }
+
   public addFacetFilter(value: { idProject: any, value: string }) {
     return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer`, value)
   }

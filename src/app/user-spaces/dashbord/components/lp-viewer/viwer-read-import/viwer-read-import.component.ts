@@ -13,11 +13,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { CommonService } from '@app/shared/services/common.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
+import { FacetFilter } from '@app/user-spaces/dashbord/interfaces/facet-filter';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -33,7 +34,6 @@ export class ViwerReadImportComponent
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input('idProject') idProject = undefined;
-  @Input('inputFilter') inputFilter: any = {};
   @Input('filtersData') filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
@@ -42,8 +42,12 @@ export class ViwerReadImportComponent
 
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
+  // public formGroup = new FormGroup({});
+  public formGroup = this.fb.group({});
 
-  constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService, public senitizer: DomSanitizer) { }
+  public items: any[] = [];
+
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private lpViewer: LpViwersService, public senitizer: DomSanitizer) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
@@ -58,8 +62,15 @@ export class ViwerReadImportComponent
         this.edidtableColumns = editableColumns;
         this.dataSource.data = this.checkFilter(values);
         this.dataViews = values;
-      } else {
 
+        if (this.filtersData.items !== undefined) {
+          console.log('res=', this.dataAfterUploaded[2]);
+          this.formGroup = this.fb.group(this.inputFilters);
+          this.items = this.filtersData['items'];
+          console.log('input', this.inputFilters);
+        }
+
+      } else {
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.edidtableColumns = this.displayedColumns;
         this.dataSource.data = this.dataAfterUploaded['content'];
@@ -209,6 +220,7 @@ export class ViwerReadImportComponent
     if (this.filtersData !== undefined) {
       const length1 = this.filtersData['facetQueries']?.length;
       const length2 = this.filtersData['searchQueries']?.length;
+      console.log(length1, '//', this.filtersData['searchQueries']);
 
       const dataFilter = val.filter((x: any, i: number) => {
         switch (true) {
@@ -221,11 +233,26 @@ export class ViwerReadImportComponent
           case (length1 > 0 && length2 === 0):
             return this.filtersData['facetQueries'][i];
 
-          // default: return false;
+          case (length1 === 0 && length2 === 0):
+            return true;
         }
       });
 
       return dataFilter;
     } else return val;
+  }
+
+  public openButton() {
+    console.log('open button');
+  }
+
+  public saveParams(event: FacetFilter) {
+    const value = {
+      idProject: this.idProject,
+      value: JSON.stringify(event)
+    }
+
+    this.lpViewer.addFilter(value);
+    //   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
   }
 }

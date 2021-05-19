@@ -1,4 +1,3 @@
-import { header } from './../../../interfaces/data-sources';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -65,7 +64,7 @@ export class UpdatesHeaderComponent implements OnInit {
   });
 
   constructor(public dialogRef: MatDialogRef<any>, private lpViwer: LpViwersService,
-    @Inject(MAT_DIALOG_DATA) private data: { index: number,idHeader: any, edidtableColumns: string[] }) {
+    @Inject(MAT_DIALOG_DATA) private data: { index: number, idHeader: any, edidtableColumns: string[] }) {
     if (this.data) {
       console.log(this.data.edidtableColumns);
 

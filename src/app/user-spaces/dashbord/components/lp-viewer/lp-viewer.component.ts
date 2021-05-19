@@ -72,16 +72,16 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public nextReadFile(value: any) {
-    this.dataAfterUploaded = value;
+  public nextReadFile(value: { idProject: any, data: any }) {
+    this.dataAfterUploaded = value.data;
 
     if (value[0] !== undefined) {
       this.router.navigate(['user-space/lp-viewer'], {
-        queryParams: { idProject: value[0][0]['_id'] }
+        queryParams: { 'idProject': value[0][0]['_id'] }
       });
     } else {
       this.router.navigate(['user-space/lp-viewer'], {
-        queryParams: { idProject: '238343766dh' }
+        queryParams: { 'idProject': value.idProject }
       });
     }
     this.stepper.selected.completed = true;

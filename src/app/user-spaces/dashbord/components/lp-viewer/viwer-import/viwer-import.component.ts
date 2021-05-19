@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, EMPTY, Observable, Subscription } from 'rxjs';
 import { Upload } from '@app/user-spaces/dashbord/interfaces/upload';
 import { User } from '@app/classes/users';
+import { Users } from '@app/models/users';
 
 @Component({
   selector: 'app-viwer-import',
@@ -38,6 +39,7 @@ export class ViwerImportComponent implements OnInit {
   @Output() dataImported = new EventEmitter<any>(null);
   private data: { header: string[], content: any[] } = { header: [], content: [] };
   @Input() user: User = undefined;
+  private ProjectName: string = '';
 
   //////////////
   csvContent: string;
@@ -55,7 +57,7 @@ export class ViwerImportComponent implements OnInit {
     const file = event.target.files[0];
     this.file = event.target.files[0];
 
-    console.log('name', event.target.files[0]['name'])
+    this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
     this.readFileContent(file).then(csvContent => {
       const csv = [];
       const csvSeparator = ';';
@@ -93,8 +95,19 @@ export class ViwerImportComponent implements OnInit {
 
   public onSubmit() {
     if (this.file) {
-      this.dataImported.emit(this.data);
-      this.lpViewerService.upload(this.file, this.user._id);
+      const value = {
+        idUser: this.user._id,
+        ProjectName: this.ProjectName
+      };
+      this.lpViewerService.sendProjectNames(value).subscribe(idProject => {
+        if (idProject) {
+          this.dataImported.emit({ idProject: idProject['idProject'], data: this.data });
+          this.lpViewerService.sendFiles({
+            idProject: idProject['idProject'],
+            file: this.file
+          }).subscribe();
+        }
+      })
     }
   }
 

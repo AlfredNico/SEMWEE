@@ -1,6 +1,6 @@
 <main class="w-100 p-0" fxLayout="column">
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="rounded" color="primary">Open</button>
+    <button class="rounded" color="primary" (click)=openButton()>Open</button>
     <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
       Export
       <mat-icon aria-hidden="false" aria-label="keyboard arrow down icon">
@@ -31,15 +31,19 @@
       >
         <mat-tab label="Facet/Filter">
           <app-facet-filter
+            [formGroup]='formGroup'
+            [items]="items"
             [inputFilters]="inputFilters"
             [filtersData]='filtersData'
             [idProject]="idProject"
             [dataToFiltering]="dataViews"
             [dataViews]="dataViews"
             [dataSources]="dataSource.data"
+            (filtersDataEmited)="saveParams($event)"
           ></app-facet-filter>
         </mat-tab>
         <!-- <mat-tab [label]="undoRedoLabel">
+              [items]='filtersData['items']'
           <app-undo-redo></app-undo-redo>
         </mat-tab> -->
       </mat-tab-group>
