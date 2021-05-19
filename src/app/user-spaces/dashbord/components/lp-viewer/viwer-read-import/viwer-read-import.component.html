@@ -1,6 +1,6 @@
 <main class="w-100 p-0" fxLayout="column">
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="rounded" color="primary" (click)=openButton()>Open</button>
+    <button class="rounded" color="primary">Open</button>
     <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
       Export
       <mat-icon aria-hidden="false" aria-label="keyboard arrow down icon">
@@ -19,7 +19,7 @@
       <button mat-menu-item>Sous item 1</button>
       <button mat-menu-item>Soous item 2</button>
     </mat-menu>
-    <button class="rounded" color="primary">RefinePro dashbord</button>
+    <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
   <div class="row p-0">
     <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff">
@@ -31,19 +31,11 @@
       >
         <mat-tab label="Facet/Filter">
           <app-facet-filter
-            [formGroup]='formGroup'
-            [items]="items"
-            [inputFilters]="inputFilters"
-            [filtersData]='filtersData'
-            [idProject]="idProject"
-            [dataToFiltering]="dataViews"
             [dataViews]="dataViews"
             [dataSources]="dataSource.data"
-            (filtersDataEmited)="saveParams($event)"
           ></app-facet-filter>
         </mat-tab>
         <!-- <mat-tab [label]="undoRedoLabel">
-              [items]='filtersData['items']'
           <app-undo-redo></app-undo-redo>
         </mat-tab> -->
       </mat-tab-group>
@@ -51,8 +43,8 @@
 
     <aside class="col p-0" fxFlex="75%">
       <div class="px-5" style="background: #93cdff; height: 50px">
-        <!-- <h2 class="m-auto font-weight-bold">matching rows</h2>
-        <h4 class="m-auto font-weight-normal">(1000 total)</h4> -->
+        <h2 class="m-auto font-weight-bold">matching rows</h2>
+        <h4 class="m-auto font-weight-normal">(1000 total)</h4>
         <span fxFlex></span>
         <h4 class="m-auto font-weight-normal">Extensions</h4>
       </div>
@@ -262,7 +254,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
             <tr class="mat-row" *matNoDataRow>
-              <td class="text-center" [colSpan]="displayedColumns?.length">
+              <td class="text-center" [colSpan]="displayedColumns.length">
                 No data
               </td>
             </tr>

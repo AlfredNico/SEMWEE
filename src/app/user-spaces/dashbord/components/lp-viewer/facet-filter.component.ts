@@ -98,8 +98,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
       <p class="m-0">
         Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
       </p>
+<<<<<<< HEAD
       <p class="m-0">Not sure how to get started?<br>
     </p>
+=======
+>>>>>>> 01a24583a25cf2ed7547f4966434800772cfdcf4
   </div>
   </ng-template>
   `,
