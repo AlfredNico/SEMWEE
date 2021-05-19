@@ -31,6 +31,7 @@
       >
         <mat-tab label="Facet/Filter">
           <app-facet-filter
+            [inputFilters]="inputFilters"
             [filtersData]='filtersData'
             [idProject]="idProject"
             [dataToFiltering]="dataViews"

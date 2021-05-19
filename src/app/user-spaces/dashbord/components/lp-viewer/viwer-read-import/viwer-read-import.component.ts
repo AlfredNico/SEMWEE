@@ -35,7 +35,7 @@ export class ViwerReadImportComponent
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input('idProject') idProject = undefined;
-  @Input('inputFilter') inputFilter: any[] = [];
+  @Input('inputFilter') inputFilter: any = {};
   @Input('filtersData') filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
   @Input('dataAfterUploaded') dataAfterUploaded: DataSources = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
@@ -49,25 +49,24 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
-      const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
-      const values = this.dataAfterUploaded[1];
-      header.unshift('all');
-      editableColumns.unshift('all');
+      console.log(this.dataAfterUploaded)
+      // const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
+      // const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
+      // const values = this.dataAfterUploaded[1];
+      // header.unshift('all');
+      // editableColumns.unshift('all');
 
-      this.displayedColumns = header;
-      this.edidtableColumns = editableColumns;
-      this.dataSource.data = this.checkFilter(values);
-      this.dataViews = values;
+      // this.displayedColumns = header;
+      // this.edidtableColumns = editableColumns;
+      // this.dataSource.data = this.checkFilter(values);
+      // this.dataViews = values;
     }
     this.lpViewer.checkInfoSubject$.next();
-
   }
 
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
