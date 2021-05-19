@@ -1,10 +1,8 @@
 import { CommonService } from './../../../../shared/services/common.service';
-import { HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
-import value from '*.json';
 
 @Component({
   selector: 'app-facet-filter',
@@ -118,32 +116,37 @@ import value from '*.json';
       }
   `]
 })
-export class FacetFilterComponent implements OnInit {
+export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() public items: any[] = [];
+  public items: any[] = [];
+  @Input() public inputFilters: any = undefined;
   @Input() public dataViews: any[] = [];
   @Input() public dataSources: any[] = [];
   @Input() public dataToFiltering: any[] = [];
-  @Output() public itemsFilters = new EventEmitter<any[]>();
-  private facetFilter: any[] = [];
+  @Input() public idProject: any = undefined;
+  @Input() public filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
 
   changeText: boolean;
 
   public filters = this.fb.group([]);
-  // private indexes = 0;
-  // private queries: string[] = [];
-  // private searchQuery: any[][] = [];
   private facetQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
+
+
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
   ngOnInit(): void { }
 
-  ngAfterViewInit() {
-    this.lpViewer.checkInfoSubject$.subscribe(_ => {
-    });
+  ngOnChanges() {
+    if (this.filtersData !== undefined) {
+      this.items = this.filtersData['items'];
+      this.facetQueries = this.filtersData['facetQueries'];
+      this.searchQueries = this.filtersData['searchQueries'];
+    }
+  }
 
+  ngAfterViewInit() {
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
@@ -153,7 +156,13 @@ export class FacetFilterComponent implements OnInit {
           }
         });
 
-        this.lpViewer.addFacetFilter(JSON.stringify(this.items))
+        if (this.inputFilters !== undefined) {
+          console.log('daa=', this.inputFilters);
+          this.filters.patchValue({ ...this.inputFilters });
+        }
+
+        //save all parames into DB
+        this.saveParams();
       }
     });
 
@@ -162,6 +171,10 @@ export class FacetFilterComponent implements OnInit {
         map((query) => {
           let qqq = '', i1 = 0;
           let lastquery: boolean;
+          this.lpViewer.addFacetFilter({
+            idProject: this.idProject,
+            value: JSON.stringify(query)
+          });
 
           this.dataSources = this.dataViews.filter((value: any, i: number) => {
             if (Object.values(query).every((x) => x === null || x === '')) {
@@ -194,12 +207,13 @@ export class FacetFilterComponent implements OnInit {
             }
           });
 
-          this.lpViewer.addFilter(JSON.stringify(qqq))
+          // this.lpViewer.addFilter(JSON.stringify(qqq))
           this.lpViewer.dataSources$.next(this.dataSources);
 
         })
       )
       .subscribe();
+
   }
 
   public include(headName: any, contentName: string) {
@@ -218,6 +232,8 @@ export class FacetFilterComponent implements OnInit {
     this.items = this.items;
 
     this.checkIncludesExcludes();
+    //save all parames into DB
+    this.saveParams();
   }
 
   public exclude(headName: any, contentName: string) {
@@ -237,6 +253,9 @@ export class FacetFilterComponent implements OnInit {
 
     this.checkIncludesExcludes();
 
+    //save all parames into DB
+    this.saveParams();
+
   }
 
   public removeFromItem(item: any) {
@@ -250,7 +269,10 @@ export class FacetFilterComponent implements OnInit {
     this.items = [];
     this.facetQueries = [];
     this.searchQueries = [];
-    this.itemsFilters.emit(this.items);
+    // this.itemsFilters.emit(this.items);
+
+    //save all parames into DB
+    this.saveParams();
   }
 
   public resetAll() {
@@ -268,6 +290,15 @@ export class FacetFilterComponent implements OnInit {
 
     this.items = this.items;
     this.checkIncludesExcludes();
+
+    //save all parames into DB
+    if (this.filters.value) {
+      this.lpViewer.addFacetFilter({
+        idProject: this.idProject,
+        value: JSON.stringify(this.filters.value)
+      });
+    }
+    this.saveParams();
   }
 
   public minimize(item: any) {
@@ -310,14 +341,29 @@ export class FacetFilterComponent implements OnInit {
           });
           last = this.searchQueries.length > 0 ? queries && this.searchQueries[iii] : queries;
           this.facetQueries[iii] = last;
+
           return last;
         }
       })
     });
-    console.log(JSON.stringify(this.searchQueries));
 
-    this.lpViewer.addFilter(JSON.stringify(this.searchQueries)); //save states into DB
-    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+    //save all parames into DB
+    this.saveParams();
     this.dataToFiltering = this.dataSources;
+    this.lpViewer.dataSources$.next(this.dataSources);
+  }
+
+  private saveParams() {
+    this.filtersData = {
+      items: this.items,
+      facetQueries: this.facetQueries,
+      searchQueries: this.searchQueries
+    };
+
+    this.lpViewer.addFilter({
+      idProject: this.idProject,
+      value: JSON.stringify(this.filtersData)
+    });;
+    this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
   }
 }

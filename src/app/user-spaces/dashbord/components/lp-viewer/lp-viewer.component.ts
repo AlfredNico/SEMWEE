@@ -16,8 +16,11 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
   user: User = undefined;
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: any | undefined;
-  idProduct: any;
+  public idProject: any;
   selectedStepperIndex: number = 0;
+  public inputFilters: any[] = [];
+  public filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
+
 
   constructor(private auth: AuthService, private router: Router, private route: ActivatedRoute, private common: CommonService, private lpviewer: LpViwersService) {
     this.user = this.auth.currentUserSubject.value;
@@ -25,13 +28,11 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     this.route.queryParams
       .subscribe(params => {
         if (params) {
-          if (params['idProduct']) {
-            this.idProduct = params['idProduct'];
-            this.selectedStepperIndex = 1;
+          if (params['idProject']) {
+            this.idProject = params['idProject'];
           }
         }
       });
-
   }
 
   ngDoCheck(): void {
@@ -41,24 +42,37 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-    if (this.idProduct !== undefined) {
-      this.stepper.steps.forEach((step, index) => {
-        if (index < 1) {
-          step.completed = true;
-          step.editable = true;
-        } else {
-          step.completed = false;
-          step.editable = true;
-        }
-      });
+    if (this.idProject !== undefined) {
 
-      this.lpviewer.getSavedProjects(this.idProduct).subscribe(res => {
-        if (res !== undefined) {
+      this.lpviewer.getSavedProjects(this.idProject).subscribe((res: Array<any>) => {
+        if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
+          if (res[3].length > 0) {
+            this.filtersData = JSON.parse(res[3][0]['value']);
+          } if (res[2].length > 0) {
+            this.inputFilters = JSON.parse(res[2][0]['value']);
+          };
+          // this.lpviewer.filtersData$.next({
+          //   inputFilter: this.inputFilter,
+          //   filtersData: this.filtersData
+          // });
+
+          this.stepper.steps.forEach((step, index) => {
+
+            if (index < 1) {
+              step.completed = true;
+              step.editable = true;
+            } else {
+              step.completed = false;
+              step.editable = true;
+            }
+          });
+          this.selectedStepperIndex = 1;
           this.dataAfterUploaded = res;
         }
+        else this.router.navigateByUrl('user-space/lp-viewer');
       });
       this.router.navigate(['user-space/lp-viewer'],
-        { queryParams: { idProduct: this.idProduct } });
+        { queryParams: { idProject: this.idProject } });
     }
   }
 
@@ -67,7 +81,7 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
 
     this.dataAfterUploaded = value;
     this.router.navigate(['user-space/lp-viewer'], {
-      queryParams: { idProduct: value[0][0]['_id'] }
+      queryParams: { idProject: value[0][0]['_id'] }
     });
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
