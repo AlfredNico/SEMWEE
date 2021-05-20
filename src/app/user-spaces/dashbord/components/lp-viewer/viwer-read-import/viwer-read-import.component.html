@@ -29,7 +29,7 @@
         [backgroundColor]="'#f0f1f6'"
         class="mat-group"
       >
-        <mat-tab label="Facet/Filter">
+        <mat-tab label="Facet / Filter">
           <app-facet-filter
             [filtersData]='filtersData'
             [idProject]="idProject"
@@ -38,9 +38,10 @@
             [dataSources]="dataSource.data"
           ></app-facet-filter>
         </mat-tab>
-        <!-- <mat-tab [label]="undoRedoLabel">
-          <app-undo-redo></app-undo-redo>
-        </mat-tab> -->
+        <mat-tab label="Undo / Redo">
+            <!-- <app-undo-redo 
+            ></app-undo-redo> -->
+        </mat-tab>
       </mat-tab-group>
     </aside>
 
@@ -168,9 +169,11 @@
                   <button mat-menu-item (click)="textFilter(column)">
                     Text filter
                   </button>
-                  <button mat-menu-item [matMenuTriggerFor]="sousItem2">
-                    Item 2
+                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <button mat-menu-item [matMenuTriggerFor]="editCells">
+                    Edit cells
                   </button>
+                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
                   <button mat-menu-item (click)="openEditColumn(column)">
                     Update column
                   </button>
@@ -187,11 +190,19 @@
                   <button mat-menu-item>Custum Numeric facet</button>
                   <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
-                <mat-menu #sousItem2="matMenu">
-                  <button mat-menu-item>Sous item 1</button>
-                  <button mat-menu-item>Soous item 2</button>
+                <mat-menu #editCells="matMenu">
+                  <button mat-menu-item>Transform...</button>
+                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">Common transforms</button>
+                  <button mat-menu-item>Fill down</button>
+                  <button mat-menu-item>Blank down</button>
+                  <button mat-menu-item>Split mutli-valued cells...</button>
+                  <button mat-menu-item>Join multi-valued cells</button>
+                  <button mat-menu-item>Cluster and edit...</button>
+                  <button mat-menu-item>Replace</button>
                 </mat-menu>
-
+                <mat-menu #commonTransforms="matMenu">
+                    <button mat-menu-item (click)="transformNumber(column)">To number</button>
+                </mat-menu>
                 <td
                   mat-cell
                   *matCellDef="

@@ -57,6 +57,9 @@ export class LPViewerProjectsComponent implements OnInit {
       .pipe(
         map((result) => {
           if (result === true) {
+            this.lPViewerProjectsService.refresh$.next(true);
+            this.triggerServices.trigrer$.next(true);
+
             this.lPViewerProjectsService
               .deleteProjects(item._id)
               .subscribe((result) => {
