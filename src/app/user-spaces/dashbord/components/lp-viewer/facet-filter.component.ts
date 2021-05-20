@@ -256,10 +256,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
       }
     });
 
-    // this.lpViewer.addFacetFilter({
-    //   idProject: this.idProject,
-    //   value: JSON.stringify(query)
-    // }).subscribe();
     this.saveQuery(query);
 
     this.filterQueries(query);
@@ -273,12 +269,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.facetQueries = [];
     this.searchQueries = [];
     // this.itemsFilters.emit(this.items);
-
-    //save all parames into DB
-    // this.lpViewer.addFacetFilter({
-    //   idProject: this.idProject,
-    //   value: JSON.stringify(this.formGroup.value)
-    // }).subscribe();
 
     this.saveQuery(this.formGroup.value);
 
@@ -308,12 +298,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.items = this.items;
     this.checkIncludesExcludes();
-
-    //save all parames into DB
-    // this.lpViewer.addFacetFilter({
-    //   idProject: this.idProject,
-    //   value: JSON.stringify(this.formGroup.value)
-    // }).subscribe();
 
     this.saveQuery(this.formGroup.value);
 
