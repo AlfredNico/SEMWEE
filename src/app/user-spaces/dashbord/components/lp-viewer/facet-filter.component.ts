@@ -1,10 +1,10 @@
 import { CommonService } from './../../../../shared/services/common.service';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
 import { FacetFilter } from '../../interfaces/facet-filter';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-facet-filter',
@@ -98,11 +98,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
       <p class="m-0">
         Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
       </p>
-<<<<<<< HEAD
-      <p class="m-0">Not sure how to get started?<br>
-    </p>
-=======
->>>>>>> 01a24583a25cf2ed7547f4966434800772cfdcf4
   </div>
   </ng-template>
   `,
@@ -164,14 +159,22 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
   ngAfterViewInit() {
     this.lpViewer.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
-        this.items.push(res);
-        this.items.map((value: any) => {
-          console.log('log')
-          if (value['type'] === 'filter') {
-            this.formGroup.addControl(value['head'], new FormControl(''));
-          }
-        });
-
+        if (Array.isArray(res) === true) {
+          this.items = res;
+          this.items.map((value: any) => {
+            console.log('val', this.inputFilters)
+            if (value['type'] === 'filter') {
+              this.formGroup.addControl(value['head'], new FormControl(''));
+            }
+          });
+        } else {
+          this.items.push(res);
+          this.items.map((value: any) => {
+            if (value['type'] === 'filter') {
+              this.formGroup.addControl(value['head'], new FormControl(''));
+            }
+          });
+        }
         //save all parames into DB
         this.saveParams();
       }

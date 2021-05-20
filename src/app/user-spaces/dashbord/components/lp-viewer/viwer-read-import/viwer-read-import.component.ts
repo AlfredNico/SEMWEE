@@ -67,7 +67,7 @@ export class ViwerReadImportComponent
           console.log('res=', this.dataAfterUploaded[2]);
           this.formGroup = this.fb.group(this.inputFilters);
           this.items = this.filtersData['items'];
-          console.log('input', this.inputFilters);
+          this.lpViewer.itemsObservables$.next(this.filtersData['items']);
         }
 
       } else {
