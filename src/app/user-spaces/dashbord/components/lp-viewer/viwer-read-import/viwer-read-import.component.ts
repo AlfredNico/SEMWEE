@@ -64,10 +64,11 @@ export class ViwerReadImportComponent
         this.dataViews = values;
 
         if (this.filtersData.items !== undefined) {
-          console.log('res=', this.dataAfterUploaded[2]);
-          this.formGroup = this.fb.group(this.inputFilters);
+          console.log('res=', JSON.parse(this.dataAfterUploaded[2][0]['value']));
+          this.formGroup = this.fb.group(JSON.parse(this.dataAfterUploaded[2][0]['value']));
           this.items = this.filtersData['items'];
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);
+          // console.log('res=', this.dataAfterUploaded[3])
         }
 
       } else {
@@ -220,7 +221,7 @@ export class ViwerReadImportComponent
     if (this.filtersData !== undefined) {
       const length1 = this.filtersData['facetQueries']?.length;
       const length2 = this.filtersData['searchQueries']?.length;
-      console.log(length1, '//', this.filtersData['searchQueries']);
+      console.log(length1, '//', length2);
 
       const dataFilter = val.filter((x: any, i: number) => {
         switch (true) {
@@ -237,7 +238,7 @@ export class ViwerReadImportComponent
             return true;
         }
       });
-
+      console.log('filter=', dataFilter);
       return dataFilter;
     } else return val;
   }
@@ -246,13 +247,18 @@ export class ViwerReadImportComponent
     console.log('open button');
   }
 
-  public saveParams(event: FacetFilter) {
-    const value = {
-      idProject: this.idProject,
-      value: JSON.stringify(event)
-    }
+  // public saveParams(event: FacetFilter) {
+  //   const value = {
+  //     idProject: this.idProject,
+  //     value: JSON.stringify(event)
+  //   }
+  //   this.lpViewer.filtersData$.subscribe((res: boolean) => {
+  //     if (res === true) {
+  //       console.log('OK');
+  //       this.lpViewer.addFilter(value).subscribe();
+  //     }
+  //   })
 
-    this.lpViewer.addFilter(value);
-    //   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-  }
+  //   //   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+  // }
 }

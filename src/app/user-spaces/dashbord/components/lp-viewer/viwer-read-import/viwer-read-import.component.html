@@ -30,7 +30,15 @@
         class="mat-group"
       >
         <mat-tab label="Facet/Filter">
+          <!-- <app-facet-filter
+            [dataViews]="dataViews"
+            [dataSources]="dataSource.data"
+          ></app-facet-filter> -->
           <app-facet-filter
+            [inputFilters]="inputFilters"
+            [filtersData]='filtersData'
+            [idProject]="idProject"
+            [dataToFiltering]="dataViews"
             [dataViews]="dataViews"
             [dataSources]="dataSource.data"
           ></app-facet-filter>
