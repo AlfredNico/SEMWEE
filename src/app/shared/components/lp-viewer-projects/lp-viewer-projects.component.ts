@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
@@ -15,20 +15,21 @@ import { map } from 'rxjs/operators';
   templateUrl: './lp-viewer-projects.component.html',
   styleUrls: ['./lp-viewer-projects.component.scss'],
 })
-export class LPViewerProjectsComponent implements OnInit {
+export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
   @Input() public allProjects$: Observable<LPViewerProjects[]> = new Observable<
     LPViewerProjects[]
   >(undefined);
   constructor(
     private lPViewerProjectsService: LPViewerProjectsService,
     public dialog: MatDialog,
-    private common: CommonService,
     private notifs: NotificationService,
     public triggerServices: TriggerService,
     private router: Router
   ) { }
 
   ngOnInit(): void { }
+
+  ngAfterViewInit(): void { }
 
   onDeteils(item: LPViewerProjects) {
     // this.dialog

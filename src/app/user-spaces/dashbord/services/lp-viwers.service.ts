@@ -14,7 +14,7 @@ export class LpViwersService {
   public dataSources$ = new BehaviorSubject<any>([]);
 
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
-  public filtersData$ = new BehaviorSubject<any>(undefined);
+  public data$ = new BehaviorSubject<any>(undefined);
   public isLoading$ = new BehaviorSubject<boolean>(true);
   public checkInfoSubject$ = new Subject();
 
