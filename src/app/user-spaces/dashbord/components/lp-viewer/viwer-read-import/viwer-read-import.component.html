@@ -19,7 +19,7 @@
       <button mat-menu-item>Sous item 1</button>
       <button mat-menu-item>Soous item 2</button>
     </mat-menu>
-    <button class="rounded" color="primary">RefinePro dashbord</button>
+    <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
   <div class="row p-0">
     <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff">
@@ -29,8 +29,13 @@
         [backgroundColor]="'#f0f1f6'"
         class="mat-group"
       >
-        <mat-tab label="Facet / Filter">
+        <mat-tab label="Facet/Filter">
+          <!-- <app-facet-filter
+            [dataViews]="dataViews"
+            [dataSources]="dataSource.data"
+          ></app-facet-filter> -->
           <app-facet-filter
+            [inputFilters]="inputFilters"
             [filtersData]='filtersData'
             [idProject]="idProject"
             [dataToFiltering]="dataViews"
@@ -47,8 +52,8 @@
 
     <aside class="col p-0" fxFlex="75%">
       <div class="px-5" style="background: #93cdff; height: 50px">
-        <!-- <h2 class="m-auto font-weight-bold">matching rows</h2>
-        <h4 class="m-auto font-weight-normal">(1000 total)</h4> -->
+        <h2 class="m-auto font-weight-bold">matching rows</h2>
+        <h4 class="m-auto font-weight-normal">(1000 total)</h4>
         <span fxFlex></span>
         <h4 class="m-auto font-weight-normal">Extensions</h4>
       </div>
@@ -201,7 +206,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                    <button mat-menu-item (click)="transformNumber(column)">To number</button>
+                    <!-- <button mat-menu-item (click)="transformNumber(column)">To number</button> -->
                 </mat-menu>
                 <td
                   mat-cell
@@ -268,7 +273,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
             <tr class="mat-row" *matNoDataRow>
-              <td class="text-center" [colSpan]="displayedColumns?.length">
+              <td class="text-center" [colSpan]="displayedColumns.length">
                 No data
               </td>
             </tr>

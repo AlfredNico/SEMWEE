@@ -12,7 +12,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 
 @Component({
   selector: 'app-read-view-file',
@@ -31,7 +30,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   public tabIndex = 0;
 
   public undoRedoLabel = 'Undo/Redo 0/0';
-  @Input('dataAfterUploaded') dataAfterUploaded: DataSources = undefined;
+  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
 
   constructor(public dialog: MatDialog, private lpEditor: LpEditorService) { }
 

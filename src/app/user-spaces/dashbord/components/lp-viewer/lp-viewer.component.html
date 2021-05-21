@@ -6,7 +6,7 @@
   <mat-step completed="false" editable="false" label="Fill out your address">
     <app-viwer-import
       [user]="user"
-      (importFile)="nextReadFile($event)"
+      (dataImported)="nextReadFile($event)"
     ></app-viwer-import>
   </mat-step>
   <mat-step completed="false" editable="false">

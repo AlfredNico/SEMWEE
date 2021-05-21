@@ -5,7 +5,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
-import { DataSources } from '../../interfaces/data-sources';
 
 @Component({
   selector: 'app-lp-editor',
@@ -15,7 +14,7 @@ import { DataSources } from '../../interfaces/data-sources';
 export class LpEditorComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
-  public dataAfterUploaded: DataSources | undefined;
+  public dataAfterUploaded: any | undefined;
 
 
   constructor() { }

@@ -1,4 +1,3 @@
-import { header } from './../../../interfaces/data-sources';
 import { UpdatesHeaderComponent } from './updates-header.component';
 import { HeaderOptionsComponent } from './header-options.component';
 import { LpViwersService } from './../../../services/lp-viwers.service';
@@ -14,12 +13,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { CommonService } from '@app/shared/services/common.service';
-import { DataSources } from '@app/user-spaces/dashbord/interfaces/data-sources';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
+import { FacetFilter } from '@app/user-spaces/dashbord/interfaces/facet-filter';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -31,43 +30,60 @@ export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
-  dataSource = new MatTableDataSource<DataSources>([]);
+  dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input('idProject') idProject = undefined;
-  @Input('inputFilter') inputFilter: any[] = [];
   @Input('filtersData') filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
-  @Input('dataAfterUploaded') dataAfterUploaded: DataSources = undefined;
+  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
 
   public tabIndex = 0;
 
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
+  // public formGroup = new FormGroup({});
+  public formGroup = this.fb.group({});
 
-  constructor(public dialog: MatDialog, private commonService: CommonService, private lpViewer: LpViwersService, public senitizer: DomSanitizer) { }
+  public items: any[] = [];
+
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private lpViewer: LpViwersService, public senitizer: DomSanitizer) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
-      const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
-      const values = this.dataAfterUploaded[1];
-      header.unshift('all');
-      editableColumns.unshift('all');
+      if ((this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined) {
+        const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
+        const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
+        const values = this.dataAfterUploaded[1];
+        header.unshift('all');
+        editableColumns.unshift('all');
 
-      this.displayedColumns = header;
-      this.edidtableColumns = editableColumns;
-      this.dataSource.data = this.checkFilter(values);
-      this.dataViews = values;
+        this.displayedColumns = header;
+        this.edidtableColumns = editableColumns;
+        this.dataSource.data = this.checkFilter(values);
+        this.dataViews = values;
+
+        if (this.filtersData.items !== undefined) {
+          console.log('res=', JSON.parse(this.dataAfterUploaded[2][0]['value']));
+          this.formGroup = this.fb.group(JSON.parse(this.dataAfterUploaded[2][0]['value']));
+          this.items = this.filtersData['items'];
+          this.lpViewer.itemsObservables$.next(this.filtersData['items']);
+          // console.log('res=', this.dataAfterUploaded[3])
+        }
+
+      } else {
+        this.displayedColumns = this.dataAfterUploaded['header'];
+        this.edidtableColumns = this.displayedColumns;
+        this.dataSource.data = this.dataAfterUploaded['content'];
+        this.dataViews = this.dataAfterUploaded['content'];
+      }
     }
     this.lpViewer.checkInfoSubject$.next();
-
   }
 
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
@@ -205,6 +221,7 @@ export class ViwerReadImportComponent
     if (this.filtersData !== undefined) {
       const length1 = this.filtersData['facetQueries']?.length;
       const length2 = this.filtersData['searchQueries']?.length;
+      console.log(length1, '//', length2);
 
       const dataFilter = val.filter((x: any, i: number) => {
         switch (true) {
@@ -217,11 +234,31 @@ export class ViwerReadImportComponent
           case (length1 > 0 && length2 === 0):
             return this.filtersData['facetQueries'][i];
 
-          // default: return false;
+          case (length1 === 0 && length2 === 0):
+            return true;
         }
       });
-
+      console.log('filter=', dataFilter);
       return dataFilter;
     } else return val;
   }
+
+  public openButton() {
+    console.log('open button');
+  }
+
+  // public saveParams(event: FacetFilter) {
+  //   const value = {
+  //     idProject: this.idProject,
+  //     value: JSON.stringify(event)
+  //   }
+  //   this.lpViewer.filtersData$.subscribe((res: boolean) => {
+  //     if (res === true) {
+  //       console.log('OK');
+  //       this.lpViewer.addFilter(value).subscribe();
+  //     }
+  //   })
+
+  //   //   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
+  // }
 }

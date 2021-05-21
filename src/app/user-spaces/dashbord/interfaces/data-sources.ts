@@ -1,10 +1,9 @@
-export interface DataSources {
-  columns: string[],
-  editableColumns: string[],
-  data: any[];
+export interface dataImported {
+  header: string[],
+  content: any[],
 }
 
-export interface header {
+export interface checkDatasources {
   header: string,
   editableHead: string
 }

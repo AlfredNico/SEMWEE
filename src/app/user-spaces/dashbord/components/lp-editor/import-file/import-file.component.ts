@@ -54,7 +54,7 @@ export class ImportFileComponent implements OnInit {
   onSubmit() {
     if (this.file) {
       this.subscription$ = this.lpEditor
-        .upload(this.file).subscribe(res => {
+        .uploadNewContent(this.file).subscribe(res => {
           if (res) {
             this.importFile.emit(res);
           }

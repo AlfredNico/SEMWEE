@@ -33,4 +33,29 @@ export class LpEditorService {
         })
       )
   }
+
+  uploadNewContent(file: File): Observable<any> {
+    const data = new FormData()
+    data.append('file', file)
+    return this.http.post(`${environment.baseUrl}/validator/new-content`, data)
+      .pipe(
+        map(result => {
+          const header = Object.keys(result[0]);
+          // header.unshift('star', 'flag', 'number');
+          header.unshift('all');
+          return {
+            columns: header,
+            data: result
+          }
+        })
+      )
+  }
+
+  // public getSavedProjects(idProject): Observable<LPViewerProjects[]> {
+  //   return this.http.get<any>(
+  //     `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
+  //   );
+  // }
+
+
 }

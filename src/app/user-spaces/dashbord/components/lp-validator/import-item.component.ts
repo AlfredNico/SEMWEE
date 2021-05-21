@@ -190,10 +190,11 @@ export class ImportItemComponent implements OnInit, OnDestroy {
       });
 
       // Read CSV file
-      // const fileToRead = file;
-      // const fileReader = new FileReader();
-      // fileReader.onload = this.onFileLoad;
-      // fileReader.readAsText(fileToRead, 'UTF-8');
+      const fileToRead = file;
+      const fileReader = new FileReader();
+      fileReader.onload = this.onFileLoad;
+      fileReader.readAsText(fileToRead, 'UTF-8');
+      console.log(this.parsedCsv);
     }
   }
 
@@ -263,6 +264,6 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         colNo++;
       });
     });
-    console.log('output', csv);
+    // console.log('output', csv);
   }
 }
