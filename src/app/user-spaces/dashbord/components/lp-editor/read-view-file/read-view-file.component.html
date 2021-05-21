@@ -66,7 +66,6 @@
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
                   <button mat-menu-item (click)="textFacet(column)">Text facet</button>
-                  <button mat-menu-item>Numeric facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
@@ -121,7 +120,8 @@
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
-                  <button mat-menu-item>Custum text facet</button>
+                  <!-- Edit Cell -->
+                  <button mat-menu-item [matMenuTriggerFor]="editCell">Edit Cell</button>
                   <button mat-menu-item>Custum Numeric facet</button>
                   <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
@@ -129,6 +129,17 @@
                   <button mat-menu-item>Sous item 1</button>
                   <button mat-menu-item>Soous item 2</button>
                 </mat-menu>
+                <!-- Edit Cell start -->
+                <mat-menu #editCell="matMenu">
+                  <button mat-menu-item (click)="convertToTitlecase(index)">To titleCase</button>
+                  <button mat-menu-item (click)="convertToUppercase(index)">To uppercase</button>
+                  <button mat-menu-item (click)="convertToLowercase(index)">To lowercase</button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item (click)="convertToNumber(index)">To Number</button>
+                  <button mat-menu-item (click)="convertToDate(index)">To date</button>
+                  <button mat-menu-item (click)="convertToText(index)">To text</button>
+                </mat-menu>
+                <!-- Edit Cell end -->
 
                 <td mat-cell *matCellDef="let element; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" #td class="th-content">
                   <ng-container

@@ -36,6 +36,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
+      console.log('val=', this.dataAfterUploaded.data);
       this.displayedColumns = this.dataAfterUploaded.columns;
       this.dataSource.data = this.dataAfterUploaded.data;
     }
@@ -127,6 +128,45 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
       type: 'filter',
       isMinimize: false,
       head: column,
+    });
+  }
+
+  /* Convert To Title case */
+  public convertToTitlecase(indexCell: number) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[indexCell])
+    });
+  }
+
+  /* Convert To Uppercase */
+  public convertToUppercase(indexCell: number) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[indexCell])
+    });
+  }
+
+  /* Convert To Lowercase */
+  public convertToLowercase(indexCell: number) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[indexCell])
+    });
+  }
+  /* Convert To Number */
+  public convertToNumber(indexCell: number) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[indexCell])
+    });
+  }
+  /* Convert To Date */
+  public convertToDate(indexCell: number) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[indexCell])
+    });
+  }
+  /* Convert To Text */
+  public convertToText(indexCell: number) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[indexCell])
     });
   }
 }
