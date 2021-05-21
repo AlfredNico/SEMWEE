@@ -129,6 +129,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
       head: column,
     });
   }
+
 }
 
 

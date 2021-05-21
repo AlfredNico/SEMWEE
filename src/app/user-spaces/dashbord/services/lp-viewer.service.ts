@@ -23,15 +23,16 @@ export class LPViewerProjectsService {
   isProjects = false;
 
   constructor(
-    private http: HttpClient,
-    private auth: AuthService,
-    private cookieService: CookieService
+    private http: HttpClient
   ) { }
 
   public getAllProjects(_idUsers): Observable<LPViewerProjects[]> {
     return this.http.get<LPViewerProjects[]>(
       `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
-    );
+    ).pipe(
+      map(projects => {
+        return projects;
+      }))
   }
 
   public deleteProjects(project_id: string) {

@@ -64,11 +64,9 @@ export class ViwerReadImportComponent
         this.dataViews = values;
 
         if (this.filtersData.items !== undefined) {
-          console.log('res=', JSON.parse(this.dataAfterUploaded[2][0]['value']));
           this.formGroup = this.fb.group(JSON.parse(this.dataAfterUploaded[2][0]['value']));
           this.items = this.filtersData['items'];
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);
-          // console.log('res=', this.dataAfterUploaded[3])
         }
 
       } else {
@@ -180,11 +178,8 @@ export class ViwerReadImportComponent
     const res = value.match(
       /(http(s)?:\/\/.)?([A-z]\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
     );
-    console.log(res);
 
-    if (res !== null) {
-      return true;
-    }
+    if (res !== null) return true;
     return false;
   }
 
@@ -211,8 +206,6 @@ export class ViwerReadImportComponent
       });
       tabnewObject.push(object);
     });
-    // console.log(tabnewObject);
-    // console.log(this.displayedColumns);
     csvOptions.headers = this.displayedColumns; // ity lay ao @ front actuellement
     new AngularCsv(tabnewObject, 'HolidayList', csvOptions);
   }
@@ -221,7 +214,6 @@ export class ViwerReadImportComponent
     if (this.filtersData !== undefined) {
       const length1 = this.filtersData['facetQueries']?.length;
       const length2 = this.filtersData['searchQueries']?.length;
-      console.log(length1, '//', length2);
 
       const dataFilter = val.filter((x: any, i: number) => {
         switch (true) {
@@ -238,7 +230,6 @@ export class ViwerReadImportComponent
             return true;
         }
       });
-      console.log('filter=', dataFilter);
       return dataFilter;
     } else return val;
   }
@@ -246,19 +237,4 @@ export class ViwerReadImportComponent
   public openButton() {
     console.log('open button');
   }
-
-  // public saveParams(event: FacetFilter) {
-  //   const value = {
-  //     idProject: this.idProject,
-  //     value: JSON.stringify(event)
-  //   }
-  //   this.lpViewer.filtersData$.subscribe((res: boolean) => {
-  //     if (res === true) {
-  //       console.log('OK');
-  //       this.lpViewer.addFilter(value).subscribe();
-  //     }
-  //   })
-
-  //   //   this.lpViewer.dataSources$.next(this.dataSources); //Updates dataSources into viewes
-  // }
 }

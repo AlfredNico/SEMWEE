@@ -1,27 +1,35 @@
 <mat-card>
-    <mat-card-header>
-        <div class="row" style="width: 100%;">
-            <div class="col-md-9">
-                <div class="card-header border-0">
-                    <h3 class="card-title align-items-start" fxLayout="column">
-                        <span class="card-label font-weight-bolder text-dark">LPViewer Projects
-                          Overview</span>
-                        <span class="text-muted mt-0 font-weight-bold font-size-sm">{{ (allProjects$ | async)?.length }}
-          projects</span>
-                    </h3>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div style="float: right;
-                padding-right: 30px;">
-                    <a routerLinkActive="active" [routerLink]="['/user-space/lp-viewer']" style="color: white!important;"><button mat-raised-button color="primary">
-                    <span class="menu-text">Import</span></button>
-            </a>
-                </div>
-            </div>
+  <mat-card-header>
+    <div class="row" style="width: 100%">
+      <div class="col-md-9">
+        <div class="card-header border-0">
+          <h3 class="card-title align-items-start" fxLayout="column">
+            <span class="card-label font-weight-bolder text-dark"
+              >LPViewer Projects Overview</span
+            >
+            <span class="text-muted mt-0 font-weight-bold font-size-sm"
+              >{{ (allProjects$ | async)?.length }} projects</span
+            >
+          </h3>
         </div>
-    </mat-card-header>
-    <mat-card-content class="mx-5">
-        <app-lp-viewer-projects [allProjects$]="allProjects$"></app-lp-viewer-projects>
-    </mat-card-content>
+      </div>
+      <div class="col-md-3">
+        <div style="float: right; padding-right: 30px">
+          <a
+            routerLinkActive="active"
+            [routerLink]="['/user-space/lp-viewer']"
+            style="color: white !important"
+            ><button mat-raised-button color="primary">
+              <span class="menu-text">Import</span>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="mx-5">
+    <app-lp-viewer-projects
+      [allProjects$]="allProjects$"
+    ></app-lp-viewer-projects>
+  </mat-card-content>
 </mat-card>
