@@ -1,17 +1,13 @@
 import { CommonService } from './../../../../../shared/services/common.service';
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, EMPTY, Observable, Subscription } from 'rxjs';
-import { Upload } from '@app/user-spaces/dashbord/interfaces/upload';
 import { User } from '@app/classes/users';
-import { Users } from '@app/models/users';
 
 @Component({
   selector: 'app-viwer-import',
   template: `
     <div [formGroup]="form" class="p-5" fxLayout="column" fxLayoutAlign="space-around start">
-
       <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="20px">
         <mat-label for="file" class="py-2">
           Locate one or more files on your computer to upload:
