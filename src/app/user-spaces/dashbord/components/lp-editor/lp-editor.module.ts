@@ -20,7 +20,7 @@ import { OpenHeaderOptionsComponent } from './read-view-file/open-header-options
     SharedModule,
     LandingPageModule,
     SharedDirectivesModule,
-    RouterModule.forChild([{ path: '', component: LpEditorComponent }]),
+    RouterModule.forChild([{ path: '', component: PreviewFileComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],
