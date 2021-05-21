@@ -11,8 +11,12 @@
         <!--begin::Text-->
         <a (click)="navigateURL(project._id)" class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content">
             <div class="text-dark mb-1 font-size-lg">{{ project.nameProject }}</div>
+            <span class="text-muted">Last updated : {{ project?.updated_at | date: 'MMM d, y, h:mm a' }}</span>
         </a>
         <!--end::Text-->
+        <div class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content text-left">
+          <div class="text-dark mb-1 font-size-lg">File size : {{ project.projectsize }} octets</div>
+        </div>
         <!--begin::Dropdown-->
         <div class="dropdown dropdown-inline ml-2" data-placement="left">
             <!-- <a (click)="onDeteils(project)" class="btn btn-icon btn-light btn-hover-primary btn-sm">

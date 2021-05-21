@@ -5,6 +5,7 @@ import { CapitalizeFirstPipePipe } from '@app/user-spaces/dashbord/pipe/capitali
 import { RemoveUnderscorePipe } from '@app/user-spaces/dashbord/pipe/remove-underscore.pipe';
 import { TypeofPipe } from '@app/user-spaces/dashbord/pipe/typeof.pipe';
 import { ChabgeColumnNamePipe } from '@app/user-spaces/dashbord/pipe/chabge-column-name.pipe';
+import { FileSizePipe } from '@app/user-spaces/dashbord/pipe/file-size.pipe';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { ChabgeColumnNamePipe } from '@app/user-spaces/dashbord/pipe/chabge-colu
     CapitalizeFirstPipePipe,
     RemoveUnderscorePipe,
     TypeofPipe,
+    FileSizePipe,
     StylePaginatorDirective,
   ],
   exports: [
@@ -21,6 +23,7 @@ import { ChabgeColumnNamePipe } from '@app/user-spaces/dashbord/pipe/chabge-colu
     CapitalizeFirstPipePipe,
     RemoveUnderscorePipe,
     TypeofPipe,
+    FileSizePipe,
     StylePaginatorDirective,
   ],
 })
