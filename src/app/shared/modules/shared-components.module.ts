@@ -3,11 +3,14 @@ import { LandingPageModule } from './landing-page.module';
 import { SharedDirectivesModule } from './shared-directives.module';
 import { SharedModule } from './shared.module';
 import { CommonModule } from '@angular/common';
+import { EditCellComponent } from '../components/edit-cell/edit-cell.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    EditCellComponent
+  ],
   imports: [
     SharedModule,
     LandingPageModule,
