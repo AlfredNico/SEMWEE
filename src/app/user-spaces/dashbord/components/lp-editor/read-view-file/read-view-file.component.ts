@@ -36,7 +36,6 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      console.log('val=', this.dataAfterUploaded.data);
       this.displayedColumns = this.dataAfterUploaded.columns;
       this.dataSource.data = this.dataAfterUploaded.data;
     }
