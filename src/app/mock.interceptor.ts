@@ -13,6 +13,7 @@ import { of } from 'rxjs/internal/observable/of';
 import * as INFERLIST from 'src/app/shared/fake-data/inferlist.json';
 import * as LPVIEWER from 'src/app/shared/fake-data/Lp-viewer.json';
 import * as PROJECT from 'src/app/shared/fake-data/project.json';
+import * as NEWCONTENT from 'src/app/shared/fake-data/NewContent.json';
 
 
 //  | 'PREMIUM' | 'ADMIN' | 'USER';
@@ -154,6 +155,14 @@ export class MockInterceptor implements HttpInterceptor {
           new HttpResponse({
             status: 200,
             body: (LPVIEWER as any)['default'],
+          })
+        );
+
+      case url.includes('validator/new-content'):
+        return of(
+          new HttpResponse({
+            status: 200,
+            body: (NEWCONTENT as any)['default'],
           })
         );
 
