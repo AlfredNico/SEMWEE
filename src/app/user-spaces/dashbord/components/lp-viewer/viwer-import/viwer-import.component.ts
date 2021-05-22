@@ -54,6 +54,9 @@ export class ViwerImportComponent implements OnInit {
   }
 
   convertFile(event: any) {
+    this.common.showSpinner('table');
+    this.common.isLoading$.next(true);
+
     const file = event.target.files[0];
     this.file = event.target.files[0];
 
@@ -81,6 +84,7 @@ export class ViwerImportComponent implements OnInit {
       this.data.content = content;
       this.onSubmit();
 
+      this.common.isLoading$.next(false);
     }).catch(error => console.log(error))
   }
 

@@ -1,4 +1,35 @@
-<div class="textarea"  [style.height.px]='height' contenteditable="true" >
+<!-- <div class="textarea"  [style.height.px]='height' contenteditable="true" >
     this is a text area
     <div class="grabber"></div>
-  </div>
+  </div> -->
+
+<div
+  id="chat"
+  [style.top.px]="y"
+  [style.left.px]="x"
+  [style.width.px]="width"
+  [style.height.px]="height"
+  (mousedown)="onWindowPress($event)"
+  (mousemove)="onWindowDrag($event)"
+>
+  <div
+    (mousedown)="onCornerClick($event, topLeftResize)"
+    id="chat-top-left-resize"
+    class="chat-corner-resize"
+  ></div>
+  <div
+    (mousedown)="onCornerClick($event, topRightResize)"
+    id="chat-top-right-resize"
+    class="chat-corner-resize"
+  ></div>
+  <div
+    (mousedown)="onCornerClick($event, bottomLeftResize)"
+    id="chat-bottom-left-resize"
+    class="chat-corner-resize"
+  ></div>
+  <div
+    (mousedown)="onCornerClick($event, bottomRightResize)"
+    id="chat-bottom-right-resize"
+    class="chat-corner-resize"
+  ></div>
+</div>

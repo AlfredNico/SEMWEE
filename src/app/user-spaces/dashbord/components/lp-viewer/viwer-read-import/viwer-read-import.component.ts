@@ -60,10 +60,10 @@ export class ViwerReadImportComponent
 
         this.displayedColumns = header;
         this.edidtableColumns = editableColumns;
-        this.dataSource.data = this.checkFilter(values);
-        this.dataViews = values;
+        // this.dataSource.data = this.checkFilter(values);
+        this.dataSource.data = this.dataViews = values;
 
-        if (this.filtersData.items !== undefined) {
+        if (this.filtersData?.items !== undefined) {
           this.formGroup = this.fb.group(JSON.parse(this.dataAfterUploaded[2][0]['value']));
           this.items = this.filtersData['items'];
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);

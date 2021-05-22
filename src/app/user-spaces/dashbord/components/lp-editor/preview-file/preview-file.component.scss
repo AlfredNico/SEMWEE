@@ -1,23 +1,38 @@
-.textarea {
-  min-height: 150px;
-  border:1px solid #ddd;
-  padding:15px;
-  position:relative;
-}
+// .textarea {
+//   min-height: 150px;
+//   border:1px solid #ddd;
+//   padding:15px;
+//   position:relative;
+// }
 
-.textarea .grabber{
-  content: '';
-  position: absolute;
-  bottom: 0;
-  margin-left: -15px;
-  cursor: s-resize;
-  height: 9px;
-  width: 100%;
-  border-top: 1px solid #f1f1f1;
-  overflow: hidden;
-  background-color: #eff0f1;
-  background-image: url('https://cdn.sstatic.net/Sites/stackoverflow/img/sprites.svg'),none;
-  background-position: 210px -364px;
-  background-size: initial;
-  background-repeat: no-repeat;
+// .textarea .grabber{
+//   content: '';
+//   position: absolute;
+//   bottom: 0;
+//   margin-left: -15px;
+//   cursor: s-resize;
+//   height: 9px;
+//   width: 100%;
+//   border-top: 1px solid #f1f1f1;
+//   overflow: hidden;
+//   background-color: #eff0f1;
+//   background-image: url('https://cdn.sstatic.net/Sites/stackoverflow/img/sprites.svg'),none;
+//   background-position: 210px -364px;
+//   background-size: initial;
+//   background-repeat: no-repeat;
+// }
+
+#chat {
+  position: fixed;
+  background-color: black;
+  opacity: 0.8;
 }
+.chat-corner-resize {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+#chat-top-left-resize { top: 0px; left: 0px; }
+#chat-top-right-resize { top: 0px; right: 0px; }
+#chat-bottom-left-resize { bottom: 0px; left: 0px; }
+#chat-bottom-right-resize { bottom: 0px; right: 0px; }
