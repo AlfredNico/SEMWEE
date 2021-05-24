@@ -19,7 +19,7 @@ import { SharedComponentsModule } from '@app/shared/modules/shared-components.mo
     // SharedModule,
     // LandingPageModule,
     // SharedDirectivesModule,
-    RouterModule.forChild([{ path: '', component: LpEditorComponent }]),
+    RouterModule.forChild([{ path: '', component: PreviewFileComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],

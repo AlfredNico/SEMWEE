@@ -12,6 +12,7 @@
     },
     "private": true,
     "dependencies": {
+        "@angular-slider/ngx-slider": "^2.0.3",
         "@angular/animations": "~11.0.9",
         "@angular/cdk": "^11.2.2",
         "@angular/common": "~11.0.9",
@@ -59,7 +60,7 @@
         "zone.js": "~0.10.2"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "~0.1100.7",
+        "@angular-devkit/build-angular": "^12.0.1",
         "@angular/cli": "^11.2.12",
         "@angular/compiler-cli": "~11.0.9",
         "@types/jasmine": "~3.6.0",
@@ -70,7 +71,7 @@
         "increase-memory-limit": "^1.0.3",
         "jasmine-core": "~3.6.0",
         "jasmine-spec-reporter": "~5.0.0",
-        "karma": "~5.1.0",
+        "karma": "^6.3.2",
         "karma-chrome-launcher": "~3.1.0",
         "karma-coverage": "~2.0.3",
         "karma-jasmine": "~4.0.0",

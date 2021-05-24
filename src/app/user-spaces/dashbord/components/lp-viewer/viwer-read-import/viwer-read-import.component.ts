@@ -133,8 +133,6 @@ export class ViwerReadImportComponent
   }
 
   public textFacet(column: any) {
-    // this.commonService.showSpinner('table');
-
     let distances = {};
     // isExist = false;
     this.dataViews.map((item: any) => {
@@ -157,6 +155,14 @@ export class ViwerReadImportComponent
   public textFilter(column: any) {
     this.lpViewer.itemsObservables$.next({
       type: 'filter',
+      isMinimize: false,
+      head: column,
+    });
+  }
+
+  public numericFacter(column: any) {
+    this.lpViewer.itemsObservables$.next({
+      type: 'numeric',
       isMinimize: false,
       head: column,
     });

@@ -15,17 +15,19 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { HttpClientModule } from '@angular/common/http';
 import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
+import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
+import { NumericFacetComponent } from '@app/shared/components/numeric-facet/numeric-facet.component';
 
 @NgModule({
   declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
   imports: [
     HttpClientModule,
-    SharedModule,
-    LandingPageModule,
-    SharedDirectivesModule,
-    LandingModule,
+    // SharedModule,
+    // LandingPageModule,
+    // LandingModule,
+    // SharedDirectivesModule,
     MatStepperModule, // stepper module
-    LandingPageModule,
+    SharedComponentsModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }])
   ],
   exports: [RouterModule],
@@ -34,7 +36,7 @@ import { errorInterceptor } from '@app/error.interceptor';
     ViwerReadImportComponent,
     FacetFilterComponent,
     HeaderOptionsComponent,
-    UpdatesHeaderComponent
+    UpdatesHeaderComponent,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

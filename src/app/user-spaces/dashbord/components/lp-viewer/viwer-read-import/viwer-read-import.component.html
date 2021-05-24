@@ -30,10 +30,6 @@
         class="mat-group"
       >
         <mat-tab label="Facet/Filter">
-          <!-- <app-facet-filter
-            [dataViews]="dataViews"
-            [dataSources]="dataSource.data"
-          ></app-facet-filter> -->
           <app-facet-filter
             [formGroup]='formGroup'
             [inputFilters]="inputFilters"
@@ -45,7 +41,7 @@
           ></app-facet-filter>
         </mat-tab>
         <mat-tab label="Undo / Redo">
-            <!-- <app-undo-redo 
+            <!-- <app-undo-redo
             ></app-undo-redo> -->
         </mat-tab>
       </mat-tab-group>
@@ -107,7 +103,6 @@
                   <button mat-menu-item (click)="textFacet(column)">
                     Text facet
                   </button>
-                  <button mat-menu-item>Numeric facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
@@ -188,7 +183,9 @@
                   <button mat-menu-item (click)="textFacet(column)">
                     Text facet
                   </button>
-                  <button mat-menu-item>Numeric facet</button>
+                  <button mat-menu-item (click)="numericFacter(column)">
+                    Numeric facet xxx
+                  </button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>

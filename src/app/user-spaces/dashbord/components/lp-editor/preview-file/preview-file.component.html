@@ -3,33 +3,47 @@
     <div class="grabber"></div>
   </div> -->
 
-<div
-  id="chat"
-  [style.top.px]="y"
+<!--  -->
+<!--
+   [style.top.px]="y"
   [style.left.px]="x"
-  [style.width.px]="width"
-  [style.height.px]="height"
-  (mousedown)="onWindowPress($event)"
-  (mousemove)="onWindowDrag($event)"
->
+  [style.top.px]="100"
+ -->
+
+ <div class="w-100 bg-success" [style.height.px]="100" #parentDiv id="parend">
   <div
-    (mousedown)="onCornerClick($event, topLeftResize)"
-    id="chat-top-left-resize"
-    class="chat-corner-resize"
-  ></div>
-  <div
-    (mousedown)="onCornerClick($event, topRightResize)"
-    id="chat-top-right-resize"
-    class="chat-corner-resize"
-  ></div>
-  <div
-    (mousedown)="onCornerClick($event, bottomLeftResize)"
-    id="chat-bottom-left-resize"
-    class="chat-corner-resize"
-  ></div>
-  <div
-    (mousedown)="onCornerClick($event, bottomRightResize)"
-    id="chat-bottom-right-resize"
-    class="chat-corner-resize"
-  ></div>
-</div>
+    id="chat"
+    [style.left.px]="x"
+    [style.width.px]="width"
+    [style.height.px]="100"
+    (mousedown)="onWindowPress($event)"
+    (mousemove)="onWindowDrag($event)"
+  >
+    <div class="w-100 h-100 bg-info">
+      this is contene
+    </div>
+    <div
+      (mousedown)="onCornerClick($event, topLeftResize)"
+      id="chat-top-left-resize"
+      class="chat-corner-resize h-100"
+      style="background-color: red; cursor: col-resize;"
+    ></div>
+    <div
+      (mousedown)="onCornerClick($event, topRightResize)"
+      id="chat-top-right-resize"
+      class="chat-corner-resize h-100"
+      style="background-color: red; cursor: col-resize;"
+    ></div>
+  </div>
+ </div>
+
+<!-- <div
+  (mousedown)="onCornerClick($event, bottomLeftResize)"
+  id="chat-bottom-left-resize"
+  class="chat-corner-resize"
+></div>
+<div
+  (mousedown)="onCornerClick($event, bottomRightResize)"
+  id="chat-bottom-right-resize"
+  class="chat-corner-resize"
+></div> -->
