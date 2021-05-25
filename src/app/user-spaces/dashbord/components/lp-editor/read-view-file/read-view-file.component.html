@@ -167,8 +167,16 @@
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
                     <!-- <button mat-menu-item (click)="transformNumber(column)">To number</button> -->
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
-                  </app-edit-cell>
+                  <!-- <app-edit-cell mat-menu-item [dataSource]="dataSource.data" [columnName]='column'>
+                  </app-edit-cell> -->
+
+                  <button mat-menu-item (click)="convertToTitlecase(column)">To titleCase</button>
+                  <button mat-menu-item (click)="convertToUppercase(column)">To uppercase</button>
+                  <button mat-menu-item (click)="convertToLowercase(column)">To lowercase</button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
+                  <button mat-menu-item (click)="convertToDate(column)">To date</button>
+                  <button mat-menu-item (click)="convertToText(column)">To text</button>
                 </mat-menu>
                 <!-- Edit Cell start -->
                 <!-- <mat-menu #editCell="matMenu">
