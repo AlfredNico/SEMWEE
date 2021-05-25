@@ -25,7 +25,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
 })
-
 export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
@@ -34,7 +33,11 @@ export class ViwerReadImportComponent
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @Input('idProject') idProject = undefined;
-  @Input('filtersData') filtersData: { items: any, facetQueries: any, searchQueries: any } = undefined;
+  @Input('filtersData') filtersData: {
+    items: any;
+    facetQueries: any;
+    searchQueries: any;
+  } = undefined;
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
 
@@ -47,13 +50,28 @@ export class ViwerReadImportComponent
 
   public items: any[] = [];
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, private lpViewer: LpViwersService, public senitizer: DomSanitizer) { }
+  constructor(
+    public dialog: MatDialog,
+    private fb: FormBuilder,
+    private lpViewer: LpViwersService,
+    public senitizer: DomSanitizer
+  ) {}
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      if ((this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined) {
-        const header = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join(''))).split(',');
-        const editableColumns = JSON.parse(JSON.stringify(this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join(''))).split(',');
+      if (
+        (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
+      ) {
+        const header = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+          )
+        ).split(',');
+        const editableColumns = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
+          )
+        ).split(',');
         const values = this.dataAfterUploaded[1];
         header.unshift('all');
         editableColumns.unshift('all');
@@ -64,11 +82,12 @@ export class ViwerReadImportComponent
         this.dataViews = values;
 
         if (this.filtersData.items !== undefined) {
-          this.formGroup = this.fb.group(JSON.parse(this.dataAfterUploaded[2][0]['value']));
+          this.formGroup = this.fb.group(
+            JSON.parse(this.dataAfterUploaded[2][0]['value'])
+          );
           this.items = this.filtersData['items'];
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);
         }
-
       } else {
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.edidtableColumns = this.displayedColumns;
@@ -79,7 +98,7 @@ export class ViwerReadImportComponent
     this.lpViewer.checkInfoSubject$.next();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -88,6 +107,7 @@ export class ViwerReadImportComponent
     this.lpViewer.dataSources$.subscribe((res) => {
       if (res) {
         this.dataSource.data = res;
+        console.log(res);
       }
     });
   }
@@ -107,13 +127,15 @@ export class ViwerReadImportComponent
         map((result: any) => {
           if (result) {
             this.displayedColumns = result.noHiddenRows;
-            this.lpViewer.putDisplayColums(this.idProject, JSON.stringify(this.displayedColumns))
+            this.lpViewer.putDisplayColums(
+              this.idProject,
+              JSON.stringify(this.displayedColumns)
+            );
           }
         })
       )
       .subscribe();
   }
-
 
   public openEditColumn(columnName: string) {
     const index = this.displayedColumns.indexOf(columnName);
@@ -122,8 +144,8 @@ export class ViwerReadImportComponent
         data: {
           index,
           idHeader: this.dataAfterUploaded[0][0]['_id'],
-          edidtableColumns: this.edidtableColumns
-        }
+          edidtableColumns: this.edidtableColumns,
+        },
       })
       .afterClosed();
   }
@@ -174,7 +196,7 @@ export class ViwerReadImportComponent
     }
   }
 
-  public isValidURL(value: any,): boolean {
+  public isValidURL(value: any): boolean {
     const res = value.match(
       /(http(s)?:\/\/.)?([A-z]\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
     );
@@ -217,16 +239,19 @@ export class ViwerReadImportComponent
 
       const dataFilter = val.filter((x: any, i: number) => {
         switch (true) {
-          case (length1 > 0 && length2 > 0):
-            return this.filtersData['facetQueries'][i] && this.filtersData['searchQueries'][i];
+          case length1 > 0 && length2 > 0:
+            return (
+              this.filtersData['facetQueries'][i] &&
+              this.filtersData['searchQueries'][i]
+            );
 
-          case (length1 === 0 && length2 > 0):
+          case length1 === 0 && length2 > 0:
             return this.filtersData['searchQueries'][i];
 
-          case (length1 > 0 && length2 === 0):
+          case length1 > 0 && length2 === 0:
             return this.filtersData['facetQueries'][i];
 
-          case (length1 === 0 && length2 === 0):
+          case length1 === 0 && length2 === 0:
             return true;
         }
       });
