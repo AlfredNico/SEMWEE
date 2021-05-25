@@ -11,6 +11,7 @@ import { PreviewFileComponent } from './preview-file/preview-file.component';
 import { LpEditorService } from '../../services/lp-editor.service';
 import { OpenHeaderOptionsComponent } from './read-view-file/open-header-options.component';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent, FacetFilterComponent, UndoRedoComponent, OpenHeaderOptionsComponent],
@@ -28,7 +29,8 @@ import { SharedComponentsModule } from '@app/shared/modules/shared-components.mo
     NO_ERRORS_SCHEMA
   ],
   providers: [
-    LpEditorService
+    LpEditorService,
+    DatePipe
   ]
 })
 export class LpEditorModule { }

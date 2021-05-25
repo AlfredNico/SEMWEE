@@ -65,11 +65,11 @@
                   <button mat-menu-item (click)="textFilter(column)">
                     Text filter
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item>
                     Update column
                   </button>
@@ -134,11 +134,11 @@
                   <button mat-menu-item (click)="textFilter(column)">
                     Text filter
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item>
                     Update column
                   </button>
@@ -170,25 +170,15 @@
                   <!-- <app-edit-cell mat-menu-item [dataSource]="dataSource.data" [columnName]='column'>
                   </app-edit-cell> -->
 
-                  <button mat-menu-item (click)="convertToTitlecase(column)">To titleCase</button>
-                  <button mat-menu-item (click)="convertToUppercase(column)">To uppercase</button>
-                  <button mat-menu-item (click)="convertToLowercase(column)">To lowercase</button>
+                  <button mat-menu-item (click)="convertToTitlecase(column)">To TitleCase</button>
+                  <button mat-menu-item (click)="convertToUppercase(column)">To Uppercase</button>
+                  <button mat-menu-item (click)="convertToLowercase(column)">To Lowercase</button>
                   <mat-divider></mat-divider>
                   <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
-                  <button mat-menu-item (click)="convertToDate(column)">To date</button>
-                  <button mat-menu-item (click)="convertToText(column)">To text</button>
+                  <button mat-menu-item (click)="convertToDate(column)">To Date</button>
+                  <button mat-menu-item (click)="convertToText(column)">To Text</button>
+                  <button mat-menu-item (click)="convertToBoolean(column)">To Boolean</button>
                 </mat-menu>
-                <!-- Edit Cell start -->
-                <!-- <mat-menu #editCell="matMenu">
-                  <button mat-menu-item (click)="convertToTitlecase(column)">To titleCase</button>
-                  <button mat-menu-item (click)="convertToUppercase(column)">To uppercase</button>
-                  <button mat-menu-item (click)="convertToLowercase(column)">To lowercase</button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
-                  <button mat-menu-item (click)="convertToDate(column)">To date</button>
-                  <button mat-menu-item (click)="convertToText(column)">To text</button>
-                </mat-menu> -->
-                <!-- Edit Cell end -->
 
                 <td mat-cell *matCellDef="let element; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" #td class="th-content">
                   <!-- *ngTemplateOutlet="(element[column][0] | typeof) === 'string' ? stringTemplate:  -->
@@ -198,7 +188,7 @@
 
                   <ng-template #stringTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3">
-                      <p class="text-left"> {{currentValue[0]}} </p>
+                      <p class="text-left"> {{currentValue}} </p>
                       <button mat-flat-button class="rounded small-button only-show-on-hover" color="accent"
                       (click)="openEditorDialog(td, 'rigth', last)">
                         edit
@@ -212,7 +202,7 @@
                       (click)="openEditorDialog(td, 'left', last)">
                         edit
                       </button>
-                      <p class="text-right">{{currentValue[0]}} </p>
+                      <p class="text-right">{{currentValue}}</p>
                     </div>
                   </ng-template>
 
