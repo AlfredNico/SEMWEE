@@ -222,6 +222,7 @@
                   [ngClass]="{ 'd-none': isColumnDisplay(column) }"
                   #td
                   class="th-content text-truncate"
+                  style="position: relative;"
                 >
                   <ng-container
                     *ngTemplateOutlet="
@@ -234,7 +235,7 @@
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
+                    <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
                       <!-- (currentValue | isURL) -->
                       <p
                         class="text-left"
@@ -244,6 +245,8 @@
                         "
                       >
                         {{ currentValue }}
+                        <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
+                        (click)="action(element,column)">edit</button>
                       </p>
                       <ng-template #templeteURL>
                         <a
@@ -254,15 +257,17 @@
                             )
                           "
                           target="_blank"
-                          >{{ currentValue }}</a
+                          >{{ currentValue }} <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
+                          (click)="action(element,column)">edit</button></a
                         >
                       </ng-template>
                     </div>
                   </ng-template>
 
                   <ng-template #numberTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
-                      <p class="text-right">{{ currentValue }}</p>
+                    <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
+                      <p class="text-right">{{ currentValue }} <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
+                        (click)="action(element,column)">edit</button></p>
                     </div>
                   </ng-template>
                 </td>
@@ -290,5 +295,8 @@
         ></mat-paginator>
       </div>
     </aside>
+
+    <app-edit *ngIf="vueEdit" [(vueedit)]="vueEdit" [(oneObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (sendObject)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
+
   </div>
 </main>

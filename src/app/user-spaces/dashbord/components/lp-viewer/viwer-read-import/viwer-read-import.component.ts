@@ -49,6 +49,11 @@ export class ViwerReadImportComponent
   public formGroup = this.fb.group({});
 
   public items: any[] = [];
+  hoverIndex;
+  vueEdit: boolean = false;
+  nameCells;
+  objectOne: any;
+  selected = 'string';
 
   constructor(
     public dialog: MatDialog,
@@ -261,5 +266,34 @@ export class ViwerReadImportComponent
 
   public openButton() {
     console.log('open button');
+  }
+
+  combinate(i, otherValue) {
+    return i + otherValue;
+  }
+
+  enter(i, otherValue) {
+    // console.log('okokokokokkokokoko');
+    this.hoverIndex = i + otherValue;
+    // console.log(this.hoverIndex);
+  }
+
+  leave(i, otherValue) {
+    this.hoverIndex = null;
+  }
+
+  action(value, namecells) {
+    this.vueEdit = true;
+    this.selected = typeof value[namecells];
+    console.log('oddodoodoodoodoodoododo', this.selected);
+    this.objectOne = value;
+    this.nameCells = namecells;
+  }
+
+  toggleedit(value) {
+    this.vueEdit = value;
+  }
+  oneObjectfunc(updateObject) {
+    console.log(updateObject);
   }
 }

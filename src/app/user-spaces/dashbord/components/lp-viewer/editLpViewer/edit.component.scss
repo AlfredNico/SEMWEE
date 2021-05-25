@@ -1,0 +1,43 @@
+mat-card{
+    width:30%;
+    position: absolute;
+    top: 40%;
+    left: 55%;
+    z-index: 2;
+    padding: 8px 8px 14px 13px;
+}
+mat-card-actions{
+    text-align: center;
+    margin-top: 0px;
+}
+textarea{
+    margin: 0px 16px;
+    width: 90%;
+}
+// .mat-option{
+//      line-height: 0px; 
+//      height: 0px;
+// }
+.mat-card-header {
+    font-size: 17px;
+    margin-bottom: 0px;
+}
+.mat-card-title {
+    font-size: 17px;
+    margin-bottom: 0px;
+}
+.mat-card-header .mat-card-title {
+    margin-bottom: 0px;
+}
+.mat-card-actions, .mat-card-subtitle, .mat-card-content {
+    // display: block;
+    margin-bottom: 0px; 
+}
+.mat-form-field-appearance-fill {
+    padding: 0.25em .25em 0 .25em;
+}
+.mat-form-field-flex {
+    height: 43px;
+    font-size: 15px;
+    padding: 0.25em .25em 0 .25em;
+}

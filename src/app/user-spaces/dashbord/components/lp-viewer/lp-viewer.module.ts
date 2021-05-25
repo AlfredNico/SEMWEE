@@ -1,5 +1,9 @@
 import { UpdatesHeaderComponent } from './viwer-read-import/updates-header.component';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LpViewerComponent } from './lp-viewer.component';
 import { ViwerImportComponent } from './viwer-import/viwer-import.component';
@@ -15,9 +19,22 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { HttpClientModule } from '@angular/common/http';
 import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { EditComponent } from './editLpViewer/edit.component';
 
 @NgModule({
-  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
+  declarations: [
+    LpViewerComponent,
+    ViwerImportComponent,
+    ViwerReadImportComponent,
+    FacetFilterComponent,
+    HeaderOptionsComponent,
+    UpdatesHeaderComponent,
+    EditComponent,
+  ],
   imports: [
     HttpClientModule,
     SharedModule,
@@ -26,7 +43,7 @@ import { errorInterceptor } from '@app/error.interceptor';
     LandingModule,
     MatStepperModule, // stepper module
     LandingPageModule,
-    RouterModule.forChild([{ path: '', component: LpViewerComponent }])
+    RouterModule.forChild([{ path: '', component: LpViewerComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [
@@ -34,16 +51,16 @@ import { errorInterceptor } from '@app/error.interceptor';
     ViwerReadImportComponent,
     FacetFilterComponent,
     HeaderOptionsComponent,
-    UpdatesHeaderComponent
+    UpdatesHeaderComponent,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     // NO_ERRORS_SCHEMA
   ],
-  providers: [
-    LpViwersService,
-    tokenInterceptor,
-    errorInterceptor
-  ]
+  providers: [LpViwersService, tokenInterceptor, errorInterceptor],
 })
-export class LpViewerModule { }
+export class LpViewerModule {}
