@@ -53,6 +53,7 @@ import { SearchResultComponent } from '@app/_metronic/partials/layout/extras/dro
 import { InlineSVGModule } from 'ng-inline-svg';
 import { UserDropdownInnerComponent } from '@app/_metronic/partials/layout/extras/dropdown-inner/user-dropdown-inner/user-dropdown-inner.component';
 import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
+import { NgBytesPipeModule } from './dashbord/pipe/bytes.pipe';
 
 @Injectable({
   providedIn: 'root',
@@ -112,11 +113,19 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
     NgbTooltipModule,
     InlineSVGModule,
     AvatarModule,
+    NgBytesPipeModule,
     RouterModule.forChild([
       {
         path: 'user-space',
         component: LayoutComponent,
         children: [
+          {
+            path: 'all-lp-viewer-projects',
+            loadChildren: () =>
+              import('./dashbord/components/lp-viewer/all-lp-viewer-projects/all-lp-viewer-projects.module').then(
+                (m) => m.AllLPViewerProjectsModule
+              ),
+          },
           {
             path: 'lp-viewer',
             loadChildren: () =>
@@ -181,4 +190,4 @@ import { HeaderMenuDynamicComponent } from '@app/pages/_layout/components/header
   //   InferListComponent
   // ]
 })
-export class DashbordModule {}
+export class DashbordModule { }

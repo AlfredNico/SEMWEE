@@ -28,9 +28,9 @@ export class ProjectsComponent implements OnInit {
     private notifs: NotificationService,
     public triggerServices: TriggerService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onDeteils(item: Projects) {
     this.dialog
@@ -59,6 +59,9 @@ export class ProjectsComponent implements OnInit {
       .pipe(
         map((result) => {
           if (result === true) {
+            this.projectServices.refresh$.next(true);
+            this.triggerServices.trigrer$.next(true);
+
             this.projectServices
               .deleteProjects(item._id)
               .subscribe((result) => {
@@ -91,7 +94,7 @@ export class ProjectsComponent implements OnInit {
       .subscribe();
   }
 
-  public navigateURL(_id: any){
+  public navigateURL(_id: any) {
     this.common.isLoading$.next(true);
     this.router.navigate(['/user-space/lp-validator', _id]);
   }

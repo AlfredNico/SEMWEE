@@ -37,7 +37,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AppComponent,
     PageNotFoundComponent,
     BottonSheetComponent,
-    InformationSheetButtomComponent,
+    InformationSheetButtomComponent
   ],
   imports: [
     BrowserModule,
@@ -111,4 +111,4 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule { }

@@ -18,15 +18,15 @@ export class ProjectsService {
   subsVar: Subscription;
 
   public trigrer$ = new BehaviorSubject<boolean>(false);
-  public subject = new Subject<any>();
-  public currentSubject = this.subject.asObservable();
+  public subject$ = new Subject<boolean>();
+  public currentSubject = this.subject$.asObservable();
   isProjects = false;
 
   constructor(
     private http: HttpClient,
     private auth: AuthService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   public getAllProjects(_idUsers): Observable<Projects[]> {
     return this.http.get<Projects[]>(

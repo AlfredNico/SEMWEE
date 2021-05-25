@@ -21,10 +21,15 @@ export class AuthGuard implements CanActivate {
           return of(true);
         } else if (localStorage.getItem('currentUser')) {
           // this.authService.currentUserSubject.next(JSON.parse(localStorage.getItem('currentUser') || '{}'));
-          this.router.navigateByUrl('/user-space');
+          //
+
+          if (state.url === '/') this.router.navigateByUrl('/user-space');
+          else this.router.navigateByUrl(state.url);
           return of(true);
+
         } else if (this.cookieService.check('SEMEWEE') === true) {
-          this.router.navigateByUrl('/user-space');
+          if (state.url === '/') this.router.navigateByUrl('/user-space');
+          else this.router.navigateByUrl(state.url);
           return of(true);
         }
         else {
@@ -36,3 +41,8 @@ export class AuthGuard implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) { }
 }
+
+// if (route.queryParamMap.get('idProduit'))
+//   this.router.navigate(['user-space/lp-viewer'],
+//     { queryParams: { idProduct: route.queryParamMap.get('idProduit') } });
+// else this.router.navigateByUrl(state.url);

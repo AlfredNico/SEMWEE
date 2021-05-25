@@ -2,12 +2,11 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SettingRowsTable } from '@app/models/setting-table';
 import {
-  CdkDrag,
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-table-options',
@@ -36,7 +35,7 @@ export class TableOptionsComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.displayRows = this.data;
-    
+
     if (this.data.noHiddenRows.includes('select')) {
       const value = this.data.noHiddenRows.shift();
     }
@@ -45,7 +44,7 @@ export class TableOptionsComponent implements OnInit {
     this.noHidden = this.data.noHiddenRows;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   drop(event: CdkDragDrop<string[]>) {
     // const previousIndex = event.previousIndex;
@@ -83,7 +82,7 @@ export class TableOptionsComponent implements OnInit {
   }
 
   moveToLeft() {
-    this.selectedItems.forEach((value) =>{
+    this.selectedItems.forEach((value) => {
       this.setItemLeft(value);
 
       transferArrayItem(
@@ -92,11 +91,11 @@ export class TableOptionsComponent implements OnInit {
         this.infItems.previewIndex,
         this.infItems.currentIndex
       );
-  
+
       if (this.infItems.isFacet === true) {
         const facetIndex = this.noHidden.indexOf(
           this.noHidden[this.infItems.previewIndex]
-          );
+        );
         transferArrayItem(
           this.noHidden,
           this.hidden,
@@ -105,14 +104,14 @@ export class TableOptionsComponent implements OnInit {
         );
       }
     })
-     this.btnToRigth = true;
+    this.btnToRigth = true;
     this.btnToLeft = true;
     this.selectedItems = [] //init items selecteds
     this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
   moveToRigth() {
-    this.selectedItems.forEach((value)=>{
+    this.selectedItems.forEach((value) => {
       this.setItemRigth(value);
 
       transferArrayItem(
@@ -170,7 +169,7 @@ export class TableOptionsComponent implements OnInit {
     return { previewIndex, currentIndex, isFacet };
   }
 
-  setClickedItem(item: string, items: string[]){
+  setClickedItem(item: string, items: string[]) {
     if (items === this.hidden) {
       this.btnToLeft = true;
       this.btnToRigth = false;
@@ -191,7 +190,7 @@ export class TableOptionsComponent implements OnInit {
           }
         })
       } else {
-         items.forEach((val, i) => {
+        items.forEach((val, i) => {
           if (this.selectedIndex <= i && i <= index) {
             if (!this.selectedItems.includes(val))
               this.selectedItems.push(val)
@@ -209,7 +208,7 @@ export class TableOptionsComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-   this.isKeyPressed = false
+    this.isKeyPressed = false
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(

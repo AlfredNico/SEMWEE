@@ -66,14 +66,15 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
   }
 
   constructor(
-    private auth: AuthService,
     private route: ActivatedRoute,
     private infoProduitService: CheckUserInfoService,
     private common: CommonService,
     private triggerServices: TriggerService
   ) {
     this.route.paramMap.subscribe(async (params: ParamMap) => {
-      this.idProjet = params.get('idProduit');
+      if (params.get('idProduit')) {
+        this.idProjet = params.get('idProduit');
+      }
     });
   }
 
@@ -86,9 +87,10 @@ export class LpValidatorComponent implements OnInit, AfterViewInit {
     this.triggerServices.switchproject$
       .pipe(
         tap(async (idProjet: any) => {
-          if (idProjet) {
+
+          if (idProjet === undefined || idProjet === null) {
             const res = (
-              await this.infoProduitService.checkProject(idProjet)
+              await this.infoProduitService.checkProject(this.idProjet)
             ).subscribe(async (res) => {
               if (res) {
                 await this.checkProject(res);
