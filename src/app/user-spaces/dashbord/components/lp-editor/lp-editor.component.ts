@@ -90,6 +90,8 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   }
 
   public nextReadFile(value: { idProject: any; data: any }) {
+    console.log(value);
+
     this.dataAfterUploaded = value.data;
 
     if (value[0] !== undefined) {

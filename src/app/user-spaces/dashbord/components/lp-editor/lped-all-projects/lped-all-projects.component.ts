@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -18,7 +18,7 @@ import { RemoveComponent } from '../../projects/dialog/remove.component';
   templateUrl: './lped-all-projects.component.html',
   styleUrls: ['./lped-all-projects.component.scss']
 })
-export class LPedAllProjectsComponent implements OnInit {
+export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
   @Input() public allProjects$: Observable<LPAllProjects[]> = new Observable<
     LPAllProjects[]
   >(undefined);
@@ -44,6 +44,10 @@ export class LPedAllProjectsComponent implements OnInit {
       switchMap((_) => this.lpEditor.getAllProjects(this.user._id))
     );
   }
+
+  // ngDoCheck(): void {
+  //   this.common.hideSpinner('table');
+  // }
 
   ngAfterViewInit() {
     // this.common.showSpinner('root');
@@ -76,7 +80,6 @@ export class LPedAllProjectsComponent implements OnInit {
       .pipe(
         map((result) => {
           if (result === true) {
-
             this.lpEditor
               .deleteOneProjects(item._id)
               .subscribe((result) => {

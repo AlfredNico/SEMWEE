@@ -140,6 +140,7 @@ export class ImportFileComponent implements OnInit {
         sizefile: this.sizeFile,
         headers: this.data.header,
       };
+
       this.lpEditor.sendProjectNames(value).subscribe((idProject) => {
         if (idProject) {
           this.dataImported.emit({

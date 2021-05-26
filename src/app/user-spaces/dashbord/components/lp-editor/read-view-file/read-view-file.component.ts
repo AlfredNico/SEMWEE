@@ -32,13 +32,29 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   public undoRedoLabel = 'Undo/Redo 0/0';
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
+  public dataViews: any[] = [];
 
   constructor(public dialog: MatDialog, private lpEditor: LpEditorService, public datepipe: DatePipe) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      this.displayedColumns = this.dataAfterUploaded.columns;
-      this.dataSource.data = this.dataAfterUploaded.data;
+      const header = JSON.parse(
+        JSON.stringify(
+          this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+        )
+      ).split(',');
+      const editableColumns = JSON.parse(
+        JSON.stringify(
+          this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
+        )
+      ).split(',');
+      const values = this.dataAfterUploaded[1];
+      header.unshift('all');
+      editableColumns.unshift('all');
+
+      this.displayedColumns = header;
+      // this.dataSource.data = this.checkFilter(values);
+      this.dataSource.data = this.dataViews = values;
     }
   }
 
@@ -134,7 +150,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Title case */
   public convertToTitlecase(nameCell: string) {
     this.dataSource.data.forEach(item => {
-      if (typeof(item[nameCell]) === 'string') {
+      if (typeof (item[nameCell]) === 'string') {
         item[nameCell] = this.toTitleCase(item[nameCell]);
       }
     });
@@ -144,7 +160,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Uppercase */
   public convertToUppercase(nameCell: string) {
     this.dataSource.data.forEach(item => {
-      if (typeof(item[nameCell]) === 'string') {
+      if (typeof (item[nameCell]) === 'string') {
         item[nameCell] = (item[nameCell] as string).toUpperCase();
       }
     });
@@ -154,7 +170,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Lowercase */
   public convertToLowercase(nameCell: string) {
     this.dataSource.data.forEach(item => {
-      if (typeof(item[nameCell]) === 'string') {
+      if (typeof (item[nameCell]) === 'string') {
         item[nameCell] = (item[nameCell] as string).toLowerCase();
       }
     });
@@ -174,26 +190,26 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Date */
   public convertToDate(nameCell: string) {
     this.dataSource.data.forEach(item => {
-        console.log(this.dateValidator(item[nameCell]));
-        if (this.dateValidator(item[nameCell]) == null) {
-          let dateString = item[nameCell];
-          let dateObject = new Date();
+      console.log(this.dateValidator(item[nameCell]));
+      if (this.dateValidator(item[nameCell]) == null) {
+        let dateString = item[nameCell];
+        let dateObject = new Date();
 
-          if (dateString.indexOf('/') > -1) {
-              let dateParts = dateString.split("/");
-              dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);                             
-          }
-          else if(dateString.indexOf('-') > -1) {
-              let dateParts = dateString.split("-");
-              dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);          
-          }
+        if (dateString.indexOf('/') > -1) {
+          let dateParts = dateString.split("/");
+          dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        }
+        else if (dateString.indexOf('-') > -1) {
+          let dateParts = dateString.split("-");
+          dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        }
 
         // // item[nameCell] = this.datepipe.transform(dateObject, 'dd/MM/yyyy');
         item[nameCell] = dateObject;
 
         console.log(item[nameCell]);
-        console.log(typeof(item[nameCell]));
-        
+        console.log(typeof (item[nameCell]));
+
       }
     });
 
@@ -203,7 +219,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Text */
   public convertToText(nameCell: string) {
     this.dataSource.data.forEach(item => {
-      if (typeof(item[nameCell]) !== 'string') {
+      if (typeof (item[nameCell]) !== 'string') {
         item[nameCell] = (item[nameCell]).toString();
       }
     });
@@ -214,16 +230,16 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Boolean */
   public convertToBoolean(nameCell: string) {
     this.dataSource.data.forEach(item => {
-      if (typeof(item[nameCell]) === 'string') {
+      if (typeof (item[nameCell]) === 'string') {
         if (item[nameCell].toLowerCase() === 'true') {
-            item[nameCell] = true;
-        }else if(item[nameCell].toLowerCase() === 'false') {
-            item[nameCell] = false;
-        }else {
-            item[nameCell] = item[nameCell];
+          item[nameCell] = true;
+        } else if (item[nameCell].toLowerCase() === 'false') {
+          item[nameCell] = false;
+        } else {
+          item[nameCell] = item[nameCell];
         }
 
-        console.log(typeof(item[nameCell]));
+        console.log(typeof (item[nameCell]));
       }
     });
 
@@ -233,7 +249,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Null */
   public convertToNull(nameCell: string) {
     this.dataSource.data.forEach(item => {
-        item[nameCell] = null;
+      item[nameCell] = null;
     });
 
     this.dataSource = this.dataSource;
@@ -242,7 +258,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* Convert To Empty */
   public convertToEmpty(nameCell: string) {
     this.dataSource.data.forEach(item => {
-        item[nameCell] = "";
+      item[nameCell] = "";
     });
 
     this.dataSource = this.dataSource;
@@ -257,54 +273,54 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   }
 
   public dateValidator(c: any): { [key: string]: boolean } | null {
-      if ((c !== undefined && c !== '' && c != null)) {
+    if ((c !== undefined && c !== '' && c != null)) {
 
-          var month = null;
-          var day = null;
-          var year = null;
-          var currentTaxYear = Number(new Date().getFullYear());
-          if (c.indexOf('/') > -1) {
-              var res = c.split("/");           
-              if (res.length > 1) {
-                  month = res[1];
-                  day = res[0]
-                  year = res[2];
-              }                              
-          }
-          else if(c.indexOf('-') > -1) {
-              var res = c.split("-");           
-              if (res.length > 1) {
-                  month = res[1];
-                  day = res[0]
-                  year = res[2];
-              }           
-          }
-          if (isNaN(month) || isNaN(day) || isNaN(year)) {
-              return { 'dateInvalid': true };
-          } 
-          month = Number(month);
-          day = Number(day);
-          year = Number(year);
-          if (month < 1 || month > 12) { // check month range
-              return { 'dateInvalid': true };
-          }
-          if (day < 1 || day > 31) {
-              return { 'dateInvalid': true };
-          }
-          if ((month === 4 || month === 6 || month === 9 || month === 11) && day === 31) {
-              return { 'dateInvalid': true };
-          }
-          if (month == 2) {
-              var isleap = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
-              if (day > 29 || (day === 29 && !isleap)) {
-                  return { 'dateInvalid': true };
-              }
-          }
-          if (year !== currentTaxYear) {
-              return { 'dateYearGreaterThanTaxYear': true };
-          }
+      var month = null;
+      var day = null;
+      var year = null;
+      var currentTaxYear = Number(new Date().getFullYear());
+      if (c.indexOf('/') > -1) {
+        var res = c.split("/");
+        if (res.length > 1) {
+          month = res[1];
+          day = res[0]
+          year = res[2];
+        }
       }
-      return null;
+      else if (c.indexOf('-') > -1) {
+        var res = c.split("-");
+        if (res.length > 1) {
+          month = res[1];
+          day = res[0]
+          year = res[2];
+        }
+      }
+      if (isNaN(month) || isNaN(day) || isNaN(year)) {
+        return { 'dateInvalid': true };
+      }
+      month = Number(month);
+      day = Number(day);
+      year = Number(year);
+      if (month < 1 || month > 12) { // check month range
+        return { 'dateInvalid': true };
+      }
+      if (day < 1 || day > 31) {
+        return { 'dateInvalid': true };
+      }
+      if ((month === 4 || month === 6 || month === 9 || month === 11) && day === 31) {
+        return { 'dateInvalid': true };
+      }
+      if (month == 2) {
+        var isleap = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
+        if (day > 29 || (day === 29 && !isleap)) {
+          return { 'dateInvalid': true };
+        }
+      }
+      if (year !== currentTaxYear) {
+        return { 'dateYearGreaterThanTaxYear': true };
+      }
+    }
+    return null;
   }
 
 }

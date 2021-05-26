@@ -186,7 +186,7 @@
                 <td mat-cell *matCellDef="let element; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" #td class="th-content">
                   <!-- *ngTemplateOutlet="(element[column][0] | typeof) === 'string' ? stringTemplate:  -->
                   <ng-container
-                    *ngTemplateOutlet="element[column][1]  !== 'number' ? stringTemplate: numberTemplate; context:{value: element[column]}">
+                    *ngTemplateOutlet="(element[column] | typeof) === 'number' ? numberTemplate : stringTemplate; context:{value: element[column]}">
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">

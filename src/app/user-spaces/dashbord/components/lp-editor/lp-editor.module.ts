@@ -35,7 +35,7 @@ import { DatePipe } from '@angular/common';
     LandingPageModule,
     SharedComponentsModule,
     NgxSliderModule,
-    RouterModule.forChild([{ path: '', component: ImportFileComponent }]),
+    RouterModule.forChild([{ path: '', component: LpEditorComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],
