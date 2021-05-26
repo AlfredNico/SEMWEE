@@ -4,7 +4,6 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { LpViwersService } from '../../services/lp-viwers.service';
 import { FacetFilter } from '../../interfaces/facet-filter';
-import { transferArrayItem } from '@angular/cdk/drag-drop';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -46,6 +45,9 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
 
   private facetQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
+  private numericFilters: boolean[] = [];
+
+  public inputFilterQuery: any = {};
 
   constructor(private fb: FormBuilder, private lpViewer: LpViwersService, private readonly common: CommonService) { }
 
@@ -63,17 +65,11 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
       this.formGroup.valueChanges
         .pipe(
           map((query) => {
-            // let qqq = '', i1 = 0;
-            // let lastquery: boolean;
-            // this.lpViewer.addFacetFilter({
-            //   idProject: this.idProject,
-            //   value: JSON.stringify(query)
-            // }).subscribe();
             this.saveQuery(query);
+            this.inputFilterQuery = query;
 
-            this.dataSources = this.filterQueries(query);
-
-            this.lpViewer.dataSources$.next(this.dataSources);
+            this.filterQueries(query);
+            // this.lpViewer.dataSources$.next(this.dataSources);
           })
         )
         .subscribe();
@@ -98,8 +94,6 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
             }
           });
         } else {
-          console.log('res=', res);
-
           this.items.push(res);
           this.items.map((value: any) => {
             if (value['type'] === 'filter') {
@@ -167,6 +161,7 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     });
 
     this.saveQuery(query);
+    this.inputFilterQuery = query;
 
     this.filterQueries(query);
     this.checkIncludesExcludes();
@@ -178,6 +173,7 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.items = [];
     this.facetQueries = [];
     this.searchQueries = [];
+    this.numericFilters = [];
     // this.itemsFilters.emit(this.items);
 
     this.saveQuery(this.formGroup.value);
@@ -228,6 +224,22 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.items = this.items;
   }
 
+  public checkNumericFacet(numericFilters: boolean[]) {
+    this.numericFilters = numericFilters;
+
+    this.dataSources = this.dataViews.filter((value: any, iii: number) => {
+      const q1 = numericFilters[iii];
+      const q2 = this.facetQueryFunction(iii);
+      const q3 = this.searchQueriesFunction(iii);
+
+      return q1 && q2 && q3;
+    });
+
+    //save all parames into DB
+    // this.facetFilter$.next(true);
+    this.lpViewer.dataSources$.next(this.dataSources);
+  }
+
   private checkIncludesExcludes() {
     let search: boolean, last: boolean;
 
@@ -253,10 +265,15 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
             else queries = queries && search;
             i1++;
           });
-          last = this.searchQueries.length > 0 ? queries && this.searchQueries[iii] : queries;
-          this.facetQueries[iii] = last;
+          // last = this.searchQueries.length > 0 ? queries && this.searchQueries[iii] : queries;
+          this.facetQueries[iii] = queries;
 
-          return last;
+          const q1 = this.numericQueryFunction(iii);
+          const q2 = this.facetQueryFunction(iii);
+          const q3 = this.searchQueriesFunction(iii);
+
+          return q1 && q2 && q3;
+          // return last;
         }
       })
     });
@@ -288,19 +305,24 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
     }).subscribe();
   }
 
-  private filterQueries(query: any): any[] {
+  public filterQueries(query: any): any[] {
     let qqq = '', i1 = 0;
+
     let lastquery: boolean;
 
     const data = this.dataViews.filter((value: any, i: number) => {
 
-      if (Object.values(query).every((x) => x === null || x === '')) {
-
+      if (typeof (query) === 'object' && Object.values(query).every((x) => x === null || x === '')) {
         // return this.checkFilter(i, this.searchQueries, this.facetQueries);
         this.searchQueries[i] = true;
-        return this.facetQueries.length > 0
-          ? this.searchQueries[i] && this.facetQueries[i]
-          : this.searchQueries[i];
+        // return this.facetQueries.length > 0
+        //   ? this.searchQueries[i] && this.facetQueries[i]
+        //   : this.searchQueries[i];
+        const q1 = this.numericQueryFunction(i);
+        const q2 = this.facetQueryFunction(i);
+        const q3 = this.searchQueriesFunction(i);
+
+        return q1 && q2 && q3;
       } else {
         let s = '', i2 = 0;
         Object.keys(value).some((property) => {
@@ -320,16 +342,39 @@ export class FacetFilterComponent implements OnInit, AfterViewInit, OnChanges {
         if (i1 === 0) qqq = eval(s);
         else qqq = qqq + '&&' + eval(s);
         i2++;
-        lastquery = this.facetQueries.length > 0 ? this.facetQueries[i] && eval(qqq) : eval(qqq);
-        this.searchQueries[i] = eval(qqq);
-        return lastquery;
+        this.searchQueries[i] = eval(qqq) !== undefined ? eval(qqq) : true;
+        // lastquery = this.facetQueries.length > 0 ? this.facetQueries[i] && eval(qqq) : eval(qqq);
+        const q1 = this.numericQueryFunction(i);
+        const q2 = this.facetQueryFunction(i);
+        const q3 = this.searchQueriesFunction(i);
+
+        lastquery = q1 && q2 && q3;
+
+        return q1 && q2 && q3;
         // return eval(qqq);
       }
     });
     this.facetQueries = this.facetQueries;
     this.searchQueries = this.searchQueries;
     this.facetFilter$.next(true);
+
+    this.lpViewer.dataSources$.next(data);
     return data;
+  }
+
+  private numericQueryFunction(index: number): boolean {
+    if (this.numericFilters?.length !== 0) return this.numericFilters[index];
+    return true;
+  }
+
+  private facetQueryFunction(index: number): boolean {
+    if (this.facetQueries?.length !== 0) return this.facetQueries[index];
+    return true;
+  }
+
+  private searchQueriesFunction(index: number): boolean {
+    if (this.searchQueries?.length !== 0) return this.searchQueries[index];
+    return true;
   }
 
 }

@@ -9,6 +9,16 @@
   [style.left.px]="x"
   [style.top.px]="100"
  -->
+  <div class="custom-slider">
+    <ngx-slider
+      [(value)]="minValue"
+      [(highValue)]="maxValue"
+      [options]="options"
+      (userChangeEnd)="userChangeEnd($event)"
+    ></ngx-slider>
+  </div>
+
+ <h2>Hellw</h2>
 
  <div class="w-100 bg-success" [style.height.px]="100" #parentDiv id="parend">
   <div

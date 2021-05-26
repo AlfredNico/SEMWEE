@@ -17,15 +17,16 @@ import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
 import { NumericFacetComponent } from '@app/shared/components/numeric-facet/numeric-facet.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
-  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
+  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent, NumericFacetComponent],
   imports: [
     HttpClientModule,
-    // SharedModule,
-    // LandingPageModule,
-    // LandingModule,
-    // SharedDirectivesModule,
+    SharedModule,
+    LandingPageModule,
+    LandingModule,
+    SharedDirectivesModule,
     MatStepperModule, // stepper module
     SharedComponentsModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }])
@@ -36,7 +37,7 @@ import { NumericFacetComponent } from '@app/shared/components/numeric-facet/nume
     ViwerReadImportComponent,
     FacetFilterComponent,
     HeaderOptionsComponent,
-    UpdatesHeaderComponent,
+    UpdatesHeaderComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

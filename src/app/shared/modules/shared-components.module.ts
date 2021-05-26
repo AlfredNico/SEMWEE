@@ -6,13 +6,13 @@ import { CommonModule } from '@angular/common';
 import { EditCellComponent } from '../components/edit-cell/edit-cell.component';
 import { LandingModule } from './landing.module';
 import { NumericFacetComponent } from '../components/numeric-facet/numeric-facet.component';
-// import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 
 @NgModule({
   declarations: [
     EditCellComponent,
-    NumericFacetComponent
+    // NumericFacetComponent
   ],
   imports: [
     SharedModule,
@@ -20,7 +20,7 @@ import { NumericFacetComponent } from '../components/numeric-facet/numeric-facet
     LandingModule,
     SharedDirectivesModule,
     CommonModule,
-    // NgxSliderModule
+    NgxSliderModule
   ],
   exports: [
     CommonModule,
@@ -28,10 +28,14 @@ import { NumericFacetComponent } from '../components/numeric-facet/numeric-facet
     LandingModule,
     LandingPageModule,
     SharedDirectivesModule,
+    NgxSliderModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
+  ],
+  entryComponents: [
+    NumericFacetComponent
   ]
 })
 export class SharedComponentsModule { }

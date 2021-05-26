@@ -5,6 +5,7 @@
     <button class="rounded" (click)="resetAll()">Reset All</button>
     <button class="rounded" (click)="removeAll()">Remove All</button>
   </div>
+
   <div *ngFor="let item of items">
      <ng-container
       *ngTemplateOutlet="item.type === 'facet' ? facetTemplate : item.type === 'filter' ? filterTemplate : numericTemplate; context:{value: item}">
@@ -80,7 +81,17 @@
     </ng-template>
 
     <ng-template #numericTemplate let-currentValue="value">
-        <app-numeric-facet [items]='items' [item]='item'></app-numeric-facet>
+      <app-numeric-facet
+      [items]='items'
+      [item]='item'
+      [minValue]="item['minValue']"
+      [maxValue]="item['maxValue']"
+      [options]="item['options']"
+      [dataViews]='dataViews'
+      [dataSources]='dataSources'
+      (numericQueriesEmitter)="checkNumericFacet($event)"
+      ></app-numeric-facet>
+      {{ item['head'] }}
     </ng-template>
   </div>
 </div>

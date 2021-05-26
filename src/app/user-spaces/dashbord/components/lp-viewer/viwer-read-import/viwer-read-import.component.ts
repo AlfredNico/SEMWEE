@@ -19,6 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { FacetFilter } from '@app/user-spaces/dashbord/interfaces/facet-filter';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -161,10 +162,31 @@ export class ViwerReadImportComponent
   }
 
   public numericFacter(column: any) {
+    let value = {};
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = item[column]
+        if (Number(item[column]) <= minValue) minValue = item[column];
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+
     this.lpViewer.itemsObservables$.next({
       type: 'numeric',
       isMinimize: false,
       head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
     });
   }
 

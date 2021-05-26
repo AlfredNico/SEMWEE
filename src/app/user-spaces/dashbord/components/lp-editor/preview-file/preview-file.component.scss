@@ -84,3 +84,49 @@
 #chat-top-right-resize { top: 0px; right: 0px; }
 #chat-bottom-left-resize { bottom: 0px; left: 0px; }
 #chat-bottom-right-resize { bottom: 0px; right: 0px; }
+
+// We need to use ::ng-deep to overcome view encapsulation
+::ng-deep {
+  .custom-slider .ngx-slider .ngx-slider-bar {
+    background: #ffe4d1;
+    height: 50px;
+  }
+  .custom-slider .ngx-slider .ngx-slider-selection {
+    background: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 10px;
+    height: 60px;
+    top: auto; /* to remove the default positioning */
+    bottom: -50px;
+    background-color: blue;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
+    display: none;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+    color: red;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    width: 1px;
+    height: 50px;
+    margin-left: 4px;
+    border-radius: 0;
+    background: black;
+    top: -1px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+    background: rgb(0, 110, 255);
+  }
+}
+

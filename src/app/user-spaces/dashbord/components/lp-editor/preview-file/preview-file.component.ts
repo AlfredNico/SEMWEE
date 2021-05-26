@@ -1,3 +1,4 @@
+import { Options } from '@angular-slider/ngx-slider';
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 @Component({
@@ -6,6 +7,24 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
   styleUrls: ['./preview-file.component.scss']
 })
 export class PreviewFileComponent implements OnInit, AfterViewInit {
+
+  minValue: number = 20;
+  maxValue: number = 80;
+  options: Options = {
+    floor: 0,
+    ceil: 100,
+    // minRange: this.maxValue,
+    // maxRange: this.minValue,
+    // minLimit: this.minValue,
+    // maxLimit: this.maxValue,
+    draggableRange: true,
+    showSelectionBar: true,
+  };
+
+  userChangeEnd(event: any) {
+    console.log('va=', event);
+  }
+
   x: number;
   // y: number;
   px: number;

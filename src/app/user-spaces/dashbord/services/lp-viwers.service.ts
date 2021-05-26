@@ -18,6 +18,10 @@ export class LpViwersService {
   public isLoading$ = new BehaviorSubject<boolean>(true);
   public checkInfoSubject$ = new Subject();
 
+  //Numriéque facet components
+  public numeriqueFaceteBehavior$ = new BehaviorSubject<any>(undefined);
+  public numeriqueFacete: any[] = [];
+
 
   constructor(private http: HttpClient, private readonly common: CommonService) {
     this.isLoading$.subscribe(res => {

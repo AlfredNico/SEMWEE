@@ -59,12 +59,14 @@ export class ViwerImportComponent implements OnInit {
     this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
     this.readFileContent(file).then(csvContent => {
       const csv = [];
-      const csvSeparator = ';';
+      const isIcludes = JSON.stringify(csvContent).toString().includes(',');
+      const csvSeparator = (isIcludes === true) ? ',' : ';';
       const lines = this.processCsv(csvContent);
       lines.forEach((element) => {
         const cols: string[] = element.split(csvSeparator);
         csv.push(cols);
       });
+
       this.parsedCsv = csv;
       this.parsedCsv.pop();
       const header = this.parsedCsv.shift().toString().split(',');

@@ -11,14 +11,17 @@ import { PreviewFileComponent } from './preview-file/preview-file.component';
 import { LpEditorService } from '../../services/lp-editor.service';
 import { OpenHeaderOptionsComponent } from './read-view-file/open-header-options.component';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
+import { LandingPageModule } from '@app/shared/modules/landing-page.module';
+import { SharedModule } from '@app/shared/modules/shared.module';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent, FacetFilterComponent, UndoRedoComponent, OpenHeaderOptionsComponent],
   imports: [
+    SharedModule,
+    LandingPageModule,
     SharedComponentsModule,
-    // SharedModule,
-    // LandingPageModule,
-    // SharedDirectivesModule,
+    NgxSliderModule,
     RouterModule.forChild([{ path: '', component: PreviewFileComponent }]),
   ],
   exports: [RouterModule],
