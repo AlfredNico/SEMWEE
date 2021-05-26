@@ -28,6 +28,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     LandingModule,
     SharedDirectivesModule,
     MatStepperModule, // stepper module
+    NgxSliderModule,
     SharedComponentsModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }])
   ],

@@ -88,15 +88,15 @@ export class ViwerReadImportComponent
           );
           this.items = this.filtersData['items'];
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);
-        } else {
-          this.displayedColumns = this.dataAfterUploaded['header'];
-          this.edidtableColumns = this.displayedColumns;
-          this.dataSource.data = this.dataAfterUploaded['content'];
-          this.dataViews = this.dataAfterUploaded['content'];
         }
+      } else {
+        this.displayedColumns = this.dataAfterUploaded['header'];
+        this.edidtableColumns = this.displayedColumns;
+        this.dataSource.data = this.dataAfterUploaded['content'];
+        this.dataViews = this.dataAfterUploaded['content'];
       }
-      this.lpViewer.checkInfoSubject$.next();
     }
+    this.lpViewer.checkInfoSubject$.next();
   }
 
   ngOnInit(): void { }
