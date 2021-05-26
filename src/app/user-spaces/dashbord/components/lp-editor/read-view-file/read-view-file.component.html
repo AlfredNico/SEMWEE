@@ -178,6 +178,9 @@
                   <button mat-menu-item (click)="convertToDate(column)">To Date</button>
                   <button mat-menu-item (click)="convertToText(column)">To Text</button>
                   <button mat-menu-item (click)="convertToBoolean(column)">To Boolean</button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item (click)="convertToNull(column)">To Null</button>
+                  <button mat-menu-item (click)="convertToEmpty(column)">To Empty</button>
                 </mat-menu>
 
                 <td mat-cell *matCellDef="let element; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" #td class="th-content">

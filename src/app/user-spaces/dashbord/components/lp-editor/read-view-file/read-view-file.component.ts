@@ -196,6 +196,8 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
         
       }
     });
+
+    this.dataSource = this.dataSource;
   }
 
   /* Convert To Text */
@@ -205,6 +207,8 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
         item[nameCell] = (item[nameCell]).toString();
       }
     });
+
+    this.dataSource = this.dataSource;
   }
 
   /* Convert To Boolean */
@@ -222,6 +226,26 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
         console.log(typeof(item[nameCell]));
       }
     });
+
+    this.dataSource = this.dataSource;
+  }
+
+  /* Convert To Null */
+  public convertToNull(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+        item[nameCell] = null;
+    });
+
+    this.dataSource = this.dataSource;
+  }
+
+  /* Convert To Empty */
+  public convertToEmpty(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+        item[nameCell] = "";
+    });
+
+    this.dataSource = this.dataSource;
   }
 
   public toTitleCase(str) {
