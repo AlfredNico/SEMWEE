@@ -11,7 +11,6 @@ import { FluidHeightDirective } from '../../directives/fluid-height.directive';
 import { LpEditorComponent } from './lp-editor.component';
 import { ReadViewFileComponent } from './read-view-file/read-view-file.component';
 import { ImportFileComponent } from './import-file/import-file.component';
-import { PreviewFileComponent } from './preview-file/preview-file.component';
 import { LpEditorService } from '../../services/lp-editor.service';
 import { OpenHeaderOptionsComponent } from './read-view-file/open-header-options.component';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
@@ -28,7 +27,6 @@ import { DatePipe } from '@angular/common';
     ImportFileComponent,
     ReadViewFileComponent,
     FacetFilterComponent,
-    PreviewFileComponent,
     UndoRedoComponent,
     OpenHeaderOptionsComponent,
   ],
