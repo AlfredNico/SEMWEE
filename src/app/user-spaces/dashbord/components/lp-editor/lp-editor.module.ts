@@ -18,6 +18,7 @@ import { SharedComponentsModule } from '@app/shared/modules/shared-components.mo
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
 import { SharedModule } from '@app/shared/modules/shared.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,13 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
   ],
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  providers: [LpEditorService],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ],
+  providers: [
+    LpEditorService,
+    DatePipe
+  ]
 })
 export class LpEditorModule { }
