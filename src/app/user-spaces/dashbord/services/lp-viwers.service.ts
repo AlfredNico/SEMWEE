@@ -7,10 +7,9 @@ import { map } from 'rxjs/operators';
 import { LPViewerProjects } from '../interfaces/lp-viewer-projects';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LpViwersService {
-
   public dataSources$ = new BehaviorSubject<any>([]);
 
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
@@ -30,7 +29,7 @@ export class LpViwersService {
       } else {
         this.common.hideSpinner('table');
       }
-    })
+    });
   }
 
   public getAllProjects(_idUsers): Observable<LPViewerProjects[]> {
@@ -46,43 +45,51 @@ export class LpViwersService {
   }
 
   upload(file: File, idUser: any): Observable<any> {
-    const data = new FormData()
+    const data = new FormData();
     data.append('files', file);
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
-      .pipe(
-        map(result => result)
-      )
+    return this.http
+      .post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
+      .pipe(map((result) => result));
   }
 
-  sendProjectNames(value: { idUser: any, ProjectName: string }): Observable<{ idProject: any }> {
-    return this.http.post<{ idProject: any }>(`${environment.baseUrl}/lpviewer/post-project/${value.ProjectName}/${value.idUser}`, value);
+  sendProjectNames(value: {
+    idUser: any;
+    ProjectName: string;
+    sizefile: any;
+    headers: any[];
+  }): Observable<{ idProject: any }> {
+    return this.http.post<{ idProject: any }>(
+      `${environment.baseUrl}/lpviewer/post-project`,
+      value
+    );
   }
 
-  sendFiles(value: { idProject: any, file: File }) {
-    const data = new FormData()
-    data.append('files', value.file);
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${value.idProject}`, data);
+  sendFiles(value: { idProject: any; fileData: any }) {
+    const data = value.fileData;
+    return this.http.post(
+      `${environment.baseUrl}/lpviewer/to-history/${value.idProject}`,
+      data
+    );
   }
 
-  // upload(file: File, idUser: any): Observable<any> {
-  //   const data = new FormData()
-  //   data.append('files', file);
-  //   return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
-  //     .pipe(
-  //       map(result => result)
-  //     )
-  // }
-
-  public addFacetFilter(value: { idProject: any, value: string }) {
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer`, value)
+  public addFacetFilter(value: { idProject: any; value: string }) {
+    return this.http.post(
+      `${environment.baseUrl}/lpviewer/post-parametre-lpviewer`,
+      value
+    );
   }
 
-  public addFilter(value: { idProject: any, value: any }) {
-    return this.http.post(`${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`, value);
+  public addFilter(value: { idProject: any; value: any }) {
+    return this.http.post(
+      `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`,
+      value
+    );
   }
 
   public putDisplayColums(_idHeader: any, header: string) {
-    return this.http.put(`${environment.baseUrl}/lpviewer/put-lpviewer-header/${_idHeader}`, header);
+    return this.http.put(
+      `${environment.baseUrl}/lpviewer/put-lpviewer-header/${_idHeader}`,
+      header
+    );
   }
-
 }

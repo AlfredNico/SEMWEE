@@ -7,17 +7,39 @@ import { User } from '@app/classes/users';
 @Component({
   selector: 'app-viwer-import',
   template: `
-    <div [formGroup]="form" class="p-5" fxLayout="column" fxLayoutAlign="space-around start">
-      <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="20px">
+    <div
+      [formGroup]="form"
+      class="p-5"
+      fxLayout="column"
+      fxLayoutAlign="space-around start"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-around center"
+        fxLayoutGap="20px"
+      >
         <mat-label for="file" class="py-2">
           Locate one or more files on your computer to upload:
         </mat-label>
         <button mat-raised-button (click)="fileInput.click()">
           {{ file ? file.name : 'Select' }}
         </button>
-        <input hidden type="file" id="file" name="file" class="py-2" formControlName="fileSource" #fileInput (change)="convertFile($event)" />
+        <input
+          hidden
+          type="file"
+          id="file"
+          name="file"
+          class="py-2"
+          formControlName="fileSource"
+          #fileInput
+          (change)="convertFile($event)"
+        />
       </div>
-      <button type="submit" mat-raised-button (click)="form.valid && onSubmit()">
+      <button
+        type="submit"
+        mat-raised-button
+        (click)="form.valid && onSubmit()"
+      >
         Next
         <mat-icon aria-label="close icon">double_arrow</mat-icon>
       </button>
@@ -25,7 +47,6 @@ import { User } from '@app/classes/users';
   `,
 })
 export class ViwerImportComponent implements OnInit {
-
   public form = new FormGroup({
     fileSource: new FormControl('', [Validators.required]),
   });
@@ -33,15 +54,22 @@ export class ViwerImportComponent implements OnInit {
   file: File | null | undefined;
 
   @Output() dataImported = new EventEmitter<any>(null);
-  private data: { header: string[], content: any[] } = { header: [], content: [] };
+  private data: { header: string[]; content: any[] } = {
+    header: [],
+    content: [],
+  };
   @Input() user: User = undefined;
   private ProjectName: string = '';
 
   //////////////
   csvContent: string;
   parsedCsv: string[][];
+  sizeFile: any;
 
-  constructor(private lpViewerService: LpViwersService, private readonly common: CommonService) { }
+  constructor(
+    private lpViewerService: LpViwersService,
+    private readonly common: CommonService
+  ) { }
 
   ngOnInit(): void { }
 
@@ -54,9 +82,11 @@ export class ViwerImportComponent implements OnInit {
     this.common.isLoading$.next(true);
 
     const file = event.target.files[0];
+    this.sizeFile = event.target.files[0].size;
     this.file = event.target.files[0];
 
     this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
+
     this.readFileContent(file).then(csvContent => {
       const csv = [];
       const isIcludes = JSON.stringify(csvContent).toString().includes(',');
@@ -87,30 +117,36 @@ export class ViwerImportComponent implements OnInit {
   }
 
   readFileContent(file) {
-    const reader = new FileReader()
+    const reader = new FileReader();
     return new Promise((resolve, reject) => {
-      reader.onload = event => resolve(event.target.result)
-      reader.onerror = error => reject(error)
-      reader.readAsText(file)
-    })
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsText(file);
+    });
   }
 
   public onSubmit() {
     if (this.file) {
       const value = {
         idUser: this.user._id,
-        ProjectName: this.ProjectName
+        ProjectName: this.ProjectName,
+        sizefile: this.sizeFile,
+        headers: this.data.header,
       };
-      this.lpViewerService.sendProjectNames(value).subscribe(idProject => {
+      this.lpViewerService.sendProjectNames(value).subscribe((idProject) => {
         if (idProject) {
-          this.dataImported.emit({ idProject: idProject['idProject'], data: this.data });
-          this.lpViewerService.sendFiles({
+          this.dataImported.emit({
             idProject: idProject['idProject'],
-            file: this.file
-          }).subscribe();
+            data: this.data,
+          });
+          this.lpViewerService
+            .sendFiles({
+              idProject: idProject['idProject'],
+              fileData: this.data.content,
+            })
+            .subscribe();
         }
-      })
+      });
     }
   }
-
 }

@@ -130,6 +130,70 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /* Convert To Title case */
+  public convertToTitlecase(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+      if (item[nameCell][1] === 'text') {
+        item[nameCell][0] = this.toTitleCase(item[nameCell][0]);
+      }
+    });
+    this.dataSource = this.dataSource;
+  }
+
+  /* Convert To Uppercase */
+  public convertToUppercase(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+      if (item[nameCell][1] === 'text') {
+        item[nameCell][0] = (item[nameCell][0] as string).toUpperCase();
+      }
+    });
+    this.dataSource = this.dataSource;
+  }
+
+  /* Convert To Lowercase */
+  public convertToLowercase(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+      if (item[nameCell][1] === 'text') {
+        item[nameCell][0] = (item[nameCell][0] as string).toLowerCase();
+      }
+    });
+    this.dataSource = this.dataSource;
+  }
+  /* Convert To Number */
+  public convertToNumber(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+      if (Number.isInteger(Number(item[nameCell][0]))) {
+        item[nameCell][0] = Number(item[nameCell][0])
+        item[nameCell][1] = 'number'
+      }
+    });
+    this.dataSource = this.dataSource;
+  }
+  /* Convert To Date */
+  public convertToDate(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+      // console.log('item', item[nameCell])
+      // if (Date.isDate(Date(item[nameCell][0]))) {
+        item[nameCell][0] = Date.parse(item[nameCell][0])
+        item[nameCell][1] = 'date'
+      // }
+    });
+  }
+  /* Convert To Text */
+  public convertToText(nameCell: string) {
+    this.dataSource.data.forEach(item => {
+      console.log('item', item[nameCell])
+    });
+  }
+
+  private toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      (txt: string) =>
+        txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    );
+  }
+
 }
 
 

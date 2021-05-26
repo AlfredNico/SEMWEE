@@ -155,7 +155,14 @@ export class InferListComponent
 
       Object.assign(this.dataView, this.data);
       this.numberSelected = this.dataView.data.length;
+
+      //change the name of the attributs
+      // this.dataView.data = this.dataView.data.map(({ ID, ...reste }) => ({ iddbb: ID, ...reste }));
+      // this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "ID")] = "iddb";
+      // this.dataView.data = this.dataView.data.map(({ idcsv, ...reste }) => ({ ID: idcsv, ...reste }));
+      // this.data.displayColumns[this.data.displayColumns.findIndex((x) => x == "idcsv")] = "ID";
       this.displayColumns = this.data.displayColumns;
+      console.log("hoho=" + this.displayColumns);
     }
 
     this.dataSource.data = this.dataView.data;
@@ -488,9 +495,8 @@ export class InferListComponent
 
   public isColumnDisplay(column: any): boolean {
     switch (true) {
-      case column.toLowerCase().includes('_id'):
+      case column.toLowerCase().includes('_id') || column == ('ID') || column == ('idproject'):
         return true;
-
       default:
         return false;
     }

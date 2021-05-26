@@ -323,7 +323,11 @@
      //         background-color: #72addc;
      //     }
     .mat-sort-header-container.mat-focus-indicator{
+        width: 100%;
         padding-left: 5px;
+    }
+    .mat-sort-header-content{
+        width: 100%;
     }
     .right-adj .mat-form-field-flex{
         margin-right: 0 !important;

@@ -1,7 +1,11 @@
 import { UndoRedoComponent } from './undo-redo.component';
 import { FacetFilterComponent } from './facet-filter.component';
 import { EditorDialogComponent } from './editor-dialog.component';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FluidHeightDirective } from '../../directives/fluid-height.directive';
 import { LpEditorComponent } from './lp-editor.component';
@@ -16,22 +20,27 @@ import { SharedModule } from '@app/shared/modules/shared.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
-  declarations: [LpEditorComponent, EditorDialogComponent, FluidHeightDirective, ImportFileComponent, PreviewFileComponent, ReadViewFileComponent, FacetFilterComponent, UndoRedoComponent, OpenHeaderOptionsComponent],
+  declarations: [
+    LpEditorComponent,
+    EditorDialogComponent,
+    FluidHeightDirective,
+    ImportFileComponent,
+    ReadViewFileComponent,
+    FacetFilterComponent,
+    PreviewFileComponent,
+    UndoRedoComponent,
+    OpenHeaderOptionsComponent,
+  ],
   imports: [
     SharedModule,
     LandingPageModule,
     SharedComponentsModule,
     NgxSliderModule,
-    RouterModule.forChild([{ path: '', component: PreviewFileComponent }]),
+    RouterModule.forChild([{ path: '', component: ImportFileComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [EditorDialogComponent],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
-    NO_ERRORS_SCHEMA
-  ],
-  providers: [
-    LpEditorService
-  ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  providers: [LpEditorService],
 })
 export class LpEditorModule { }
