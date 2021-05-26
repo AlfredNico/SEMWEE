@@ -81,42 +81,40 @@ export class ViwerImportComponent implements OnInit {
 
   convertFile(event: any) {
     if ((event.target.files[0]['name'] as string).includes('.csv')) {
-      this.common.showSpinner('table');
-      this.common.isLoading$.next(true);
-
       const file = event.target.files[0];
       this.sizeFile = event.target.files[0].size;
       this.file = event.target.files[0];
 
       this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
+      this.readFileContent(file)
+        .then((csvContent) => {
+          const csv = [];
+          const lines = this.processCsv(csvContent);
+          const sep1 = lines[0].split(';').length;
+          const sep2 = lines[0].split(',').length;
+          const csvSeparator = sep1 > sep2 ? ';' : ',';
+          lines.forEach((element) => {
+            const cols: string[] = element.split(csvSeparator);
+            csv.push(cols);
+          });
+          this.parsedCsv = csv;
+          this.parsedCsv.pop();
+          const header = this.parsedCsv.shift().toString().split(',');
+          const content = this.parsedCsv.map((value) =>
+            value.reduce((tdObj, td, index) => {
+              tdObj[header[index]] = td;
+              tdObj['start'] = false;
+              tdObj['flag'] = false;
+              return tdObj;
+            }, {})
+          );
 
-      this.readFileContent(file).then(csvContent => {
-        const csv = [];
-        const isIcludes = JSON.stringify(csvContent).toString().includes(',');
-        const csvSeparator = (isIcludes === true) ? ',' : ';';
-        const lines = this.processCsv(csvContent);
-        lines.forEach((element) => {
-          const cols: string[] = element.split(csvSeparator);
-          csv.push(cols);
-        });
-
-        this.parsedCsv = csv;
-        this.parsedCsv.pop();
-        const header = this.parsedCsv.shift().toString().split(',');
-        const content = this.parsedCsv.map(value => value.reduce((tdObj, td, index) => {
-          tdObj[header[index]] = td;
-          tdObj['start'] = false;
-          tdObj['flag'] = false;
-          return tdObj;
-        }, {}));
-
-        this.data.header = header;
-        this.data.header.unshift('all');
-        this.data.content = content;
-        this.onSubmit();
-
-        this.common.isLoading$.next(false);
-      }).catch(error => console.log(error))
+          this.data.header = header;
+          this.data.header.unshift('all');
+          this.data.content = content;
+          this.onSubmit();
+        })
+        .catch((error) => console.log(error));
     } else {
       this.nofits.warn('This is no csv file !');
     }

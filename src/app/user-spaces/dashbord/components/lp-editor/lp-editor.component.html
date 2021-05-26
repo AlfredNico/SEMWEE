@@ -1,9 +1,13 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
+<mat-horizontal-stepper
+  [linear]="true"
+  #stepper
+  [selectedIndex]="selectedStepperIndex"
+>
   <mat-step completed="false" editable="false" label="Fill out your address">
-    <app-import-file (importFile)=nextReadFile($event)></app-import-file>
+    <app-import-file [user]="user" (importFile)="nextReadFile($event)"></app-import-file>
   </mat-step>
   <mat-step completed="false" editable="false">
-    <ng-template matStepLabel>Done</ng-template>
     <app-read-view-file [dataAfterUploaded]="dataAfterUploaded"></app-read-view-file>
   </mat-step>
 </mat-horizontal-stepper>
+

@@ -6,7 +6,7 @@ import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
-import { LPViewerProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
+import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ import { switchMap, tap } from 'rxjs/operators';
   styleUrls: ['./all-lp-viewer-projects.component.scss'],
 })
 export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
-  public allProjects$: Observable<LPViewerProjects[]>;
+  public allProjects$: Observable<LPAllProjects[]>;
   private user!: User;
 
   constructor(
