@@ -22,10 +22,10 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
   declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
   imports: [
     HttpClientModule,
-    // SharedModule,
-    // LandingPageModule,
-    // LandingModule,
-    // NgxSliderModule,
+    SharedModule,
+    LandingPageModule,
+    LandingModule,
+    NgxSliderModule,
     SharedDirectivesModule,
     MatStepperModule, // stepper module
     SharedComponentsModule,

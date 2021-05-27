@@ -204,7 +204,8 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                    <!-- <button mat-menu-item (click)="transformNumber(column)">To number</button> -->
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  </app-edit-cell>
                 </mat-menu>
                 <td
                   mat-cell
