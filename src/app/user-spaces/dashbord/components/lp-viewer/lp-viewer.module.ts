@@ -16,19 +16,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
-import { NumericFacetComponent } from '@app/shared/components/numeric-facet/numeric-facet.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
-  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent, NumericFacetComponent],
+  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
   imports: [
     HttpClientModule,
-    SharedModule,
-    LandingPageModule,
-    LandingModule,
+    // SharedModule,
+    // LandingPageModule,
+    // LandingModule,
+    // NgxSliderModule,
     SharedDirectivesModule,
     MatStepperModule, // stepper module
-    NgxSliderModule,
     SharedComponentsModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }])
   ],

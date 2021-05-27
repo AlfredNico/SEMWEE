@@ -3,16 +3,16 @@ import { LandingPageModule } from './landing-page.module';
 import { SharedDirectivesModule } from './shared-directives.module';
 import { SharedModule } from './shared.module';
 import { CommonModule } from '@angular/common';
-import { EditCellComponent } from '../components/edit-cell/edit-cell.component';
 import { LandingModule } from './landing.module';
-import { NumericFacetComponent } from '../components/numeric-facet/numeric-facet.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NumericFacetComponent } from '../components/lp-edit-viwer/numeric-facet.component';
+import { EditCellComponent } from '../components/lp-edit-viwer/edit-cell.component';
 
 
 @NgModule({
   declarations: [
     EditCellComponent,
-    // NumericFacetComponent
+    NumericFacetComponent
   ],
   imports: [
     SharedModule,
@@ -28,7 +28,11 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     LandingModule,
     LandingPageModule,
     SharedDirectivesModule,
-    NgxSliderModule
+    NgxSliderModule,
+
+    /* Shared components */
+    NumericFacetComponent,
+    EditCellComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
