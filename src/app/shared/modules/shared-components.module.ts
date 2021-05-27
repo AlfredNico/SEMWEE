@@ -5,14 +5,20 @@ import { SharedModule } from './shared.module';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from './landing.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { NumericFacetComponent } from '../components/lp-edit-viwer/numeric-facet.component';
-import { EditCellComponent } from '../components/lp-edit-viwer/edit-cell.component';
+import { EditCellComponent } from '../components/lp-editor-viewer/edit-cell.component';
+import { NumericFacetComponent } from '../components/lp-editor-viewer/numeric-facet.component';
+import { InputFilterComponent } from '../components/lp-editor-viewer/input-filter.component';
+import { SearchFilterComponent } from '../components/lp-editor-viewer/search-filter.component';
+import { FacetFilterComponent } from '../components/lp-editor-viewer/facet-filter.component';
 
 
 @NgModule({
   declarations: [
     EditCellComponent,
-    NumericFacetComponent
+    NumericFacetComponent,
+    InputFilterComponent,
+    SearchFilterComponent,
+    FacetFilterComponent
   ],
   imports: [
     SharedModule,
@@ -32,7 +38,10 @@ import { EditCellComponent } from '../components/lp-edit-viwer/edit-cell.compone
 
     /* Shared components */
     NumericFacetComponent,
-    EditCellComponent
+    EditCellComponent,
+    InputFilterComponent,
+    SearchFilterComponent,
+    FacetFilterComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

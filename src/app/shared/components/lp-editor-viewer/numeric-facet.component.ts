@@ -1,7 +1,6 @@
 import { Options } from '@angular-slider/ngx-slider';
-import { AfterContentInit, AfterViewInit, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
-import { fromEvent, merge, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-numeric-facet',

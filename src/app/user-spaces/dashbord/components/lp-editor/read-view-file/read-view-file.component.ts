@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-read-view-file',
@@ -118,9 +119,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public textFacet(column: any) {
-    // this.commonService.showSpinner('table');
-
+  public searchFacet(column: any) {
     let distances = {}, isExist = false;
     this.dataSource.data.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
@@ -131,19 +130,46 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     })
 
     this.lpEditor.itemsObservables$.next({
-      type: 'facet',
+      type: 'search',
       isMinimize: false,
       head: column,
       content: value
     });
-    // }
   }
 
-  public textFilter(column: any) {
+  public inputFilter(column: any) {
     this.lpEditor.itemsObservables$.next({
-      type: 'filter',
+      type: 'input',
       isMinimize: false,
       head: column,
+    });
+  }
+
+  public numericFacter(column: any) {
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = item[column]
+        if (Number(item[column]) <= minValue) minValue = item[column];
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+
+    this.lpEditor.itemsObservables$.next({
+      type: 'numeric',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
     });
   }
 }

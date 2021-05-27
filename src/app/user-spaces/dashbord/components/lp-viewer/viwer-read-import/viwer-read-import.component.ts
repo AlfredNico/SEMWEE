@@ -17,8 +17,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
-import { FacetFilter } from '@app/user-spaces/dashbord/interfaces/facet-filter';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
