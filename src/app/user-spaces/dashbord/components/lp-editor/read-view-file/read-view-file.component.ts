@@ -45,23 +45,28 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      const header = JSON.parse(
-        JSON.stringify(
-          this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
-        )
-      ).split(',');
-      const editableColumns = JSON.parse(
-        JSON.stringify(
-          this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-        )
-      ).split(',');
-      const values = this.dataAfterUploaded[1];
-      header.unshift('all');
-      editableColumns.unshift('all');
+      if (Array.isArray(this.dataAfterUploaded) === true) {
+        const header = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+          )
+        ).split(',');
+        const editableColumns = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
+          )
+        ).split(',');
+        const values = this.dataAfterUploaded[1];
+        header.unshift('all');
+        editableColumns.unshift('all');
 
-      this.displayedColumns = header;
-      // this.dataSource.data = this.checkFilter(values);
-      this.dataSource.data = this.dataViews = values;
+        this.displayedColumns = header;
+        this.dataSource.data = this.dataViews = values;
+      } else {
+        console.log(this.dataAfterUploaded);
+        this.displayedColumns = this.dataAfterUploaded['header'];
+        this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
+      }
     }
   }
 
