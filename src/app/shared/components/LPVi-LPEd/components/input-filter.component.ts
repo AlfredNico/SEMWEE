@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-input-filter',
@@ -24,7 +24,7 @@ import { FormBuilder } from '@angular/forms';
             <div class="pointer px-1">invert</div>
             <div class="pointer px-1">reset</div>
           </div>
-          <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="formGroup">
+          <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="form">
             <input autocomplete="off" type="search" class="w-100" placeholder="filter ..." [formControlName]="item['head']" appearance="outline">
           </div>
           <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3"
@@ -38,24 +38,31 @@ import { FormBuilder } from '@angular/forms';
   styles: [
   ]
 })
-export class InputFilterComponent implements AfterViewInit {
+export class InputFilterComponent implements AfterViewInit, OnInit {
 
   /* INPUT */
   @Input('items') items: any[] = [];
+  @Input('dataViews') dataViews: any[] = [];
   @Input('item') item: any = undefined;
 
   /* OUTPUT */
   @Output('minimize') minimize: any = new EventEmitter();
   @Output('removeFromItem') removeFromItem: any = new EventEmitter();
+  @Output('formGroup') formGroup: any = new EventEmitter();
 
-  public formGroup = this.fb.group({});
+  public form = this.fb.group({});
 
   constructor(private fb: FormBuilder) { }
 
+  ngOnInit(): void {
+    this.form.addControl(this.item['head'], new FormControl(this.item['value']));
+    // this.formGroup.emit(this.form.value);
+  }
+
   ngAfterViewInit(): void {
-    this.formGroup.valueChanges.subscribe(query => {
-      console.log('query=', query);
-    })
+    this.form.valueChanges.subscribe(query => {
+      this.formGroup.emit(query);
+    });
   }
 
 }

@@ -43,6 +43,7 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
       }),
       switchMap((_) => this.lpEditor.getAllProjects(this.user._id))
     );
+    this.common.hideSpinner('table');
   }
 
   // ngDoCheck(): void {
@@ -50,7 +51,6 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
   // }
 
   ngAfterViewInit() {
-    // this.common.showSpinner('root');
     this.allProjects$.subscribe(
       (result: any[]) => {
         if (result && result.length == 0) {
@@ -63,7 +63,6 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
           this.notifs.warn(error.message);
         }
         this.router.navigateByUrl('/user-space/lp-editor');
-        // this.common.hideSpinner();
       }
     );
   }

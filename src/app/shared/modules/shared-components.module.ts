@@ -5,11 +5,12 @@ import { SharedModule } from './shared.module';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from './landing.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { EditCellComponent } from '../components/lp-editor-viewer/edit-cell.component';
-import { NumericFacetComponent } from '../components/lp-editor-viewer/numeric-facet.component';
-import { InputFilterComponent } from '../components/lp-editor-viewer/input-filter.component';
-import { SearchFilterComponent } from '../components/lp-editor-viewer/search-filter.component';
-import { FacetFilterComponent } from '../components/lp-editor-viewer/facet-filter.component';
+import { EditCellComponent } from '../components/LPVi-LPEd/components/edit-cell.component';
+import { InputFilterComponent } from '../components/LPVi-LPEd/components/input-filter.component';
+import { NumericFacetComponent } from '../components/LPVi-LPEd/components/numeric-facet.component';
+import { SearchFilterComponent } from '../components/LPVi-LPEd/components/search-filter.component';
+import { LpdLpdService } from '../components/LPVi-LPEd/services/lpd-lpd.service';
+import { FacetFilterComponent } from '../components/LPVi-LPEd/components/facet-filter.component';
 
 
 @NgModule({
@@ -47,8 +48,8 @@ import { FacetFilterComponent } from '../components/lp-editor-viewer/facet-filte
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
   ],
-  entryComponents: [
-    NumericFacetComponent
+  providers: [
+    LpdLpdService
   ]
 })
 export class SharedComponentsModule { }

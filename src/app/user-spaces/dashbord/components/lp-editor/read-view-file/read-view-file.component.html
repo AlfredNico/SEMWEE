@@ -23,7 +23,10 @@
       <mat-tab-group (selectedTabChange)="tabChanged($event)" mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
         class="mat-group">
         <mat-tab label="Facet/Filter">
-          <app-facet-filter-target></app-facet-filter-target>
+          <app-facet-filter-target
+          [dataViews]='dataViews'
+          [dataSources]='dataSource.data'
+          ></app-facet-filter-target>
         </mat-tab>
         <mat-tab [label]="undoRedoLabel">
           <app-undo-redo></app-undo-redo>
@@ -145,7 +148,7 @@
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
                   <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
-                  <button mat-menu-item>Numeric facet</button>
+                  <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
@@ -166,7 +169,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell mat-menu-item [dataSource]="dataSource.data" [columnName]='column'>
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
                   </app-edit-cell>
                 </mat-menu>
 

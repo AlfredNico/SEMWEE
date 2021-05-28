@@ -8,7 +8,7 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
         <div class="mx-1 pb-2">
           <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
             <div class="py-2 px-2 rounded-top" style="background: #bbccff;" fxLayout="row">
-              <mat-icon aria-label="close icon">
+              <mat-icon aria-label="close icon" (click)="removeFromItem(item)">
                 highlight_off
               </mat-icon>
               <mat-icon *ngIf="item['isMinimize'] === false" aria-label="close icon" (click)="minimize(item)">
@@ -43,18 +43,21 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
 })
 export class NumericFacetComponent {
 
+  /* INPUT */
   @Input('items') items: any[] = [];
   @Input('item') item: any = undefined;
-
+  @Input('dataViews') public dataViews: any[] = [];
+  @Input('dataSources') public dataSources: any[] = [];
   @Input('minValue') minValue: number = 0;
   @Input('maxValue') maxValue: number = 2000;
   @Input('options') options: Options = undefined;
 
-  @Input('dataViews') public dataViews: any[] = [];
-  @Input('dataSources') public dataSources: any[] = [];
   private numericQueries: boolean[] = [];
 
   @Output('numericQueriesEmitter') numericQueriesEmitter = new EventEmitter<boolean[]>(undefined);
+  @Output('itemsEmitter') itemsEmitter: any = new EventEmitter();
+  @Output('removeFromItem') removeFromItem: any = new EventEmitter();
+
 
   constructor(private readonly lpViewer: LpViwersService) { }
 
@@ -71,16 +74,5 @@ export class NumericFacetComponent {
   }
 
 
-  public minimize(item: any) {
-    const index = this.items.indexOf(item);
-
-    if (index !== -1) {
-      this.items[index] = {
-        ...this.items[index],
-        isMinimize: !this.items[index]['isMinimize'],
-      }
-    }
-
-    this.items = this.items;
-  }
+  public minimize(item: any) { }
 }

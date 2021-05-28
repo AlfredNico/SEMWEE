@@ -10,10 +10,6 @@ import { LPAllProjects } from '../interfaces/lp-viewer-projects';
   providedIn: 'root',
 })
 export class LpEditorService {
-  /* Emittter value from clicked USER */
-  public itemsObservables$ = new BehaviorSubject<any>(undefined);
-  /* Emittter value dataSources after filter USER */
-  public dataSources$ = new BehaviorSubject<any>(undefined);
 
   refresh$ = new BehaviorSubject<boolean>(false);
   invokeFirstComponentFunction = new EventEmitter();
