@@ -1,5 +1,6 @@
 import { UpdatesHeaderComponent } from './viwer-read-import/updates-header.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { RouterModule } from '@angular/router';
 import { LpViewerComponent } from './lp-viewer.component';
 import { ViwerImportComponent } from './viwer-import/viwer-import.component';
@@ -29,6 +30,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     SharedDirectivesModule,
     MatStepperModule, // stepper module
     SharedComponentsModule,
+    PerfectScrollbarModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }])
   ],
   exports: [RouterModule],
@@ -46,7 +48,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
   providers: [
     LpViwersService,
     tokenInterceptor,
-    errorInterceptor
+    errorInterceptor,
   ]
 })
 export class LpViewerModule { }

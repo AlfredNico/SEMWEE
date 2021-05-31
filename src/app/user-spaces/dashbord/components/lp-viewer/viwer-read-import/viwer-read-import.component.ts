@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -19,11 +19,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { FormBuilder } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
+import { getCustomPaginatorIntl } from './custom-paginator.component';
 
 @Component({
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() }
+  ]
 })
 export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges {
@@ -42,6 +46,10 @@ export class ViwerReadImportComponent
   @Input('inputFilters') inputFilters: any = undefined;
 
   public tabIndex = 0;
+
+  // filter icon && and tooltips
+  public icon = '';
+  public active: any = '';
 
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
@@ -152,6 +160,15 @@ export class ViwerReadImportComponent
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     this.tabIndex = tabChangeEvent.index;
+  }
+
+  sortData($e: any) {
+    $e.direction === 'asc'
+      ? (this.icon = 'asc')
+      : $e.direction === 'desc'
+        ? (this.icon = 'desc')
+        : (this.icon = '');
+    this.active = $e.active;
   }
 
   public textFacet(column: any) {
