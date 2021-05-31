@@ -5,6 +5,7 @@ import { environment } from '@environments/environment';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LPViewerProjects } from '../interfaces/lp-viewer-projects';
+import { LPViewerHistory } from '../interfaces/lp-viewer-history';
 
 @Injectable({
   providedIn: 'root',
@@ -62,8 +63,21 @@ export class LpViwersService {
     );
   }
 
-  sendFiles(value: { idProject: any; fileData: any }) {
-    const data = value.fileData;
+  sendFiles(
+    value: {
+      idProject: any;
+      fileData: any;
+      namehistory: string;
+      idHeader: number;
+    },
+    idname: any
+  ) {
+    const data = {
+      data: value.fileData,
+      name: value.namehistory,
+      idHeader: value.idHeader,
+      idName: idname,
+    };
     return this.http.post(
       `${environment.baseUrl}/lpviewer/to-history/${value.idProject}`,
       data
@@ -93,10 +107,23 @@ export class LpViwersService {
     );
   }
 
-  public putDisplayColums(_idHeader: any, header: string) {
-    return this.http.put(
-      `${environment.baseUrl}/lpviewer/put-lpviewer-header/${_idHeader}`,
+  public postDisplayColums(idproject, _idHeader: any, header: string[]) {
+    return this.http.post(
+      `${environment.baseUrl}/lpviewer/put-lpviewer-header/${idproject}/${_idHeader}`,
       header
     );
   }
+
+  // public getAllHistoryName(idProject): Observable<LPViewerHistory[]> {
+  //   return this.http.get<LPViewerHistory[]>(
+  //     `${environment.baseUrl}/lpviewer/get-history-name/${idProject}`
+  //   );
+  // }
+
+  public getOnedateHistory(value: any): Observable<any> {
+    return this.http.get<any>(
+      `${environment.baseUrl}/lpviewer/get-One-data-history/${value.idProject}/${value.idName}`
+    );
+  }
+  // /get-One-data-history/:idProject/:idHistory
 }

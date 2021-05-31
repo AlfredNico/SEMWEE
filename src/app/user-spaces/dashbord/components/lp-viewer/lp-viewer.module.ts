@@ -24,6 +24,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { EditComponent } from './editLpViewer/edit.component';
+import { UndoRedoComponent } from '../lp-viewer/UndoRedo/undo-redo.component';
+import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { EditComponent } from './editLpViewer/edit.component';
     HeaderOptionsComponent,
     UpdatesHeaderComponent,
     EditComponent,
+    UndoRedoComponent,
   ],
   imports: [
     HttpClientModule,
@@ -43,6 +47,8 @@ import { EditComponent } from './editLpViewer/edit.component';
     LandingModule,
     MatStepperModule, // stepper module
     LandingPageModule,
+    MatListModule,
+    MatDialogModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }]),
   ],
   exports: [RouterModule],
@@ -56,6 +62,7 @@ import { EditComponent } from './editLpViewer/edit.component';
     MatCardModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatDialogModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

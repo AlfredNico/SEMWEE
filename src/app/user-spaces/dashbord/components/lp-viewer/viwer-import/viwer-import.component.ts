@@ -54,9 +54,10 @@ export class ViwerImportComponent implements OnInit {
   file: File | null | undefined;
 
   @Output() dataImported = new EventEmitter<any>(null);
-  private data: { header: string[]; content: any[] } = {
+  private data: { header: string[]; content: any[]; name: any[] } = {
     header: [],
     content: [],
+    name: [],
   };
   @Input() user: User = undefined;
   private ProjectName: string = '';
@@ -86,16 +87,20 @@ export class ViwerImportComponent implements OnInit {
     this.readFileContent(file)
       .then((csvContent) => {
         const csv = [];
-        const isInclude = JSON.stringify(csvContent).toString().includes(',');
-        // console.log();
-        const csvSeparator = isInclude ? ',' : ';';
         const lines = this.processCsv(csvContent);
+        // console.log(lines);
+        const sep1 = lines[0].split(';').length;
+        const sep2 = lines[0].split(',').length;
+        const csvSeparator = sep1 > sep2 ? ';' : ',';
+        console.log(csvSeparator);
         lines.forEach((element) => {
           const cols: string[] = element.split(csvSeparator);
           csv.push(cols);
         });
         this.parsedCsv = csv;
         this.parsedCsv.pop();
+        // console.log(this.parsedCsv.shift());
+
         const header = this.parsedCsv.shift().toString().split(',');
         const content = this.parsedCsv.map((value) =>
           value.reduce((tdObj, td, index) => {
@@ -107,9 +112,9 @@ export class ViwerImportComponent implements OnInit {
         );
 
         this.data.header = header;
+        console.log(this.data.header);
         this.data.header.unshift('all');
         this.data.content = content;
-        // console.log(content);
         this.onSubmit();
       })
       .catch((error) => console.log(error));
@@ -134,15 +139,28 @@ export class ViwerImportComponent implements OnInit {
       };
       this.lpViewerService.sendProjectNames(value).subscribe((idProject) => {
         if (idProject) {
+          this.data.name = [
+            {
+              idName: 0,
+              name: 'Create project',
+              idProject: idProject['idProject'],
+            },
+          ];
           this.dataImported.emit({
             idProject: idProject['idProject'],
             data: this.data,
+            idHeader: 0,
           });
           this.lpViewerService
-            .sendFiles({
-              idProject: idProject['idProject'],
-              fileData: this.data.content,
-            })
+            .sendFiles(
+              {
+                namehistory: 'Create project',
+                idProject: idProject['idProject'],
+                fileData: this.data.content,
+                idHeader: 0,
+              },
+              null
+            )
             .subscribe();
         }
       });

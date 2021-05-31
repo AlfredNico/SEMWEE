@@ -4,10 +4,13 @@ import { LpViwersService } from './../../../services/lp-viwers.service';
 import {
   AfterViewInit,
   Component,
+  ElementRef,
   Input,
   OnChanges,
   OnInit,
   ViewChild,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,6 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { FacetFilter } from '@app/user-spaces/dashbord/interfaces/facet-filter';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -26,12 +30,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./viwer-read-import.component.scss'],
 })
 export class ViwerReadImportComponent
-  implements OnInit, AfterViewInit, OnChanges {
+  implements OnInit, AfterViewInit, OnChanges
+{
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
+  // idbtn = '';
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
+
   @Input('idProject') idProject = undefined;
   @Input('filtersData') filtersData: {
     items: any;
@@ -49,11 +57,16 @@ export class ViwerReadImportComponent
   public formGroup = this.fb.group({});
 
   public items: any[] = [];
-  hoverIndex;
-  vueEdit: boolean = false;
-  nameCells;
-  objectOne: any;
-  selected = 'string';
+  public hoverIndex;
+  public vueEdit: boolean = false;
+  public nameCells;
+  public lastValue;
+  public objectOne: any;
+  public selected = 'string';
+  public listNameHistory: any[];
+  public ActualyData: any = null;
+  public indexRowdata = undefined;
+  public idHeader = 0;
 
   constructor(
     public dialog: MatDialog,
@@ -63,15 +76,21 @@ export class ViwerReadImportComponent
   ) {}
 
   ngOnChanges(): void {
+    // console.log('Okokokoko');
     if (this.dataAfterUploaded != undefined) {
+      // console.log('lViewerReadImport : ', this.dataAfterUploaded);
+      // console.log(' cnhange: ', this.nameHeader);
       if (
         (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
       ) {
+        // console.log('first ', this.dataAfterUploaded[0][0]['nameUpdate']);
         const header = JSON.parse(
           JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
           )
         ).split(',');
+        // console.log('after ', header);
+
         const editableColumns = JSON.parse(
           JSON.stringify(
             this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
@@ -85,6 +104,7 @@ export class ViwerReadImportComponent
         this.edidtableColumns = editableColumns;
         this.dataSource.data = this.checkFilter(values);
         this.dataViews = values;
+        this.listNameHistory = this.dataAfterUploaded[4];
 
         if (this.filtersData.items !== undefined) {
           this.formGroup = this.fb.group(
@@ -94,16 +114,20 @@ export class ViwerReadImportComponent
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);
         }
       } else {
+        console.log(this.dataAfterUploaded);
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.edidtableColumns = this.displayedColumns;
         this.dataSource.data = this.dataAfterUploaded['content'];
         this.dataViews = this.dataAfterUploaded['content'];
+        this.listNameHistory = this.dataAfterUploaded['name'];
       }
     }
     this.lpViewer.checkInfoSubject$.next();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.route.snapshot.params.prenom;
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -112,7 +136,6 @@ export class ViwerReadImportComponent
     this.lpViewer.dataSources$.subscribe((res) => {
       if (res) {
         this.dataSource.data = res;
-        console.log(res);
       }
     });
   }
@@ -132,9 +155,10 @@ export class ViwerReadImportComponent
         map((result: any) => {
           if (result) {
             this.displayedColumns = result.noHiddenRows;
-            this.lpViewer.putDisplayColums(
+            this.lpViewer.postDisplayColums(
               this.idProject,
-              JSON.stringify(this.displayedColumns)
+              this.idHeader,
+              this.displayedColumns
             );
           }
         })
@@ -273,27 +297,290 @@ export class ViwerReadImportComponent
   }
 
   enter(i, otherValue) {
-    // console.log('okokokokokkokokoko');
     this.hoverIndex = i + otherValue;
-    // console.log(this.hoverIndex);
   }
 
   leave(i, otherValue) {
     this.hoverIndex = null;
   }
 
-  action(value, namecells) {
+  action(value, namecells, index) {
+    const regex3 =
+      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    if (regex3.exec(value[namecells])) {
+      this.selected = 'object';
+    } else {
+      this.selected = typeof value[namecells];
+    }
     this.vueEdit = true;
-    this.selected = typeof value[namecells];
-    console.log('oddodoodoodoodoodoododo', this.selected);
-    this.objectOne = value;
+    this.objectOne = [index, value];
     this.nameCells = namecells;
+    this.lastValue = value[namecells];
   }
 
   toggleedit(value) {
-    this.vueEdit = value;
+    this.vueEdit = value[0];
+    console.log(this.idHeader);
+    if (value[1] === '') {
+      console.log('envoye des donnée');
+      this.indexRowdata = undefined;
+      const name_dinamic = `Edit single cell on row ${
+        this.objectOne[0] + 1
+      }, column ${this.nameCells}`;
+      const actualydata = this.ActualyData ? this.ActualyData['idName'] : null;
+      if (this.ActualyData) {
+        this.listNameHistory.splice(
+          this.listNameHistory.indexOf(this.ActualyData) + 1
+        );
+      }
+      this.lpViewer
+        .sendFiles(
+          {
+            namehistory: name_dinamic,
+            idProject: this.idProject,
+            fileData: this.dataSource.data,
+            idHeader: this.idHeader,
+          },
+          actualydata
+        )
+        .subscribe((res) => {
+          this.listNameHistory.push(res);
+        });
+      this.ActualyData = null;
+    }
   }
+  ConcerterToString(newValue) {
+    const regex3 =
+      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+
+    if (regex3.exec(newValue) || regex3.exec(this.lastValue)) {
+      const regex2 = new RegExp('[-\\/ ]');
+      const tab = newValue.split(regex2);
+      const tab1 = tab[2].toString().split('T');
+      this.dataSource.data.forEach((item) => {
+        if (
+          regex3.exec(item[this.nameCells]) &&
+          item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
+        ) {
+          item[this.nameCells] = moment(
+            `${tab1[0]}-${tab[1]}-${tab[0]}`,
+            'DD-MM-YYYY',
+            true
+          ).format('DD/MM/YYYY');
+        }
+      });
+    } else {
+      this.dataSource.data.forEach((item) => {
+        if (
+          item[this.nameCells] === this.lastValue.toString() ||
+          parseInt(item[this.nameCells]) === parseInt(this.lastValue) ||
+          item[this.nameCells] === this.lastValue
+        ) {
+          item[this.nameCells] = newValue.toString();
+        } else {
+        }
+      });
+    }
+  }
+  ConverterToNumber(newValue) {
+    const parsed = parseInt(newValue);
+    if (isNaN(parsed)) {
+      alert('not a valid number');
+    } else {
+      this.dataSource.data.forEach((item) => {
+        if (
+          item[this.nameCells] === this.lastValue.toString() ||
+          (parseInt(item[this.nameCells]) &&
+            parseInt(item[this.nameCells]) === this.lastValue) ||
+          item[this.nameCells] === this.lastValue
+        ) {
+          item[this.nameCells] = parsed;
+        }
+      });
+    }
+  }
+  ConverterToDate(newValue) {
+    const reg =
+      /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+    const reg1 =
+      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+    const regex3 =
+      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    let string_date = newValue;
+    const regex2 = new RegExp('[-\\/ ]');
+
+    // .format('YYYY/MM/DD');
+    if (reg1.exec(string_date)) {
+      const tab = string_date.split(regex2);
+      // console.log(tab);
+      this.dataSource.data.forEach((item) => {
+        if (item[this.nameCells] === this.lastValue.toString()) {
+          item[this.nameCells] = moment(
+            `${tab[0]}-${tab[1]}-${tab[2]}`,
+            'YYYY-MM-DD',
+            true
+          ).format();
+        }
+      });
+      // .format('DD'/MM/YYYY);
+    } else if (reg.exec(string_date)) {
+      const tab = string_date.split(regex2);
+      // console.log(tab);
+      this.dataSource.data.forEach((item) => {
+        if (item[this.nameCells] === this.lastValue.toString()) {
+          item[this.nameCells] = moment(
+            `${tab[0]}-${tab[1]}-${tab[2]}`,
+            'DD-MM-YYYY',
+            true
+          ).format();
+        }
+      });
+    } else if (regex3.exec(string_date)) {
+      // console.log("C'est un objet");
+      const tab = string_date.split(regex2);
+      const tab1 = tab[2].toString().split('T');
+      this.dataSource.data.forEach((item) => {
+        if (
+          regex3.exec(item[this.nameCells]) &&
+          item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
+        ) {
+          // console.log(item[this.nameCells].split('T')[0]);
+          item[this.nameCells] = moment(
+            `${tab1[0]}-${tab[1]}-${tab[0]}`,
+            'DD-MM-YYYY',
+            true
+          ).format();
+        }
+      });
+    } else {
+      alert('format date incorect');
+    }
+  }
+  ConverterToBooleen(newValue) {
+    if (newValue != 'true' || !newValue) {
+      this.dataSource.data.forEach((item) => {
+        if (
+          item[this.nameCells] === this.lastValue.toString() ||
+          (parseInt(item[this.nameCells]) &&
+            parseInt(item[this.nameCells]) === this.lastValue) ||
+          item[this.nameCells] === this.lastValue
+        ) {
+          item[this.nameCells] = false;
+        }
+      });
+    } else {
+      // console.log(newValue);
+      // console.log('this.lastValue : ', this.lastValue);
+      // console.log('type : ', typeof this.lastValue);
+      this.dataSource.data.forEach((item) => {
+        if (
+          item[this.nameCells] === this.lastValue.toString() ||
+          (parseInt(item[this.nameCells]) &&
+            parseInt(item[this.nameCells]) === this.lastValue) ||
+          item[this.nameCells] === this.lastValue
+        ) {
+          item[this.nameCells] = true;
+        }
+      });
+    }
+  }
+
   oneObjectfunc(updateObject) {
-    console.log(updateObject);
+    if (updateObject[1] === 'string') {
+      this.ConcerterToString(updateObject[0]);
+    } else if (updateObject[1] === 'number') {
+      this.ConverterToNumber(updateObject[0]);
+    } else if (updateObject[1] === 'boolean') {
+      this.ConverterToBooleen(updateObject[0]);
+    } else if (updateObject[1] === 'object') {
+      this.ConverterToDate(updateObject[0]);
+    }
+  }
+
+  updateDisplaycolumn(newHeader) {
+    // console.log(newHeader);
+    this.nameHeader.forEach((value, index) => {
+      let textValue = value['_elementRef'].nativeElement.innerText;
+      // console.log(textValue);
+      if (textValue !== newHeader[index].trim()) {
+        value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
+      }
+    });
+  }
+  otherData(value) {
+    console.log(value);
+    this.ActualyData = value;
+    this.idHeader = value.idHeader;
+    this.lpViewer.getOnedateHistory(value).subscribe((response) => {
+      const header = JSON.parse(
+        JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
+      ).split(',');
+      // console.log(header);
+      this.updateDisplaycolumn(header);
+      this.idHeader = response[0]['idHeader'];
+      this.dataSource.data = JSON.parse(response[0]['datahistory']);
+      console.log('idHeader : ', this.idHeader);
+    });
+  }
+  updateHeader(value) {
+    console.log('mea ', value);
+    let updateHeader: any;
+    let tabforUpdate: any[] = ['All'];
+    this.nameHeader.forEach((el, index) => {
+      // console.log(typeof el['_elementRef'].nativeElement.innerText);
+      tabforUpdate.push(el['_elementRef'].nativeElement.innerText);
+      if (index === value - 1) {
+        updateHeader = el['_elementRef'].nativeElement;
+      }
+    });
+    // console.log('tab For Update : ', updateHeader);
+
+    this.dialog
+      .open(UpdatesHeaderComponent, {
+        data: {
+          idHeader: this.idHeader,
+          index: value,
+          table: tabforUpdate,
+          edidtableColumns: updateHeader,
+          idproject: this.idProject,
+        },
+      })
+      .afterClosed()
+      .pipe(
+        map((idHeader: any) => {
+          // console.log('resultat : ', idHeader);
+          if (idHeader) {
+            // if (this.ActualyData) {
+            // }
+            console.log('Actualy data : ', this.ActualyData);
+            const actualy = this.ActualyData
+              ? this.ActualyData['idName']
+              : null;
+            if (this.ActualyData) {
+              // console.log('Test : ', this.ActualyData);
+              this.listNameHistory.splice(
+                this.listNameHistory.indexOf(this.ActualyData) + 1
+              );
+            }
+            this.idHeader = idHeader;
+            const name_dinamic = `Edit header table on column ${value + 1}`;
+            this.lpViewer
+              .sendFiles(
+                {
+                  namehistory: name_dinamic,
+                  idProject: this.idProject,
+                  fileData: this.dataSource.data,
+                  idHeader: this.idHeader,
+                },
+                actualy
+              )
+              .subscribe((res) => {
+                this.listNameHistory.push(res);
+                console.log(res);
+              });
+          }
+        })
+      )
+      .subscribe();
   }
 }

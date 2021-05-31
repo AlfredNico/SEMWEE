@@ -6,7 +6,7 @@
         <mat-select [(value)]="selected" >
           <mat-option value="string">Text</mat-option>
           <mat-option value="number">Number</mat-option>
-          <mat-option value="date">Date</mat-option>
+          <mat-option value="object">Date</mat-option>
           <mat-option value="boolean">Boolean</mat-option>
         </mat-select>
       </mat-form-field>
@@ -14,12 +14,20 @@
         
     </mat-card-header>
     <mat-card-content>
-        <textarea name="" id="texteria" cols="50" rows="2">{{valueObject}}</textarea>
+      <!-- <mat-input-container floatPlaceholder="auto">
+          <textarea matInput [(ngModel)]="valueObject" 
+                    placeholder=""></textarea>
+      </mat-input-container> -->
+      <mat-form-field class="example-full-width">
+         <mat-label>Leave a comment</mat-label>
+         <textarea matInput  [(ngModel)]="valueObject" ></textarea>
+      </mat-form-field>
+        <!-- <textarea name="" id="texteria" cols="50" rows="2"></textarea> -->
     </mat-card-content>
     <mat-card-actions align="start">
-        <button mat-button >Apply</button>
-        <button mat-button >Apply to All Identical Cells</button>
-        <button mat-button (click)="toggleEdit()">Cancel</button>
+        <button mat-button (click)="convertOne()">Apply</button>
+        <button mat-button (click)="sendObject()">Apply to All Identical Cells</button>
+        <button mat-button (click)="toggleEdit('ok')">Cancel</button>
     </mat-card-actions>
 
 </mat-card>

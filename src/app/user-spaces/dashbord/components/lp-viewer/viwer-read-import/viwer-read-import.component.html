@@ -1,6 +1,6 @@
 <main class="w-100 p-0" fxLayout="column">
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="rounded" color="primary">Open</button>
+    <button class="rounded" color="primary" >Open</button>
     <button class="rounded" color="primary" [matMenuTriggerFor]="importMenu">
       Export
       <mat-icon aria-hidden="false" aria-label="keyboard arrow down icon">
@@ -45,8 +45,8 @@
           ></app-facet-filter>
         </mat-tab>
         <mat-tab label="Undo / Redo">
-            <!-- <app-undo-redo 
-            ></app-undo-redo> -->
+            <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata" (callOtherData)="otherData($event)"
+            ></app-undo-redo>
         </mat-tab>
       </mat-tab-group>
     </aside>
@@ -88,7 +88,7 @@
                     >
                       arrow_drop_down
                     </mat-icon>
-                    <div mat-sort-header>All</div>
+                    <div #divoteher mat-sort-header >All</div>
                   </span>
                 </th>
                 <mat-menu #tableOptionMenu="matMenu">
@@ -163,7 +163,7 @@
                     >
                       arrow_drop_down
                     </mat-icon>
-                    <div mat-sort-header>
+                    <div #updateHeader mat-sort-header  id={{index}}>
                       {{ column | removeUnderscore | capitalizeFirstPipe }}
                     </div>
                   </span>
@@ -180,7 +180,7 @@
                     Edit cells
                   </button>
                   <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
-                  <button mat-menu-item (click)="openEditColumn(column)">
+                  <button mat-menu-item (click)="updateHeader(index)">
                     Update column
                   </button>
                 </mat-menu>
@@ -244,9 +244,9 @@
                           else templeteURL
                         "
                       >
-                        {{ currentValue }}
+                      {{currentValue}}
                         <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
-                        (click)="action(element,column)">edit</button>
+                        (click)="action(element,column,indexRow)">edit</button>
                       </p>
                       <ng-template #templeteURL>
                         <a
@@ -258,7 +258,7 @@
                           "
                           target="_blank"
                           >{{ currentValue }} <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
-                          (click)="action(element,column)">edit</button></a
+                          (click)="action(element,column,indexRow)">edit</button></a
                         >
                       </ng-template>
                     </div>
@@ -267,7 +267,7 @@
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
                       <p class="text-right">{{ currentValue }} <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
-                        (click)="action(element,column)">edit</button></p>
+                        (click)="action(element,column,indexRow)">edit</button></p>
                     </div>
                   </ng-template>
                 </td>
@@ -296,7 +296,7 @@
       </div>
     </aside>
 
-    <app-edit *ngIf="vueEdit" [(vueedit)]="vueEdit" [(oneObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (sendObject)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
-
+    <app-edit *ngIf="vueEdit" [(vueedit)]="vueEdit" [(oneObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
+    
   </div>
 </main>

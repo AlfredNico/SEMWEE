@@ -10,13 +10,9 @@ mat-card-actions{
     text-align: center;
     margin-top: 0px;
 }
-textarea{
-    margin: 0px 16px;
-    width: 90%;
-}
-// .mat-option{
-//      line-height: 0px; 
-//      height: 0px;
+// textarea{
+//     margin: 0px 16px;
+//     width: 90%;
 // }
 .mat-card-header {
     font-size: 17px;
@@ -40,4 +36,9 @@ textarea{
     height: 43px;
     font-size: 15px;
     padding: 0.25em .25em 0 .25em;
+}
+.mat-form-field-wrapper {
+    width: 90%;
+    position: relative;
+    left: 15px;
 }
