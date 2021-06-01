@@ -17,10 +17,12 @@ import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/components/facet-filter.component';
+// import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/components/facet-filter.component';
 
 @NgModule({
-  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent, FacetFilterComponent, HeaderOptionsComponent, UpdatesHeaderComponent],
+  declarations: [LpViewerComponent, ViwerImportComponent, ViwerReadImportComponent,
+    //  FacetFilterComponent, 
+     HeaderOptionsComponent, UpdatesHeaderComponent],
   imports: [
     HttpClientModule,
     SharedModule,
@@ -37,7 +39,7 @@ import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/component
   entryComponents: [
     ViwerImportComponent,
     ViwerReadImportComponent,
-    FacetFilterComponent,
+    // FacetFilterComponent,
     HeaderOptionsComponent,
     UpdatesHeaderComponent
   ],
