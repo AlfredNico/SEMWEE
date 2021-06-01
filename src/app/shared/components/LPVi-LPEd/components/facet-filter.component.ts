@@ -82,6 +82,7 @@ export class FacetFilterComponent implements AfterViewInit {
   private inputQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
   private numericQeury: boolean[] = [];
+  private queriesNumerisFilters = {};
 
   /* INPUT */
   @Input('dataViews') public dataViews: any[] = [];
@@ -126,17 +127,34 @@ export class FacetFilterComponent implements AfterViewInit {
   }
 
   /* EMITTER FUNCTION AFTER FILTER FROM COMPONENTS */
-  public callAfterNumericFilter(numericQeury: boolean[]) {
-    this.numericQeury = numericQeury;
-    this.dataSources = this.dataViews.filter((value: any, index: number) => {
-      const q1 = this.CheckNumeric(index);
-      const q2 = this.CheckInput(index);
-      const q3 = this.CheckSearch(index);
+  public callAfterNumericFilter(event: any) {
+    let q = [], ss;
 
-      return q1 && q2 && q3;
+    // this.numericQeury = numericQeury;
+
+    const data = this.dataViews.filter((value, index) => {
+      const v = value[`${event['head']}`];
+      if(Object.keys(this.queriesNumerisFilters).length === 0) {
+        if (v >= event['minValue'] && v <= event['maxValue'] && Number.isFinite(v) === true)
+          q[index] = true;
+        else q[index] = false;
+        return ss = q[index];
+      } else {
+        return Object.keys(this.queriesNumerisFilters).every((x) =>  {
+            const s = this.queriesNumerisFilters[x];
+            if (v >= event['minValue'] && v <= event['maxValue'] && Number.isFinite(v) === true)
+              q[index] = true;
+            else q[index] =  false;
+
+            if(x === event['head']) ss = q;
+
+            return ss = s[index] && q[index];
+        })
+      }
     });
 
-    this.lpviLped.dataSources$.next(this.dataSources);
+    this.queriesNumerisFilters[`${event['head']}`] = this.numericQeury = q;
+    this.lpviLped.dataSources$.next(data);
   }
 
   public callAfterInputFilter(inputQeury: boolean[]) {
@@ -188,23 +206,17 @@ export class FacetFilterComponent implements AfterViewInit {
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
       } else if (removeName === 'number') {
         this.numericQeury = [];
-        this.dataSources = this.dataViews.filter((value: any, index: number) => {
-          const q1 = this.CheckNumeric(index);
-          const q2 = this.CheckInput(index);
-          const q3 = this.CheckSearch(index);
+        this.dataSources = this.dataViews.filter((value, index) => {
 
-          return q1 && q2 && q3;
+          return this.filtersData(index);
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
       } else if (removeName === 'search') {
         this.searchQueries = [];
-        this.dataSources = this.dataViews.filter((value: any, index: number) => {
-          const q1 = this.CheckNumeric(index);
-          const q2 = this.CheckInput(index);
-          const q3 = this.CheckSearch(index);
+        this.dataSources = this.dataViews.filter((value, index) => {
 
-          return q1 && q2 && q3;
+          return this.filtersData(index);
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
@@ -216,7 +228,7 @@ export class FacetFilterComponent implements AfterViewInit {
     this.items = event;
 
     let search: boolean;
-    const data = this.dataViews.filter((value: any, index: number) => {
+    const data = this.dataViews.filter((value, index) => {
       let i1: number = 0;
       let queries: boolean;
       const q = this.items.map((item: any): void => {
@@ -238,10 +250,7 @@ export class FacetFilterComponent implements AfterViewInit {
       });
       this.searchQueries[index] = queries;
 
-      const q1 = this.CheckInput(index);
-      const q2 = this.CheckNumeric(index);
-      const q3 = this.CheckSearch(index);
-      return q1 && q2 && q3;
+      return this.filtersData(index);
     });
 
     this.lpviLped.dataSources$.next(data);
@@ -250,31 +259,29 @@ export class FacetFilterComponent implements AfterViewInit {
 
 
   /* VERIFY ALL QUERY FILTERS */
-  private CheckNumeric(index: number): boolean {
-    if (this.numericQeury.length !== 0) return this.numericQeury[index];
-    return true;
-  }
-  private CheckInput(index: number): boolean {
-    if (this.inputQueries.length !== 0) return this.inputQueries[index];
+  private chechQueryFilter(index: number, queries: boolean[]): boolean {
+
+
+    if (queries.length !== 0) return queries[index];
     return true;
   }
 
-  private CheckSearch(index: number): boolean {
-    if (this.searchQueries.length !== 0) return this.searchQueries[index];
-    return true;
+  private filtersData(index: number): boolean {
+    const q1 = this.chechQueryFilter(index, this.numericQeury);
+    const q2 = this.chechQueryFilter(index, this.searchQueries);
+    const q3 = this.chechQueryFilter(index, this.inputQueries);
+
+    return q1 && q2 && q3;
   }
 
   private inputFilterFonciont() {
     let qqq = '', i1 = 0;
 
-    const data = this.dataViews.filter((value: any, index: number) => {
+    const data = this.dataViews.filter((value, index) => {
       if (Object.values(this.queries).every((x) => x === null || x === '')) {
         this.inputQueries[index] = true;
-        const q1 = this.CheckInput(index);
-        const q2 = this.CheckNumeric(index);
-        const q3 = this.CheckSearch(index);
 
-        return q1 && q2 && q3;
+        return this.filtersData(index);
       } else {
         let s = '', i2 = 0;
         Object.keys(value).some((property) => {
@@ -295,11 +302,8 @@ export class FacetFilterComponent implements AfterViewInit {
         else qqq = qqq + '&&' + eval(s);
         i2++;
         this.inputQueries[index] = eval(qqq) !== undefined ? eval(qqq) : true;
-        const q1 = this.CheckInput(index);
-        const q2 = this.CheckNumeric(index);
-        const q3 = this.CheckSearch(index);
 
-        return q1 && q2 && q3;
+        return this.filtersData(index);
       }
     });
     this.lpviLped.dataSources$.next(data);

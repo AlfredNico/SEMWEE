@@ -102,6 +102,7 @@ export class ImportFileComponent implements OnInit {
           });
           this.parsedCsv = csv;
           this.parsedCsv.pop();
+
           const header = this.parsedCsv.shift().toString().split(',');
           const content = this.parsedCsv.map((value) =>
             value.reduce((tdObj, td, index) => {
@@ -112,7 +113,7 @@ export class ImportFileComponent implements OnInit {
             }, {})
           );
 
-          this.data.header = header;
+          this.data.header = [...new Set([...header])].filter(item => item);
           this.data.header.unshift('all');
           this.data.content = content;
           this.onSubmit();

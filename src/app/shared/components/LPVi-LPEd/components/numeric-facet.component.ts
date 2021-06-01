@@ -1,5 +1,5 @@
 import { Options } from '@angular-slider/ngx-slider';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
 
 @Component({
@@ -46,7 +46,7 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
   `,
   styleUrls: ['./numeric-facet.component.scss']
 })
-export class NumericFacetComponent {
+export class NumericFacetComponent implements AfterViewInit {
 
   /* INPUT */
   @Input('items') items: any[] = [];
@@ -57,26 +57,33 @@ export class NumericFacetComponent {
   @Input('maxValue') maxValue: number = 2000;
   @Input('options') options: Options = undefined;
 
-  private numericQueries: boolean[] = [];
-
-  @Output('numericQueriesEmitter') numericQueriesEmitter = new EventEmitter<boolean[]>(undefined);
+  /* OUTPUT */
+  @Output('numericQueriesEmitter') numericQueriesEmitter = new EventEmitter<any>(undefined);
   @Output('itemsEmitter') itemsEmitter: any = new EventEmitter();
   @Output('minimize') minimize: any = new EventEmitter();
   @Output('removeFromItem') removeFromItem: any = new EventEmitter();
 
+  /* VARIALBES */
+  private numericQueries: boolean[] = [];
+
 
   constructor(private readonly lpViewer: LpViwersService) { }
 
-  ngOnInit(): void { }
+  ngAfterViewInit(): void { }
 
   userChangeEnd(event: any) {
-    this.dataViews.map((value, index) => {
-      const v = value[`${this.item['head']}`];
-      if (v >= event['value'] && v <= event['highValue'] && Number.isFinite(v) === true)
-        this.numericQueries[index] = true;
-      else this.numericQueries[index] = false;
-    })
-    this.numericQueriesEmitter.emit(this.numericQueries);
+    // this.dataViews.map((value, index) => {
+    //   const v = value[`${this.item['head']}`];
+    //   if (v >= event['value'] && v <= event['highValue'] && Number.isFinite(v) === true)
+    //     this.numericQueries[index] = true;
+    //   else this.numericQueries[index] = false;
+    // })
+    const valueFiltered = {
+      minValue: event['value'],
+      maxValue: event['highValue'],
+      head: this.item['head']
+    }
+    this.numericQueriesEmitter.emit(valueFiltered);
   }
 
   public isValidNumber(): boolean {
