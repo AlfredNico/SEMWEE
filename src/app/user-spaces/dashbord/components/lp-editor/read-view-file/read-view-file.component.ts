@@ -63,7 +63,6 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
         this.displayedColumns = header;
         this.dataSource.data = this.dataViews = values;
       } else {
-        console.log(this.dataAfterUploaded);
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
       }
@@ -137,7 +136,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   public searchFacet(column: any) {
     let distances = {}, isExist = false;
-    this.dataSource.data.map((item: any) => {
+    this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     })
 
@@ -166,8 +165,8 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     let minValue = 100000, maxValue = 0;
     this.dataViews.map((item: any) => {
       if (Number.isInteger(Number(item[column])) === true) {
-        if (Number(item[column]) >= maxValue) maxValue = item[column]
-        if (Number(item[column]) <= minValue) minValue = item[column];
+        if (Number(item[column]) >= maxValue) maxValue = Number(item[column])
+        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
       }
     });
     const options: Options = {
