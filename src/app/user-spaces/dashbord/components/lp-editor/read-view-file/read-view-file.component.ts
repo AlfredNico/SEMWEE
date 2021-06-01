@@ -14,6 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DatePipe } from '@angular/common';
 import { Options } from '@angular-slider/ngx-slider';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-read-view-file',
@@ -35,27 +36,37 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   public dataViews: any[] = [];
 
-  constructor(public dialog: MatDialog, private lpEditor: LpEditorService, public datepipe: DatePipe) { }
+  constructor(
+    public dialog: MatDialog,
+    private readonly lpEditor: LpEditorService,
+    private readonly lpviLped: LpdLpdService,
+    public datepipe: DatePipe
+  ) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      const header = JSON.parse(
-        JSON.stringify(
-          this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
-        )
-      ).split(',');
-      const editableColumns = JSON.parse(
-        JSON.stringify(
-          this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-        )
-      ).split(',');
-      const values = this.dataAfterUploaded[1];
-      header.unshift('all');
-      editableColumns.unshift('all');
+      if (Array.isArray(this.dataAfterUploaded) === true) {
+        const header = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+          )
+        ).split(',');
+        const editableColumns = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
+          )
+        ).split(',');
+        const values = this.dataAfterUploaded[1];
+        header.unshift('all');
+        editableColumns.unshift('all');
 
-      this.displayedColumns = header;
-      // this.dataSource.data = this.checkFilter(values);
-      this.dataSource.data = this.dataViews = values;
+        this.displayedColumns = header;
+        this.dataSource.data = this.dataViews = values;
+      } else {
+        console.log(this.dataAfterUploaded);
+        this.displayedColumns = this.dataAfterUploaded['header'];
+        this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
+      }
     }
   }
 
@@ -64,6 +75,11 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.lpviLped.dataSources$.subscribe(data => {
+      if (data)
+        this.dataSource.data = data;
+    })
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -126,10 +142,10 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     })
 
     const value = Object.entries(distances).map((val: any) => {
-      return { ...val }
-    })
+      return { ...val, include: false };
+    });
 
-    this.lpEditor.itemsObservables$.next({
+    this.lpviLped.itemsObservables$.next({
       type: 'search',
       isMinimize: false,
       head: column,
@@ -138,10 +154,11 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   }
 
   public inputFilter(column: any) {
-    this.lpEditor.itemsObservables$.next({
+    this.lpviLped.itemsObservables$.next({
       type: 'input',
       isMinimize: false,
       head: column,
+      value: ''
     });
   }
 
@@ -163,7 +180,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     };
 
 
-    this.lpEditor.itemsObservables$.next({
+    this.lpviLped.itemsObservables$.next({
       type: 'numeric',
       isMinimize: false,
       head: column,

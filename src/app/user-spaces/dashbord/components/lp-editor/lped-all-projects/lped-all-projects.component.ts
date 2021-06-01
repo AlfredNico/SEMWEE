@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -18,7 +18,7 @@ import { RemoveComponent } from '../../projects/dialog/remove.component';
   templateUrl: './lped-all-projects.component.html',
   styleUrls: ['./lped-all-projects.component.scss']
 })
-export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
+export class LPedAllProjectsComponent implements OnInit, AfterViewInit, DoCheck {
   @Input() public allProjects$: Observable<LPAllProjects[]> = new Observable<
     LPAllProjects[]
   >(undefined);
@@ -43,14 +43,14 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
       }),
       switchMap((_) => this.lpEditor.getAllProjects(this.user._id))
     );
+    this.common.hideSpinner('table');
   }
 
-  // ngDoCheck(): void {
-  //   this.common.hideSpinner('table');
-  // }
+  ngDoCheck(): void {
+    this.common.hideSpinner('table');
+  }
 
   ngAfterViewInit() {
-    // this.common.showSpinner('root');
     this.allProjects$.subscribe(
       (result: any[]) => {
         if (result && result.length == 0) {
@@ -63,7 +63,6 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit {
           this.notifs.warn(error.message);
         }
         this.router.navigateByUrl('/user-space/lp-editor');
-        // this.common.hideSpinner();
       }
     );
   }
