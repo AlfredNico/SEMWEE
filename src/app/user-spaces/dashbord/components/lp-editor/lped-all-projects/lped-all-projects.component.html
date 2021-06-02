@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-card-header>
+    <div class="row" style="width: 100%">
+      <div class="col-md-9">
+        <div class="card-header border-0">
+          <h3 class="card-title align-items-start" fxLayout="column">
+            <span class="card-label font-weight-bolder text-dark"
+              >LPViewer Projects Overview</span
+            >
+            <span class="text-muted mt-0 font-weight-bold font-size-sm"
+              >{{ (allProjects$ | async)?.length }} projects</span
+            >
+          </h3>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div style="float: right; padding-right: 30px">
+          <a
+            routerLinkActive="active"
+            [routerLink]="['/user-space/lp-editor']"
+            style="color: white !important"
+            ><button mat-raised-button color="primary">
+              <span class="menu-text">Import</span>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="mx-5">
+    <div class="card-body pt-2" style="padding: 0;">
+      <!--begin::Item-->
+      <div class="d-flex align-items-center content-project" *ngFor="let project of (allProjects$ | async)">
+          <a (click)="navigateURL(project._id)" class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content">
+              <div class="text-dark mb-1 font-size-lg">{{ project.nameProject }}</div>
+              <span class="text-muted">Last updated : {{ project?.updated_at | date: 'MMM d, y, h:mm a' }}</span>
+          </a>
+          <!--end::Text-->
+          <div class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content text-left">
+            <div class="text-dark mb-1 font-size-lg">File size : {{ project.projectsize }} octets</div>
+          </div>
+          <!--begin::Dropdown-->
+          <div class="dropdown dropdown-inline ml-2" data-placement="left">
+              <div (click)="onDelete(project)" class="btn btn-danger">Delete
+              </div>
+          </div>
+          <!--end::Dropdown-->
+      </div>
+      <!--end::Item-->
+    </div>
+  </mat-card-content>
+</mat-card>

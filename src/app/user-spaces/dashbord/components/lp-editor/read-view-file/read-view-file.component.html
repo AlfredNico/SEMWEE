@@ -23,7 +23,10 @@
       <mat-tab-group (selectedTabChange)="tabChanged($event)" mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
         class="mat-group">
         <mat-tab label="Facet/Filter">
-          <app-facet-filter></app-facet-filter>
+          <app-facet-filter-target
+          [dataViews]='dataViews'
+          [dataSources]='dataSource.data'
+          ></app-facet-filter-target>
         </mat-tab>
         <mat-tab [label]="undoRedoLabel">
           <app-undo-redo></app-undo-redo>
@@ -62,20 +65,20 @@
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item (click)="textFilter(column)">
+                  <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item>
                     Update column
                   </button>
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="textFacet(column)">Text facet</button>
+                  <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
@@ -131,21 +134,21 @@
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item (click)="textFilter(column)">
+                  <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item>
                     Update column
                   </button>
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="textFacet(column)">Text facet</button>
-                  <button mat-menu-item>Numeric facet</button>
+                  <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
+                  <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
@@ -166,39 +169,19 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                    <!-- <button mat-menu-item (click)="transformNumber(column)">To number</button> -->
-                  <!-- <app-edit-cell mat-menu-item [dataSource]="dataSource.data" [columnName]='column'>
-                  </app-edit-cell> -->
-
-                  <button mat-menu-item (click)="convertToTitlecase(column)">To titleCase</button>
-                  <button mat-menu-item (click)="convertToUppercase(column)">To uppercase</button>
-                  <button mat-menu-item (click)="convertToLowercase(column)">To lowercase</button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
-                  <button mat-menu-item (click)="convertToDate(column)">To date</button>
-                  <button mat-menu-item (click)="convertToText(column)">To text</button>
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  </app-edit-cell>
                 </mat-menu>
-                <!-- Edit Cell start -->
-                <!-- <mat-menu #editCell="matMenu">
-                  <button mat-menu-item (click)="convertToTitlecase(column)">To titleCase</button>
-                  <button mat-menu-item (click)="convertToUppercase(column)">To uppercase</button>
-                  <button mat-menu-item (click)="convertToLowercase(column)">To lowercase</button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
-                  <button mat-menu-item (click)="convertToDate(column)">To date</button>
-                  <button mat-menu-item (click)="convertToText(column)">To text</button>
-                </mat-menu> -->
-                <!-- Edit Cell end -->
 
                 <td mat-cell *matCellDef="let element; let indexRow = index; let even = even; let odd = odd" [class.odd]="odd" [class.even]="even" #td class="th-content">
                   <!-- *ngTemplateOutlet="(element[column][0] | typeof) === 'string' ? stringTemplate:  -->
                   <ng-container
-                    *ngTemplateOutlet="element[column][1]  !== 'number' ? stringTemplate: numberTemplate; context:{value: element[column]}">
+                    *ngTemplateOutlet="(element[column] | typeof) === 'number' ? numberTemplate : stringTemplate; context:{value: element[column]}">
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3">
-                      <p class="text-left"> {{currentValue[0]}} </p>
+                      <p class="text-left"> {{currentValue}} </p>
                       <button mat-flat-button class="rounded small-button only-show-on-hover" color="accent"
                       (click)="openEditorDialog(td, 'rigth', last)">
                         edit
@@ -212,7 +195,7 @@
                       (click)="openEditorDialog(td, 'left', last)">
                         edit
                       </button>
-                      <p class="text-right">{{currentValue[0]}} </p>
+                      <p class="text-right">{{currentValue}}</p>
                     </div>
                   </ng-template>
 

@@ -18,6 +18,10 @@ export class LpViwersService {
   public isLoading$ = new BehaviorSubject<boolean>(true);
   public checkInfoSubject$ = new Subject();
 
+  //Numriéque facet components
+  public numeriqueFaceteBehavior$ = new BehaviorSubject<any>(undefined);
+  public numeriqueFacete: any[] = [];
+
   constructor(
     private http: HttpClient,
     private readonly common: CommonService
@@ -83,15 +87,6 @@ export class LpViwersService {
       data
     );
   }
-
-  // upload(file: File, idUser: any): Observable<any> {
-  //   const data = new FormData()
-  //   data.append('files', file);
-  //   return this.http.post(`${environment.baseUrl}/lpviewer/post-lpviewer/${idUser}`, data)
-  //     .pipe(
-  //       map(result => result)
-  //     )
-  // }
 
   public addFacetFilter(value: { idProject: any; value: string }) {
     return this.http.post(

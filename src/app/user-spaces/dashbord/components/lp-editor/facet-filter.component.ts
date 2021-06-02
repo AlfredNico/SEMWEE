@@ -3,6 +3,7 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-facet-filter',
@@ -121,12 +122,16 @@ export class FacetFilterComponent implements OnInit, AfterViewInit {
 
   public filters = this.fb.group([]);
 
-  constructor(private fb: FormBuilder, private lpEditor: LpEditorService) { }
+  constructor(
+    private fb: FormBuilder,
+    private readonly lpEditor: LpEditorService,
+    private readonly lpviLped: LpdLpdService
+  ) { }
 
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-    this.lpEditor.itemsObservables$.subscribe((res: any) => {
+    this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
 

@@ -43,13 +43,14 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
   }
 
   ngDoCheck(): void {
-    this.common.hideSpinner();
+    this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
+      this.lpviewer.isLoading$.next(true);
       this.lpviewer
         .getSavedProjects(this.idProject)
         .subscribe((res: Array<any>) => {
@@ -71,7 +72,9 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
                 step.editable = true;
               }
             });
-            // console.log('lpViewer : ', res);
+
+            this.lpviewer.isLoading$.next(false);
+
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
           } else this.router.navigateByUrl('user-space/lp-viewer');

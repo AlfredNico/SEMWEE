@@ -46,7 +46,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(): void {
-    this.common.hideSpinner();
+    this.common.hideSpinner('table');
   }
 
   ngOnInit(): void {
@@ -56,7 +56,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void { }
 
   public async onSubmit() {
-    this.common.showSpinner('root');
+    this.common.showSpinner('table');
 
     const { email, password }: { [key: string]: any } = this.loginForm.controls;
     try {
@@ -69,7 +69,7 @@ export class SignInComponent implements OnInit, AfterViewInit {
         if (this.stayOn.value === true) {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
-        this.common.hideSpinner();
+        this.common.hideSpinner('table');
         this.router.navigateByUrl('/user-space');
       } else if (user === undefined) {
         if (this.tentativePwd >= 2) {
@@ -82,10 +82,10 @@ export class SignInComponent implements OnInit, AfterViewInit {
         }
 
         this.tentativePwd++;
-        this.common.hideSpinner();
+        this.common.hideSpinner('table');
       }
     } catch (error) {
-      this.common.hideSpinner();
+      this.common.hideSpinner('table');
       if (error instanceof HttpErrorResponse) {
         console.log('error ', error);
       }

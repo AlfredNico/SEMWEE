@@ -12,6 +12,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { DatePipe } from '@angular/common';
+import { Options } from '@angular-slider/ngx-slider';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-read-view-file',
@@ -31,13 +34,38 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   public undoRedoLabel = 'Undo/Redo 0/0';
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
+  public dataViews: any[] = [];
 
-  constructor(public dialog: MatDialog, private lpEditor: LpEditorService) { }
+  constructor(
+    public dialog: MatDialog,
+    private readonly lpEditor: LpEditorService,
+    private readonly lpviLped: LpdLpdService,
+    public datepipe: DatePipe
+  ) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      this.displayedColumns = this.dataAfterUploaded.columns;
-      this.dataSource.data = this.dataAfterUploaded.data;
+      if (Array.isArray(this.dataAfterUploaded) === true) {
+        const header = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+          )
+        ).split(',');
+        const editableColumns = JSON.parse(
+          JSON.stringify(
+            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
+          )
+        ).split(',');
+        const values = this.dataAfterUploaded[1];
+        header.unshift('all');
+        editableColumns.unshift('all');
+
+        this.displayedColumns = header;
+        this.dataSource.data = this.dataViews = values;
+      } else {
+        this.displayedColumns = this.dataAfterUploaded['header'];
+        this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
+      }
     }
   }
 
@@ -46,6 +74,11 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.lpviLped.dataSources$.subscribe(data => {
+      if (data)
+        this.dataSource.data = data;
+    })
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -101,99 +134,60 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public textFacet(column: any) {
-    // this.commonService.showSpinner('table');
-
+  public searchFacet(column: any) {
     let distances = {}, isExist = false;
-    this.dataSource.data.map((item: any) => {
+    this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     })
 
     const value = Object.entries(distances).map((val: any) => {
-      return { ...val }
-    })
+      return { ...val, include: false };
+    });
 
-    this.lpEditor.itemsObservables$.next({
-      type: 'facet',
+    this.lpviLped.itemsObservables$.next({
+      type: 'search',
       isMinimize: false,
       head: column,
       content: value
     });
-    // }
   }
 
-  public textFilter(column: any) {
-    this.lpEditor.itemsObservables$.next({
-      type: 'filter',
+  public inputFilter(column: any) {
+    this.lpviLped.itemsObservables$.next({
+      type: 'input',
       isMinimize: false,
       head: column,
+      value: ''
     });
   }
 
-  /* Convert To Title case */
-  public convertToTitlecase(nameCell: string) {
-    this.dataSource.data.forEach(item => {
-      if (item[nameCell][1] === 'text') {
-        item[nameCell][0] = this.toTitleCase(item[nameCell][0]);
+  public numericFacter(column: any) {
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = Number(item[column])
+        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
       }
     });
-    this.dataSource = this.dataSource;
-  }
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
 
-  /* Convert To Uppercase */
-  public convertToUppercase(nameCell: string) {
-    this.dataSource.data.forEach(item => {
-      if (item[nameCell][1] === 'text') {
-        item[nameCell][0] = (item[nameCell][0] as string).toUpperCase();
-      }
-    });
-    this.dataSource = this.dataSource;
-  }
 
-  /* Convert To Lowercase */
-  public convertToLowercase(nameCell: string) {
-    this.dataSource.data.forEach(item => {
-      if (item[nameCell][1] === 'text') {
-        item[nameCell][0] = (item[nameCell][0] as string).toLowerCase();
-      }
-    });
-    this.dataSource = this.dataSource;
-  }
-  /* Convert To Number */
-  public convertToNumber(nameCell: string) {
-    this.dataSource.data.forEach(item => {
-      if (Number.isInteger(Number(item[nameCell][0]))) {
-        item[nameCell][0] = Number(item[nameCell][0])
-        item[nameCell][1] = 'number'
-      }
-    });
-    this.dataSource = this.dataSource;
-  }
-  /* Convert To Date */
-  public convertToDate(nameCell: string) {
-    this.dataSource.data.forEach(item => {
-      // console.log('item', item[nameCell])
-      // if (Date.isDate(Date(item[nameCell][0]))) {
-        item[nameCell][0] = Date.parse(item[nameCell][0])
-        item[nameCell][1] = 'date'
-      // }
+    this.lpviLped.itemsObservables$.next({
+      type: 'numeric',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
     });
   }
-  /* Convert To Text */
-  public convertToText(nameCell: string) {
-    this.dataSource.data.forEach(item => {
-      console.log('item', item[nameCell])
-    });
-  }
-
-  private toTitleCase(str) {
-    return str.replace(
-      /\w\S*/g,
-      (txt: string) =>
-        txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-    );
-  }
-
 }
 
 

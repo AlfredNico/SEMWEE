@@ -1,13 +1,9 @@
-import { CookieService } from 'ngx-cookie-service';
-import { Users } from '@app/models/users';
-import { AuthService } from '../../../authentification/services/auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { LPViewerProjects } from '../interfaces/lp-viewer-projects';
+import { map } from 'rxjs/operators';
+import { LPAllProjects } from '../interfaces/lp-viewer-projects';
 
 @Injectable({
   providedIn: 'root',
@@ -26,8 +22,8 @@ export class LPViewerProjectsService {
     private http: HttpClient
   ) { }
 
-  public getAllProjects(_idUsers): Observable<LPViewerProjects[]> {
-    return this.http.get<LPViewerProjects[]>(
+  public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
+    return this.http.get<LPAllProjects[]>(
       `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
     ).pipe(
       map(projects => {

@@ -3,6 +3,7 @@ import { LpViwersService } from './../../../services/lp-viwers.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
+import { NotificationService } from '@app/services/notification.service';
 
 @Component({
   selector: 'app-viwer-import',
@@ -69,55 +70,55 @@ export class ViwerImportComponent implements OnInit {
 
   constructor(
     private lpViewerService: LpViwersService,
-    private readonly common: CommonService
-  ) {}
+    private readonly common: CommonService,
+    private readonly nofits: NotificationService
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   processCsv(content) {
     return content.split('\n');
   }
 
   convertFile(event: any) {
-    const file = event.target.files[0];
-    this.sizeFile = event.target.files[0].size;
-    this.file = event.target.files[0];
+    if ((event.target.files[0]['name'] as string).includes('.csv')) {
+      const file = event.target.files[0];
+      this.sizeFile = event.target.files[0].size;
+      this.file = event.target.files[0];
 
-    this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
-    this.readFileContent(file)
-      .then((csvContent) => {
-        const csv = [];
-        const lines = this.processCsv(csvContent);
-        // console.log(lines);
-        const sep1 = lines[0].split(';').length;
-        const sep2 = lines[0].split(',').length;
-        const csvSeparator = sep1 > sep2 ? ';' : ',';
-        console.log(csvSeparator);
-        lines.forEach((element) => {
-          const cols: string[] = element.split(csvSeparator);
-          csv.push(cols);
-        });
-        this.parsedCsv = csv;
-        this.parsedCsv.pop();
-        // console.log(this.parsedCsv.shift());
+      this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
+      this.readFileContent(file)
+        .then((csvContent) => {
+          const csv = [];
+          const lines = this.processCsv(csvContent);
+          const sep1 = lines[0].split(';').length;
+          const sep2 = lines[0].split(',').length;
+          const csvSeparator = sep1 > sep2 ? ';' : ',';
+          lines.forEach((element) => {
+            const cols: string[] = element.split(csvSeparator);
+            csv.push(cols);
+          });
+          this.parsedCsv = csv;
+          this.parsedCsv.pop();
+          const header = this.parsedCsv.shift().toString().split(',');
+          const content = this.parsedCsv.map((value) =>
+            value.reduce((tdObj, td, index) => {
+              tdObj[header[index]] = td;
+              tdObj['start'] = false;
+              tdObj['flag'] = false;
+              return tdObj;
+            }, {})
+          );
 
-        const header = this.parsedCsv.shift().toString().split(',');
-        const content = this.parsedCsv.map((value) =>
-          value.reduce((tdObj, td, index) => {
-            tdObj[header[index]] = td;
-            tdObj['start'] = false;
-            tdObj['flag'] = false;
-            return tdObj;
-          }, {})
-        );
-
-        this.data.header = header;
-        console.log(this.data.header);
-        this.data.header.unshift('all');
-        this.data.content = content;
-        this.onSubmit();
-      })
-      .catch((error) => console.log(error));
+          this.data.header = header;
+          this.data.header.unshift('all');
+          this.data.content = content;
+          this.onSubmit();
+        })
+        .catch((error) => console.log(error));
+    } else {
+      this.nofits.warn('This is no csv file !');
+    }
   }
 
   readFileContent(file) {

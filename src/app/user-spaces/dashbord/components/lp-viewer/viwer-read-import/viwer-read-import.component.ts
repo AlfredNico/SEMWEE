@@ -13,21 +13,25 @@ import {
   QueryList,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
-import { FacetFilter } from '@app/user-spaces/dashbord/interfaces/facet-filter';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
+import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 
 @Component({
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
+  ],
 })
 export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges
@@ -50,6 +54,10 @@ export class ViwerReadImportComponent
   @Input('inputFilters') inputFilters: any = undefined;
 
   public tabIndex = 0;
+
+  // filter icon && and tooltips
+  public icon = '';
+  public active: any = '';
 
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
@@ -102,9 +110,8 @@ export class ViwerReadImportComponent
 
         this.displayedColumns = header;
         this.edidtableColumns = editableColumns;
-        this.dataSource.data = this.checkFilter(values);
-        this.dataViews = values;
-        this.listNameHistory = this.dataAfterUploaded[4];
+        // this.dataSource.data = this.checkFilter(values);
+        this.dataSource.data = this.dataViews = values;
 
         if (this.filtersData.items !== undefined) {
           this.formGroup = this.fb.group(
@@ -125,9 +132,7 @@ export class ViwerReadImportComponent
     this.lpViewer.checkInfoSubject$.next();
   }
 
-  ngOnInit(): void {
-    // this.route.snapshot.params.prenom;
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -183,9 +188,16 @@ export class ViwerReadImportComponent
     this.tabIndex = tabChangeEvent.index;
   }
 
-  public textFacet(column: any) {
-    // this.commonService.showSpinner('table');
+  sortData($e: any) {
+    $e.direction === 'asc'
+      ? (this.icon = 'asc')
+      : $e.direction === 'desc'
+      ? (this.icon = 'desc')
+      : (this.icon = '');
+    this.active = $e.active;
+  }
 
+  public textFacet(column: any) {
     let distances = {};
     // isExist = false;
     this.dataViews.map((item: any) => {
@@ -210,6 +222,35 @@ export class ViwerReadImportComponent
       type: 'filter',
       isMinimize: false,
       head: column,
+    });
+  }
+
+  public numericFacter(column: any) {
+    let value = {};
+    let minValue = 100000,
+      maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = item[column];
+        if (Number(item[column]) <= minValue) minValue = item[column];
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+    this.lpViewer.itemsObservables$.next({
+      type: 'numeric',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options,
     });
   }
 

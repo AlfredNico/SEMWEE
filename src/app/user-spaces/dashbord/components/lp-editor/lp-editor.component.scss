@@ -1,3 +1,22 @@
-::ng-deep .mat-horizontal-stepper-header-container {
-  display: none !important;
+:host ::ng-deep {
+  .mat-horizontal-stepper-header-container {
+    display: none !important;
+  }
+  .mat-horizontal-content-container{
+    padding: 0 15px 0 15px !important;
+    background: white !important;
+  }
+}
+
+::ng-deep{
+  @media (min-width: 1400px){
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 100% !important;
+    }
+  }
+  @media (min-width: 1200px){
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 100%;
+    }
+  }
 }

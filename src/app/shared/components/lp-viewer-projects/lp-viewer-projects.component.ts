@@ -2,9 +2,8 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
-import { CommonService } from '@app/shared/services/common.service';
 import { RemoveComponent } from '@app/user-spaces/dashbord/components/projects/dialog/remove.component';
-import { LPViewerProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
+import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
@@ -16,8 +15,8 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./lp-viewer-projects.component.scss'],
 })
 export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
-  @Input() public allProjects$: Observable<LPViewerProjects[]> = new Observable<
-    LPViewerProjects[]
+  @Input() public allProjects$: Observable<LPAllProjects[]> = new Observable<
+    LPAllProjects[]
   >(undefined);
   constructor(
     private lPViewerProjectsService: LPViewerProjectsService,
@@ -33,22 +32,9 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void { }
 
-  onDeteils(item: LPViewerProjects) {
-    // this.dialog
-    //   .open(DetailsComponent, {
-    //     data: item,
-    //     width: '60%',
-    //   })
-    //   .afterClosed()
-    //   .pipe(
-    //     map(() => {
-    //       this.common.hideSpinner('root');
-    //     })
-    //   )
-    //   .subscribe();
-  }
+  onDeteils(item: LPAllProjects) { }
 
-  onDelete(item: LPViewerProjects) {
+  onDelete(item: LPAllProjects) {
     this.dialog
       .open(RemoveComponent, {
         data: {
@@ -77,24 +63,7 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  onEdit(item: LPViewerProjects) {
-    // this.dialog
-    //   .open(EditComponent, {
-    //     data: item,
-    //     width: '75%',
-    //     autoFocus: false,
-    //   })
-    //   .afterClosed()
-    //   .pipe(
-    //     map((result: boolean) => {
-    //       if (result === true) {
-    //         this.projectServices.refresh$.next(true);
-    //         this.triggerServices.trigrer$.next(true);
-    //       }
-    //     })
-    //   )
-    //   .subscribe();
-  }
+  onEdit(item: LPAllProjects) { }
 
   public navigateURL(_id: any) {
     // this.common.isLoading$.next(true);

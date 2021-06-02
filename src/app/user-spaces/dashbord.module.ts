@@ -125,6 +125,12 @@ import { NgBytesPipeModule } from './dashbord/pipe/bytes.pipe';
               import('./dashbord/components/lp-viewer/all-lp-viewer-projects/all-lp-viewer-projects.module').then(
                 (m) => m.AllLPViewerProjectsModule
               ),
+          }, {
+            path: 'lp-editor-projects',
+            loadChildren: () =>
+              import('./dashbord/components/lp-editor/lped-all-projects/lped-all-projects.module').then(
+                (m) => m.LPedAllProjectsModule
+              ),
           },
           {
             path: 'lp-viewer',

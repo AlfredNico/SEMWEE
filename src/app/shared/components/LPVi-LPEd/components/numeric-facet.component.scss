@@ -1,0 +1,43 @@
+// We need to use ::ng-deep to overcome view encapsulati
+::ng-deep {
+  .custom-slider .ngx-slider{
+    top: -35px;
+
+    .ngx-slider-bar {
+      background: #666;
+      height: 50px;
+    }
+    .ngx-slider-selection {
+      background: white;
+    }
+    .ngx-slider-pointer {
+      width: 5px;
+      height: 60px;
+      top: auto; /* to remove the default positioning */
+      bottom: -50px;
+      background-color: black;
+      cursor: col-resize;
+    }
+    .ngx-slider-pointer:after {
+      display: none;
+    }
+    .ngx-slider-bubble {
+      bottom: 14px;
+    }
+    .ngx-slider-limit {
+      font-weight: bold;
+      color: red;
+    }
+    .ngx-slider-tick {
+      width: 1px;
+      height: 50px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: black;
+      top: -1px;
+    }
+    .ngx-slider-tick.ngx-slider-selected {
+      background: rgb(0, 110, 255);
+    }
+  }
+}
