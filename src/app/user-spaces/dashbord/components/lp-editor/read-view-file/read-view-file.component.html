@@ -21,9 +21,10 @@
   <div class="row p-0">
     <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff" [ngStyle]="{'background-color': tabIndex === 1 ? '#e3e9ff' : 'white'}">
       <mat-tab-group (selectedTabChange)="tabChanged($event)" mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
-        class="mat-group">
+        class="mat-group" *ngIf="dataViews.length !== 0">
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target
+          [idProject]='idProject'
           [dataViews]='dataViews'
           [dataSources]='dataSource.data'
           ></app-facet-filter-target>

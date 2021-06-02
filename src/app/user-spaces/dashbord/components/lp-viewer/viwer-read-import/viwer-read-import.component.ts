@@ -75,7 +75,6 @@ export class ViwerReadImportComponent
             this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
           )
         ).split(',');
-        console.log('head=', header);
         const editableColumns = JSON.parse(
           JSON.stringify(
             this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
