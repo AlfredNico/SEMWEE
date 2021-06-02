@@ -1,5 +1,4 @@
 import { UndoRedoComponent } from './undo-redo.component';
-import { FacetFilterComponent } from './facet-filter.component';
 import { EditorDialogComponent } from './editor-dialog.component';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
@@ -26,7 +25,6 @@ import { DatePipe } from '@angular/common';
     FluidHeightDirective,
     ImportFileComponent,
     ReadViewFileComponent,
-    FacetFilterComponent,
     UndoRedoComponent,
     OpenHeaderOptionsComponent,
   ],
