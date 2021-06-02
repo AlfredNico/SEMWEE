@@ -18,7 +18,7 @@ import { LpViwersService } from '../../services/lp-viwers.service';
   templateUrl: './lp-editor.component.html',
   styleUrls: ['./lp-editor.component.scss'],
 })
-export class LpEditorComponent implements OnInit, AfterViewInit {
+export class LpEditorComponent implements AfterViewInit {
 
   user: User = undefined;
 
@@ -54,8 +54,6 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   ngDoCheck(): void {
     this.common.hideSpinner('table');
   }
-
-  ngOnInit(): void { }
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
