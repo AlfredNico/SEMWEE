@@ -11,6 +11,7 @@ import { NumericFacetComponent } from '../components/LPVi-LPEd/components/numeri
 import { SearchFilterComponent } from '../components/LPVi-LPEd/components/search-filter.component';
 import { LpdLpdService } from '../components/LPVi-LPEd/services/lpd-lpd.service';
 import { FacetFilterComponent } from '../components/LPVi-LPEd/components/facet-filter.component';
+import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { FacetFilterComponent } from '../components/LPVi-LPEd/components/facet-f
     NumericFacetComponent,
     InputFilterComponent,
     SearchFilterComponent,
-    FacetFilterComponent
+    FacetFilterComponent,
+    TimeLineComponent
   ],
   imports: [
     SharedModule,
@@ -42,7 +44,8 @@ import { FacetFilterComponent } from '../components/LPVi-LPEd/components/facet-f
     EditCellComponent,
     InputFilterComponent,
     SearchFilterComponent,
-    FacetFilterComponent
+    FacetFilterComponent,
+    TimeLineComponent
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

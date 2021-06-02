@@ -182,6 +182,39 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
       options: options
     });
   }
+
+   public timeLineFacter(column: any): void {
+    // let distances = {}, isExist = false;
+    // this.dataSource.data.map((item: any) => {
+    //   distances[item[column]] = (distances[item[column]] || 0) + 1;
+    // });
+
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = Number(item[column])
+        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'timeLine',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
+    });
+  }
 }
 
 

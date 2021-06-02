@@ -37,7 +37,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AppComponent,
     PageNotFoundComponent,
     BottonSheetComponent,
-    InformationSheetButtomComponent
+    InformationSheetButtomComponent,
   ],
   imports: [
     BrowserModule,

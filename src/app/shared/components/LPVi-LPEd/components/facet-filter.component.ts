@@ -16,7 +16,12 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 
   <div *ngFor="let item of items, let index = index">
      <ng-container
-      *ngTemplateOutlet="item.type === 'search' ? searchTemplate : item.type === 'input' ? inputTemplate : numericTemplate; context:{value: item}">
+      *ngTemplateOutlet="
+      item.type === 'search' ? searchTemplate
+      : item.type === 'input' ? inputTemplate
+      : item.type === 'numeric' ? numericTemplate
+      : timeLineTemplate;
+      context:{value: item}">
     </ng-container>
 
     <ng-template #searchTemplate let-currentValue="value">
@@ -35,7 +40,6 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       [items]='items'
       [item]='item'
       [index]='index'
-      [isCheckedInput]='isCheckedInput'
       [dataViews]='dataViews'
       (formGroup)='formGroupEmitter($event)'
       (removeFromItem)='removeFromItemEmitter($event, "input")'
@@ -55,6 +59,18 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       (minimize)='minimizeEmitter($event)'
       ></app-numeric-facet>
     </ng-template>
+
+    <ng-template #timeLineTemplate let-currentValue="value">
+      <app-time-line
+      [items]='items'
+      [item]='item'
+      [dataViews]='dataViews'
+      [dataSources]='dataSources'
+      (numericQueriesEmitter)="callAfterNumericFilter($event)"
+      (removeFromItem)='removeFromItemEmitter($event, "timeLine")'
+      (minimize)='minimizeEmitter($event)'
+      ></app-time-line>
+    </ng-template>
   </div>
 </div>
 
@@ -68,8 +84,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 </ng-template>
 
   `,
-  styles: [
-  ]
+  styleUrls: ['./facet-filter.component.scss']
 })
 export class FacetFilterComponent implements AfterViewInit, OnInit {
   /* VARIABLES */
@@ -83,6 +98,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   private numericQeury: boolean[] = [];
   private queriesNumerisFilters = {};
   public isCheckedInput = false;
+
+
 
   /* INPUT */
   @Input('dataViews') public dataViews: any[] = [];
@@ -124,7 +141,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.numericQeury = [];
     this.dataSources = this.dataViews;
     this.queries =  {};
-    this.queriesNumerisFilters = {}
+    this.queriesNumerisFilters = {};
 
     this.savePermalink(); // SAVE PERMALINK
   }
@@ -198,7 +215,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   }
 
   public formGroupEmitter(event: {query: any, item: any, index: number}) {
-    this.isCheckedInput = true;
     const value = Object.values(event.query).toString();
     const keys = Object.keys(event.query).toString();
 
