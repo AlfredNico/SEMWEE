@@ -169,7 +169,7 @@
                     <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
                     <i style="color: #959CBD" class="far fa-star fa-lg"></i>
 
-                    <p class="text-center font-size-h4">{{ indexRow + 1 }}.</p>
+                    <p class="text-center font-size-h4 m-0">{{ index }}.</p>
                   </div>
                 </td>
               </ng-container>
@@ -264,14 +264,14 @@
                     *ngTemplateOutlet="
                       (element[column] | typeof) === 'string'
                         ? stringTemplate
-                        : numberTemplate;
+                        : otherTemplate;
                       context: { value: element[column] }
                     "
                   >
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
+                    <div class="row justify-content-between px-3">
                       <!-- (currentValue | isURL) -->
                       <p
                         class="text-left text-truncate mat-body-p"
@@ -298,9 +298,9 @@
                     </div>
                   </ng-template>
 
-                  <ng-template #numberTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
-                      <p class="text-right text-truncate mat-body-p" style="color:green;">{{ currentValue }}</p>
+                  <ng-template #otherTemplate let-currentValue="value">
+                    <div class="justify-content-between px-3">
+                      <p class="text-truncate mat-body-p other-type">{{ currentValue }}</p>
                     </div>
                   </ng-template>
                 </td>
