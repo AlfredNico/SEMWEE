@@ -7,7 +7,10 @@
     <app-import-file [user]="user" (dataImported)="nextReadFile($event)"></app-import-file>
   </mat-step>
   <mat-step completed="false" editable="false">
-    <app-read-view-file [dataAfterUploaded]="dataAfterUploaded"></app-read-view-file>
+    <app-read-view-file
+    [idProject]='idProject'
+    [dataAfterUploaded]="dataAfterUploaded"
+    ></app-read-view-file>
   </mat-step>
 </mat-horizontal-stepper>
 

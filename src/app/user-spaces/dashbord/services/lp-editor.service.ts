@@ -1,6 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,20 +19,9 @@ export class LpEditorService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-  public isLoading$ = new BehaviorSubject<boolean>(true);
-
   constructor(
     private http: HttpClient,
-    private readonly common: CommonService
-  ) {
-    this.isLoading$.subscribe(res => {
-      if (res === true) {
-        this.common.showSpinner('table', true, '');
-      } else {
-        this.common.hideSpinner('table');
-      }
-    });
-  }
+  ) { }
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
     return this.http.get<LPAllProjects[]>(
@@ -92,11 +80,7 @@ export class LpEditorService {
       );
   }
 
-  public getSavedProjects(idProject): Observable<LPAllProjects[]> {
-    return this.http.get<any>(
-      `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
-    );
-  }
+
 
   sendProjectNames(value: {
     idUser: any;

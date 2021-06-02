@@ -22,14 +22,17 @@ import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd
   styleUrls: ['./read-view-file.component.scss']
 })
 export class ReadViewFileComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<any[]>([]);
+  /* INPUT */
+  @Input('idProject') idProject: any = undefined;
+
+  /* VIEWCHIELD */
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  // public event: any;
 
+  /* VARIABLES */
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource<any[]>([]);
   public items: any[] = [];
-
   public tabIndex = 0;
 
   public undoRedoLabel = 'Undo/Redo 0/0';
@@ -45,24 +48,15 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      if (Array.isArray(this.dataAfterUploaded) === true) {
-        const header = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
-          )
-        ).split(',');
-        const editableColumns = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-          )
-        ).split(',');
-        const values = this.dataAfterUploaded[1];
-        header.unshift('all');
-        editableColumns.unshift('all');
+      if (Object.keys(this.dataAfterUploaded).length === 4) {
+        this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
+        this.dataViews = this.dataAfterUploaded['data'];
 
-        this.displayedColumns = header;
-        this.dataSource.data = this.dataViews = values;
-      } else {
+        if(Object.keys(this.lpviLped.permaLink).length !== 0)
+          this.dataSource.data = this.lpviLped.permaLink['data'];
+        else this.dataSource.data = this.dataViews;
+
+      } else if (Object.keys(this.dataAfterUploaded).length === 2){
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
       }

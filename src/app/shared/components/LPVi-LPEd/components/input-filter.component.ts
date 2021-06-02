@@ -44,6 +44,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
   @Input('items') items: any[] = [];
   @Input('dataViews') dataViews: any[] = [];
   @Input('item') item: any = undefined;
+  @Input('index') index: any = undefined;
 
   /* OUTPUT */
   @Output('minimize') minimize: any = new EventEmitter();
@@ -56,12 +57,20 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.form.addControl(this.item['head'], new FormControl(this.item['value']));
-    // this.formGroup.emit(this.form.value);
   }
 
   ngAfterViewInit(): void {
     this.form.valueChanges.subscribe(query => {
-      this.formGroup.emit(query);
+      this.item = {
+        ...this.item,
+        value: query[`${this.item['head']}`]
+      };
+
+      this.formGroup.emit({
+        query: query,
+        item: this.item,
+        index: this.index
+      });
     });
   }
 

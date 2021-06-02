@@ -22,11 +22,11 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
               <div class="pointer px-1">change</div>
               <div class="pointer px-1">reset</div>
             </div>
-            <div class="custom-slider" *ngIf="isValidNumber() && maxValue !== 0; else noNumber">
+            <div class="custom-slider" *ngIf="isValidNumber() && item?.maxValue !== 0; else noNumber">
               <ngx-slider
-                [(value)]="minValue"
-                [(highValue)]="maxValue"
-                [options]="options"
+                [(value)]="item.minValue"
+                [(highValue)]="item.maxValue"
+                [options]="item.options"
                 (userChangeEnd)="userChangeEnd($event)"
               ></ngx-slider>
             </div>
@@ -36,10 +36,10 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
               </div>
             </ng-template>
             <div fxLayout="row" fxLayoutAlign="center center" class="py-1"
-            style="background: #e3e9ff;" *ngIf="isValidNumber() && maxValue!==0">
-              <p class="m-0"> {{ minValue }} </p>
+            style="background: #e3e9ff;" *ngIf="isValidNumber() && item?.maxValue!==0">
+              <p class="m-0"> {{ item?.minValue }} </p>
               <p class="mx-1 my-0">-</p>
-              <p class="m-0"> {{ maxValue }}</p>
+              <p class="m-0"> {{ item?.maxValue }}</p>
             </div>
           </div>
         </div>
@@ -52,10 +52,10 @@ export class NumericFacetComponent implements AfterViewInit {
   @Input('items') items: any[] = [];
   @Input('item') item: any = undefined;
   @Input('dataViews') public dataViews: any[] = [];
-  @Input('dataSources') public dataSources: any[] = [];
-  @Input('minValue') minValue: number = 0;
-  @Input('maxValue') maxValue: number = 2000;
-  @Input('options') options: Options = undefined;
+  // @Input('dataSources') public dataSources: any[] = [];
+  // @Input('minValue') minValue: number = 0;
+  // @Input('maxValue') maxValue: number = 2000;
+  // @Input('options') options: Options = undefined;
 
   /* OUTPUT */
   @Output('numericQueriesEmitter') numericQueriesEmitter = new EventEmitter<any>(undefined);
@@ -72,22 +72,17 @@ export class NumericFacetComponent implements AfterViewInit {
   ngAfterViewInit(): void { }
 
   userChangeEnd(event: any) {
-    // this.dataViews.map((value, index) => {
-    //   const v = value[`${this.item['head']}`];
-    //   if (v >= event['value'] && v <= event['highValue'] && Number.isFinite(v) === true)
-    //     this.numericQueries[index] = true;
-    //   else this.numericQueries[index] = false;
-    // })
     const valueFiltered = {
       minValue: event['value'],
       maxValue: event['highValue'],
       head: this.item['head']
     }
+    
     this.numericQueriesEmitter.emit(valueFiltered);
   }
 
   public isValidNumber(): boolean {
-    return Number.isFinite(this.minValue) && Number.isFinite(this.maxValue);
+    return Number.isFinite(this.item['minValue']) && Number.isFinite(this.item['maxValue']);
   }
 
 }

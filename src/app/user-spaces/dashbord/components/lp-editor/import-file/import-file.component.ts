@@ -113,7 +113,9 @@ export class ImportFileComponent implements OnInit {
             }, {})
           );
 
-          this.data.header = [...new Set([...header])].filter(item => item);
+          this.data.header = [...new Set([...header])].filter(
+            item => (item != undefined && item != '')
+          );
           this.data.header.unshift('all');
           this.data.content = content;
           this.onSubmit();
