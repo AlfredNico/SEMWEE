@@ -21,7 +21,7 @@ interface PageObject {
   selector: '[appStylePaginator]',
 })
 export class StylePaginatorDirective {
-  private _pageGapTxt = '...';
+  // private _pageGapTxt = '...';
   private _rangeStart: number;
   private _rangeEnd: number;
   private _buttons = [];
@@ -102,28 +102,24 @@ export class StylePaginatorDirective {
         for (let i = 0; i < nodeArray.length; i++) {
           if (nodeArray[i].nodeName === 'BUTTON') {
             if (nodeArray[i].innerHTML.length > 100 && nodeArray[i].disabled) {
-              this.ren.setStyle(
-                nodeArray[i],
-                'background-color',
-                'rgba(202, 226, 249, 1)'
-              );
+              this.ren.setStyle(nodeArray[i], 'background-color', 'rgba(236, 241, 246, 1)');
               // 'rgba(190, 130, 130, 1)'
-              this.ren.setStyle(nodeArray[i], 'color', 'white');
+              this.ren.setStyle(nodeArray[i], 'color', 'rgba(181, 181, 195, 1)');
+              this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
+              this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
               this.ren.setStyle(nodeArray[i], 'margin', '.5%');
-            } else if (
-              nodeArray[i].innerHTML.length > 100 &&
-              !nodeArray[i].disabled
-            ) {
-              this.ren.setStyle(
-                nodeArray[i],
-                'background-color',
-                'rgba(147, 205, 255, 1)'
-              );
-              // 'rgba(255, 0, 0, 1)'
-              this.ren.setStyle(nodeArray[i], 'color', 'white');
+            } else if (nodeArray[i].innerHTML.length > 100 && !nodeArray[i].disabled) {
+              this.ren.setStyle(nodeArray[i], 'background-color', 'rgba(236, 241, 246, 1)');
+              this.ren.setStyle(nodeArray[i], 'color', 'rgba(181, 181, 195, 1)');
+              this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
+              this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
               this.ren.setStyle(nodeArray[i], 'margin', '.5%');
             } else if (nodeArray[i].disabled) {
-              this.ren.setStyle(nodeArray[i], 'background-color', 'lightgray');
+              this.ren.setStyle(nodeArray[i], 'background-color', 'rgba(54, 153, 255, 1)');
+              this.ren.setStyle(nodeArray[i], 'color', 'white');
+            } else if (!nodeArray[i].disabled) {
+              this.ren.setStyle(nodeArray[i], 'background-color', 'transparent');
+              this.ren.setStyle(nodeArray[i], 'color', 'rgba(138, 140, 159, 1)');
             }
           }
         }
@@ -139,13 +135,13 @@ export class StylePaginatorDirective {
         );
       }
 
-      if (i == this._rangeEnd) {
-        this.ren.insertBefore(
-          actionContainer,
-          this.createButton(this._pageGapTxt, this._rangeEnd),
-          nextPageNode
-        );
-      }
+      // if (i == this._rangeEnd) {
+      //   this.ren.insertBefore(
+      //     actionContainer,
+      //     this.createButton(this._pageGapTxt, this._rangeEnd),
+      //     nextPageNode
+      //   );
+      // }
     }
   }
 
@@ -155,7 +151,7 @@ export class StylePaginatorDirective {
     this.ren.setStyle(linkBtn, 'margin', '1%');
     this.ren.setStyle(linkBtn, 'background-color', 'white');
 
-    const pagingTxt = isNaN(i) ? this._pageGapTxt : +(i + 1);
+    const pagingTxt = isNaN(i) ? '...' : +(i + 1);
     const text = this.ren.createText(pagingTxt + '');
 
     this.ren.addClass(linkBtn, 'mat-custom-page');
@@ -163,22 +159,22 @@ export class StylePaginatorDirective {
       case pageIndex:
         this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
         break;
-      case this._pageGapTxt:
-        let newIndex = this._curPageObj.pageIndex + this._showTotalPages;
+      // case this._pageGapTxt:
+        // let newIndex = this._curPageObj.pageIndex + this._showTotalPages;
 
-        if (newIndex >= this.numOfPages) newIndex = this.lastPageIndex;
+        // if (newIndex >= this.numOfPages) newIndex = this.lastPageIndex;
 
-        if (pageIndex != this.lastPageIndex) {
-          this.ren.listen(linkBtn, 'click', () => {
-            console.log('working: ', pageIndex);
-            this.switchPage(newIndex);
-          });
-        }
+        // if (pageIndex != this.lastPageIndex) {
+        //   this.ren.listen(linkBtn, 'click', () => {
+        //     console.log('working: ', pageIndex);
+        //     this.switchPage(newIndex);
+        //   });
+        // }
 
-        if (pageIndex == this.lastPageIndex) {
-          this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
-        }
-        break;
+        // if (pageIndex == this.lastPageIndex) {
+        //   this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
+        // }
+        // break;
       default:
         this.ren.listen(linkBtn, 'click', () => {
           this.switchPage(i);

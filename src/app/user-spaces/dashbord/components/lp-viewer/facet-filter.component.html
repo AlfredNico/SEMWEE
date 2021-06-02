@@ -1,9 +1,9 @@
 <div *ngIf="items.length > 0; else noItems">
   <div class="w-100 px-2 pb-3">
-    <button class="rounded">Refresh</button>
+    <button class="rounded btn btn-light-primary">Refresh</button>
     <span fxFlex></span>
-    <button class="rounded" (click)="resetAll()">Reset All</button>
-    <button class="rounded" (click)="removeAll()">Remove All</button>
+    <button class="rounded btn btn-light-primary" (click)="resetAll()">Reset All</button>
+    <button class="rounded btn btn-light-primary" (click)="removeAll()">Remove All</button>
   </div>
 
   <div *ngFor="let item of items">
@@ -28,7 +28,7 @@
           <span fxFlex></span>
           <div class="pointer">change</div>
         </div>
-         <div fxLayout="row" class="py-2 px-2" style="background: #e3e9ff;"
+         <div fxLayout="row" class="py-2 px-2" style="background: #EEE5FF;"
          *ngIf="item['isMinimize'] === false">
           <div class="pr-3 pointer"> 1 choices</div>
           <div> Sort by : <span class="px-1 pointer">name</span><span class="px-1 pointer">count</span> </div>
@@ -52,8 +52,8 @@
 
     <ng-template #filterTemplate let-currentValue="value">
       <div class="mx-1 pb-2">
-        <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
-          <div class="py-2 px-2 rounded-top" style="background: #bbccff;" fxLayout="row">
+        <div class="p-0 w-100 rounded" style="border: 1px solid #F2F3F7; color: #A7ABC3;">
+          <div class="py-2 px-2 rounded-top" style="background: #F2F3F7; color: #A7ABC3;" fxLayout="row">
             <mat-icon aria-label="close icon" (click)="removeFromItem(item)">
               highlight_off
             </mat-icon>
@@ -65,14 +65,14 @@
             </mat-icon>
             <span style="font-weight: 600;">{{ item['head'] }}</span>
             <span fxFlex></span>
-            <div class="pointer px-1">invert</div>
-            <div class="pointer px-1">reset</div>
+            <div style="font-weight: 600;" class="pointer px-1">invert</div>
+            <div style="font-weight: 600;" class="pointer px-1">reset</div>
           </div>
           <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="formGroup">
-            <input autocomplete="off" type="search" class="w-100" placeholder="filter ..." [formControlName]="item['head']" appearance="outline">
+            <input autocomplete="off" type="search" class="w-100" placeholder="Filter ..." [formControlName]="item['head']" appearance="outline" class="form-control">
           </div>
           <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3"
-          style="background: #e3e9ff;" *ngIf="item['isMinimize'] === false">
+          style="background: #f6f7f9; color: #A7ABC3;" *ngIf="item['isMinimize'] === false">
             <mat-checkbox>case sensitive</mat-checkbox>
             <mat-checkbox>regular expression</mat-checkbox>
           </div>
@@ -97,7 +97,7 @@
 </div>
 
 <ng-template #noItems>
-  <div style="background: #e3e9ff;" class="rounded w-100 px-3 py-5">
+  <div style="background: #EEE5FF;" class="w-100 px-3 py-5">
     <h1>Using facets and filters</h1>
     <p class="m-0">
       Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
