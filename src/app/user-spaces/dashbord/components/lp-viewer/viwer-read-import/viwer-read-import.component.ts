@@ -20,6 +20,7 @@ import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { FormBuilder } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -31,6 +32,7 @@ import { getCustomPaginatorIntl } from './custom-paginator.component';
 })
 export class ViwerReadImportComponent
   implements OnInit, AfterViewInit, OnChanges {
+
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
@@ -61,88 +63,112 @@ export class ViwerReadImportComponent
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder,
-    private lpViewer: LpViwersService,
-    public senitizer: DomSanitizer
+    // private lpViewer: LpViwersService,
+    public senitizer: DomSanitizer,
+    private readonly lpviLped: LpdLpdService,
   ) { }
 
   ngOnChanges(): void {
+    // if (this.dataAfterUploaded != undefined) {
+    //   if (
+    //     (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
+    //   ) {
+    //     const header = JSON.parse(
+    //       JSON.stringify(
+    //         this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
+    //       )
+    //     ).split(',');
+    //     const editableColumns = JSON.parse(
+    //       JSON.stringify(
+    //         this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
+    //       )
+    //     ).split(',');
+    //     const values = this.dataAfterUploaded[1];
+    //     header.unshift('all');
+    //     editableColumns.unshift('all');
+
+    //     this.displayedColumns = header;
+    //     this.edidtableColumns = editableColumns;
+    //     // this.dataSource.data = this.checkFilter(values);
+    //     this.dataSource.data = this.dataViews = values;
+
+    //     if (this.filtersData.items !== undefined) {
+    //       this.formGroup = this.fb.group(
+    //         JSON.parse(this.dataAfterUploaded[2][0]['value'])
+    //       );
+    //       this.items = this.filtersData['items'];
+    //       this.lpViewer.itemsObservables$.next(this.filtersData['items']);
+    //     }
+    //   } else {
+    //     this.displayedColumns = this.dataAfterUploaded['header'];
+    //     this.edidtableColumns = this.displayedColumns;
+    //     this.dataSource.data = this.dataAfterUploaded['content'];
+    //     this.dataViews = this.dataAfterUploaded['content'];
+    //   }
+    // }
+    // this.lpViewer.checkInfoSubject$.next();
+
     if (this.dataAfterUploaded != undefined) {
-      if (
-        (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
-      ) {
-        const header = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
-          )
-        ).split(',');
-        const editableColumns = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-          )
-        ).split(',');
-        const values = this.dataAfterUploaded[1];
-        header.unshift('all');
-        editableColumns.unshift('all');
+      if (Object.keys(this.dataAfterUploaded).length === 4) {
+        this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
+        this.dataViews = this.dataAfterUploaded['data'];
 
-        this.displayedColumns = header;
-        this.edidtableColumns = editableColumns;
-        // this.dataSource.data = this.checkFilter(values);
-        this.dataSource.data = this.dataViews = values;
+        if(Object.keys(this.lpviLped.permaLink).length !== 0)
+          this.dataSource.data = this.lpviLped.permaLink['data'];
+        else this.dataSource.data = this.dataViews;
 
-        if (this.filtersData.items !== undefined) {
-          this.formGroup = this.fb.group(
-            JSON.parse(this.dataAfterUploaded[2][0]['value'])
-          );
-          this.items = this.filtersData['items'];
-          this.lpViewer.itemsObservables$.next(this.filtersData['items']);
-        }
-      } else {
+      } else if (Object.keys(this.dataAfterUploaded).length === 2){
         this.displayedColumns = this.dataAfterUploaded['header'];
-        this.edidtableColumns = this.displayedColumns;
-        this.dataSource.data = this.dataAfterUploaded['content'];
-        this.dataViews = this.dataAfterUploaded['content'];
+        this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
       }
     }
-    this.lpViewer.checkInfoSubject$.next();
   }
 
   ngOnInit(): void { }
 
   ngAfterViewInit() {
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+
+    // this.lpViewer.dataSources$.subscribe((res) => {
+    //   if (res) {
+    //     this.dataSource.data = res;
+    //   }
+    // });
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    this.lpViewer.dataSources$.subscribe((res) => {
-      if (res) {
-        this.dataSource.data = res;
-      }
-    });
+    this.lpviLped.dataSources$.subscribe(data => {
+      if (data)
+        this.dataSource.data = data;
+    })
   }
 
-  public openTablesOptionns() {
-    this.dialog
-      .open(HeaderOptionsComponent, {
-        data: {
-          // noHiddenRows: this.displayColumns,
-          noHiddenRows: this.displayedColumns,
-          hiddenRows: [],
-        },
-        width: '70%',
-      })
-      .afterClosed()
-      .pipe(
-        map((result: any) => {
-          if (result) {
-            this.displayedColumns = result.noHiddenRows;
-            this.lpViewer.putDisplayColums(
-              this.idProject,
-              JSON.stringify(this.displayedColumns)
-            );
-          }
-        })
-      )
-      .subscribe();
-  }
+  // public openTablesOptionns() {
+  //   this.dialog
+  //     .open(HeaderOptionsComponent, {
+  //       data: {
+  //         // noHiddenRows: this.displayColumns,
+  //         noHiddenRows: this.displayedColumns,
+  //         hiddenRows: [],
+  //       },
+  //       width: '70%',
+  //     })
+  //     .afterClosed()
+  //     .pipe(
+  //       map((result: any) => {
+  //         if (result) {
+  //           this.displayedColumns = result.noHiddenRows;
+  //           this.lpViewer.putDisplayColums(
+  //             this.idProject,
+  //             JSON.stringify(this.displayedColumns)
+  //           );
+  //         }
+  //       })
+  //     )
+  //     .subscribe();
+  // }
 
   public openEditColumn(columnName: string) {
     const index = this.displayedColumns.indexOf(columnName);
@@ -161,6 +187,7 @@ export class ViwerReadImportComponent
     this.tabIndex = tabChangeEvent.index;
   }
 
+  // --------------------------------------------------------------------------- //
   sortData($e: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
@@ -169,63 +196,64 @@ export class ViwerReadImportComponent
         : (this.icon = '');
     this.active = $e.active;
   }
+  // --------------------------------------------------------------------------- //
 
-  public textFacet(column: any) {
-    let distances = {};
-    // isExist = false;
-    this.dataViews.map((item: any) => {
-      distances[item[column]] = (distances[item[column]] || 0) + 1;
-    });
+  // public textFacet(column: any) {
+  //   let distances = {};
+  //   // isExist = false;
+  //   this.dataViews.map((item: any) => {
+  //     distances[item[column]] = (distances[item[column]] || 0) + 1;
+  //   });
 
-    const value = Object.entries(distances).map((val: any) => {
-      return { ...val, include: false };
-    });
+  //   const value = Object.entries(distances).map((val: any) => {
+  //     return { ...val, include: false };
+  //   });
 
-    this.lpViewer.itemsObservables$.next({
-      type: 'facet',
-      isMinimize: false,
-      head: column,
-      content: value,
-    });
-    // }
-  }
+  //   this.lpViewer.itemsObservables$.next({
+  //     type: 'facet',
+  //     isMinimize: false,
+  //     head: column,
+  //     content: value,
+  //   });
+  //   // }
+  // }
 
-  public textFilter(column: any) {
-    this.lpViewer.itemsObservables$.next({
-      type: 'filter',
-      isMinimize: false,
-      head: column,
-    });
-  }
+  // public textFilter(column: any) {
+  //   this.lpViewer.itemsObservables$.next({
+  //     type: 'filter',
+  //     isMinimize: false,
+  //     head: column,
+  //   });
+  // }
 
-  public numericFacter(column: any) {
-    let value = {};
-    let minValue = 100000, maxValue = 0;
-    this.dataViews.map((item: any) => {
-      if (Number.isInteger(Number(item[column])) === true) {
-        if (Number(item[column]) >= maxValue) maxValue = item[column]
-        if (Number(item[column]) <= minValue) minValue = item[column];
-      }
-    });
-    const options: Options = {
-      floor: minValue,
-      ceil: maxValue,
-      hidePointerLabels: true,
-      hideLimitLabels: true,
-      draggableRange: true,
-      showSelectionBar: true,
-    };
+  // public numericFacter(column: any) {
+  //   let value = {};
+  //   let minValue = 100000, maxValue = 0;
+  //   this.dataViews.map((item: any) => {
+  //     if (Number.isInteger(Number(item[column])) === true) {
+  //       if (Number(item[column]) >= maxValue) maxValue = item[column]
+  //       if (Number(item[column]) <= minValue) minValue = item[column];
+  //     }
+  //   });
+  //   const options: Options = {
+  //     floor: minValue,
+  //     ceil: maxValue,
+  //     hidePointerLabels: true,
+  //     hideLimitLabels: true,
+  //     draggableRange: true,
+  //     showSelectionBar: true,
+  //   };
 
 
-    this.lpViewer.itemsObservables$.next({
-      type: 'numeric',
-      isMinimize: false,
-      head: column,
-      minValue: minValue,
-      maxValue: maxValue,
-      options: options
-    });
-  }
+  //   this.lpViewer.itemsObservables$.next({
+  //     type: 'numeric',
+  //     isMinimize: false,
+  //     head: column,
+  //     minValue: minValue,
+  //     maxValue: maxValue,
+  //     options: options
+  //   });
+  // }
 
   public isColumnDisplay(column: any): boolean {
     switch (true) {
@@ -275,34 +303,114 @@ export class ViwerReadImportComponent
     new AngularCsv(tabnewObject, 'HolidayList', csvOptions);
   }
 
-  private checkFilter(val: any[]): any[] {
-    if (this.filtersData !== undefined) {
-      const length1 = this.filtersData['facetQueries']?.length;
-      const length2 = this.filtersData['searchQueries']?.length;
+  // private checkFilter(val: any[]): any[] {
+  //   if (this.filtersData !== undefined) {
+  //     const length1 = this.filtersData['facetQueries']?.length;
+  //     const length2 = this.filtersData['searchQueries']?.length;
 
-      const dataFilter = val.filter((x: any, i: number) => {
-        switch (true) {
-          case length1 > 0 && length2 > 0:
-            return (
-              this.filtersData['facetQueries'][i] &&
-              this.filtersData['searchQueries'][i]
-            );
+  //     const dataFilter = val.filter((x: any, i: number) => {
+  //       switch (true) {
+  //         case length1 > 0 && length2 > 0:
+  //           return (
+  //             this.filtersData['facetQueries'][i] &&
+  //             this.filtersData['searchQueries'][i]
+  //           );
 
-          case length1 === 0 && length2 > 0:
-            return this.filtersData['searchQueries'][i];
+  //         case length1 === 0 && length2 > 0:
+  //           return this.filtersData['searchQueries'][i];
 
-          case length1 > 0 && length2 === 0:
-            return this.filtersData['facetQueries'][i];
+  //         case length1 > 0 && length2 === 0:
+  //           return this.filtersData['facetQueries'][i];
 
-          case length1 === 0 && length2 === 0:
-            return true;
-        }
-      });
-      return dataFilter;
-    } else return val;
-  }
+  //         case length1 === 0 && length2 === 0:
+  //           return true;
+  //       }
+  //     });
+  //     return dataFilter;
+  //   } else return val;
+  // }
 
   public openButton() {
     console.log('open button');
+  }
+
+  public filterColumn(column: any) {
+    let distances = {}, isExist = false;
+    this.dataSource.data.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
+
+    let valu = Object.entries(distances).map((val: any) => {
+      return { ...val }
+    })
+
+    this.items.map(value => {
+      if (value['head'] && value['head'] === column) {
+        isExist = true;
+        return;
+      }
+    })
+
+    if (isExist === false) {
+      this.items.push({
+        head: column,
+        content: valu
+      });
+    }
+  }
+
+  public searchFacet(column: any) {
+    let distances = {}, isExist = false;
+    this.dataViews.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
+
+    const value = Object.entries(distances).map((val: any) => {
+      return { ...val, include: false };
+    });
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'search',
+      isMinimize: false,
+      head: column,
+      content: value
+    });
+  }
+
+  public inputFilter(column: any) {
+    this.lpviLped.itemsObservables$.next({
+      type: 'input',
+      isMinimize: false,
+      head: column,
+      value: ''
+    });
+  }
+
+  public numericFacter(column: any) {
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = Number(item[column])
+        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'numeric',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
+    });
   }
 }
