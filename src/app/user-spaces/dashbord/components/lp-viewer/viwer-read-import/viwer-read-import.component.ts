@@ -59,6 +59,7 @@ export class ViwerReadImportComponent
   public formGroup = this.fb.group({});
 
   public items: any[] = [];
+   private isFiltered: boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -69,51 +70,20 @@ export class ViwerReadImportComponent
   ) { }
 
   ngOnChanges(): void {
-    // if (this.dataAfterUploaded != undefined) {
-    //   if (
-    //     (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
-    //   ) {
-    //     const header = JSON.parse(
-    //       JSON.stringify(
-    //         this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
-    //       )
-    //     ).split(',');
-    //     const editableColumns = JSON.parse(
-    //       JSON.stringify(
-    //         this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-    //       )
-    //     ).split(',');
-    //     const values = this.dataAfterUploaded[1];
-    //     header.unshift('all');
-    //     editableColumns.unshift('all');
-
-    //     this.displayedColumns = header;
-    //     this.edidtableColumns = editableColumns;
-    //     // this.dataSource.data = this.checkFilter(values);
-    //     this.dataSource.data = this.dataViews = values;
-
-    //     if (this.filtersData.items !== undefined) {
-    //       this.formGroup = this.fb.group(
-    //         JSON.parse(this.dataAfterUploaded[2][0]['value'])
-    //       );
-    //       this.items = this.filtersData['items'];
-    //       this.lpViewer.itemsObservables$.next(this.filtersData['items']);
-    //     }
-    //   } else {
-    //     this.displayedColumns = this.dataAfterUploaded['header'];
-    //     this.edidtableColumns = this.displayedColumns;
-    //     this.dataSource.data = this.dataAfterUploaded['content'];
-    //     this.dataViews = this.dataAfterUploaded['content'];
-    //   }
-    // }
-    // this.lpViewer.checkInfoSubject$.next();
-
-    if (this.dataAfterUploaded != undefined) {
+     if (this.dataAfterUploaded != undefined) {
       if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
 
-        if(Object.keys(this.lpviLped.permaLink).length !== 0)
+        Object.values(this.lpviLped.permaLink).map(x => {
+          if (Array.isArray(x) === true)
+            if ((x as any[]).length != 0 )
+              this.isFiltered = true;
+          else if (Object.keys(x).length !== 0)
+            this.isFiltered = true;
+        });
+
+        if(this.isFiltered == true)
           this.dataSource.data = this.lpviLped.permaLink['data'];
         else this.dataSource.data = this.dataViews;
 
@@ -127,15 +97,6 @@ export class ViwerReadImportComponent
   ngOnInit(): void { }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
-
-    // this.lpViewer.dataSources$.subscribe((res) => {
-    //   if (res) {
-    //     this.dataSource.data = res;
-    //   }
-    // });
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 

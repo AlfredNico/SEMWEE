@@ -52,6 +52,7 @@
         [color]="'#f0f1f6'"
         [backgroundColor]="'#f0f1f6'"
         class="mat-group"
+        *ngIf="dataViews.length !== 0"
       >
         <mat-tab label="Facet/Filter">
 
@@ -105,7 +106,7 @@
             >
               <!-- dynamics Column -->
               <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
-                <th mat-header-cell *matHeaderCellDef 
+                <th mat-header-cell *matHeaderCellDef
                 [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }"
                 >
                   <span fxLayout fxLayoutGap="15px">

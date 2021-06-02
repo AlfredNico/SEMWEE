@@ -5,13 +5,14 @@ import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/shared/services/common.service';
 import { LpViwersService } from '../../services/lp-viwers.service';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-lp-viewer',
   templateUrl: './lp-viewer.component.html',
   styleUrls: ['./lp-viewer.component.scss'],
 })
-export class LpViewerComponent implements OnInit, AfterViewInit {
+export class LpViewerComponent implements AfterViewInit {
   user: User = undefined;
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: any | undefined;
@@ -29,7 +30,8 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private common: CommonService,
-    private lpviewer: LpViwersService
+    private lpviewer: LpViwersService,
+    private lpVilpEdService: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
 
@@ -46,23 +48,13 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void { }
-
   ngAfterViewInit() {
-    if (this.idProject !== undefined) {
-      this.lpviewer.isLoading$.next(true);
-      this.lpviewer
+      if (this.idProject !== undefined) {
+      this.lpVilpEdService.isLoading$.next(true);
+      this.lpVilpEdService
         .getSavedProjects(this.idProject)
-        .subscribe((res: Array<any>) => {
-          // console.log(res);
-          if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
-            if (res[3].length > 0) {
-              this.filtersData = JSON.parse(res[3][0]['value']);
-            }
-            if (res[2].length > 0) {
-              this.inputFilters = JSON.parse(res[2][0]['value']);
-            }
-
+        .subscribe((res: any) => {
+          if (res !== undefined) {
             this.stepper.steps.forEach((step, index) => {
               if (index < 1) {
                 step.completed = true;
@@ -73,14 +65,12 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
               }
             });
 
-            this.lpviewer.isLoading$.next(false);
+            this.lpVilpEdService.isLoading$.next(false);
 
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
           } else this.router.navigateByUrl('user-space/lp-viewer');
         });
-      // this.router.navigate(['user-space/lp-viewer'],
-      //   { queryParams: { idProject: this.idProject } });
     }
   }
 

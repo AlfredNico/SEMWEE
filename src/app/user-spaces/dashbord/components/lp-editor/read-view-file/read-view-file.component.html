@@ -38,7 +38,9 @@
     <aside class="col p-0" fxFlex="75%">
       <div class="px-5" style="background: #93cdff; height: 50px">
         <h2 class="m-auto font-weight-bold mx-1">matching rows </h2>
-        <h4 class="m-auto font-weight-normal mx-1"> ( {{ dataSource.data.length }} total )</h4>
+        <h4 class="m-auto font-weight-normal mx-1" *ngIf="dataViews.length !== 0">
+           ( {{ dataSource.data.length }} total )
+        </h4>
         <span fxFlex></span>
         <h4 class="m-auto font-weight-normal">Extensions</h4>
       </div>

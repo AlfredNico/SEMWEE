@@ -24,6 +24,7 @@ import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd
 export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* INPUT */
   @Input('idProject') idProject: any = undefined;
+  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
 
   /* VIEWCHIELD */
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,13 +36,13 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   public items: any[] = [];
   public tabIndex = 0;
 
+  private isFiltered: boolean = false;
+
   public undoRedoLabel = 'Undo/Redo 0/0';
-  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   public dataViews: any[] = [];
 
   constructor(
     public dialog: MatDialog,
-    private readonly lpEditor: LpEditorService,
     private readonly lpviLped: LpdLpdService,
     public datepipe: DatePipe
   ) { }
@@ -52,7 +53,15 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
 
-        if(Object.keys(this.lpviLped.permaLink).length !== 0)
+         Object.values(this.lpviLped.permaLink).map(x => {
+          if (Array.isArray(x) === true)
+            if ((x as any[]).length != 0 )
+              this.isFiltered = true;
+          else if (Object.keys(x).length !== 0)
+            this.isFiltered = true;
+        });
+
+        if(this.isFiltered == true)
           this.dataSource.data = this.lpviLped.permaLink['data'];
         else this.dataSource.data = this.dataViews;
 
