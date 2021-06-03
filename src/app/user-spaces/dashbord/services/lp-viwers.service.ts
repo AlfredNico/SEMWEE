@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LPViewerProjects } from '../interfaces/lp-viewer-projects';
+import { LPAllProjects } from '../interfaces/lp-viewer-projects';
 import { LPViewerHistory } from '../interfaces/lp-viewer-history';
 
 @Injectable({
@@ -35,13 +35,13 @@ export class LpViwersService {
     });
   }
 
-  public getAllProjects(_idUsers): Observable<LPViewerProjects[]> {
-    return this.http.get<LPViewerProjects[]>(
+  public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
+    return this.http.get<LPAllProjects[]>(
       `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
     );
   }
 
-  public getSavedProjects(idProject): Observable<LPViewerProjects[]> {
+  public getSavedProjects(idProject): Observable<LPAllProjects[]> {
     return this.http.get<any>(
       `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
     );
@@ -118,6 +118,12 @@ export class LpViwersService {
   public getOnedateHistory(value: any): Observable<any> {
     return this.http.get<any>(
       `${environment.baseUrl}/lpviewer/get-One-data-history/${value.idProject}/${value.idName}`
+    );
+  }
+
+  public getHeaderExport(idProject: any): Observable<any> {
+    return this.http.get<any>(
+      `${environment.baseUrl}/lpviewer/get-lpviewer-header/${idProject}`
     );
   }
   // /get-One-data-history/:idProject/:idHistory

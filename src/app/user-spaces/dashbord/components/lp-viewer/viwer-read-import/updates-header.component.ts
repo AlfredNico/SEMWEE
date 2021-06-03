@@ -78,6 +78,7 @@ export class UpdatesHeaderComponent implements OnInit {
       .toString()
       .split('_')
       .join(' ')
+      .toUpperCase()
       .trim();
     this.data.edidtableColumns.innerText = valueForm;
 

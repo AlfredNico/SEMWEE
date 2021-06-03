@@ -72,9 +72,9 @@ export class ViwerImportComponent implements OnInit {
     private lpViewerService: LpViwersService,
     private readonly common: CommonService,
     private readonly nofits: NotificationService
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   processCsv(content) {
     return content.split('\n');
@@ -160,7 +160,7 @@ export class ViwerImportComponent implements OnInit {
                 fileData: this.data.content,
                 idHeader: 0,
               },
-              null
+              -1
             )
             .subscribe();
         }

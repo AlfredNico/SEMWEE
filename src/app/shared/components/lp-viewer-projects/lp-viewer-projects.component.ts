@@ -24,15 +24,15 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
     private notifs: NotificationService,
     public triggerServices: TriggerService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // console.log("LPVi "+ this.allProjects$);
   }
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 
-  onDeteils(item: LPAllProjects) { }
+  onDeteils(item: LPAllProjects) {}
 
   onDelete(item: LPAllProjects) {
     this.dialog
@@ -46,7 +46,6 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
       .pipe(
         map((result) => {
           if (result === true) {
-
             this.lPViewerProjectsService
               .deleteProjects(item._id)
               .subscribe((result) => {
@@ -63,13 +62,13 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  onEdit(item: LPAllProjects) { }
+  onEdit(item: LPAllProjects) {}
 
   public navigateURL(_id: any) {
     // this.common.isLoading$.next(true);
     // this.router.navigate(['/user-space/lp-viewer', _id]);
     this.router.navigate(['user-space/lp-viewer'], {
-      queryParams: { idProject: _id }
+      queryParams: { idProject: _id },
     });
   }
 }

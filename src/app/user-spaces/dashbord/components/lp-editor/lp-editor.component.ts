@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -17,7 +12,6 @@ import { LpViwersService } from '../../services/lp-viwers.service';
   styleUrls: ['./lp-editor.component.scss'],
 })
 export class LpEditorComponent implements OnInit, AfterViewInit {
-
   user: User = undefined;
 
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
@@ -53,7 +47,7 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {

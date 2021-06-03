@@ -1,5 +1,9 @@
 import { UpdatesHeaderComponent } from './viwer-read-import/updates-header.component';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { RouterModule } from '@angular/router';
 import { LpViewerComponent } from './lp-viewer.component';
@@ -17,14 +21,16 @@ import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
 import { SharedComponentsModule } from '@app/shared/modules/shared-components.module';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/components/facet-filter.component';
+import { EditComponent } from './editLpViewer/edit.component';
+import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
+// import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/components/facet-filter.component';
 
 @NgModule({
   declarations: [
     LpViewerComponent,
     ViwerImportComponent,
     ViwerReadImportComponent,
-    FacetFilterComponent,
+    // FacetFilterComponent,
     HeaderOptionsComponent,
     UpdatesHeaderComponent,
     EditComponent,
@@ -40,29 +46,20 @@ import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/component
     MatStepperModule, // stepper module
     SharedComponentsModule,
     PerfectScrollbarModule,
-    RouterModule.forChild([{ path: '', component: LpViewerComponent }])
+    RouterModule.forChild([{ path: '', component: LpViewerComponent }]),
   ],
   exports: [RouterModule],
   entryComponents: [
     ViwerImportComponent,
     ViwerReadImportComponent,
-    FacetFilterComponent,
+    // FacetFilterComponent,
     HeaderOptionsComponent,
     UpdatesHeaderComponent,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDialogModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     // NO_ERRORS_SCHEMA
   ],
-  providers: [
-    LpViwersService,
-    tokenInterceptor,
-    errorInterceptor,
-  ]
+  providers: [LpViwersService, tokenInterceptor, errorInterceptor],
 })
 export class LpViewerModule {}

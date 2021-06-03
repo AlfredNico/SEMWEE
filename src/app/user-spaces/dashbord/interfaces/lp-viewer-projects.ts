@@ -1,4 +1,4 @@
-export interface LPViewerProjects {
+export interface LPAllProjects {
   _id: string;
   nameProject: string;
   idUser: string;

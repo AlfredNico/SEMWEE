@@ -46,7 +46,7 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
@@ -73,7 +73,7 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
               }
             });
 
-            this.lpviewer.isLoading$.next(false);
+            // this.lpviewer.isLoading$.next(false);
 
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;

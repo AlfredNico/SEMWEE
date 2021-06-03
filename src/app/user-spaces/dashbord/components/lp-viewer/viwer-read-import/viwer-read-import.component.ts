@@ -43,6 +43,7 @@ export class ViwerReadImportComponent
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
+  @ViewChild('btnbutton') MyDOMElement: ElementRef;
 
   @Input('idProject') idProject = undefined;
   @Input('filtersData') filtersData: {
@@ -71,10 +72,11 @@ export class ViwerReadImportComponent
   public lastValue;
   public objectOne: any;
   public selected = 'string';
-  public listNameHistory: any[];
+  public listNameHistory: any[] = [];
   public ActualyData: any = null;
   public indexRowdata = undefined;
   public idHeader = 0;
+  mySize = 15;
 
   constructor(
     public dialog: MatDialog,
@@ -86,7 +88,7 @@ export class ViwerReadImportComponent
   ngOnChanges(): void {
     // console.log('Okokokoko');
     if (this.dataAfterUploaded != undefined) {
-      // console.log('lViewerReadImport : ', this.dataAfterUploaded);
+      console.log('lViewerReadImport : ', this.dataAfterUploaded);
       // console.log(' cnhange: ', this.nameHeader);
       if (
         (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
@@ -112,6 +114,7 @@ export class ViwerReadImportComponent
         this.edidtableColumns = editableColumns;
         // this.dataSource.data = this.checkFilter(values);
         this.dataSource.data = this.dataViews = values;
+        this.listNameHistory = this.dataAfterUploaded[4];
 
         if (this.filtersData.items !== undefined) {
           this.formGroup = this.fb.group(
@@ -286,20 +289,24 @@ export class ViwerReadImportComponent
       noDownload: false,
       headers: [],
     };
-    this.displayedColumns.splice(this.displayedColumns.indexOf('all'), 1);
-    this.displayedColumns.splice(this.displayedColumns.indexOf('__v'), 1);
-    this.displayedColumns.splice(this.displayedColumns.indexOf('_id'), 1);
 
-    const tabnewObject = [];
-    this.dataSource.data.forEach((valueObject) => {
-      const object = {};
-      this.edidtableColumns.forEach((key) => {
-        object[key] = valueObject[key];
-      });
-      tabnewObject.push(object);
+    let header_now = [];
+    this.lpViewer.getHeaderExport(this.idProject).subscribe((res) => {
+      console.log(res);
+      if (res) {
+        header_now = res[0]['nameUpdate'].split(',');
+        const tabnewObject = [];
+        this.dataSource.data.forEach((valueObject) => {
+          const object = {};
+          header_now.forEach((key) => {
+            object[key] = valueObject[key];
+          });
+          tabnewObject.push(object);
+        });
+        csvOptions.headers = header_now;
+        new AngularCsv(tabnewObject, res[1]['nameProject'], csvOptions);
+      }
     });
-    csvOptions.headers = this.displayedColumns; // ity lay ao @ front actuellement
-    new AngularCsv(tabnewObject, 'HolidayList', csvOptions);
   }
 
   private checkFilter(val: any[]): any[] {
@@ -345,7 +352,12 @@ export class ViwerReadImportComponent
     this.hoverIndex = null;
   }
 
-  action(value, namecells, index) {
+  action(value, namecells, index, $event) {
+    // this.mySize = 150;
+    // console.log($event);
+    // console.log(this.MyDOMElement);
+    console.log('okokokokookkoko');
+    console.log(value, namecells, index);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     if (regex3.exec(value[namecells])) {
@@ -357,6 +369,8 @@ export class ViwerReadImportComponent
     this.objectOne = [index, value];
     this.nameCells = namecells;
     this.lastValue = value[namecells];
+
+    // console.log(this.objectOne, this.vueEdit, this.lastValue);
   }
 
   toggleedit(value) {
@@ -368,7 +382,7 @@ export class ViwerReadImportComponent
       const name_dinamic = `Edit single cell on row ${
         this.objectOne[0] + 1
       }, column ${this.nameCells}`;
-      const actualydata = this.ActualyData ? this.ActualyData['idName'] : null;
+      const actualydata = this.ActualyData ? this.ActualyData['idName'] : -1;
       if (this.ActualyData) {
         this.listNameHistory.splice(
           this.listNameHistory.indexOf(this.ActualyData) + 1
@@ -589,16 +603,10 @@ export class ViwerReadImportComponent
       .afterClosed()
       .pipe(
         map((idHeader: any) => {
-          // console.log('resultat : ', idHeader);
           if (idHeader) {
-            // if (this.ActualyData) {
-            // }
             console.log('Actualy data : ', this.ActualyData);
-            const actualy = this.ActualyData
-              ? this.ActualyData['idName']
-              : null;
+            const actualy = this.ActualyData ? this.ActualyData['idName'] : -1;
             if (this.ActualyData) {
-              // console.log('Test : ', this.ActualyData);
               this.listNameHistory.splice(
                 this.listNameHistory.indexOf(this.ActualyData) + 1
               );

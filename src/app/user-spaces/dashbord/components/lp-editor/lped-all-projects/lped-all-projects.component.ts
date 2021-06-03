@@ -1,5 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, DoCheck, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
@@ -16,9 +22,11 @@ import { RemoveComponent } from '../../projects/dialog/remove.component';
 @Component({
   selector: 'app-lped-all-projects',
   templateUrl: './lped-all-projects.component.html',
-  styleUrls: ['./lped-all-projects.component.scss']
+  styleUrls: ['./lped-all-projects.component.scss'],
 })
-export class LPedAllProjectsComponent implements OnInit, AfterViewInit, DoCheck {
+export class LPedAllProjectsComponent
+  implements OnInit, AfterViewInit, DoCheck
+{
   @Input() public allProjects$: Observable<LPAllProjects[]> = new Observable<
     LPAllProjects[]
   >(undefined);
@@ -79,16 +87,14 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit, DoCheck 
       .pipe(
         map((result) => {
           if (result === true) {
-            this.lpEditor
-              .deleteOneProjects(item._id)
-              .subscribe((result) => {
-                if (result && result.message) {
-                  this.notifs.sucess(result.message);
+            this.lpEditor.deleteOneProjects(item._id).subscribe((result) => {
+              if (result && result.message) {
+                this.notifs.sucess(result.message);
 
-                  this.lpEditor.refresh$.next(true);
-                  this.triggerServices.trigrer$.next(true);
-                }
-              });
+                this.lpEditor.refresh$.next(true);
+                this.triggerServices.trigrer$.next(true);
+              }
+            });
           }
         })
       )
@@ -97,7 +103,7 @@ export class LPedAllProjectsComponent implements OnInit, AfterViewInit, DoCheck 
 
   public navigateURL(_id: any) {
     this.router.navigate(['user-space/lp-editor'], {
-      queryParams: { idProject: _id }
+      queryParams: { idProject: _id },
     });
   }
 }

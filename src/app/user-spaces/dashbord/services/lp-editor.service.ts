@@ -10,7 +10,6 @@ import { LPAllProjects } from '../interfaces/lp-viewer-projects';
   providedIn: 'root',
 })
 export class LpEditorService {
-
   refresh$ = new BehaviorSubject<boolean>(false);
   invokeFirstComponentFunction = new EventEmitter();
   subsVar: Subscription;
@@ -26,7 +25,7 @@ export class LpEditorService {
     private http: HttpClient,
     private readonly common: CommonService
   ) {
-    this.isLoading$.subscribe(res => {
+    this.isLoading$.subscribe((res) => {
       if (res === true) {
         this.common.showSpinner('table', true, '');
       } else {
@@ -36,12 +35,15 @@ export class LpEditorService {
   }
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
-    return this.http.get<LPAllProjects[]>(
-      `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
-    ).pipe(
-      map(projects => {
-        return projects;
-      }))
+    return this.http
+      .get<LPAllProjects[]>(
+        `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
+      )
+      .pipe(
+        map((projects) => {
+          return projects;
+        })
+      );
   }
 
   public deleteOneProjects(project_id: string) {

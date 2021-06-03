@@ -38,7 +38,9 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
       tap(() => {
         this.triggerServices.trigrer$.next(true);
       }),
-      switchMap((_) => this.LPViewerProjectsService.getAllProjects(this.user._id))
+      switchMap((_) =>
+        this.LPViewerProjectsService.getAllProjects(this.user._id)
+      )
     );
   }
 

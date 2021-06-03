@@ -18,17 +18,18 @@ export class LPViewerProjectsService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
-    return this.http.get<LPAllProjects[]>(
-      `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
-    ).pipe(
-      map(projects => {
-        return projects;
-      }))
+    return this.http
+      .get<LPAllProjects[]>(
+        `${environment.baseUrl}/lpviewer/get-project-lpviewer/${_idUsers}`
+      )
+      .pipe(
+        map((projects) => {
+          return projects;
+        })
+      );
   }
 
   public deleteProjects(project_id: string) {
