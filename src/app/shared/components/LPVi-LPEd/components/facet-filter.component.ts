@@ -8,10 +8,10 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   template: `
 <div *ngIf="items.length > 0; else noItems">
   <div class="w-100 px-2 pb-3">
-    <button class="rounded">Refresh</button>
+    <button class="rounded btn btn-sm btn-light-primary">Refresh</button>
     <span fxFlex></span>
-    <button class="rounded" (click)="resetAll()">Reset All</button>
-    <button class="rounded" (click)="removeAll()">Remove All</button>
+    <button class="rounded btn btn-sm btn-light-primary" (click)="resetAll()">Reset All</button>
+    <button class="rounded btn btn-sm btn-light-primary" (click)="removeAll()">Remove All</button>
   </div>
 
   <div *ngFor="let item of items, let index = index">
@@ -75,7 +75,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 </div>
 
 <ng-template #noItems>
-  <div style="background: #e3e9ff;" class="rounded w-100 px-3 py-5">
+  <div style="background: #EEE5FF;" class="w-100 px-3 py-5">
     <h1>Using facets and filters</h1>
     <p class="m-0">
       Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
