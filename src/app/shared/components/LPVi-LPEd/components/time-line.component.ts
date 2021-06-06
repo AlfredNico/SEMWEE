@@ -1,3 +1,4 @@
+import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
 
@@ -21,14 +22,13 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
               <div class="pointer px-1">change</div>
               <div class="pointer px-1">reset</div>
             </div>
-            <!-- ; else noNumber" -->
-            <div class="custom-slider" *ngIf="isValidNumber() && item?.maxValue !== 0">
+            <!-- ; else noNumber" class="custom-slider" -->
+            <div *ngIf="isValidNumber() && item?.maxValue !== 0">
               <ngx-slider
-                [(value)]="item.minValue"
-                [(highValue)]="item.maxValue"
-                [options]="item.options"
-                (userChangeEnd)="userChangeEnd($event)"
-              ></ngx-slider>
+              [(value)]="value"
+              [options]="options"
+              (userChangeEnd)="userChangeEnd($event)"
+            ></ngx-slider>
             </div>
             <!-- <ng-template noNumber>
               <div class="text-center" [style.color]="'#ff6a00'" [style.height.px]="50">
@@ -56,14 +56,10 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
 })
 export class TimeLineComponent implements AfterViewInit {
 
-    /* INPUT */
+  /* INPUT */
   @Input('items') items: any[] = [];
   @Input('item') item: any = undefined;
   @Input('dataViews') public dataViews: any[] = [];
-  // @Input('dataSources') public dataSources: any[] = [];
-  // @Input('minValue') minValue: number = 0;
-  // @Input('maxValue') maxValue: number = 2000;
-  // @Input('options') options: Options = undefined;
 
   /* OUTPUT */
   @Output('numericQueriesEmitter') numericQueriesEmitter = new EventEmitter<any>(undefined);
@@ -72,7 +68,18 @@ export class TimeLineComponent implements AfterViewInit {
   @Output('removeFromItem') removeFromItem: any = new EventEmitter();
 
   /* VARIALBES */
-  private numericQueries: boolean[] = [];
+  dateRange: Date[] = this.customDateRange();
+  value: number = this.dateRange[0].getTime();
+
+
+   options: Options = {
+    stepsArray: this.dateRange.map((date: Date) => {
+      return { value: date.getTime() };
+    }),
+    translate: (value: number, label: LabelType): string => {
+      return new Date(value).toDateString();
+    }
+  };
 
 
   constructor(private readonly lpViewer: LpViwersService) { }
@@ -80,17 +87,43 @@ export class TimeLineComponent implements AfterViewInit {
   ngAfterViewInit(): void { }
 
   userChangeEnd(event: any) {
-    const valueFiltered = {
-      minValue: event['value'],
-      maxValue: event['highValue'],
-      head: this.item['head']
-    }
-
-    this.numericQueriesEmitter.emit(valueFiltered);
+    console.log('date=', event);
   }
 
   public isValidNumber(): boolean {
     return Number.isFinite(this.item['minValue']) && Number.isFinite(this.item['maxValue']);
   }
 
+  customDateRange(): Date[] {
+    const dates: Date[] = [];
+    for (let i: number = 1; i <= 31; i++) {
+      dates.push(new Date(2021, 6, i));
+    }
+    return dates;
+  }
+
+  private createTimeRange(){
+    return [];
+  }
+
+
 }
+
+
+// minValue: number = 200;
+  // maxValue: number = 300;
+  // options: Options = {
+  //     floor: 0,
+  //     ceil: 500,
+  //     translate: (value: number, label: LabelType): string => {
+  //         switch (label) {
+  //             case LabelType.Low:
+  //                 return "<b>Min price:</b> $" + value;
+  //             case LabelType.High:
+  //                 return "<b>Max price:</b> $" + value;
+  //             default:
+  //                 return "$" + value;
+  //         }
+  //     }
+  // };
+

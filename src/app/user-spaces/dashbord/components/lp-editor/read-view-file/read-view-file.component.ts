@@ -2,6 +2,7 @@ import { LpEditorService } from './../../../services/lp-editor.service';
 import { EditorDialogComponent } from '../editor-dialog.component';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
@@ -19,7 +20,8 @@ import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd
 @Component({
   selector: 'app-read-view-file',
   templateUrl: './read-view-file.component.html',
-  styleUrls: ['./read-view-file.component.scss']
+  styleUrls: ['./read-view-file.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ReadViewFileComponent implements OnInit, AfterViewInit {
   /* INPUT */
