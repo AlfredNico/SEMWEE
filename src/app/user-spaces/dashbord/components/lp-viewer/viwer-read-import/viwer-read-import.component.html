@@ -1,6 +1,6 @@
 <main class="w-100 p-0" fxLayout="column">
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="btn btn-primary" #btnbutton>
+    <button class="btn btn-primary ">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -282,8 +282,10 @@
                         "
                       >
                       {{currentValue}}
-                        <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
-                        (click)="action(element,column,indexRow, $event)">edit</button>
+                      <button href="#" *ngIf="hoverIndex == combinate(indexRow,column)"  class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
+
+                        <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)" 
+                        (click)="action(element,column,indexRow, $event)">edit</button> -->
                       </p>
                       <ng-template #templeteURL>
                         <a
@@ -297,6 +299,7 @@
                           class="text-truncate"
                           >{{ currentValue }}</a
                         >
+                         <button href="#" *ngIf="hoverIndex == combinate(indexRow,column)"  class="btn btn-light-primary font-weight-bold mr-2 otherStyle" (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
                   </ng-template>
@@ -313,7 +316,6 @@
               </ng-container>
             </div>
 
-            <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
@@ -333,13 +335,15 @@
           [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
         ></mat-paginator>
       </div>
-      <!-- <app-edit *ngIf="vueEdit"  [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit> -->
-      
     </aside>
-    <!-- *ngIf="vueEdit" -->
-    <app-edit *ngIf="vueEdit"  [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
-  
-    <!-- <mat-card>Simple card</mat-card> -->
+    
+    <div *ngIf="vueEdit" class= "containerCustomized"  >
+        <div class="sousdiv">
+          <div class="testbutton" [style.top.px]="top" [style.left.px]="left">
+            <app-edit   [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
+          </div>
+           </div>
+    </div>
 
   </div>
 </main>

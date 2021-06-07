@@ -4,6 +4,8 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
+// import { Converter } from 'csvtojson';
+import * as csv from 'csvtojson';
 
 @Component({
   selector: 'app-viwer-import',
@@ -72,9 +74,9 @@ export class ViwerImportComponent implements OnInit {
     private lpViewerService: LpViwersService,
     private readonly common: CommonService,
     private readonly nofits: NotificationService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   processCsv(content) {
     return content.split('\n');
@@ -85,6 +87,8 @@ export class ViwerImportComponent implements OnInit {
       const file = event.target.files[0];
       this.sizeFile = event.target.files[0].size;
       this.file = event.target.files[0];
+
+      console.log(event.target.files[0]);
 
       this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
       this.readFileContent(file)

@@ -155,12 +155,13 @@
     }
   }
 }
-.mat-raised-button {
+.otherStyle {
   min-width: 18px;
   line-height: 25px;
   padding: 0px 8px;
   position: absolute;
   right: 5px;
+  top: 10px;
 }
 
 ::ng-deep {
@@ -309,4 +310,37 @@
 // }
 // x: 1005
 // y:   223
-
+.testbutton{
+  // position: absolute;
+  // z-index: 2;
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+}
+.containerCustomized{
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  // background-color: red;
+}
+.sousdiv{
+  position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    pointer-events: auto;
+    // background-color: rgb(0, 255, 13);
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}

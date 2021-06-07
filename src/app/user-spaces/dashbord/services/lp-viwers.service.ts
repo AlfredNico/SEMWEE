@@ -121,9 +121,9 @@ export class LpViwersService {
     );
   }
 
-  public getHeaderExport(idProject: any): Observable<any> {
+  public getHeaderExport(idProject: any, idHeader: any): Observable<any> {
     return this.http.get<any>(
-      `${environment.baseUrl}/lpviewer/get-lpviewer-header/${idProject}`
+      `${environment.baseUrl}/lpviewer/get-lpviewer-header/${idProject}/${idHeader}`
     );
   }
   // /get-One-data-history/:idProject/:idHistory
