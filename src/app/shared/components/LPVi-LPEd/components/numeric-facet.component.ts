@@ -6,8 +6,8 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
   selector: 'app-numeric-facet',
   template: `
         <div class="mx-1 pb-2">
-          <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
-            <div class="py-2 px-2 rounded-top" style="background: #bbccff;" fxLayout="row">
+          <div class="p-0 w-100 rounded style-border">
+            <div class="py-2 px-2 rounded-top level1" fxLayout="row">
               <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
                 highlight_off
               </mat-icon>
@@ -17,10 +17,10 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
               <mat-icon *ngIf="item['isMinimize'] === true" aria-label="close icon" (click)="minimize.emit(item)">
                 add_circle_outline
               </mat-icon>
-              <span style="font-weight: 600;">{{ item['head'] }}</span>
+              <span class="fw-600">{{ item['head'] }}</span>
               <span fxFlex></span>
-              <div class="pointer px-1">change</div>
-              <div class="pointer px-1">reset</div>
+              <div class="pointer px-1 black-color fw-600">change</div>
+              <div class="pointer px-1 black-color fw-600">reset</div>
             </div>
             <div class="custom-slider" *ngIf="isValidNumber() && item?.maxValue !== 0; else noNumber">
               <ngx-slider
@@ -31,12 +31,11 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
               ></ngx-slider>
             </div>
             <ng-template #noNumber>
-              <div class="text-center" [style.color]="'#ff6a00'" [style.height.px]="50">
+              <div class="text-center" [style.color]="'#F64E60'" [style.height.px]="50">
                 No nunber
               </div>
             </ng-template>
-            <div fxLayout="row" fxLayoutAlign="center center" class="py-1"
-            style="background: #e3e9ff;" *ngIf="isValidNumber() && item?.maxValue!==0">
+            <div fxLayout="row" fxLayoutAlign="center center" class="py-1 level2" *ngIf="isValidNumber() && item?.maxValue!==0">
               <p class="m-0"> {{ item?.minValue }} </p>
               <p class="mx-1 my-0">-</p>
               <p class="m-0"> {{ item?.maxValue }}</p>

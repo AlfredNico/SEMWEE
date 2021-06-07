@@ -51,8 +51,9 @@
         mat-align-tabs="start"
         [color]="'#f0f1f6'"
         [backgroundColor]="'#f0f1f6'"
-        class="mat-group"
+        class="mat-group scroll ps"
         *ngIf="dataViews.length !== 0"
+        perfectScrollbar
       >
         <mat-tab label="Facet/Filter">
 
@@ -89,7 +90,7 @@
       </div> -->
       <div class="p-0">
         <div
-          class="w-100 scroll"
+          class="w-100 scroll ps"
           style="
             max-width: 100%;
             overflow: auto;

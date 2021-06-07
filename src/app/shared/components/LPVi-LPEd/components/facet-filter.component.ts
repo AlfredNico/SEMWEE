@@ -8,10 +8,10 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   template: `
 <div *ngIf="items.length > 0; else noItems">
   <div class="w-100 px-2 pb-3">
-    <button class="rounded btn btn-light-primary">Refresh</button>
+    <button class="rounded btn btn-custom">Refresh</button>
     <span fxFlex></span>
-    <button class="rounded btn btn-light-primary" (click)="resetAll()">Reset All</button>
-    <button class="rounded btn btn-light-primary" (click)="removeAll()">Remove All</button>
+    <button class="rounded btn btn-custom mr-2" (click)="resetAll()">Reset All</button>
+    <button class="rounded btn btn-custom" (click)="removeAll()">Remove All</button>
   </div>
 
   <div *ngFor="let item of items, let index = index">

@@ -71,9 +71,17 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
      if (this.dataAfterUploaded != undefined) {
+       console.log('this.dataAfterUploaded');
+       console.log(this.dataAfterUploaded);
       if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
+
+        console.log('this.displayedColumns');
+        console.log(this.displayedColumns);
+
+       console.log('this.dataViews');
+       console.log(this.dataViews);
 
         Object.values(this.lpviLped.permaLink).map(x => {
           if (Array.isArray(x) === true)
@@ -87,9 +95,18 @@ export class ViwerReadImportComponent
           this.dataSource.data = this.lpviLped.permaLink['data'];
         else this.dataSource.data = this.dataViews;
 
+        console.log('this.dataSource.data');
+       console.log(this.dataSource.data);
+
       } else if (Object.keys(this.dataAfterUploaded).length === 2){
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
+
+        console.log('else this.displayedColumns');
+        console.log(this.displayedColumns);
+
+        console.log('else this.dataSource.data');
+       console.log(this.dataSource.data);
       }
     }
   }
