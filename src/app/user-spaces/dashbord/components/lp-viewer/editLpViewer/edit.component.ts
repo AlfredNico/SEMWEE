@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -6,7 +6,7 @@ import * as moment from 'moment';
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
 })
-export class EditComponent implements OnInit {
+export class EditComponent {
   @Input() eObject: any;
   @Input() nameCells: any;
   @Input() selected: string;
@@ -19,10 +19,31 @@ export class EditComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  // ngOnInit(): void {}
+  // ngAfterViewInit(): void {
+  //   console.log('Mea amor');
+  //   console.log(this.cardMain);
+  //   //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+  //   //Add 'implements AfterViewInit' to the class.
+  // }
   ngOnChanges() {
     if (this.nameCells != undefined) {
-      this.valueObject = this.eObject[1][this.nameCells];
+      const regex3 =
+        /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+      if (regex3.exec(this.eObject[1][this.nameCells])) {
+        const regex2 = new RegExp('[-\\/ ]');
+        const tab = this.eObject[1][this.nameCells].split(regex2);
+        const tab1 = tab[2].toString().split('T');
+        this.valueObject = moment(
+          `${tab1[0]}-${tab[1]}-${tab[0]}`,
+          'DD-MM-YYYY',
+          true
+        ).format('DD/MM/YYYY');
+
+        // this.valueObject = this.eObject[1][this.nameCells];
+      } else {
+        this.valueObject = this.eObject[1][this.nameCells];
+      }
     }
   }
 

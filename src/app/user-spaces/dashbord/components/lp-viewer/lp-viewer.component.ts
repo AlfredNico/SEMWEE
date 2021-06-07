@@ -74,7 +74,7 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
             });
 
             // this.lpviewer.isLoading$.next(false);
-
+            console.log('After vewier :', res);
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
           } else this.router.navigateByUrl('user-space/lp-viewer');

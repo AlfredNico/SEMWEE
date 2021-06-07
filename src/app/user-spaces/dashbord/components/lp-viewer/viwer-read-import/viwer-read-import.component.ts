@@ -24,6 +24,7 @@ import { FormBuilder } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -38,7 +39,6 @@ export class ViwerReadImportComponent
 {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
-  // idbtn = '';
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -55,11 +55,8 @@ export class ViwerReadImportComponent
   @Input('inputFilters') inputFilters: any = undefined;
 
   public tabIndex = 0;
-
-  // filter icon && and tooltips
   public icon = '';
   public active: any = '';
-
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
   // public formGroup = new FormGroup({});
@@ -76,7 +73,10 @@ export class ViwerReadImportComponent
   public ActualyData: any = null;
   public indexRowdata = undefined;
   public idHeader = 0;
-  mySize = 15;
+  top = 0;
+  left = null;
+  right = null;
+  public domTab: any;
 
   constructor(
     public dialog: MatDialog,
@@ -88,8 +88,14 @@ export class ViwerReadImportComponent
   ngOnChanges(): void {
     // console.log('Okokokoko');
     if (this.dataAfterUploaded != undefined) {
-      console.log('lViewerReadImport : ', this.dataAfterUploaded);
-      // console.log(' cnhange: ', this.nameHeader);
+      // console.log('lViewerReadImport : ', this.dataAfterUploaded);
+      console.log(' cnhange: ', this.nameHeader);
+      this.nameHeader.forEach((value, index) => {
+        let textValue = value['_elementRef'].nativeElement.innerText;
+        console.log(textValue);
+        // if (textValue !== newHeader[index].trim()) {
+        // value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
+      });
       if (
         (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
       ) {
@@ -110,6 +116,8 @@ export class ViwerReadImportComponent
         header.unshift('all');
         editableColumns.unshift('all');
 
+        console.log('header : ', header);
+        console.log('this.displayedColumns : ', this.displayedColumns);
         this.displayedColumns = header;
         this.edidtableColumns = editableColumns;
         // this.dataSource.data = this.checkFilter(values);
@@ -124,7 +132,7 @@ export class ViwerReadImportComponent
           this.lpViewer.itemsObservables$.next(this.filtersData['items']);
         }
       } else {
-        console.log(this.dataAfterUploaded);
+        // console.log(this.dataAfterUploaded);
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.edidtableColumns = this.displayedColumns;
         this.dataSource.data = this.dataAfterUploaded['content'];
@@ -144,6 +152,8 @@ export class ViwerReadImportComponent
     this.lpViewer.dataSources$.subscribe((res) => {
       if (res) {
         this.dataSource.data = res;
+        console.log(res);
+        // console.log('okokook oooooooooooooooooooo');
       }
     });
   }
@@ -290,23 +300,27 @@ export class ViwerReadImportComponent
       headers: [],
     };
 
+    console.log('id Header actuelle : ', this.idHeader);
+    console.log('Data actuelle : ', this.dataSource.data);
     let header_now = [];
-    this.lpViewer.getHeaderExport(this.idProject).subscribe((res) => {
-      console.log(res);
-      if (res) {
-        header_now = res[0]['nameUpdate'].split(',');
-        const tabnewObject = [];
-        this.dataSource.data.forEach((valueObject) => {
-          const object = {};
-          header_now.forEach((key) => {
-            object[key] = valueObject[key];
+    this.lpViewer
+      .getHeaderExport(this.idProject, this.idHeader)
+      .subscribe((res) => {
+        // console.log(res);
+        if (res) {
+          header_now = res[0]['nameUpdate'].split(',');
+          const tabnewObject = [];
+          this.dataSource.data.forEach((valueObject) => {
+            const object = {};
+            header_now.forEach((key) => {
+              object[key] = valueObject[key];
+            });
+            tabnewObject.push(object);
           });
-          tabnewObject.push(object);
-        });
-        csvOptions.headers = header_now;
-        new AngularCsv(tabnewObject, res[1]['nameProject'], csvOptions);
-      }
-    });
+          csvOptions.headers = header_now;
+          new AngularCsv(tabnewObject, res[1]['nameProject'], csvOptions);
+        }
+      });
   }
 
   private checkFilter(val: any[]): any[] {
@@ -351,13 +365,18 @@ export class ViwerReadImportComponent
   leave(i, otherValue) {
     this.hoverIndex = null;
   }
-
+  tooglevueEdit($event) {
+    this.vueEdit = false;
+  }
   action(value, namecells, index, $event) {
-    // this.mySize = 150;
-    // console.log($event);
-    // console.log(this.MyDOMElement);
-    console.log('okokokokookkoko');
-    console.log(value, namecells, index);
+    this.domTab = $event.path[3];
+    this.domTab.style.background = '#f3f2f2c7';
+    this.top = $event.clientY;
+    if (window.innerWidth > $event.clientX + 470) {
+      this.left = $event.clientX;
+    } else {
+      this.left = $event.clientX - 550;
+    }
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     if (regex3.exec(value[namecells])) {
@@ -369,11 +388,10 @@ export class ViwerReadImportComponent
     this.objectOne = [index, value];
     this.nameCells = namecells;
     this.lastValue = value[namecells];
-
-    // console.log(this.objectOne, this.vueEdit, this.lastValue);
   }
 
   toggleedit(value) {
+    this.domTab.style.background = 'none';
     this.vueEdit = value[0];
     console.log(this.idHeader);
     if (value[1] === '') {
