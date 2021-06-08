@@ -295,8 +295,8 @@
                         "
                       >
                       {{currentValue}}
-                      <!-- *ngIf="hoverIndex == combinate(indexRow,column)" -->
-                      <button href="#"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
+                      <!-- -->
+                      <button href="#"  *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
 
                         <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         (click)="action(element,column,indexRow, $event)">edit</button> -->

@@ -84,7 +84,7 @@ export class ViwerImportComponent implements OnInit {
 
   convertFile(event: any) {
     if ((event.target.files[0]['name'] as string).includes('.csv')) {
-            const file = event.target.files[0];
+      const file = event.target.files[0];
       this.sizeFile = event.target.files[0].size;
       this.file = event.target.files[0];
 

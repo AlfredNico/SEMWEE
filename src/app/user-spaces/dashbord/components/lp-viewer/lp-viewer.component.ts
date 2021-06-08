@@ -5,6 +5,7 @@ import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/shared/services/common.service';
 import { LpViwersService } from '../../services/lp-viwers.service';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 // import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
@@ -30,8 +31,8 @@ export class LpViewerComponent implements AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private common: CommonService,
-    private lpviewer: LpViwersService,
-    // private lpviewer: LpdLpdService
+    //private lpviewer: LpViwersService,
+    private lpVilpEdService: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
 
@@ -48,22 +49,45 @@ export class LpViewerComponent implements AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
+    // if (this.idProject !== undefined) {
+    //   this.lpviewer.isLoading$.next(true);
+    //   this.lpviewer
+    //     .getSavedProjects(this.idProject)
+    //     .subscribe((res: Array<any>) => {
+    //       // console.log(res);
+    //       if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
+    //         if (res[3].length > 0) {
+    //           this.filtersData = JSON.parse(res[3][0]['value']);
+    //         }
+    //         if (res[2].length > 0) {
+    //           this.inputFilters = JSON.parse(res[2][0]['value']);
+    //         }
+    //         this.stepper.steps.forEach((step, index) => {
+    //           if (index < 1) {
+    //             step.completed = true;
+    //             step.editable = true;
+    //           } else {
+    //             step.completed = false;
+    //             step.editable = true;
+    //           }
+    //         });
+
+    //         // this.lpviewer.isLoading$.next(false);
+    //         this.selectedStepperIndex = 1;
+    //         this.dataAfterUploaded = res;
+    //       } else this.router.navigateByUrl('user-space/lp-viewer');
+    //     });
+    // }
+
     if (this.idProject !== undefined) {
-      this.lpviewer.isLoading$.next(true);
-      this.lpviewer
+      this.lpVilpEdService.isLoading$.next(true);
+      this.lpVilpEdService
         .getSavedProjects(this.idProject)
-        .subscribe((res: Array<any>) => {
-          // console.log(res);
-          if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
-            if (res[3].length > 0) {
-              this.filtersData = JSON.parse(res[3][0]['value']);
-            }
-            if (res[2].length > 0) {
-              this.inputFilters = JSON.parse(res[2][0]['value']);
-            }
+        .subscribe((res: any) => {
+          if (res !== undefined) {
             this.stepper.steps.forEach((step, index) => {
               if (index < 1) {
                 step.completed = true;
@@ -74,10 +98,11 @@ export class LpViewerComponent implements AfterViewInit {
               }
             });
 
-            // this.lpviewer.isLoading$.next(false);
+            this.lpVilpEdService.isLoading$.next(false);
+
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
-          } else this.router.navigateByUrl('user-space/lp-viewer');
+          } else this.router.navigateByUrl('user-space/lp-editor');
         });
     }
   }

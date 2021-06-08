@@ -49,23 +49,23 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      if (Object.keys(this.dataAfterUploaded).length === 4) {
+      if (Object.keys(this.dataAfterUploaded).length === 5) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
 
-         Object.values(this.lpviLped.permaLink).map(x => {
+        Object.values(this.lpviLped.permaLink).map(x => {
           if (Array.isArray(x) === true)
-            if ((x as any[]).length != 0 )
+            if ((x as any[]).length != 0)
               this.isFiltered = true;
-          else if (Object.keys(x).length !== 0)
-            this.isFiltered = true;
+            else if (Object.keys(x).length !== 0)
+              this.isFiltered = true;
         });
 
-        if(this.isFiltered == true)
+        if (this.isFiltered == true)
           this.dataSource.data = this.lpviLped.permaLink['data'];
         else this.dataSource.data = this.dataViews;
 
-      } else if (Object.keys(this.dataAfterUploaded).length === 2){
+      } else if (Object.keys(this.dataAfterUploaded).length === 3) {
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
       }
@@ -192,7 +192,7 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
     });
   }
 
-   public timeLineFacter(column: any): void {
+  public timeLineFacter(column: any): void {
     // let distances = {}, isExist = false;
     // this.dataSource.data.map((item: any) => {
     //   distances[item[column]] = (distances[item[column]] || 0) + 1;

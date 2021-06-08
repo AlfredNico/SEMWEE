@@ -104,7 +104,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   /* INPUT */
   @Input('dataViews') public dataViews: any[] = [];
   @Input('dataSources') public dataSources: any[] = [];
-  @Input('idProject') public  idProject = undefined;
+  @Input('idProject') public idProject = undefined;
 
   constructor(
     private readonly lpEditor: LpEditorService,
@@ -113,12 +113,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(Object.keys(this.lpviLped.permaLink).length!==0){
+    if (Object.keys(this.lpviLped.permaLink).length !== 0) {
       this.inputQueries = this.lpviLped.permaLink['input'];
       this.searchQueries = this.lpviLped.permaLink['search'];
       this.numericQeury = this.lpviLped.permaLink['numeric'];
       this.items = this.lpviLped.permaLink['items'];
-      this.queries =  this.lpviLped.permaLink['queries']
+      this.queries = this.lpviLped.permaLink['queries']
       this.queriesNumerisFilters = this.lpviLped.permaLink['queriesNumerisFilters']
     }
   }
@@ -140,7 +140,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.searchQueries = [];
     this.numericQeury = [];
     this.dataSources = this.dataViews;
-    this.queries =  {};
+    this.queries = {};
     this.queriesNumerisFilters = {};
 
     this.savePermalink(); // SAVE PERMALINK
@@ -150,25 +150,25 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
-    this.queries =  {};
+    this.queries = {};
     this.queriesNumerisFilters = {};
     this.lpviLped.dataSources$.next(this.dataViews);
     this.dataSources = this.dataViews;
 
     this.items.map((item, index) => {
-      if(item['type'] === 'search'){
+      if (item['type'] === 'search') {
         item['content']?.map((value, i) => {
           item['content'][i] = {
             ...value,
             include: false
           }
         });
-      }else if(item['type'] === 'search'){
+      } else if (item['type'] === 'input') {
         this.items[index] = {
           ...item,
           value: ''
         }
-      } else if(item['type'] === 'numeric'){
+      } else if (item['type'] === 'numeric') {
         this.items[index] = {
           ...item,
           options: {
@@ -190,21 +190,21 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
 
     this.dataSources = this.dataViews.filter((value, index) => {
       const v = value[`${event['head']}`];
-      if(Object.keys(this.queriesNumerisFilters).length === 0) {
+      if (Object.keys(this.queriesNumerisFilters).length === 0) {
         if (v >= event['minValue'] && v <= event['maxValue'] && Number.isFinite(v) === true)
           q[index] = true;
         else q[index] = false;
         return ss = q[index];
       } else {
-        return Object.keys(this.queriesNumerisFilters).every((x) =>  {
-            const s = this.queriesNumerisFilters[x];
-            if (v >= event['minValue'] && v <= event['maxValue'] && Number.isFinite(v) === true)
-              q[index] = true;
-            else q[index] =  false;
+        return Object.keys(this.queriesNumerisFilters).every((x) => {
+          const s = this.queriesNumerisFilters[x];
+          if (v >= event['minValue'] && v <= event['maxValue'] && Number.isFinite(v) === true)
+            q[index] = true;
+          else q[index] = false;
 
-            if(x === event['head']) ss = q;
+          if (x === event['head']) ss = q;
 
-            return ss = s[index] && q[index];
+          return ss = s[index] && q[index];
         })
       }
     });
@@ -214,7 +214,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.savePermalink(); // SAVE PERMALINK
   }
 
-  public formGroupEmitter(event: {query: any, item: any, index: number}) {
+  public formGroupEmitter(event: { query: any, item: any, index: number }) {
     const value = Object.values(event.query).toString();
     const keys = Object.keys(event.query).toString();
 
@@ -238,7 +238,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
 
     this.items = this.items;
 
-     this.savePermalink(); // SAVE PERMALINK
+    this.savePermalink(); // SAVE PERMALINK
   }
 
   public removeFromItemEmitter(item: any, removeName?: string): void {
@@ -260,12 +260,13 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
       } else if (removeName === 'number') {
         this.numericQeury = [];
-       this.dataSources = this.dataViews.filter((value, index) => {
+        this.dataSources = this.dataViews.filter((value, index) => {
           return this.filtersData(index);
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
       } else if (removeName === 'search') {
+
         this.searchQueries = [];
         this.dataSources = this.dataViews.filter((value, index) => {
           return this.filtersData(index);
@@ -279,10 +280,11 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   }
 
   public itemsEmitter(event?: any) {
-    if(event !== undefined)
+    if (event !== undefined)
       this.items = event;
 
     let search: boolean;
+
     this.dataSources = this.dataViews.filter((value, index) => {
       let i1: number = 0;
       let queries: boolean;
@@ -365,7 +367,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.savePermalink(); // SAVE PERMALINK
   }
 
-  private savePermalink(): void{
+  private savePermalink(): void {
     const params = JSON.stringify({
       input: this.inputQueries,
       search: this.searchQueries,
