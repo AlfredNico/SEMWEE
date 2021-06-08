@@ -5,7 +5,7 @@ import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/shared/services/common.service';
 import { LpViwersService } from '../../services/lp-viwers.service';
-import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+// import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-lp-viewer',
@@ -31,7 +31,7 @@ export class LpViewerComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private common: CommonService,
     private lpviewer: LpViwersService,
-    private lpVilpEdService: LpdLpdService
+    // private lpviewer: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
 
@@ -52,8 +52,8 @@ export class LpViewerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
-      this.lpVilpEdService.isLoading$.next(true);
-      this.lpVilpEdService
+      this.lpviewer.isLoading$.next(true);
+      this.lpviewer
         .getSavedProjects(this.idProject)
         .subscribe((res: Array<any>) => {
           // console.log(res);
