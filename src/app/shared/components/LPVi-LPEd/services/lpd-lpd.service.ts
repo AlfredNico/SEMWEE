@@ -21,13 +21,14 @@ export class LpdLpdService {
     search: [],
     items: [],
     data: [],
+    name: [],
     queries: {},
     queriesNumerisFilters: {}
   };
 
   public formInputQuery = {};
 
-   public isLoading$ = new BehaviorSubject<boolean>(true);
+  public isLoading$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     private http: HttpClient,
@@ -48,14 +49,14 @@ export class LpdLpdService {
     ).pipe(
       map(res => {
         if (res[3].length !== 0)
-          this.permaLink = { ...JSON.parse(res[3][0]['value'])};
+          this.permaLink = { ...JSON.parse(res[3][0]['value']) };
 
-        if(res[2].length !== 0)
-          this.formInputQuery = { ...JSON.parse(res[2][0]['value'])};
+        if (res[2].length !== 0)
+          this.formInputQuery = { ...JSON.parse(res[2][0]['value']) };
 
         const header = JSON.parse(
           JSON.stringify(
-            res[0][0]['nameOrigin'].split('"').join('')
+            res[0][0]['nameUpdate'].split('"').join('')
           )
         ).split(',');
         // const editableColumns = JSON.parse(
@@ -73,7 +74,8 @@ export class LpdLpdService {
           // headerUpdated: res[0][0],
           data: res[1],
           formInputQuery: this.formInputQuery,
-          permaLink: this.permaLink
+          permaLink: this.permaLink,
+          name: res[4]
         };
       })
     )

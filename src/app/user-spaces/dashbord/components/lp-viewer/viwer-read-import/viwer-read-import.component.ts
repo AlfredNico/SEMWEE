@@ -58,6 +58,7 @@ export class ViwerReadImportComponent
   public active: any = '';
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
+  private isFiltered = false;
   // public formGroup = new FormGroup({});
   public formGroup = this.fb.group({});
 
@@ -72,6 +73,8 @@ export class ViwerReadImportComponent
   public ActualyData: any = null;
   public indexRowdata = undefined;
   public idHeader = 0;
+  public tab_arraw: boolean[] = [];
+  public testConverter: boolean = true;
   top = 0;
   left = null;
   right = null;
@@ -87,55 +90,29 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      if (
-        (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
-      ) {
-        // console.log('first ', this.dataAfterUploaded[0][0]['nameUpdate']);
-        const header = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-          )
-        ).split(',');
+      if (Object.keys(this.dataAfterUploaded).length === 5) {
+        this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
+        this.dataViews = this.dataAfterUploaded['data'];
+        this.listNameHistory = this.dataAfterUploaded['name'];
 
-        const editableColumns = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-          )
-        ).split(',');
-        const values = this.dataAfterUploaded[1];
-        header.unshift('all');
-        editableColumns.unshift('all');
+        Object.values(this.lpviLped.permaLink).map(x => {
+          if (Array.isArray(x) === true)
+            if ((x as any[]).length != 0)
+              this.isFiltered = true;
+            else if (Object.keys(x).length !== 0)
+              this.isFiltered = true;
+        });
 
-        this.displayedColumns = header;
-        this.edidtableColumns = editableColumns;
-        this.dataSource.data = this.dataViews = values;
-        this.listNameHistory = this.dataAfterUploaded[4];
+        if (this.isFiltered == true)
+          this.dataSource.data = this.lpviLped.permaLink['data'];
+        else this.dataSource.data = this.dataViews;
 
-        // console.log(this.nameHeader)
-        // this.nameHeader.forEach((el, index) => {
-        //   console.log("test ", typeof el['_elementRef'].nativeElement.innerText);
-        //   // tabforUpdate.push(el['_elementRef'].nativeElement.innerText);
-        //   // if (index === value - 1) {
-        //   //   updateHeader = el['_elementRef'].nativeElement;
-        //   // }
-        // });
-
-        if (this.filtersData?.items !== undefined) {
-          this.formGroup = this.fb.group(
-            JSON.parse(this.dataAfterUploaded[2][0]?.value)
-          );
-          this.items = this.filtersData['items'];
-          this.lpViewer.itemsObservables$.next(this.filtersData['items']);
-        }
-      } else {
+      } else if (Object.keys(this.dataAfterUploaded).length === 3) {
         this.displayedColumns = this.dataAfterUploaded['header'];
-        this.edidtableColumns = this.displayedColumns;
-        this.dataSource.data = this.dataAfterUploaded['content'];
-        this.dataViews = this.dataAfterUploaded['content'];
+        this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
         this.listNameHistory = this.dataAfterUploaded['name'];
       }
     }
-    this.lpViewer.checkInfoSubject$.next();
   }
 
   ngOnInit(): void { }
@@ -205,7 +182,6 @@ export class ViwerReadImportComponent
 
   public textFacet(column: any) {
     let distances = {};
-    // isExist = false;
     this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });
@@ -409,18 +385,33 @@ export class ViwerReadImportComponent
   tooglevueEdit($event) {
     this.vueEdit = false;
   }
-  action(value, namecells, index, $event) {
-    console.log($event)
-    this.domTab = $event.path[3];
-    this.domTab.style.background = '#f3f2f2c7';
+
+  positionPopup($event) {
+    let i = 0;
+    while (true) {
+      if ($event.path[i].nodeName === "TD") {
+        this.domTab = $event.path[i]
+        break;
+      }
+      i++;
+    }
+    this.domTab.style.fontWeight = "bold";
     const totaleleft = 41 - $event.offsetX;
     const totaletop = (($event.clientY - 6) - ($event.offsetY + 2));
     this.top = totaletop;
     if (window.innerWidth > $event.clientX + 520) {
       this.left = $event.clientX + totaleleft + 33;
+      this.tab_arraw = [true, false]
     } else {
-      this.left = $event.clientX - 650;
+
+      const leftfixe = $event.clientX + totaleleft;
+      this.left = (leftfixe - 455) - this.domTab.offsetWidth;
+      this.tab_arraw = [false, true]
     }
+  }
+  action(value, namecells, index, $event) {
+
+    this.positionPopup($event);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     if (regex3.exec(value[namecells])) {
@@ -435,10 +426,10 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
-    this.domTab.style.background = 'none';
+    this.domTab.style.fontWeight = "initial";
     this.vueEdit = value[0];
     console.log(this.idHeader);
-    if (value[1] === '') {
+    if (value[1] === '' && this.testConverter) {
       console.log('envoye des donnée');
       this.indexRowdata = undefined;
       const name_dinamic = `Edit single cell on row ${this.objectOne[0] + 1
@@ -450,13 +441,10 @@ export class ViwerReadImportComponent
         );
       }
       this.lpViewer
-        .sendFiles(
-          {
-            namehistory: name_dinamic,
-            idProject: this.idProject,
-            fileData: this.dataSource.data,
-            idHeader: this.idHeader,
-          },
+        .sendFiles({
+          namehistory: name_dinamic, idProject: this.idProject,
+          fileData: this.dataSource.data, idHeader: this.idHeader,
+        },
           actualydata
         )
         .subscribe((res) => {
@@ -464,8 +452,10 @@ export class ViwerReadImportComponent
         });
       this.ActualyData = null;
     }
+    this.testConverter = true;
   }
   ConcerterToString(newValue) {
+
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
 
@@ -502,6 +492,7 @@ export class ViwerReadImportComponent
     const parsed = parseInt(newValue);
     if (isNaN(parsed)) {
       alert('not a valid number');
+      this.testConverter = false
     } else {
       this.dataSource.data.forEach((item) => {
         if (
@@ -528,7 +519,6 @@ export class ViwerReadImportComponent
     // .format('YYYY/MM/DD');
     if (reg1.exec(string_date)) {
       const tab = string_date.split(regex2);
-      // console.log(tab);
       this.dataSource.data.forEach((item) => {
         if (item[this.nameCells] === this.lastValue.toString()) {
           item[this.nameCells] = moment(
@@ -541,7 +531,6 @@ export class ViwerReadImportComponent
       // .format('DD'/MM/YYYY);
     } else if (reg.exec(string_date)) {
       const tab = string_date.split(regex2);
-      // console.log(tab);
       this.dataSource.data.forEach((item) => {
         if (item[this.nameCells] === this.lastValue.toString()) {
           item[this.nameCells] = moment(
@@ -560,7 +549,6 @@ export class ViwerReadImportComponent
           regex3.exec(item[this.nameCells]) &&
           item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
         ) {
-          // console.log(item[this.nameCells].split('T')[0]);
           item[this.nameCells] = moment(
             `${tab1[0]}-${tab[1]}-${tab[0]}`,
             'DD-MM-YYYY',
@@ -570,6 +558,7 @@ export class ViwerReadImportComponent
       });
     } else {
       alert('format date incorect');
+      this.testConverter = false
     }
   }
   ConverterToBooleen(newValue) {
@@ -585,9 +574,6 @@ export class ViwerReadImportComponent
         }
       });
     } else {
-      // console.log(newValue);
-      // console.log('this.lastValue : ', this.lastValue);
-      // console.log('type : ', typeof this.lastValue);
       this.dataSource.data.forEach((item) => {
         if (
           item[this.nameCells] === this.lastValue.toString() ||

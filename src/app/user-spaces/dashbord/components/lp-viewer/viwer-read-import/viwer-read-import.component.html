@@ -295,8 +295,8 @@
                         "
                       >
                       {{currentValue}}
-                      <!-- *ngIf="hoverIndex == combinate(indexRow,column)" -->
-                      <button href="#"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
+                      <!-- -->
+                      <button href="#"  *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
 
                         <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         (click)="action(element,column,indexRow, $event)">edit</button> -->
@@ -355,7 +355,7 @@
     <div *ngIf="vueEdit" class= "containerCustomized"  >
         <div class="sousdiv">
           <div class="testbutton" [style.top.px]="top" [style.left.px]="left">
-            <app-edit   [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
+            <app-edit [(tab_arraw)] = "tab_arraw"  [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
           </div>
            </div>
     </div>
