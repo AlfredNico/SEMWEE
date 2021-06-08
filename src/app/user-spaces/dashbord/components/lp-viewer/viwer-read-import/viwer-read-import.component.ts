@@ -25,7 +25,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { style } from '@angular/animations';
-import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+// import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -83,20 +83,20 @@ export class ViwerReadImportComponent
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    private readonly lpviLped: LpdLpdService,
+    // private readonly lpviLped: LpdLpdService,
   ) { }
 
   ngOnChanges(): void {
     // console.log('Okokokoko');
     if (this.dataAfterUploaded != undefined) {
       // console.log('lViewerReadImport : ', this.dataAfterUploaded);
-      console.log(' cnhange: ', this.nameHeader);
-      this.nameHeader.forEach((value, index) => {
-        let textValue = value['_elementRef'].nativeElement.innerText;
-        console.log(textValue);
-        // if (textValue !== newHeader[index].trim()) {
-        // value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
-      });
+      // console.log(' cnhange: ', this.nameHeader);
+      // this.nameHeader.forEach((value, index) => {
+      //   let textValue = value['_elementRef'].nativeElement.innerText;
+      //   console.log(textValue);
+      //   // if (textValue !== newHeader[index].trim()) {
+      //   // value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
+      // });
       if (
         (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
       ) {
@@ -141,6 +141,7 @@ export class ViwerReadImportComponent
         this.listNameHistory = this.dataAfterUploaded['name'];
       }
     }
+    this.lpViewer.checkInfoSubject$.next();
   }
 
   ngOnInit(): void { }
@@ -295,32 +296,32 @@ export class ViwerReadImportComponent
       });
   }
 
-  // private checkFilter(val: any[]): any[] {
-  //   if (this.filtersData !== undefined) {
-  //     const length1 = this.filtersData['facetQueries']?.length;
-  //     const length2 = this.filtersData['searchQueries']?.length;
+  private checkFilter(val: any[]): any[] {
+    if (this.filtersData !== undefined) {
+      const length1 = this.filtersData['facetQueries']?.length;
+      const length2 = this.filtersData['searchQueries']?.length;
 
-  //     const dataFilter = val.filter((x: any, i: number) => {
-  //       switch (true) {
-  //         case length1 > 0 && length2 > 0:
-  //           return (
-  //             this.filtersData['facetQueries'][i] &&
-  //             this.filtersData['searchQueries'][i]
-  //           );
+      const dataFilter = val.filter((x: any, i: number) => {
+        switch (true) {
+          case length1 > 0 && length2 > 0:
+            return (
+              this.filtersData['facetQueries'][i] &&
+              this.filtersData['searchQueries'][i]
+            );
 
-  //         case length1 === 0 && length2 > 0:
-  //           return this.filtersData['searchQueries'][i];
+          case length1 === 0 && length2 > 0:
+            return this.filtersData['searchQueries'][i];
 
-  //         case length1 > 0 && length2 === 0:
-  //           return this.filtersData['facetQueries'][i];
+          case length1 > 0 && length2 === 0:
+            return this.filtersData['facetQueries'][i];
 
-  //         case length1 === 0 && length2 === 0:
-  //           return true;
-  //       }
-  //     });
-  //     return dataFilter;
-  //   } else return val;
-  // }
+          case length1 === 0 && length2 === 0:
+            return true;
+        }
+      });
+      return dataFilter;
+    } else return val;
+  }
 
   public openButton() {
     console.log('open button');
@@ -352,30 +353,30 @@ export class ViwerReadImportComponent
   }
 
   public searchFacet(column: any) {
-    let distances = {}, isExist = false;
-    this.dataViews.map((item: any) => {
-      distances[item[column]] = (distances[item[column]] || 0) + 1;
-    })
+    // let distances = {}, isExist = false;
+    // this.dataViews.map((item: any) => {
+    //   distances[item[column]] = (distances[item[column]] || 0) + 1;
+    // })
 
-    const value = Object.entries(distances).map((val: any) => {
-      return { ...val, include: false };
-    });
+    // const value = Object.entries(distances).map((val: any) => {
+    //   return { ...val, include: false };
+    // });
 
-    this.lpviLped.itemsObservables$.next({
-      type: 'search',
-      isMinimize: false,
-      head: column,
-      content: value
-    });
+    // this.lpviLped.itemsObservables$.next({
+    //   type: 'search',
+    //   isMinimize: false,
+    //   head: column,
+    //   content: value
+    // });
   }
 
   public inputFilter(column: any) {
-    this.lpviLped.itemsObservables$.next({
-      type: 'input',
-      isMinimize: false,
-      head: column,
-      value: ''
-    });
+    // this.lpviLped.itemsObservables$.next({
+    //   type: 'input',
+    //   isMinimize: false,
+    //   head: column,
+    //   value: ''
+    // });
   }
 
   public numericFacter(column: any) {
@@ -396,14 +397,14 @@ export class ViwerReadImportComponent
     };
 
 
-    this.lpviLped.itemsObservables$.next({
-      type: 'numeric',
-      isMinimize: false,
-      head: column,
-      minValue: minValue,
-      maxValue: maxValue,
-      options: options
-    });
+    // this.lpviLped.itemsObservables$.next({
+    //   type: 'numeric',
+    //   isMinimize: false,
+    //   head: column,
+    //   minValue: minValue,
+    //   maxValue: maxValue,
+    //   options: options
+    // });
   }
 
   combinate(i, otherValue) {
@@ -423,9 +424,11 @@ export class ViwerReadImportComponent
   action(value, namecells, index, $event) {
     this.domTab = $event.path[3];
     this.domTab.style.background = '#f3f2f2c7';
+    const totaleleft = 41 - $event.offsetX
     this.top = $event.clientY;
     if (window.innerWidth > $event.clientX + 470) {
-      this.left = $event.clientX;
+      // this.left = $event.clientX;
+      this.left = $event.clientX + totaleleft + 10;
     } else {
       this.left = $event.clientX - 550;
     }
