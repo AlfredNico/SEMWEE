@@ -424,9 +424,11 @@ export class ViwerReadImportComponent
   action(value, namecells, index, $event) {
     this.domTab = $event.path[3];
     this.domTab.style.background = '#f3f2f2c7';
+    const totaleleft = 41 - $event.offsetX
     this.top = $event.clientY;
     if (window.innerWidth > $event.clientX + 470) {
-      this.left = $event.clientX;
+      // this.left = $event.clientX;
+      this.left = $event.clientX + totaleleft + 10;
     } else {
       this.left = $event.clientX - 550;
     }
