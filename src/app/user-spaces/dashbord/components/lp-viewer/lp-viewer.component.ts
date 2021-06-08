@@ -48,7 +48,7 @@ export class LpViewerComponent implements AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
