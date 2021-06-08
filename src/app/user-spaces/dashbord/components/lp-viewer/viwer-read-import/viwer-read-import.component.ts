@@ -422,27 +422,28 @@ export class ViwerReadImportComponent
     this.vueEdit = false;
   }
   action(value, namecells, index, $event) {
+    console.log($event)
     this.domTab = $event.path[3];
     this.domTab.style.background = '#f3f2f2c7';
-    const totaleleft = 41 - $event.offsetX
-    this.top = $event.clientY;
-    if (window.innerWidth > $event.clientX + 470) {
-      // this.left = $event.clientX;
-      this.left = $event.clientX + totaleleft + 10;
+    const totaleleft = 41 - $event.offsetX;
+    const totaletop = (($event.clientY - 6) - ($event.offsetY + 2));
+    this.top = totaletop;
+    if (window.innerWidth > $event.clientX + 520) {
+      this.left = $event.clientX + totaleleft + 33;
     } else {
       this.left = $event.clientX - 550;
     }
-    const regex3 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
-    if (regex3.exec(value[namecells])) {
-      this.selected = 'object';
-    } else {
-      this.selected = typeof value[namecells];
-    }
+    // const regex3 =
+    //   /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    // if (regex3.exec(value[namecells])) {
+    //   this.selected = 'object';
+    // } else {
+    //   this.selected = typeof value[namecells];
+    // }
     this.vueEdit = true;
-    this.objectOne = [index, value];
-    this.nameCells = namecells;
-    this.lastValue = value[namecells];
+    // this.objectOne = [index, value];
+    // this.nameCells = namecells;
+    // this.lastValue = value[namecells];
   }
 
   toggleedit(value) {
