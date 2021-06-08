@@ -21,9 +21,10 @@
   <div class="row p-0">
     <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #93cdff" [ngStyle]="{'background-color': tabIndex === 1 ? '#e3e9ff' : 'white'}">
       <mat-tab-group (selectedTabChange)="tabChanged($event)" mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
-        class="mat-group">
+        class="mat-group" *ngIf="dataViews.length !== 0">
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target
+          [idProject]='idProject'
           [dataViews]='dataViews'
           [dataSources]='dataSource.data'
           ></app-facet-filter-target>
@@ -36,8 +37,10 @@
 
     <aside class="col p-0" fxFlex="75%">
       <div class="px-5" style="background: #93cdff; height: 50px">
-        <h2 class="m-auto font-weight-bold">matching rows</h2>
-        <h4 class="m-auto font-weight-normal">(1000 total)</h4>
+        <h2 class="m-auto font-weight-bold mx-1">matching rows </h2>
+        <h4 class="m-auto font-weight-normal mx-1" *ngIf="dataViews.length !== 0">
+           ( {{ dataSource.data.length }} total )
+        </h4>
         <span fxFlex></span>
         <h4 class="m-auto font-weight-normal">Extensions</h4>
       </div>
@@ -149,7 +152,7 @@
                 <mat-menu #sousItem1="matMenu">
                   <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
                   <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
-                  <button mat-menu-item>Timeline facet</button>
+                  <button mat-menu-item (click)="timeLineFacter(column)">Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
                   <!-- Edit Cell -->

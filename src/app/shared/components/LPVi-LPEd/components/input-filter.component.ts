@@ -5,8 +5,8 @@ import { FormBuilder, FormControl } from '@angular/forms';
   selector: 'app-input-filter',
   template: `
       <div class="mx-1 pb-2">
-        <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
-          <div class="py-2 px-2 rounded-top" style="background: #bbccff;" fxLayout="row">
+        <div class="p-0 w-100 rounded style-border">
+          <div class="py-2 px-2 rounded-top level1" fxLayout="row">
             <mat-icon aria-label="close icon"
             (click)="removeFromItem.emit(item)">
               highlight_off
@@ -19,24 +19,21 @@ import { FormBuilder, FormControl } from '@angular/forms';
             (click)="minimize.emit(item)">
               add_circle_outline
             </mat-icon>
-            <span style="font-weight: 600;">{{ item['head'] }}</span>
+            <span class="fw-600">{{ item['head'] }}</span>
             <span fxFlex></span>
-            <div class="pointer px-1">invert</div>
-            <div class="pointer px-1">reset</div>
+            <div class="pointer px-1 black-color fw-600">invert</div>
+            <div class="pointer px-1 black-color fw-600">reset</div>
           </div>
           <div class="py-0" *ngIf="item['isMinimize'] === false" [formGroup]="form">
-            <input autocomplete="off" type="search" class="w-100" placeholder="filter ..." [formControlName]="item['head']" appearance="outline">
+            <input autocomplete="off" type="search" class="w-100" placeholder="Filter ..." [formControlName]="item['head']" appearance="outline" class="form-control">
           </div>
-          <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3"
-          style="background: #e3e9ff;" *ngIf="item['isMinimize'] === false">
+          <div fxLayout="row" fxLayoutAlign="space-around center" class="py-3 level2" *ngIf="item['isMinimize'] === false">
             <mat-checkbox>case sensitive</mat-checkbox>
             <mat-checkbox>regular expression</mat-checkbox>
           </div>
         </div>
       </div>
   `,
-  styles: [
-  ]
 })
 export class InputFilterComponent implements AfterViewInit, OnInit {
 
@@ -44,6 +41,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
   @Input('items') items: any[] = [];
   @Input('dataViews') dataViews: any[] = [];
   @Input('item') item: any = undefined;
+  @Input('index') index: any = undefined;
 
   /* OUTPUT */
   @Output('minimize') minimize: any = new EventEmitter();
@@ -56,12 +54,20 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.form.addControl(this.item['head'], new FormControl(this.item['value']));
-    // this.formGroup.emit(this.form.value);
   }
 
   ngAfterViewInit(): void {
     this.form.valueChanges.subscribe(query => {
-      this.formGroup.emit(query);
+      this.item = {
+        ...this.item,
+        value: query[`${this.item['head']}`]
+      };
+
+      this.formGroup.emit({
+        query: query,
+        item: this.item,
+        index: this.index
+      });
     });
   }
 

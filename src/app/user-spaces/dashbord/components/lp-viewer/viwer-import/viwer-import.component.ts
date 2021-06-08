@@ -84,7 +84,7 @@ export class ViwerImportComponent implements OnInit {
 
   convertFile(event: any) {
     if ((event.target.files[0]['name'] as string).includes('.csv')) {
-      const file = event.target.files[0];
+            const file = event.target.files[0];
       this.sizeFile = event.target.files[0].size;
       this.file = event.target.files[0];
 
@@ -104,6 +104,7 @@ export class ViwerImportComponent implements OnInit {
           });
           this.parsedCsv = csv;
           this.parsedCsv.pop();
+
           const header = this.parsedCsv.shift().toString().split(',');
           const content = this.parsedCsv.map((value) =>
             value.reduce((tdObj, td, index) => {
@@ -114,7 +115,9 @@ export class ViwerImportComponent implements OnInit {
             }, {})
           );
 
-          this.data.header = header;
+          this.data.header = [...new Set([...header])].filter(
+            item => (item != undefined && item != '')
+          );
           this.data.header.unshift('all');
           this.data.content = content;
           this.onSubmit();

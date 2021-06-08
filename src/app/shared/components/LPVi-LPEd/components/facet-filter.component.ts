@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
 import { LpdLpdService } from '../services/lpd-lpd.service';
 
@@ -8,15 +8,20 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   template: `
 <div *ngIf="items.length > 0; else noItems">
   <div class="w-100 px-2 pb-3">
-    <button class="rounded">Refresh</button>
+    <button class="rounded btn btn-custom">Refresh</button>
     <span fxFlex></span>
-    <button class="rounded" (click)="resetAll()">Reset All</button>
-    <button class="rounded" (click)="removeAll()">Remove All</button>
+    <button class="rounded btn btn-custom mr-2" (click)="resetAll()">Reset All</button>
+    <button class="rounded btn btn-custom" (click)="removeAll()">Remove All</button>
   </div>
 
-  <div *ngFor="let item of items">
+  <div *ngFor="let item of items, let index = index">
      <ng-container
-      *ngTemplateOutlet="item.type === 'search' ? searchTemplate : item.type === 'input' ? inputTemplate : numericTemplate; context:{value: item}">
+      *ngTemplateOutlet="
+      item.type === 'search' ? searchTemplate
+      : item.type === 'input' ? inputTemplate
+      : item.type === 'numeric' ? numericTemplate
+      : timeLineTemplate;
+      context:{value: item}">
     </ng-container>
 
     <ng-template #searchTemplate let-currentValue="value">
@@ -34,6 +39,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       <app-input-filter
       [items]='items'
       [item]='item'
+      [index]='index'
       [dataViews]='dataViews'
       (formGroup)='formGroupEmitter($event)'
       (removeFromItem)='removeFromItemEmitter($event, "input")'
@@ -46,9 +52,6 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       <app-numeric-facet
       [items]='items'
       [item]='item'
-      [minValue]="item['minValue']"
-      [maxValue]="item['maxValue']"
-      [options]="item['options']"
       [dataViews]='dataViews'
       [dataSources]='dataSources'
       (numericQueriesEmitter)="callAfterNumericFilter($event)"
@@ -56,11 +59,23 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       (minimize)='minimizeEmitter($event)'
       ></app-numeric-facet>
     </ng-template>
+
+    <ng-template #timeLineTemplate let-currentValue="value">
+      <app-time-line
+      [items]='items'
+      [item]='item'
+      [dataViews]='dataViews'
+      [dataSources]='dataSources'
+      (numericQueriesEmitter)="callAfterNumericFilter($event)"
+      (removeFromItem)='removeFromItemEmitter($event, "timeLine")'
+      (minimize)='minimizeEmitter($event)'
+      ></app-time-line>
+    </ng-template>
   </div>
 </div>
 
 <ng-template #noItems>
-  <div style="background: #e3e9ff;" class="rounded w-100 px-3 py-5">
+  <div style="background: #EEE5FF;" class="w-100 px-3 py-5">
     <h1>Using facets and filters</h1>
     <p class="m-0">
       Use facets and filters to select subsets of your data to act on. Choose facet and filter methods from the menus at the top of each data column.
@@ -69,10 +84,9 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 </ng-template>
 
   `,
-  styles: [
-  ]
+  styleUrls: ['./facet-filter.component.scss']
 })
-export class FacetFilterComponent implements AfterViewInit {
+export class FacetFilterComponent implements AfterViewInit, OnInit {
   /* VARIABLES */
   public items: any[] = [];
   public form = new FormGroup({});
@@ -83,11 +97,14 @@ export class FacetFilterComponent implements AfterViewInit {
   private searchQueries: boolean[] = [];
   private numericQeury: boolean[] = [];
   private queriesNumerisFilters = {};
+  public isCheckedInput = false;
+
+
 
   /* INPUT */
   @Input('dataViews') public dataViews: any[] = [];
   @Input('dataSources') public dataSources: any[] = [];
-
+  @Input('idProject') public  idProject = undefined;
 
   constructor(
     private readonly lpEditor: LpEditorService,
@@ -95,10 +112,23 @@ export class FacetFilterComponent implements AfterViewInit {
     private fb: FormBuilder
   ) { }
 
+  ngOnInit(): void {
+    if(Object.keys(this.lpviLped.permaLink).length!==0){
+      this.inputQueries = this.lpviLped.permaLink['input'];
+      this.searchQueries = this.lpviLped.permaLink['search'];
+      this.numericQeury = this.lpviLped.permaLink['numeric'];
+      this.items = this.lpviLped.permaLink['items'];
+      this.queries =  this.lpviLped.permaLink['queries']
+      this.queriesNumerisFilters = this.lpviLped.permaLink['queriesNumerisFilters']
+    }
+  }
+
   ngAfterViewInit(): void {
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
+
+        this.savePermalink(); // SAVE PERMALINK
       }
     });
   }
@@ -109,30 +139,56 @@ export class FacetFilterComponent implements AfterViewInit {
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
+    this.dataSources = this.dataViews;
+    this.queries =  {};
+    this.queriesNumerisFilters = {};
+
+    this.savePermalink(); // SAVE PERMALINK
   }
 
   public resetAll() {
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
+    this.queries =  {};
+    this.queriesNumerisFilters = {};
+    this.lpviLped.dataSources$.next(this.dataViews);
+    this.dataSources = this.dataViews;
 
-    this.items.map((item: any) => {
-      item['content']?.map((value: any, i: number) => {
-        item['content'][i] = {
-          ...item['content'][i],
-          include: false
+    this.items.map((item, index) => {
+      if(item['type'] === 'search'){
+        item['content']?.map((value, i) => {
+          item['content'][i] = {
+            ...value,
+            include: false
+          }
+        });
+      }else if(item['type'] === 'search'){
+        this.items[index] = {
+          ...item,
+          value: ''
         }
-      });
+      } else if(item['type'] === 'numeric'){
+        this.items[index] = {
+          ...item,
+          options: {
+            ...item['options'],
+            floor: item['minValue'],
+            ceil: item['maxValue'],
+          }
+        }
+      }
     });
+
+    this.items = this.items;
+    this.savePermalink(); // SAVE PERMALINK
   }
 
   /* EMITTER FUNCTION AFTER FILTER FROM COMPONENTS */
   public callAfterNumericFilter(event: any) {
     let q = [], ss;
 
-    // this.numericQeury = numericQeury;
-
-    const data = this.dataViews.filter((value, index) => {
+    this.dataSources = this.dataViews.filter((value, index) => {
       const v = value[`${event['head']}`];
       if(Object.keys(this.queriesNumerisFilters).length === 0) {
         if (v >= event['minValue'] && v <= event['maxValue'] && Number.isFinite(v) === true)
@@ -154,20 +210,16 @@ export class FacetFilterComponent implements AfterViewInit {
     });
 
     this.queriesNumerisFilters[`${event['head']}`] = this.numericQeury = q;
-    this.lpviLped.dataSources$.next(data);
+    this.lpviLped.dataSources$.next(this.dataSources);
+    this.savePermalink(); // SAVE PERMALINK
   }
 
-  public callAfterInputFilter(inputQeury: boolean[]) {
-    this.inputQueries = inputQeury;
-  }
+  public formGroupEmitter(event: {query: any, item: any, index: number}) {
+    const value = Object.values(event.query).toString();
+    const keys = Object.keys(event.query).toString();
 
-  public callAfterSearchFilter(searchQeury: boolean[]) {
-    this.searchQueries = searchQeury;
-  }
-
-  public formGroupEmitter(form: any) {
-    const value = Object.values(form).toString();
-    const keys = Object.keys(form).toString();
+    if (event.index !== -1)
+      this.items[event.index] = event.item;
 
     this.queries[keys] = value;
 
@@ -185,6 +237,8 @@ export class FacetFilterComponent implements AfterViewInit {
     }
 
     this.items = this.items;
+
+     this.savePermalink(); // SAVE PERMALINK
   }
 
   public removeFromItemEmitter(item: any, removeName?: string): void {
@@ -206,8 +260,7 @@ export class FacetFilterComponent implements AfterViewInit {
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
       } else if (removeName === 'number') {
         this.numericQeury = [];
-        this.dataSources = this.dataViews.filter((value, index) => {
-
+       this.dataSources = this.dataViews.filter((value, index) => {
           return this.filtersData(index);
         });
 
@@ -215,20 +268,22 @@ export class FacetFilterComponent implements AfterViewInit {
       } else if (removeName === 'search') {
         this.searchQueries = [];
         this.dataSources = this.dataViews.filter((value, index) => {
-
           return this.filtersData(index);
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
       }
     }
+
+    this.savePermalink(); // SAVE PERMALINK
   }
 
-  public itemsEmitter(event: any) {
-    this.items = event;
+  public itemsEmitter(event?: any) {
+    if(event !== undefined)
+      this.items = event;
 
     let search: boolean;
-    const data = this.dataViews.filter((value, index) => {
+    this.dataSources = this.dataViews.filter((value, index) => {
       let i1: number = 0;
       let queries: boolean;
       const q = this.items.map((item: any): void => {
@@ -253,15 +308,14 @@ export class FacetFilterComponent implements AfterViewInit {
       return this.filtersData(index);
     });
 
-    this.lpviLped.dataSources$.next(data);
+    this.lpviLped.dataSources$.next(this.dataSources);
+    this.savePermalink(); // SAVE PERMALINK
   }
 
 
 
   /* VERIFY ALL QUERY FILTERS */
   private chechQueryFilter(index: number, queries: boolean[]): boolean {
-
-
     if (queries.length !== 0) return queries[index];
     return true;
   }
@@ -277,7 +331,7 @@ export class FacetFilterComponent implements AfterViewInit {
   private inputFilterFonciont() {
     let qqq = '', i1 = 0;
 
-    const data = this.dataViews.filter((value, index) => {
+    this.dataSources = this.dataViews.filter((value, index) => {
       if (Object.values(this.queries).every((x) => x === null || x === '')) {
         this.inputQueries[index] = true;
 
@@ -306,7 +360,27 @@ export class FacetFilterComponent implements AfterViewInit {
         return this.filtersData(index);
       }
     });
-    this.lpviLped.dataSources$.next(data);
+    this.lpviLped.dataSources$.next(this.dataSources);
+
+    this.savePermalink(); // SAVE PERMALINK
+  }
+
+  private savePermalink(): void{
+    const params = JSON.stringify({
+      input: this.inputQueries,
+      search: this.searchQueries,
+      numeric: this.numericQeury,
+      items: this.items,
+      data: this.dataSources,
+      queries: this.queries,
+      queriesNumerisFilters: this.queriesNumerisFilters
+    });
+    const permalink = {
+      idProject: this.idProject,
+      value: params
+    };
+
+    this.lpEditor.addFilter(permalink).subscribe();
   }
 
 

@@ -173,7 +173,7 @@
   .mat-table.table-viewer {
     .mat-cell, .mat-footer-cell {
       color: #3F4254;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
 
     .mat-body-p {
@@ -188,6 +188,12 @@
 
   .bg-light {
     background-color: #cdcdd7!important;
+  }
+
+  .other-type {
+    color:#1BC5BD;
+    text-align: center!important;
+    font-size: 600;
   }
 }
 

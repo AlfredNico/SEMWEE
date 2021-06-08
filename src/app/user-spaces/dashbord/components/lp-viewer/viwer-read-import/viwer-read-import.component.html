@@ -32,7 +32,7 @@
       </mat-icon>
     </button>
     <mat-menu #importMenu="matMenu">
-      <button mat-menu-item (click)="openTablesOptionns()">
+      <button mat-menu-item>
         Table options
       </button>
       <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
@@ -51,10 +51,13 @@
         mat-align-tabs="start"
         [color]="'#f0f1f6'"
         [backgroundColor]="'#f0f1f6'"
-        class="mat-group"
+        class="mat-group scroll ps"
+        *ngIf="dataViews.length !== 0"
+        perfectScrollbar
       >
         <mat-tab label="Facet/Filter">
-          <app-facet-filter
+
+          <!-- <app-facet-filter
             [formGroup]='formGroup'
             [inputFilters]="inputFilters"
             [filtersData]='filtersData'
@@ -62,7 +65,14 @@
             [dataToFiltering]="dataViews"
             [dataViews]="dataViews"
             [dataSources]="dataSource.data"
-          ></app-facet-filter>
+          ></app-facet-filter> -->
+
+          <app-facet-filter-target
+          [idProject]='idProject'
+          [dataViews]='dataViews'
+          [dataSources]='dataSource.data'
+          ></app-facet-filter-target>
+
         </mat-tab>
         <mat-tab label="Undo / Redo">
           <!-- <h1>Mea</h1> -->
@@ -81,7 +91,7 @@
       </div> -->
       <div class="p-0">
         <div
-          class="w-100 scroll"
+          class="w-100 scroll ps"
           style="
             max-width: 100%;
             overflow: auto;
@@ -98,7 +108,7 @@
             >
               <!-- dynamics Column -->
               <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
-                <th mat-header-cell *matHeaderCellDef 
+                <th mat-header-cell *matHeaderCellDef
                 [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }"
                 >
                   <span fxLayout fxLayoutGap="15px">
@@ -125,28 +135,43 @@
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item (click)="textFilter(column)">
+                  <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
-                  <button mat-menu-item [matMenuTriggerFor]="sousItem2">
-                    Item 2
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item [matMenuTriggerFor]="editCells">
+                    Edit cells
                   </button>
-                  <button mat-menu-item>Item 3</button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item>
+                    Update column
+                  </button>
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="textFacet(column)">
-                    Text facet
-                  </button>
+                  <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
+                  <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
-                  <button mat-menu-item>Custum text facet</button>
+                  <!-- Edit Cell -->
                   <button mat-menu-item>Custum Numeric facet</button>
                   <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
-                <mat-menu #sousItem2="matMenu">
-                  <button mat-menu-item>Sous item 1</button>
-                  <button mat-menu-item>Soous item 2</button>
+                <mat-menu #editCells="matMenu">
+                  <button mat-menu-item>Transform...</button>
+                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
+                    Common transforms
+                  </button>
+                  <button mat-menu-item>Fill down</button>
+                  <button mat-menu-item>Blank down</button>
+                  <button mat-menu-item>Split mutli-valued cells...</button>
+                  <button mat-menu-item>Join multi-valued cells</button>
+                  <button mat-menu-item>Cluster and edit...</button>
+                  <button mat-menu-item>Replace</button>
+                </mat-menu>
+                <mat-menu #commonTransforms="matMenu">
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  </app-edit-cell>
                 </mat-menu>
 
                 <td
@@ -170,7 +195,7 @@
                     <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
                     <i style="color: #959CBD" class="far fa-star fa-lg"></i>
 
-                    <p class="text-center font-size-h4">{{ indexRow + 1 }}.</p>
+                    <p class="text-center font-size-h4 m-0">{{ indexRow+1 }}.</p>
                   </div>
                 </td>
               </ng-container>
@@ -206,10 +231,10 @@
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item (click)="textFilter(column)">
+                  <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
-                  <hr class="hr-border">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
@@ -219,22 +244,20 @@
                   </button>
                 </mat-menu>
                 <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="textFacet(column)">
-                    Text facet
-                  </button>
-                  <button mat-menu-item (click)="numericFacter(column)">
-                    Numeric facet
-                  </button>
+                  <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
+                  <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
-                  <button mat-menu-item>Custum text facet</button>
+                  <!-- Edit Cell -->
                   <button mat-menu-item>Custum Numeric facet</button>
                   <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
                 <mat-menu #editCells="matMenu">
                   <button mat-menu-item>Transform...</button>
-                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">Common transforms</button>
+                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
+                    Common transforms
+                  </button>
                   <button mat-menu-item>Fill down</button>
                   <button mat-menu-item>Blank down</button>
                   <button mat-menu-item>Split mutli-valued cells...</button>
@@ -246,6 +269,7 @@
                   <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
                   </app-edit-cell>
                 </mat-menu>
+
                 <td
                   mat-cell
                   *matCellDef="

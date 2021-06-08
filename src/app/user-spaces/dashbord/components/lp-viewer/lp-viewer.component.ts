@@ -5,13 +5,14 @@ import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/shared/services/common.service';
 import { LpViwersService } from '../../services/lp-viwers.service';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-lp-viewer',
   templateUrl: './lp-viewer.component.html',
   styleUrls: ['./lp-viewer.component.scss'],
 })
-export class LpViewerComponent implements OnInit, AfterViewInit {
+export class LpViewerComponent implements AfterViewInit {
   user: User = undefined;
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: any | undefined;
@@ -29,7 +30,8 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private common: CommonService,
-    private lpviewer: LpViwersService
+    private lpviewer: LpViwersService,
+    private lpVilpEdService: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
 
@@ -46,12 +48,12 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
-      this.lpviewer.isLoading$.next(true);
-      this.lpviewer
+      this.lpVilpEdService.isLoading$.next(true);
+      this.lpVilpEdService
         .getSavedProjects(this.idProject)
         .subscribe((res: Array<any>) => {
           // console.log(res);
@@ -79,8 +81,6 @@ export class LpViewerComponent implements OnInit, AfterViewInit {
             this.dataAfterUploaded = res;
           } else this.router.navigateByUrl('user-space/lp-viewer');
         });
-      // this.router.navigate(['user-space/lp-viewer'],
-      //   { queryParams: { idProject: this.idProject } });
     }
   }
 

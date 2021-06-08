@@ -25,6 +25,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { style } from '@angular/animations';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -35,8 +36,7 @@ import { style } from '@angular/animations';
   ],
 })
 export class ViwerReadImportComponent
-  implements OnInit, AfterViewInit, OnChanges
-{
+  implements OnInit, AfterViewInit, OnChanges {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
@@ -82,8 +82,9 @@ export class ViwerReadImportComponent
     public dialog: MatDialog,
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
-    public senitizer: DomSanitizer
-  ) {}
+    public senitizer: DomSanitizer,
+    private readonly lpviLped: LpdLpdService,
+  ) { }
 
   ngOnChanges(): void {
     // console.log('Okokokoko');
@@ -140,10 +141,9 @@ export class ViwerReadImportComponent
         this.listNameHistory = this.dataAfterUploaded['name'];
       }
     }
-    this.lpViewer.checkInfoSubject$.next();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -201,12 +201,13 @@ export class ViwerReadImportComponent
     this.tabIndex = tabChangeEvent.index;
   }
 
+  // --------------------------------------------------------------------------- //
   sortData($e: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-      ? (this.icon = 'desc')
-      : (this.icon = '');
+        ? (this.icon = 'desc')
+        : (this.icon = '');
     this.active = $e.active;
   }
 
@@ -235,35 +236,6 @@ export class ViwerReadImportComponent
       type: 'filter',
       isMinimize: false,
       head: column,
-    });
-  }
-
-  public numericFacter(column: any) {
-    let value = {};
-    let minValue = 100000,
-      maxValue = 0;
-    this.dataViews.map((item: any) => {
-      if (Number.isInteger(Number(item[column])) === true) {
-        if (Number(item[column]) >= maxValue) maxValue = item[column];
-        if (Number(item[column]) <= minValue) minValue = item[column];
-      }
-    });
-    const options: Options = {
-      floor: minValue,
-      ceil: maxValue,
-      hidePointerLabels: true,
-      hideLimitLabels: true,
-      draggableRange: true,
-      showSelectionBar: true,
-    };
-
-    this.lpViewer.itemsObservables$.next({
-      type: 'numeric',
-      isMinimize: false,
-      head: column,
-      minValue: minValue,
-      maxValue: maxValue,
-      options: options,
     });
   }
 
@@ -323,35 +295,115 @@ export class ViwerReadImportComponent
       });
   }
 
-  private checkFilter(val: any[]): any[] {
-    if (this.filtersData !== undefined) {
-      const length1 = this.filtersData['facetQueries']?.length;
-      const length2 = this.filtersData['searchQueries']?.length;
+  // private checkFilter(val: any[]): any[] {
+  //   if (this.filtersData !== undefined) {
+  //     const length1 = this.filtersData['facetQueries']?.length;
+  //     const length2 = this.filtersData['searchQueries']?.length;
 
-      const dataFilter = val.filter((x: any, i: number) => {
-        switch (true) {
-          case length1 > 0 && length2 > 0:
-            return (
-              this.filtersData['facetQueries'][i] &&
-              this.filtersData['searchQueries'][i]
-            );
+  //     const dataFilter = val.filter((x: any, i: number) => {
+  //       switch (true) {
+  //         case length1 > 0 && length2 > 0:
+  //           return (
+  //             this.filtersData['facetQueries'][i] &&
+  //             this.filtersData['searchQueries'][i]
+  //           );
 
-          case length1 === 0 && length2 > 0:
-            return this.filtersData['searchQueries'][i];
+  //         case length1 === 0 && length2 > 0:
+  //           return this.filtersData['searchQueries'][i];
 
-          case length1 > 0 && length2 === 0:
-            return this.filtersData['facetQueries'][i];
+  //         case length1 > 0 && length2 === 0:
+  //           return this.filtersData['facetQueries'][i];
 
-          case length1 === 0 && length2 === 0:
-            return true;
-        }
-      });
-      return dataFilter;
-    } else return val;
-  }
+  //         case length1 === 0 && length2 === 0:
+  //           return true;
+  //       }
+  //     });
+  //     return dataFilter;
+  //   } else return val;
+  // }
 
   public openButton() {
     console.log('open button');
+  }
+
+  public filterColumn(column: any) {
+    let distances = {}, isExist = false;
+    this.dataSource.data.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
+
+    let valu = Object.entries(distances).map((val: any) => {
+      return { ...val }
+    })
+
+    this.items.map(value => {
+      if (value['head'] && value['head'] === column) {
+        isExist = true;
+        return;
+      }
+    })
+
+    if (isExist === false) {
+      this.items.push({
+        head: column,
+        content: valu
+      });
+    }
+  }
+
+  public searchFacet(column: any) {
+    let distances = {}, isExist = false;
+    this.dataViews.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
+
+    const value = Object.entries(distances).map((val: any) => {
+      return { ...val, include: false };
+    });
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'search',
+      isMinimize: false,
+      head: column,
+      content: value
+    });
+  }
+
+  public inputFilter(column: any) {
+    this.lpviLped.itemsObservables$.next({
+      type: 'input',
+      isMinimize: false,
+      head: column,
+      value: ''
+    });
+  }
+
+  public numericFacter(column: any) {
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = Number(item[column])
+        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'numeric',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
+    });
   }
 
   combinate(i, otherValue) {
@@ -397,9 +449,8 @@ export class ViwerReadImportComponent
     if (value[1] === '') {
       console.log('envoye des donnée');
       this.indexRowdata = undefined;
-      const name_dinamic = `Edit single cell on row ${
-        this.objectOne[0] + 1
-      }, column ${this.nameCells}`;
+      const name_dinamic = `Edit single cell on row ${this.objectOne[0] + 1
+        }, column ${this.nameCells}`;
       const actualydata = this.ActualyData ? this.ActualyData['idName'] : -1;
       if (this.ActualyData) {
         this.listNameHistory.splice(

@@ -22,47 +22,50 @@ import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd
   styleUrls: ['./read-view-file.component.scss']
 })
 export class ReadViewFileComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<any[]>([]);
+  /* INPUT */
+  @Input('idProject') idProject: any = undefined;
+  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
+
+  /* VIEWCHIELD */
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  // public event: any;
 
+  /* VARIABLES */
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource<any[]>([]);
   public items: any[] = [];
-
   public tabIndex = 0;
 
+  private isFiltered: boolean = false;
+
   public undoRedoLabel = 'Undo/Redo 0/0';
-  @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   public dataViews: any[] = [];
 
   constructor(
     public dialog: MatDialog,
-    private readonly lpEditor: LpEditorService,
     private readonly lpviLped: LpdLpdService,
     public datepipe: DatePipe
   ) { }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      if (Array.isArray(this.dataAfterUploaded) === true) {
-        const header = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameOrigin'].split('"').join('')
-          )
-        ).split(',');
-        const editableColumns = JSON.parse(
-          JSON.stringify(
-            this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
-          )
-        ).split(',');
-        const values = this.dataAfterUploaded[1];
-        header.unshift('all');
-        editableColumns.unshift('all');
+      if (Object.keys(this.dataAfterUploaded).length === 4) {
+        this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
+        this.dataViews = this.dataAfterUploaded['data'];
 
-        this.displayedColumns = header;
-        this.dataSource.data = this.dataViews = values;
-      } else {
+         Object.values(this.lpviLped.permaLink).map(x => {
+          if (Array.isArray(x) === true)
+            if ((x as any[]).length != 0 )
+              this.isFiltered = true;
+          else if (Object.keys(x).length !== 0)
+            this.isFiltered = true;
+        });
+
+        if(this.isFiltered == true)
+          this.dataSource.data = this.lpviLped.permaLink['data'];
+        else this.dataSource.data = this.dataViews;
+
+      } else if (Object.keys(this.dataAfterUploaded).length === 2){
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
       }
@@ -181,6 +184,39 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
 
     this.lpviLped.itemsObservables$.next({
       type: 'numeric',
+      isMinimize: false,
+      head: column,
+      minValue: minValue,
+      maxValue: maxValue,
+      options: options
+    });
+  }
+
+   public timeLineFacter(column: any): void {
+    // let distances = {}, isExist = false;
+    // this.dataSource.data.map((item: any) => {
+    //   distances[item[column]] = (distances[item[column]] || 0) + 1;
+    // });
+
+    let minValue = 100000, maxValue = 0;
+    this.dataViews.map((item: any) => {
+      if (Number.isInteger(Number(item[column])) === true) {
+        if (Number(item[column]) >= maxValue) maxValue = Number(item[column])
+        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
+      }
+    });
+    const options: Options = {
+      floor: minValue,
+      ceil: maxValue,
+      hidePointerLabels: true,
+      hideLimitLabels: true,
+      draggableRange: true,
+      showSelectionBar: true,
+    };
+
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'timeLine',
       isMinimize: false,
       head: column,
       minValue: minValue,

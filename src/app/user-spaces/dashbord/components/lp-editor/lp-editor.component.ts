@@ -3,7 +3,9 @@ import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import { CommonService } from '@app/shared/services/common.service';
+import { LpEditorService } from '../../services/lp-editor.service';
 import { LpViwersService } from '../../services/lp-viwers.service';
 
 @Component({
@@ -30,7 +32,7 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
     private router: Router,
     private route: ActivatedRoute,
     private common: CommonService,
-    private lpviewer: LpViwersService
+    private lpVilpEdService: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
 
@@ -47,23 +49,15 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
-      this.lpviewer.isLoading$.next(true);
-      this.lpviewer
+      this.lpVilpEdService.isLoading$.next(true);
+      this.lpVilpEdService
         .getSavedProjects(this.idProject)
-        .subscribe((res: Array<any>) => {
-          // console.log(res);
-          if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
-            if (res[3].length > 0) {
-              this.filtersData = JSON.parse(res[3][0]['value']);
-            }
-            if (res[2].length > 0) {
-              this.inputFilters = JSON.parse(res[2][0]['value']);
-            }
-
+        .subscribe((res: any) => {
+          if (res !== undefined) {
             this.stepper.steps.forEach((step, index) => {
               if (index < 1) {
                 step.completed = true;
@@ -74,7 +68,7 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
               }
             });
 
-            this.lpviewer.isLoading$.next(false);
+            this.lpVilpEdService.isLoading$.next(false);
 
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
