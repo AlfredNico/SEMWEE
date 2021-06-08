@@ -126,7 +126,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
-        console.log('data=', res);
         this.items.push(res);
 
         this.savePermalink(); // SAVE PERMALINK
