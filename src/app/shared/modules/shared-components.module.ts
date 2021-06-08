@@ -52,7 +52,7 @@ import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.
     NO_ERRORS_SCHEMA
   ],
   providers: [
-    LpdLpdService
+    // LpdLpdService
   ]
 })
 export class SharedComponentsModule { }
