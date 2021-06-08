@@ -1,11 +1,10 @@
 import { CommonService } from '@app/shared/services/common.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LPAllProjects } from '../interfaces/lp-viewer-projects';
-import { LPViewerHistory } from '../interfaces/lp-viewer-history';
 
 @Injectable({
   providedIn: 'root',
@@ -41,8 +40,8 @@ export class LpViwersService {
     );
   }
 
-  public getSavedProjects(idProject): Observable<LPAllProjects[]> {
-    return this.http.get<any>(
+  public getSavedProjects(idProject): Observable<any> {
+    return this.http.get(
       `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
     ).pipe(
       map(res => {

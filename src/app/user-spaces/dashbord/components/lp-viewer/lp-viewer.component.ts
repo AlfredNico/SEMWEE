@@ -48,7 +48,7 @@ export class LpViewerComponent implements AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
@@ -56,7 +56,6 @@ export class LpViewerComponent implements AfterViewInit {
       this.lpviewer
         .getSavedProjects(this.idProject)
         .subscribe((res: Array<any>) => {
-          // console.log(res);
           // console.log(res);
           if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
             if (res[3].length > 0) {
@@ -76,7 +75,6 @@ export class LpViewerComponent implements AfterViewInit {
             });
 
             // this.lpviewer.isLoading$.next(false);
-            console.log('After vewier :', res);
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
           } else this.router.navigateByUrl('user-space/lp-viewer');
