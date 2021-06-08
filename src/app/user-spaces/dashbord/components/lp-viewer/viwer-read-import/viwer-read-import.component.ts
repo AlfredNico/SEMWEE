@@ -87,14 +87,6 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      // console.log('lViewerReadImport : ', this.dataAfterUploaded);
-      // console.log(' cnhange: ', this.nameHeader);
-      // this.nameHeader.forEach((value, index) => {
-      //   let textValue = value['_elementRef'].nativeElement.innerText;
-      //   console.log(textValue);
-      //   // if (textValue !== newHeader[index].trim()) {
-      //   // value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
-      // });
       if (
         (this.dataAfterUploaded[0] && this.dataAfterUploaded[1]) !== undefined
       ) {
@@ -104,7 +96,6 @@ export class ViwerReadImportComponent
             this.dataAfterUploaded[0][0]['nameUpdate'].split('"').join('')
           )
         ).split(',');
-        // console.log('after ', header);
 
         const editableColumns = JSON.parse(
           JSON.stringify(
@@ -117,9 +108,17 @@ export class ViwerReadImportComponent
 
         this.displayedColumns = header;
         this.edidtableColumns = editableColumns;
-        // this.dataSource.data = this.checkFilter(values);
         this.dataSource.data = this.dataViews = values;
         this.listNameHistory = this.dataAfterUploaded[4];
+
+        // console.log(this.nameHeader)
+        // this.nameHeader.forEach((el, index) => {
+        //   console.log("test ", typeof el['_elementRef'].nativeElement.innerText);
+        //   // tabforUpdate.push(el['_elementRef'].nativeElement.innerText);
+        //   // if (index === value - 1) {
+        //   //   updateHeader = el['_elementRef'].nativeElement;
+        //   // }
+        // });
 
         if (this.filtersData?.items !== undefined) {
           this.formGroup = this.fb.group(
@@ -420,19 +419,19 @@ export class ViwerReadImportComponent
     if (window.innerWidth > $event.clientX + 520) {
       this.left = $event.clientX + totaleleft + 33;
     } else {
-      this.left = $event.clientX - 550;
+      this.left = $event.clientX - 650;
     }
-    // const regex3 =
-    //   /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
-    // if (regex3.exec(value[namecells])) {
-    //   this.selected = 'object';
-    // } else {
-    //   this.selected = typeof value[namecells];
-    // }
+    const regex3 =
+      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    if (regex3.exec(value[namecells])) {
+      this.selected = 'object';
+    } else {
+      this.selected = typeof value[namecells];
+    }
     this.vueEdit = true;
-    // this.objectOne = [index, value];
-    // this.nameCells = namecells;
-    // this.lastValue = value[namecells];
+    this.objectOne = [index, value];
+    this.nameCells = namecells;
+    this.lastValue = value[namecells];
   }
 
   toggleedit(value) {
