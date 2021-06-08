@@ -56,17 +56,6 @@
         perfectScrollbar
       >
         <mat-tab label="Facet/Filter">
-
-          <!-- <app-facet-filter
-            [formGroup]='formGroup'
-            [inputFilters]="inputFilters"
-            [filtersData]='filtersData'
-            [idProject]="idProject"
-            [dataToFiltering]="dataViews"
-            [dataViews]="dataViews"
-            [dataSources]="dataSource.data"
-          ></app-facet-filter> -->
-
           <app-facet-filter-target
           [idProject]='idProject'
           [dataViews]='dataViews'
@@ -106,7 +95,7 @@
                 let last = last
               "
             >
-              <!-- dynamics Column -->
+              <!-- all-start-flag Column -->
               <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
                 <th mat-header-cell *matHeaderCellDef
                 [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }"
@@ -200,7 +189,7 @@
                 </td>
               </ng-container>
 
-              <!-- dynamics Column -->
+              <!-- others Column -->
               <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
                 <th
                   mat-header-cell

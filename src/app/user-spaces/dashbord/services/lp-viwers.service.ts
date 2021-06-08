@@ -41,12 +41,10 @@ export class LpViwersService {
   }
 
   public getSavedProjects(idProject): Observable<any> {
-    console.log('data', idProject);
     return this.http.get(
       `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
     ).pipe(
       map(res => {
-        console.log('res', res);
         return res;
       })
     )

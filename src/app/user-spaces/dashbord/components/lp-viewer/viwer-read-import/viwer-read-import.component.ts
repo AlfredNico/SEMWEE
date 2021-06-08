@@ -24,8 +24,7 @@ import { FormBuilder } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
-import { style } from '@angular/animations';
-// import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -83,11 +82,10 @@ export class ViwerReadImportComponent
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    // private readonly lpviLped: LpdLpdService,
+    private readonly lpviLped: LpdLpdService,
   ) { }
 
   ngOnChanges(): void {
-    // console.log('Okokokoko');
     if (this.dataAfterUploaded != undefined) {
       // console.log('lViewerReadImport : ', this.dataAfterUploaded);
       // console.log(' cnhange: ', this.nameHeader);
@@ -125,7 +123,7 @@ export class ViwerReadImportComponent
         this.dataSource.data = this.dataViews = values;
         this.listNameHistory = this.dataAfterUploaded[4];
 
-        if (this.filtersData.items !== undefined) {
+        if (this.filtersData?.items !== undefined) {
           this.formGroup = this.fb.group(
             JSON.parse(this.dataAfterUploaded[2][0]['value'])
           );
@@ -353,21 +351,21 @@ export class ViwerReadImportComponent
   }
 
   public searchFacet(column: any) {
-    // let distances = {}, isExist = false;
-    // this.dataViews.map((item: any) => {
-    //   distances[item[column]] = (distances[item[column]] || 0) + 1;
-    // })
+    let distances = {}, isExist = false;
+    this.dataViews.map((item: any) => {
+      distances[item[column]] = (distances[item[column]] || 0) + 1;
+    })
 
-    // const value = Object.entries(distances).map((val: any) => {
-    //   return { ...val, include: false };
-    // });
+    const value = Object.entries(distances).map((val: any) => {
+      return { ...val, include: false };
+    });
 
-    // this.lpviLped.itemsObservables$.next({
-    //   type: 'search',
-    //   isMinimize: false,
-    //   head: column,
-    //   content: value
-    // });
+    this.lpviLped.itemsObservables$.next({
+      type: 'search',
+      isMinimize: false,
+      head: column,
+      content: value
+    });
   }
 
   public inputFilter(column: any) {
