@@ -57,7 +57,7 @@ export class LpViewerComponent implements AfterViewInit {
         .getSavedProjects(this.idProject)
         .subscribe((res: Array<any>) => {
           // console.log(res);
-          // console.log(res);
+          console.log('res', res);
           if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
             if (res[3].length > 0) {
               this.filtersData = JSON.parse(res[3][0]['value']);
