@@ -62,4 +62,4 @@ import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
   ],
   providers: [LpViwersService, tokenInterceptor, errorInterceptor],
 })
-export class LpViewerModule { }
+export class LpViewerModule {}
