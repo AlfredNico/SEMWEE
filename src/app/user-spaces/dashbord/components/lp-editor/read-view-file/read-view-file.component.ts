@@ -43,33 +43,50 @@ export class ReadViewFileComponent implements OnInit, AfterViewInit {
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
 
+  public hoverIndex;
+  public vueEdit: boolean = false;
+  public nameCells;
+  public lastValue;
+  public objectOne: any;
+  public selected = 'string';
+  public listNameHistory: any[] = [];
+  public ActualyData: any = null;
+  public indexRowdata = undefined;
+  public idHeader = 0;
+  top = 0;
+  left = null;
+  right = null;
+  public domTab: any;
+
   constructor(
     public dialog: MatDialog,
     private readonly lpviLped: LpdLpdService,
     public datepipe: DatePipe
   ) { }
 
-  ngOnChanges(): void {
+   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
-      if (Object.keys(this.dataAfterUploaded).length === 4) {
+      if (Object.keys(this.dataAfterUploaded).length === 5) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
+        this.listNameHistory = this.dataAfterUploaded['name'];
 
-         Object.values(this.lpviLped.permaLink).map(x => {
+        Object.values(this.lpviLped.permaLink).map(x => {
           if (Array.isArray(x) === true)
-            if ((x as any[]).length != 0 )
+            if ((x as any[]).length != 0)
               this.isFiltered = true;
-          else if (Object.keys(x).length !== 0)
-            this.isFiltered = true;
+            else if (Object.keys(x).length !== 0)
+              this.isFiltered = true;
         });
 
-        if(this.isFiltered == true)
+        if (this.isFiltered == true)
           this.dataSource.data = this.lpviLped.permaLink['data'];
         else this.dataSource.data = this.dataViews;
 
-      } else if (Object.keys(this.dataAfterUploaded).length === 2){
+      } else if (Object.keys(this.dataAfterUploaded).length === 3) {
         this.displayedColumns = this.dataAfterUploaded['header'];
         this.dataSource.data = this.dataViews = this.dataAfterUploaded['content'];
+        this.listNameHistory = this.dataAfterUploaded['name'];
       }
     }
   }
