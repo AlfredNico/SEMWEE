@@ -19,6 +19,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       *ngTemplateOutlet="
       item.type === 'search' ? searchTemplate
       : item.type === 'input' ? inputTemplate
+      : item.type === 'datefilter' ? dateTemplate
       : item.type === 'numeric' ? numericTemplate
       : timeLineTemplate;
       context:{value: item}">
@@ -46,6 +47,19 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
       (minimize)='minimizeEmitter($event)'
       (itemsEmitter)='itemsEmitter($event)'
       ></app-input-filter>
+    </ng-template>
+
+    <ng-template #dateTemplate let-currentValue="value">
+      <app-date-filter
+      [items]='items'
+      [item]='item'
+      [index]='index'
+      [dataViews]='dataViews'
+      (formGroup)='formGroupEmitter($event)'
+      (removeFromItem)='removeFromItemEmitter($event, "input")'
+      (minimize)='minimizeEmitter($event)'
+      (itemsEmitter)='itemsEmitter($event)'
+      ></app-date-filter>
     </ng-template>
 
     <ng-template #numericTemplate let-currentValue="value">

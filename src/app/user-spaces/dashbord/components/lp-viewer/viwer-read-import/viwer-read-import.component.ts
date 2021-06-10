@@ -341,6 +341,15 @@ export class ViwerReadImportComponent
     });
   }
 
+  public dateFilter(column: any) {
+    this.lpviLped.itemsObservables$.next({
+      type: 'datefilter',
+      isMinimize: false,
+      head: column,
+      value: ''
+    });
+  }
+
   public numericFacter(column: any) {
     let minValue = 100000, maxValue = 0;
     this.dataViews.map((item: any) => {

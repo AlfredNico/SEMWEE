@@ -8,13 +8,13 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
   template: `
     <div class="w-100 panel" [formGroup]="form" fxLayout="column">
       <mat-dialog-content class="w-100  m-0 p-0">
-        <div class="w-100 p-0">
-          <h2>Updates header Column !</h2>
+        <div class="w-100 p-0 m-0">
+          <h2>Update Header Column</h2>
         </div>
 
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Updates column</mat-label>
-          <input matInput autocomplete="off" formControlName="columName" />
+          <label>Header Column</label>
+          <input class="form-control" placeholder="Header Column" autocomplete="off" formControlName="columName" />
         </mat-form-field>
       </mat-dialog-content>
 
