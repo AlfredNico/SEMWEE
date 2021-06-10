@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-cell',
@@ -23,8 +24,7 @@ export class EditCellComponent implements OnInit {
   @Input('columnName') column: string = undefined;
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 
   /* Convert To Title case */
@@ -69,31 +69,34 @@ export class EditCellComponent implements OnInit {
 
   /* Convert To Date */
   public convertToDate(nameCell: string) {
-    this.dataSource.forEach(item => {
-      console.log(this.dateValidator(item[nameCell]));
-      if (this.dateValidator(item[nameCell]) == null) {
-        let dateString = item[nameCell];
-        let dateObject = new Date();
+    const reg2 = /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+    const reg1 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+    const regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    const regex2 = new RegExp('[-\\/ ]');
 
-        if (dateString.indexOf('/') > -1) {
-          let dateParts = dateString.split("/");
-          dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-        }
-        else if (dateString.indexOf('-') > -1) {
-          let dateParts = dateString.split("-");
-          dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-        }
-
-        // // item[nameCell] = this.datepipe.transform(dateObject, 'dd/MM/yyyy');
-        item[nameCell] = dateObject;
-
-        console.log(item[nameCell]);
-        console.log(typeof (item[nameCell]));
-
+    this.dataSource.forEach((item) => {
+      if (reg1.exec(item[nameCell])) {
+        const tab = item[nameCell].split(regex2);
+        item[nameCell] = moment(
+          `${tab[0]}-${tab[1]}-${tab[2]}`,
+          'YYYY-MM-DD',
+          true
+        ).format();
       }
-    });
 
-    this.dataSource = this.dataSource;
+      // .format('DD'/MM/YYYY);
+      else if (reg2.exec(item[nameCell])) {
+        // item[nameCell] = "Mea"
+        this.dataSource.forEach((item) => {
+          const tab = item[nameCell].split(regex2);
+          item[nameCell] = moment(
+            `${tab[0]}-${tab[1]}-${tab[2]}`,
+            'DD-MM-YYYY',
+            true
+          ).format();
+        });
+      }
+    })
   }
 
   /* Convert To Text */

@@ -51,3 +51,5 @@ Thumbs.db
 src/app/mock.interceptor.ts
 src/environments/environment.ts
 src/environments/environment.prod.ts
+package.json
+package-lock.json

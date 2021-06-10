@@ -18,6 +18,17 @@ export class LpEditorService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
+
+  private queryParams = {
+    input: [],
+    search: [],
+    numeric: [],
+    items: [],
+    queries: {},
+    queriesNumerisFilters: {},
+  };
+  private idProject = undefined;
+
   constructor(
     private http: HttpClient,
   ) { }
@@ -111,10 +122,34 @@ export class LpEditorService {
     );
   }
 
-  public addFilter(value: { idProject: any; value: any }) {
+  public addFilter(inputs?: { items: any[], item: any, index: number }, query?: { idProject: any; value: any }) {
+    if (inputs !== undefined) {
+      // inputs.items = [
+      //   ...inputs.items,
+      //   inputs.items[inputs.items.length - 1] = {
+      //     ...inputs.item,
+      //   }
+      // ];
+
+      inputs.items[inputs.index] = inputs.item;
+
+      this.queryParams = {
+        ...this.queryParams,
+        items: inputs.items
+      }
+      console.log(inputs.items)
+    }
+    if (query !== undefined) {
+      this.idProject = query.idProject;
+      this.queryParams = { ...query.value };
+    }
+    const val = {
+      idProject: this.idProject,
+      value: JSON.stringify(this.queryParams)
+    };
     return this.http.post(
       `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`,
-      value
+      val
     );
   }
 

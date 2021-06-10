@@ -103,8 +103,9 @@ export class ViwerReadImportComponent
               this.isFiltered = true;
         });
 
+        // this.dataSource.data = this.lpviLped.permaLink['data'];
         if (this.isFiltered == true)
-          this.dataSource.data = this.lpviLped.permaLink['data'];
+          this.dataSource.data = this.dataFilters(this.dataViews)
         else this.dataSource.data = this.dataViews;
 
       } else if (Object.keys(this.dataAfterUploaded).length === 3) {
@@ -507,12 +508,9 @@ export class ViwerReadImportComponent
     }
   }
   ConverterToDate(newValue) {
-    const reg =
-      /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
-    const reg1 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
-    const regex3 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    const reg = /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+    const reg1 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+    const regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     let string_date = newValue;
     const regex2 = new RegExp('[-\\/ ]');
 
@@ -678,5 +676,22 @@ export class ViwerReadImportComponent
         })
       )
       .subscribe();
+  }
+
+  private dataFilters(data: any[]) {
+    return data.filter((value, index) => this.checkFiltesData(index));
+  }
+
+  private checkFiltesData(index: number): boolean {
+    const q1 = this.chechQueryFilter(index, this.lpviLped.permaLink['numeric']);
+    const q2 = this.chechQueryFilter(index, this.lpviLped.permaLink['input']);
+    const q3 = this.chechQueryFilter(index, this.lpviLped.permaLink['search']);
+
+    return q1 && q2 && q3;
+  }
+
+  private chechQueryFilter(index: number, queries: boolean[]): boolean {
+    if (queries.length !== 0) return queries[index];
+    return true;
   }
 }
