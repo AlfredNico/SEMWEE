@@ -566,7 +566,7 @@ export class ViwerReadImportComponent
         }
       });
     } else {
-      alert('format date incorect');
+      alert('format date incorrect');
       this.testConverter = false
     }
   }

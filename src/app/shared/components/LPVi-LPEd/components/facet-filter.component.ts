@@ -124,7 +124,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    if (Object.keys(this.lpviLped.permaLink).length !== 0 && this.items.length !== 0) {
+    if (Object.keys(this.lpviLped.permaLink).length !== 0) {
       this.inputQueries = this.lpviLped.permaLink['input'];
       this.searchQueries = this.lpviLped.permaLink['search'];
       this.numericQeury = this.lpviLped.permaLink['numeric'];
