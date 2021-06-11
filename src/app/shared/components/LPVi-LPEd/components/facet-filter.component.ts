@@ -114,13 +114,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   @Input('idProject') public idProject = undefined;
   @Input('items') public items: any[] = [];
 
-
   constructor(
     private readonly lpEditor: LpEditorService,
     private readonly lpviLped: LpdLpdService,
     private fb: FormBuilder
   ) {
-    console.log(this.items)
+    console.log(this.items);
   }
 
   ngOnInit(): void {
@@ -154,6 +153,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.dataSources = this.dataViews;
     this.queries = {};
     this.queriesNumerisFilters = {};
+
+    this.lpviLped.permaLink = {
+      input: [],
+      numeric: [],
+      search: [],
+      items: [],
+      name: [],
+      queries: {},
+      queriesNumerisFilters: {},
+    };
 
     this.savePermalink(); // SAVE PERMALINK
   }
@@ -298,6 +307,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
       }
     }
     this.savePermalink(); // SAVE PERMALINK
+
+    this.lpviLped.permaLink = {
+      input: [],
+      numeric: [],
+      search: [],
+      items: [],
+      name: [],
+      queries: {},
+      queriesNumerisFilters: {},
+    };
   }
 
   public itemsEmitter(event?: any) {
@@ -388,15 +407,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   }
 
   private savePermalink(): void {
-    this.lpviLped.permaLink = {
-      ...this.lpviLped.permaLink,
-      input: this.inputQueries,
-      search: this.searchQueries,
-      numeric: this.numericQeury,
-      items: this.items,
-      queries: this.queries,
-      queriesNumerisFilters: this.queriesNumerisFilters,
-    };
     const permalink = {
       idProject: this.idProject,
       value: JSON.stringify({
