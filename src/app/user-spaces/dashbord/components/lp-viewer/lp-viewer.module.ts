@@ -23,6 +23,7 @@ import { SharedComponentsModule } from '@app/shared/modules/shared-components.mo
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { EditComponent } from './editLpViewer/edit.component';
 import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
+import { DragDroppDirective } from '../../directives/drag-dropp.directive';
 // import { FacetFilterComponent } from '@app/shared/components/LPVi-LPEd/components/facet-filter.component';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
     UpdatesHeaderComponent,
     EditComponent,
     UndoRedoComponent,
+    DragDroppDirective
   ],
   imports: [
     HttpClientModule,
