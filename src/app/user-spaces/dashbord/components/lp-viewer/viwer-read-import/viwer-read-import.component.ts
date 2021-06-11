@@ -618,7 +618,7 @@ export class ViwerReadImportComponent
     });
   }
   otherData(value) {
-    console.log(value);
+    // console.log(value);
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
