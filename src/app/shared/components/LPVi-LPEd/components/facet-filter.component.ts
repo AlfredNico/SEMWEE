@@ -98,7 +98,6 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 })
 export class FacetFilterComponent implements AfterViewInit, OnInit {
   /* VARIABLES */
-  public items: any[] = [];
   public form = new FormGroup({});
   private queries = {};
 
@@ -107,21 +106,25 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   private searchQueries: boolean[] = [];
   private numericQeury: boolean[] = [];
   private queriesNumerisFilters = {};
-  public isCheckedInput = false;
+  // private checkedInput = {};
 
   /* INPUT */
   @Input('dataViews') public dataViews: any[] = [];
   @Input('dataSources') public dataSources: any[] = [];
   @Input('idProject') public idProject = undefined;
+  @Input('items') public items: any[] = [];
+
 
   constructor(
     private readonly lpEditor: LpEditorService,
     private readonly lpviLped: LpdLpdService,
     private fb: FormBuilder
-  ) { }
+  ) {
+    console.log(this.items)
+  }
 
   ngOnInit(): void {
-    if (Object.keys(this.lpviLped.permaLink).length !== 0) {
+    if (Object.keys(this.lpviLped.permaLink).length !== 0 && this.items.length !== 0) {
       this.inputQueries = this.lpviLped.permaLink['input'];
       this.searchQueries = this.lpviLped.permaLink['search'];
       this.numericQeury = this.lpviLped.permaLink['numeric'];
@@ -237,6 +240,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     const keys = Object.keys(event.query).toString();
 
     // if (event.index !== -1) this.items[event.index] = event.item;
+    // this.checkedInput[keys] = value;
 
     this.queries[keys] = value;
 
@@ -277,7 +281,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
         this.queries = newObject;
 
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
-        this.savePermalink(); // SAVE PERMALINK
       } else if (removeName === 'number') {
         this.numericQeury = [];
         this.dataSources = this.dataViews.filter((value, index) => {
@@ -285,19 +288,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
-        this.savePermalink(); // SAVE PERMALINK
       } else if (removeName === 'search') {
-
         this.searchQueries = [];
         this.dataSources = this.dataViews.filter((value, index) => {
           return this.filtersData(index);
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
-        this.savePermalink(); // SAVE PERMALINK
       }
     }
-
+    this.savePermalink(); // SAVE PERMALINK
   }
 
   public itemsEmitter(event?: any) {
@@ -330,6 +330,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     });
 
     this.lpviLped.dataSources$.next(this.dataSources);
+
     this.savePermalink(); // SAVE PERMALINK
   }
 
@@ -383,11 +384,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     });
     this.lpviLped.dataSources$.next(this.dataSources);
 
-    //this.savePermalink(); // SAVE PERMALINK
+    this.savePermalink(); // SAVE PERMALINK
   }
 
   private savePermalink(): void {
-    const params = {
+    this.lpviLped.permaLink = {
+      ...this.lpviLped.permaLink,
       input: this.inputQueries,
       search: this.searchQueries,
       numeric: this.numericQeury,
@@ -395,12 +397,18 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
       queries: this.queries,
       queriesNumerisFilters: this.queriesNumerisFilters,
     };
-    // data: this.dataSources,
     const permalink = {
       idProject: this.idProject,
-      value: params,
+      value: JSON.stringify({
+        input: this.inputQueries,
+        search: this.searchQueries,
+        numeric: this.numericQeury,
+        items: this.items,
+        queries: this.queries,
+        queriesNumerisFilters: this.queriesNumerisFilters,
+      }),
     };
 
-    this.lpEditor.addFilter(undefined, permalink).subscribe();
+    this.lpEditor.addFilter(permalink).subscribe();
   }
 }

@@ -39,6 +39,7 @@ export class ViwerReadImportComponent
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
+  public items = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
@@ -61,7 +62,7 @@ export class ViwerReadImportComponent
   private isFiltered = false;
   public formGroup = this.fb.group({});
 
-  public items: any[] = [];
+
   public hoverIndex;
   public vueEdit: boolean = false;
   public nameCells;
@@ -93,6 +94,8 @@ export class ViwerReadImportComponent
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
+
+        this.items = this.lpviLped.permaLink.items;
 
         Object.values(this.lpviLped.permaLink).map(x => {
           if (Array.isArray(x) === true)
@@ -618,7 +621,7 @@ export class ViwerReadImportComponent
     });
   }
   otherData(value) {
-    console.log(value);
+    // console.log(value);
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {

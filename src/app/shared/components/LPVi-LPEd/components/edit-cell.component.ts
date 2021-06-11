@@ -39,7 +39,7 @@ export class EditCellComponent implements OnInit {
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toTitlecase()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toTitlecase()`
     this.toggleEdit(names);
   }
 
@@ -52,7 +52,7 @@ export class EditCellComponent implements OnInit {
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toUppercase()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toUppercase()`
     this.toggleEdit(names);
   }
 
@@ -65,7 +65,7 @@ export class EditCellComponent implements OnInit {
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toLowercase()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toLowercase()`
     this.toggleEdit(names);
   }
 
@@ -78,7 +78,7 @@ export class EditCellComponent implements OnInit {
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toNumber()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toNumber()`
     this.toggleEdit(names);
   }
 
@@ -109,7 +109,7 @@ export class EditCellComponent implements OnInit {
         this.numberCount++;
       }
     })
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toDate()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toDate()`
     this.toggleEdit(names);
   }
 
@@ -122,7 +122,7 @@ export class EditCellComponent implements OnInit {
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toText()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toText()`
     this.toggleEdit(names);
   }
 
@@ -141,7 +141,7 @@ export class EditCellComponent implements OnInit {
     });
 
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toBoolean()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toBoolean()`
     this.toggleEdit(names);
   }
 
@@ -153,7 +153,7 @@ export class EditCellComponent implements OnInit {
     });
 
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toNull()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toNull()`
     this.toggleEdit(names);
   }
 
@@ -165,7 +165,7 @@ export class EditCellComponent implements OnInit {
     });
 
     this.dataSource = this.dataSource;
-    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toEmpty()`
+    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toEmpty()`
     this.toggleEdit(names);
   }
 

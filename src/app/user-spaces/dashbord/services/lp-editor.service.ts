@@ -18,7 +18,6 @@ export class LpEditorService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-
   private queryParams = {
     input: [],
     search: [],
@@ -29,9 +28,7 @@ export class LpEditorService {
   };
   private idProject = undefined;
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) { }
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
     return this.http
@@ -93,8 +90,6 @@ export class LpEditorService {
       );
   }
 
-
-
   sendProjectNames(value: {
     idUser: any;
     ProjectName: string;
@@ -122,34 +117,10 @@ export class LpEditorService {
     );
   }
 
-  public addFilter(inputs?: { items: any[], item: any, index: number }, query?: { idProject: any; value: any }) {
-    if (inputs !== undefined) {
-      // inputs.items = [
-      //   ...inputs.items,
-      //   inputs.items[inputs.items.length - 1] = {
-      //     ...inputs.item,
-      //   }
-      // ];
-
-      inputs.items[inputs.index] = inputs.item;
-
-      this.queryParams = {
-        ...this.queryParams,
-        items: inputs.items
-      }
-    }
-    if (query !== undefined) {
-      this.idProject = query.idProject;
-      this.queryParams = { ...query.value };
-    }
-    const val = {
-      idProject: query?.idProject ? query?.idProject : this.idProject,
-      value: JSON.stringify(this.queryParams)
-    };
-    console.log(val, this.idProject)
+  public addFilter(value: { idProject: any; value: any }) {
     return this.http.post(
       `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`,
-      val
+      value
     );
   }
 
