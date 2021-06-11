@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
+import { LpdLpdService } from '../services/lpd-lpd.service';
 
 @Component({
   selector: 'app-input-filter',
@@ -79,53 +80,28 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
 
   /* VARIABLES */
   public form = this.fb.group({});
-  private isInputChecked = false;
+  private inputValue = '';
 
-  constructor(private fb: FormBuilder, private readonly lpEditor: LpEditorService,) { }
+  constructor(
+    private fb: FormBuilder,
+    private readonly lpVilpEd: LpdLpdService
+  ) {}
 
   ngOnInit(): void {
-    if (!this.isInputChecked) {
-      this.form.addControl(
-        this.item['head'],
-        new FormControl(this.item['value'])
-      );
+    if (this.lpVilpEd.permaLink.queries.hasOwnProperty(`${this.item['head']}`))
+      this.inputValue = this.lpVilpEd.permaLink.queries[`${this.item['head']}`];
+    else this.inputValue = this.item['value'];
 
-      this.isInputChecked = true;
-    }
+    this.form.addControl(this.item['head'], new FormControl(this.inputValue));
   }
 
   ngAfterViewInit(): void {
     this.form.valueChanges.subscribe((query) => {
-      // this.item = {
-      //   ...this.item,
-      //   value: query[`${this.item['head']}`],
-      // };
-
       this.formGroup.emit({
         query: query,
         item: this.item,
         index: this.index,
       });
-      // this.items[this.index] = this.item;
-      // this.items = [
-      //   ...this.items,
-      //   this.items[this.index] = {
-      //     ...this.item,
-      //     value: query[`${this.item['head']}`],
-      //   }
-      // ];
-      const val = {
-        items: this.items,
-        item: {
-          ...this.item,
-          value: query[`${this.item['head']}`]
-        },
-        index: this.index,
-      };
-
-      this.lpEditor.addFilter(val).subscribe();
     });
-
-
   }
 }
