@@ -59,7 +59,6 @@ export class ViwerReadImportComponent
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
   private isFiltered = false;
-  // public formGroup = new FormGroup({});
   public formGroup = this.fb.group({});
 
   public items: any[] = [];
@@ -75,9 +74,9 @@ export class ViwerReadImportComponent
   public idHeader = 0;
   public tab_arraw: boolean[] = [];
   public testConverter: boolean = true;
+  public CountCell = 0;
   top = 0;
   left = null;
-  right = null;
   public domTab: any;
 
   constructor(
@@ -411,7 +410,7 @@ export class ViwerReadImportComponent
     }
   }
   action(value, namecells, index, $event) {
-
+    // console.log($event);
     this.positionPopup($event);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
@@ -427,32 +426,36 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
-    this.domTab.style.fontWeight = "initial";
+    // console.log("Test 1 ", value)
+    // console.log("Test 2 ", this.objectOne)
+    let numbercoll = '';
+    if (value[2] === undefined) {
+      this.domTab.style.fontWeight = "initial";
+      numbercoll = this.CountCell === 0 ? `Edit single cell on row ${this.objectOne[0] + 1},` : `Mass edit ${this.CountCell} cells in `;
+    }
     this.vueEdit = value[0];
-    console.log(this.idHeader);
+    console.log("Id Header", this.idHeader);
     if (value[1] === '' && this.testConverter) {
       console.log('envoye des donnée');
       this.indexRowdata = undefined;
-      const name_dinamic = `Edit single cell on row ${this.objectOne[0] + 1
-        }, column ${this.nameCells}`;
+
+      const name_dinamic = value[2] === undefined ?
+        `${numbercoll} column ${this.nameCells}` : value[2];
       const actualydata = this.ActualyData ? this.ActualyData['idName'] : -1;
+
       if (this.ActualyData) {
         this.listNameHistory.splice(
           this.listNameHistory.indexOf(this.ActualyData) + 1
         );
       }
-      this.lpViewer
-        .sendFiles({
-          namehistory: name_dinamic, idProject: this.idProject,
-          fileData: this.dataSource.data, idHeader: this.idHeader,
-        },
-          actualydata
-        )
-        .subscribe((res) => {
-          this.listNameHistory.push(res);
-        });
+      this.lpViewer.sendFiles({
+        namehistory: name_dinamic, idProject: this.idProject,
+        fileData: this.dataSource.data, idHeader: this.idHeader,
+      }, actualydata)
+        .subscribe((res) => { this.listNameHistory.push(res); });
       this.ActualyData = null;
     }
+    this.CountCell = 0;
     this.testConverter = true;
   }
   ConcerterToString(newValue) {
@@ -475,6 +478,7 @@ export class ViwerReadImportComponent
             true
           ).format('DD/MM/YYYY');
         }
+        this.CountCell++;
       });
     } else {
       this.dataSource.data.forEach((item) => {
@@ -484,7 +488,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = newValue.toString();
-        } else {
+          this.CountCell++;
         }
       });
     }
@@ -503,6 +507,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = parsed;
+          this.CountCell++;
         }
       });
     }
@@ -524,6 +529,7 @@ export class ViwerReadImportComponent
             'YYYY-MM-DD',
             true
           ).format();
+          this.CountCell++;
         }
       });
       // .format('DD'/MM/YYYY);
@@ -536,6 +542,7 @@ export class ViwerReadImportComponent
             'DD-MM-YYYY',
             true
           ).format();
+          this.CountCell++;
         }
       });
     } else if (regex3.exec(string_date)) {
@@ -552,6 +559,7 @@ export class ViwerReadImportComponent
             'DD-MM-YYYY',
             true
           ).format();
+          this.CountCell++;
         }
       });
     } else {
@@ -569,6 +577,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = false;
+          this.CountCell++;
         }
       });
     } else {
@@ -580,6 +589,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = true;
+          this.CountCell++;
         }
       });
     }
@@ -623,17 +633,14 @@ export class ViwerReadImportComponent
     });
   }
   updateHeader(value) {
-    console.log('mea ', value);
     let updateHeader: any;
     let tabforUpdate: any[] = ['All'];
     this.nameHeader.forEach((el, index) => {
-      // console.log(typeof el['_elementRef'].nativeElement.innerText);
       tabforUpdate.push(el['_elementRef'].nativeElement.innerText);
       if (index === value - 1) {
         updateHeader = el['_elementRef'].nativeElement;
       }
     });
-    // console.log('tab For Update : ', updateHeader);
 
     this.dialog
       .open(UpdatesHeaderComponent, {
@@ -657,6 +664,7 @@ export class ViwerReadImportComponent
               );
             }
             this.idHeader = idHeader;
+            // Rename column RANK(2013) to RANK(2013)24
             const name_dinamic = `Edit header table on column ${value + 1}`;
             this.lpViewer
               .sendFiles(

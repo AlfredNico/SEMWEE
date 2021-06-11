@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -22,6 +22,9 @@ export class EditCellComponent implements OnInit {
 
   @Input('dataSource') dataSource: any[] = [];
   @Input('columnName') column: string = undefined;
+  @Output() toggleChanges = new EventEmitter<any[]>();
+  public numberCount: number = 0;
+
   constructor() { }
 
   ngOnInit(): void { }
@@ -32,9 +35,12 @@ export class EditCellComponent implements OnInit {
     this.dataSource.forEach(item => {
       if (typeof (item[nameCell]) === 'string') {
         item[nameCell] = this.toTitleCase(item[nameCell]);
+        this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toTitlecase()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Uppercase */
@@ -42,9 +48,12 @@ export class EditCellComponent implements OnInit {
     this.dataSource.forEach(item => {
       if (typeof (item[nameCell]) === 'string') {
         item[nameCell] = (item[nameCell] as string).toUpperCase();
+        this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toUppercase()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Lowercase */
@@ -52,9 +61,12 @@ export class EditCellComponent implements OnInit {
     this.dataSource.forEach(item => {
       if (typeof (item[nameCell]) === 'string') {
         item[nameCell] = (item[nameCell] as string).toLowerCase();
+        this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toLowercase()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Number */
@@ -62,16 +74,18 @@ export class EditCellComponent implements OnInit {
     this.dataSource.forEach(item => {
       if (Number.isInteger(Number(item[nameCell]))) {
         item[nameCell] = Number(item[nameCell]);
+        this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toNumber()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Date */
   public convertToDate(nameCell: string) {
     const reg2 = /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
     const reg1 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
-    const regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     const regex2 = new RegExp('[-\\/ ]');
 
     this.dataSource.forEach((item) => {
@@ -82,21 +96,21 @@ export class EditCellComponent implements OnInit {
           'YYYY-MM-DD',
           true
         ).format();
+        this.numberCount++;
       }
-
       // .format('DD'/MM/YYYY);
       else if (reg2.exec(item[nameCell])) {
-        // item[nameCell] = "Mea"
-        this.dataSource.forEach((item) => {
-          const tab = item[nameCell].split(regex2);
-          item[nameCell] = moment(
-            `${tab[0]}-${tab[1]}-${tab[2]}`,
-            'DD-MM-YYYY',
-            true
-          ).format();
-        });
+        const tab = item[nameCell].split(regex2);
+        item[nameCell] = moment(
+          `${tab[0]}-${tab[1]}-${tab[2]}`,
+          'DD-MM-YYYY',
+          true
+        ).format();
+        this.numberCount++;
       }
     })
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toDate()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Text */
@@ -104,10 +118,12 @@ export class EditCellComponent implements OnInit {
     this.dataSource.forEach(item => {
       if (typeof (item[nameCell]) !== 'string') {
         item[nameCell] = (item[nameCell]).toString();
+        this.numberCount++
       }
     });
-
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toText()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Boolean */
@@ -116,35 +132,41 @@ export class EditCellComponent implements OnInit {
       if (typeof (item[nameCell]) === 'string') {
         if (item[nameCell].toLowerCase() === 'true') {
           item[nameCell] = true;
+          this.numberCount++;
         } else if (item[nameCell].toLowerCase() === 'false') {
           item[nameCell] = false;
-        } else {
-          item[nameCell] = item[nameCell];
+          this.numberCount++;
         }
-
-        console.log(typeof (item[nameCell]));
       }
     });
 
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toBoolean()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Null */
   public convertToNull(nameCell: string) {
     this.dataSource.forEach(item => {
       item[nameCell] = null;
+      this.numberCount++;
     });
 
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toNull()`
+    this.toggleEdit(names);
   }
 
   /* Convert To Empty */
   public convertToEmpty(nameCell: string) {
     this.dataSource.forEach(item => {
       item[nameCell] = "";
+      this.numberCount++;
     });
 
     this.dataSource = this.dataSource;
+    const names = `Text transform on ${this.numberCount++} cells in column ${nameCell}: value.toEmpty()`
+    this.toggleEdit(names);
   }
 
   public toTitleCase(str) {
@@ -155,55 +177,9 @@ export class EditCellComponent implements OnInit {
     );
   }
 
-  public dateValidator(c: any): { [key: string]: boolean } | null {
-    if ((c !== undefined && c !== '' && c != null)) {
-
-      var month = null;
-      var day = null;
-      var year = null;
-      var currentTaxYear = Number(new Date().getFullYear());
-      if (c.indexOf('/') > -1) {
-        var res = c.split("/");
-        if (res.length > 1) {
-          month = res[1];
-          day = res[0]
-          year = res[2];
-        }
-      }
-      else if (c.indexOf('-') > -1) {
-        var res = c.split("-");
-        if (res.length > 1) {
-          month = res[1];
-          day = res[0]
-          year = res[2];
-        }
-      }
-      if (isNaN(month) || isNaN(day) || isNaN(year)) {
-        return { 'dateInvalid': true };
-      }
-      month = Number(month);
-      day = Number(day);
-      year = Number(year);
-      if (month < 1 || month > 12) { // check month range
-        return { 'dateInvalid': true };
-      }
-      if (day < 1 || day > 31) {
-        return { 'dateInvalid': true };
-      }
-      if ((month === 4 || month === 6 || month === 9 || month === 11) && day === 31) {
-        return { 'dateInvalid': true };
-      }
-      if (month == 2) {
-        var isleap = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0));
-        if (day > 29 || (day === 29 && !isleap)) {
-          return { 'dateInvalid': true };
-        }
-      }
-      if (year !== currentTaxYear) {
-        return { 'dateYearGreaterThanTaxYear': true };
-      }
-    }
-    return null;
+  public toggleEdit(namesHistorique) {
+    const tab = [false, '', namesHistorique];
+    this.toggleChanges.emit(tab);
+    this.numberCount = 0
   }
-
 }

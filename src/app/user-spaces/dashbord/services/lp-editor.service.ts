@@ -137,16 +137,16 @@ export class LpEditorService {
         ...this.queryParams,
         items: inputs.items
       }
-      console.log(inputs.items)
     }
     if (query !== undefined) {
       this.idProject = query.idProject;
       this.queryParams = { ...query.value };
     }
     const val = {
-      idProject: this.idProject,
+      idProject: query?.idProject ? query?.idProject : this.idProject,
       value: JSON.stringify(this.queryParams)
     };
+    console.log(val, this.idProject)
     return this.http.post(
       `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`,
       val

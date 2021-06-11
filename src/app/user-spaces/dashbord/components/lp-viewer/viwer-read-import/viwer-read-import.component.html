@@ -159,7 +159,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
 
@@ -255,7 +255,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
 
