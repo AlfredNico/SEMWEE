@@ -46,7 +46,8 @@
     <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
   <div class="row p-0">
-    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3">
+    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3; resize: both;
+    overflow: auto;">
       <mat-tab-group
         mat-align-tabs="start"
         [color]="'#f0f1f6'"
@@ -101,7 +102,7 @@
                 <th mat-header-cell *matHeaderCellDef
                 [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }"
                 >
-                  <span fxLayout fxLayoutGap="15px">
+                  <span fxLayout fxLayoutGap="15px" class="hover-span">
                     <mat-icon
                       style="color: #fff"
                       [inline]="true"
@@ -197,7 +198,7 @@
                   *matHeaderCellDef
                   [ngClass]="{ 'd-none': isColumnDisplay(column), 'active-column': active === column, 'active-none': icon === '' && active === column }"
                 >
-                  <span fxLayout fxLayoutGap="15px">
+                  <span fxLayout fxLayoutGap="15px" class="hover-span">
                     <mat-icon
                       style="color: #fff"
                       [inline]="true"
@@ -297,7 +298,7 @@
                       >
                       {{currentValue}}
                       <!-- -->
-                      <button href="#"  *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
+                      <button *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
 
                         <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         (click)="action(element,column,indexRow, $event)">edit</button> -->
@@ -320,8 +321,8 @@
                   </ng-template>
 
                   <ng-template #numberTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <p class="text-right">{{ currentValue }}
+                    <div class="justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
+                      <p class="text-center cg">{{ currentValue }}
                         <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
                         (click)="action(element,column,indexRow, $event)">edit</button>

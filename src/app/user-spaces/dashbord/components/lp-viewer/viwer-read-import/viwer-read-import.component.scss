@@ -162,6 +162,8 @@
   position: absolute;
   right: 5px;
   top: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15)!important;
+  box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15)!important;
 }
 
 ::ng-deep {
@@ -349,4 +351,42 @@
     // background-color: rgb(0, 255, 13);
     -webkit-tap-highlight-color: transparent;
     transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.cg {
+  color: #789A52;
+  font-weight: bold;
+  font-style: italic;
+  margin: 0;
+}
+
+::ng-deep {
+  .hover-span:hover {
+    div {
+      color: #3699FF;
+    }
+  }
+
+  .hover-span:hover .bg-light {
+    background-color: #3699FF!important;
+  }
+
+  .mat-paginator .mat-paginator-navigation-first:hover:enabled {
+    background: rgb(54, 153, 255)!important;
+    color: white!important;
+  }
+
+  .mat-paginator .mat-paginator-navigation-previous:hover:enabled {
+    background: rgb(54, 153, 255)!important;
+    color: white!important;
+  }
+
+  .mat-paginator .mat-paginator-navigation-next:hover:enabled {
+    background: rgb(54, 153, 255)!important;
+    color: white!important;
+  }
+
+  .mat-paginator .mat-paginator-navigation-last:hover:enabled {
+    background: rgb(54, 153, 255)!important;
+    color: white!important;
+  }
 }
