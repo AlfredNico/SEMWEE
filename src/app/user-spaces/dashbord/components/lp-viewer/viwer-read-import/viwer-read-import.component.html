@@ -58,9 +58,9 @@
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target
           [idProject]='idProject'
+          [items]='items'
           [dataViews]='dataViews'
           [dataSources]='dataSource.data'
-          [items]='items'
           ></app-facet-filter-target>
 
         </mat-tab>
@@ -343,6 +343,7 @@
           </table>
         </div>
         <mat-paginator
+        *ngIf="dataViews.length != 0"
           appStylePaginator
           showFirstLastButtons
           [showTotalPages]="3"

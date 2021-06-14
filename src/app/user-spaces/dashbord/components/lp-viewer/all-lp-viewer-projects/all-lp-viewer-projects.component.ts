@@ -35,13 +35,15 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.allProjects$ = this.LPViewerProjectsService.refresh$.pipe(
-      tap(() => {
-        this.triggerServices.trigrer$.next(true);
-      }),
+      // tap(() => {
+      //   this.triggerServices.trigrer$.next(true);
+      // }),
       switchMap((_) =>
         this.LPViewerProjectsService.getAllProjects(this.user._id)
       )
     );
+
+    // console.log('val=', this.allProjects$);
   }
 
   ngAfterViewInit() {

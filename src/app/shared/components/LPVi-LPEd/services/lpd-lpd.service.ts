@@ -6,10 +6,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LpdLpdService {
-
   /* Emittter value from clicked USER */
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
   /* Emittter value dataSources after filter USER */
@@ -23,7 +22,7 @@ export class LpdLpdService {
     items: [],
     name: [],
     queries: {},
-    queriesNumerisFilters: {}
+    queriesNumerisFilters: {},
   };
 
   public formInputQuery = {};
@@ -34,7 +33,7 @@ export class LpdLpdService {
     private http: HttpClient,
     private readonly common: CommonService
   ) {
-    this.isLoading$.subscribe(res => {
+    this.isLoading$.subscribe((res) => {
       if (res === true) {
         this.common.showSpinner('table', true, '');
       } else {
@@ -44,40 +43,29 @@ export class LpdLpdService {
   }
 
   public getSavedProjects(idProject): Observable<any> {
-    return this.http.get<any>(
-      `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
-    ).pipe(
-      map(res => {
-        if (res[3].length !== 0)
-          this.permaLink = { ...JSON.parse(res[3][0]['value']) };
+    return this.http
+      .get<any>(`${environment.baseUrl}/lpviewer/get-permalink/${idProject}`)
+      .pipe(
+        map((res) => {
+          if (res[3].length !== 0)
+            this.permaLink = { ...JSON.parse(res[3][0]['value']) };
 
-        if (res[2].length !== 0)
-          this.formInputQuery = { ...JSON.parse(res[2][0]['value']) };
+          if (res[2].length !== 0)
+            this.formInputQuery = { ...JSON.parse(res[2][0]['value']) };
 
-        const header = JSON.parse(
-          JSON.stringify(
-            res[0][0]['nameUpdate'].split('"').join('')
-          )
-        ).split(',');
-        // const editableColumns = JSON.parse(
-        //   JSON.stringify(
-        //     res[0][0]['nameUpdate'].split('"').join('')
-        //   )
-        // ).split(',');
+          const header = JSON.parse(
+            JSON.stringify(res[0][0]['nameUpdate'].split('"').join(''))
+          ).split(',');
 
-        header.unshift('all');
-        // editableColumns.unshift('all');
-
-        // return res;
-        return {
-          headerOrigin: header,
-          // headerUpdated: res[0][0],
-          data: res[1],
-          formInputQuery: this.formInputQuery,
-          permaLink: this.permaLink,
-          name: res[4]
-        };
-      })
-    )
+          header.unshift('all');
+          return {
+            headerOrigin: header,
+            data: res[1],
+            formInputQuery: this.formInputQuery,
+            permaLink: this.permaLink,
+            name: res[4],
+          };
+        })
+      );
   }
 }
