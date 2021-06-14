@@ -172,6 +172,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.dataSources = this.dataViews;
     this.queries = {};
     this.queriesNumerisFilters = {};
+    Object.keys(this.lpviLped.permaLink.queries).forEach(
+      (v) => (this.lpviLped.permaLink.queries[v] = '')
+    );
 
     this.savePermalink(); // SAVE PERMALINK
   }
@@ -185,6 +188,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     Object.keys(this.lpviLped.permaLink.queries).forEach(
       (v) => (this.lpviLped.permaLink.queries[v] = '')
     );
+
+    this.lpviLped.inputSubject.next();
 
     this.queriesNumerisFilters = {};
     this.lpviLped.dataSources$.next(this.dataViews);

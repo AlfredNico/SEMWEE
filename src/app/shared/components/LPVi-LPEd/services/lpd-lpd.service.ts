@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -13,6 +13,7 @@ export class LpdLpdService {
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
   /* Emittter value dataSources after filter USER */
   public dataSources$ = new BehaviorSubject<any>(undefined);
+  public inputSubject = new Subject();
 
   // data: [],
   public permaLink = {
