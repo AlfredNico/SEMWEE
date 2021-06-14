@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
 import { LpdLpdService } from '../services/lpd-lpd.service';
@@ -111,7 +117,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   `,
   styleUrls: ['./facet-filter.component.scss'],
 })
-export class FacetFilterComponent implements AfterViewInit, OnInit {
+export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   /* VARIABLES */
   public form = new FormGroup({});
   private queries = {};
@@ -121,7 +127,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
   private searchQueries: boolean[] = [];
   private numericQeury: boolean[] = [];
   private queriesNumerisFilters = {};
-  // private checkedInput = {};
+  // public items: any[] = [];
 
   /* INPUT */
   @Input('dataViews') public dataViews: any[] = [];
@@ -131,11 +137,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
 
   constructor(
     private readonly lpEditor: LpEditorService,
-    private readonly lpviLped: LpdLpdService,
-    private fb: FormBuilder
-  ) {
-    console.log(this.items);
-  }
+    private readonly lpviLped: LpdLpdService
+  ) {}
 
   ngOnInit(): void {
     if (Object.keys(this.lpviLped.permaLink).length !== 0) {
@@ -149,11 +152,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     }
   }
 
+  ngOnDestroy(): void {}
+
   ngAfterViewInit(): void {
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
-
         this.savePermalink(); // SAVE PERMALINK
       }
     });
@@ -169,16 +173,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.queries = {};
     this.queriesNumerisFilters = {};
 
-    this.lpviLped.permaLink = {
-      input: [],
-      numeric: [],
-      search: [],
-      items: [],
-      name: [],
-      queries: {},
-      queriesNumerisFilters: {},
-    };
-
     this.savePermalink(); // SAVE PERMALINK
   }
 
@@ -186,7 +180,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
-    this.queries = {};
+    // this.queries = _.mapValues(this.queries, () => '');
+    Object.keys(this.queries).forEach((v) => (this.queries[v] = ''));
+    Object.keys(this.lpviLped.permaLink.queries).forEach(
+      (v) => (this.lpviLped.permaLink.queries[v] = '')
+    );
+
     this.queriesNumerisFilters = {};
     this.lpviLped.dataSources$.next(this.dataViews);
     this.dataSources = this.dataViews;
@@ -322,16 +321,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit {
       }
     }
     this.savePermalink(); // SAVE PERMALINK
-
-    this.lpviLped.permaLink = {
-      input: [],
-      numeric: [],
-      search: [],
-      items: [],
-      name: [],
-      queries: {},
-      queriesNumerisFilters: {},
-    };
   }
 
   public itemsEmitter(event?: any) {
