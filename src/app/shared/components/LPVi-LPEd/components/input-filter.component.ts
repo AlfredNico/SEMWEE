@@ -103,5 +103,9 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
         index: this.index,
       });
     });
+
+    this.lpVilpEd.inputSubject.subscribe((_) => {
+      this.form.reset();
+    });
   }
 }
