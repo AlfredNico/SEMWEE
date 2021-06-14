@@ -2,7 +2,6 @@
   <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
     <button class="btn btn-primary ">
       <span class="svg-icon svg-icon-md">
-        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
             <rect x="0" y="0" width="24" height="24" />
@@ -59,9 +58,9 @@
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target
           [idProject]='idProject'
+          [items]='items'
           [dataViews]='dataViews'
           [dataSources]='dataSource.data'
-          [items]='items'
           ></app-facet-filter-target>
 
         </mat-tab>
@@ -74,12 +73,6 @@
     </aside>
 
     <aside class="col p-0" fxFlex="75%">
-      <!-- <div class="px-5" style="background: #EBEDF3; height: 50px">
-        <h2 class="m-auto font-weight-bold">matching rows</h2>
-        <h4 class="m-auto font-weight-normal">(1000 total)</h4>
-        <span fxFlex></span>
-        <h4 class="m-auto font-weight-normal">Extensions</h4>
-      </div> -->
       <div class="p-0">
         <div
           class="w-100 scroll ps"
@@ -222,8 +215,8 @@
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item (click)="inputFilter(column)">
-                    Text filter
+                  <button mat-menu-item [matMenuTriggerFor]="sousFilter">
+                    Filter
                   </button>
                   <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
@@ -260,7 +253,14 @@
                   <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
-
+                <mat-menu #sousFilter="matMenu">
+                  <button mat-menu-item (click)="inputFilter(column)">
+                    Text filter
+                  </button>
+                  <button mat-menu-item (click)="dateFilter(column)">
+                    Date filter
+                  </button>
+                </mat-menu>
                 <td
                   mat-cell
                   *matCellDef="
@@ -287,7 +287,7 @@
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
+                    <div class="row justify-content-between px-3 text-truncate">
                       <!-- (currentValue | isURL) -->
                       <p
                         class="text-left text-truncate mat-body-p"
@@ -298,7 +298,8 @@
                       >
                       {{currentValue}}
                       <!-- -->
-                      <button *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
+                      <button href="#"  class="btn only-show-on-hover  btn-light-primary font-weight-bold mr-2 otherStyle "  (click)="action(element,column,indexRow, $event)" 
+                      >edit</button>
 
                         <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         (click)="action(element,column,indexRow, $event)">edit</button> -->
@@ -315,16 +316,16 @@
                           class="text-truncate"
                           >{{ currentValue }}</a
                         >
-                         <button href="#" *ngIf="hoverIndex == combinate(indexRow,column)"  class="btn btn-light-primary font-weight-bold mr-2 otherStyle" (click)="action(element,column,indexRow, $event)">edit</button>
+                         <button href="#"  class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle" (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
                   </ng-template>
 
                   <ng-template #numberTemplate let-currentValue="value">
-                    <div class="justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <p class="text-center cg">{{ currentValue }}
-                        <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
-                        class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
+                    <div class="justify-content-between px-3 text-truncate">
+                      <p class="text-right">{{ currentValue }}
+                        <button mat-raised-button 
+                        class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle"
                         (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                     </div>

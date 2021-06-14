@@ -28,7 +28,7 @@ export class LpEditorService {
   };
   private idProject = undefined;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
     return this.http
