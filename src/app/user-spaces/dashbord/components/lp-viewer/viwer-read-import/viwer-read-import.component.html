@@ -287,7 +287,6 @@
 
                   <ng-template #stringTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <!-- (currentValue | isURL) -->
                       <p
                         class="text-left text-truncate mat-body-p"
                         *ngIf="
@@ -296,11 +295,7 @@
                         "
                       >
                       {{currentValue}}
-                      <!-- -->
                       <button href="#"  *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
-
-                        <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
-                        (click)="action(element,column,indexRow, $event)">edit</button> -->
                       </p>
                       <ng-template #templeteURL>
                         <a
@@ -321,7 +316,8 @@
 
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <p class="text-right">{{ currentValue }}
+                      <p class="text-right">
+                        {{ currentValue }}
                         <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
                         (click)="action(element,column,indexRow, $event)">edit</button>
@@ -343,7 +339,6 @@
           </table>
         </div>
         <mat-paginator
-        *ngIf="dataViews.length != 0"
           appStylePaginator
           showFirstLastButtons
           [showTotalPages]="3"
