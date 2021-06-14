@@ -62,8 +62,6 @@ export class ViwerReadImportComponent
   private isFiltered = false;
   public formGroup = this.fb.group({});
 
-
-  public hoverIndex;
   public vueEdit: boolean = false;
   public nameCells;
   public lastValue;
@@ -381,18 +379,6 @@ export class ViwerReadImportComponent
       maxValue: maxValue,
       options: options
     });
-  }
-
-  combinate(i, otherValue) {
-    return i + otherValue;
-  }
-
-  enter(i, otherValue) {
-    this.hoverIndex = i + otherValue;
-  }
-
-  leave(i, otherValue) {
-    this.hoverIndex = null;
   }
   tooglevueEdit($event) {
     this.vueEdit = false;

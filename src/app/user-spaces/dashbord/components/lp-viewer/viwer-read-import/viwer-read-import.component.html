@@ -286,7 +286,7 @@
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
+                    <div class="row justify-content-between px-3 text-truncate">
                       <!-- (currentValue | isURL) -->
                       <p
                         class="text-left text-truncate mat-body-p"
@@ -297,7 +297,8 @@
                       >
                       {{currentValue}}
                       <!-- -->
-                      <button href="#"  *ngIf="hoverIndex == combinate(indexRow,column)"   class="btn btn-light-primary font-weight-bold mr-2 otherStyle"  (click)="action(element,column,indexRow, $event)">edit</button>
+                      <button href="#"  class="btn only-show-on-hover  btn-light-primary font-weight-bold mr-2 otherStyle "  (click)="action(element,column,indexRow, $event)" 
+                      >edit</button>
 
                         <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         (click)="action(element,column,indexRow, $event)">edit</button> -->
@@ -314,16 +315,16 @@
                           class="text-truncate"
                           >{{ currentValue }}</a
                         >
-                         <button href="#" *ngIf="hoverIndex == combinate(indexRow,column)"  class="btn btn-light-primary font-weight-bold mr-2 otherStyle" (click)="action(element,column,indexRow, $event)">edit</button>
+                         <button href="#"  class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle" (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
                   </ng-template>
 
                   <ng-template #numberTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
+                    <div class="row justify-content-between px-3 text-truncate">
                       <p class="text-right">{{ currentValue }}
-                        <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
-                        class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
+                        <button mat-raised-button 
+                        class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle"
                         (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                     </div>
