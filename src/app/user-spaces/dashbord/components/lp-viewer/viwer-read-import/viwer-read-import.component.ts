@@ -92,6 +92,8 @@ export class ViwerReadImportComponent
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
+      this.lpviLped.itemsObservables$.next(undefined);
+
       if (Object.keys(this.dataAfterUploaded).length === 5) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
@@ -130,7 +132,6 @@ export class ViwerReadImportComponent
       queries: {},
       queriesNumerisFilters: {},
     };
-    console.log('permLink=', this.lpviLped.permaLink);
   }
 
   ngAfterViewInit() {
@@ -185,7 +186,6 @@ export class ViwerReadImportComponent
     this.tabIndex = tabChangeEvent.index;
   }
 
-  // --------------------------------------------------------------------------- //
   sortData($e: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
@@ -193,33 +193,6 @@ export class ViwerReadImportComponent
       ? (this.icon = 'desc')
       : (this.icon = '');
     this.active = $e.active;
-  }
-
-  public textFacet(column: any) {
-    let distances = {};
-    this.dataViews.map((item: any) => {
-      distances[item[column]] = (distances[item[column]] || 0) + 1;
-    });
-
-    const value = Object.entries(distances).map((val: any) => {
-      return { ...val, include: false };
-    });
-
-    this.lpViewer.itemsObservables$.next({
-      type: 'facet',
-      isMinimize: false,
-      head: column,
-      content: value,
-    });
-    // }
-  }
-
-  public textFilter(column: any) {
-    this.lpViewer.itemsObservables$.next({
-      type: 'filter',
-      isMinimize: false,
-      head: column,
-    });
   }
 
   public isColumnDisplay(column: any): boolean {
@@ -275,55 +248,9 @@ export class ViwerReadImportComponent
       });
   }
 
-  private checkFilter(val: any[]): any[] {
-    if (this.filtersData !== undefined) {
-      const length1 = this.filtersData['facetQueries']?.length;
-      const length2 = this.filtersData['searchQueries']?.length;
-
-      const dataFilter = val.filter((x: any, i: number) => {
-        switch (true) {
-          case length1 > 0 && length2 > 0:
-            return (
-              this.filtersData['facetQueries'][i] &&
-              this.filtersData['searchQueries'][i]
-            );
-
-          case length1 === 0 && length2 > 0:
-            return this.filtersData['searchQueries'][i];
-
-          case length1 > 0 && length2 === 0:
-            return this.filtersData['facetQueries'][i];
-
-          case length1 === 0 && length2 === 0:
-            return true;
-        }
-      });
-      return dataFilter;
-    } else return val;
-  }
-
   public openButton() {
     console.log('open button');
   }
-
-  // public filterColumn(column: any) {
-  //   let distances = {},
-  //     isExist = false;
-  //   this.dataSource.data.map((item: any) => {
-  //     distances[item[column]] = (distances[item[column]] || 0) + 1;
-  //   });
-
-  //   let valu = Object.entries(distances).map((val: any) => {
-  //     return { ...val };
-  //   });
-
-  //   if (isExist === false) {
-  //     this.items.push({
-  //       head: column,
-  //       content: valu,
-  //     });
-  //   }
-  // }
 
   public searchFacet(column: any) {
     let distances = {},
@@ -435,8 +362,6 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
-    // console.log("Test 1 ", value)
-    // console.log("Test 2 ", this.objectOne)
     let numbercoll = '';
     if (value[2] === undefined) {
       this.domTab.style.fontWeight = 'initial';

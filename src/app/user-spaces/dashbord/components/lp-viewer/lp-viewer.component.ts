@@ -49,39 +49,9 @@ export class LpViewerComponent implements AfterViewInit {
     this.common.hideSpinner('table');
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
-    // if (this.idProject !== undefined) {
-    //   this.lpviewer.isLoading$.next(true);
-    //   this.lpviewer
-    //     .getSavedProjects(this.idProject)
-    //     .subscribe((res: Array<any>) => {
-    //       // console.log(res);
-    //       if (res !== undefined && res[0].length > 0 && res[1].length > 0) {
-    //         if (res[3].length > 0) {
-    //           this.filtersData = JSON.parse(res[3][0]['value']);
-    //         }
-    //         if (res[2].length > 0) {
-    //           this.inputFilters = JSON.parse(res[2][0]['value']);
-    //         }
-    //         this.stepper.steps.forEach((step, index) => {
-    //           if (index < 1) {
-    //             step.completed = true;
-    //             step.editable = true;
-    //           } else {
-    //             step.completed = false;
-    //             step.editable = true;
-    //           }
-    //         });
-
-    //         // this.lpviewer.isLoading$.next(false);
-    //         this.selectedStepperIndex = 1;
-    //         this.dataAfterUploaded = res;
-    //       } else this.router.navigateByUrl('user-space/lp-viewer');
-    //     });
-    // }
-
     if (this.idProject !== undefined) {
       this.lpVilpEdService.isLoading$.next(true);
       this.lpVilpEdService

@@ -143,7 +143,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
-        console.log('items=', this.items);
         this.savePermalink(); // SAVE PERMALINK
       }
     });
@@ -168,6 +167,10 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.numericQeury = [];
     // this.queries = _.mapValues(this.queries, () => '');
     Object.keys(this.queries).forEach((v) => (this.queries[v] = ''));
+    Object.keys(this.lpviLped.permaLink.queries).forEach(
+      (v) => (this.lpviLped.permaLink.queries[v] = '')
+    );
+
     this.queriesNumerisFilters = {};
     this.lpviLped.dataSources$.next(this.dataViews);
     this.dataSources = this.dataViews;
