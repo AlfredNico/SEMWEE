@@ -57,7 +57,6 @@ import { LpValidatorService } from '../../services/lp-validator.service';
                 hidden
               />
             </div>
-            <!-- (change)="onFileChange($event)" -->
 
             <div
               *ngIf="

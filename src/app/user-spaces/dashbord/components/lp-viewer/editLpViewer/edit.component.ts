@@ -11,22 +11,19 @@ export class EditComponent {
   @Input() nameCells: any;
   @Input() selected: string;
   @Input() vueedit: boolean;
+  @Input() tab_arraw: boolean[] = [];
   @Output() objectChange = new EventEmitter<any>();
   @Output() toggleChange = new EventEmitter<any[]>();
 
   valueObject: any;
-  // valueText: string;
+  arrow_left: any;
+  arrow_right: any;
 
-  constructor() {}
+  constructor() { }
 
-  // ngOnInit(): void {}
-  // ngAfterViewInit(): void {
-  //   console.log('Mea amor');
-  //   console.log(this.cardMain);
-  //   //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-  //   //Add 'implements AfterViewInit' to the class.
-  // }
   ngOnChanges() {
+    this.arrow_left = this.tab_arraw[0]
+    this.arrow_right = this.tab_arraw[1]
     if (this.nameCells != undefined) {
       const regex3 =
         /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
@@ -40,7 +37,6 @@ export class EditComponent {
           true
         ).format('DD/MM/YYYY');
 
-        // this.valueObject = this.eObject[1][this.nameCells];
       } else {
         this.valueObject = this.eObject[1][this.nameCells];
       }
@@ -137,9 +133,7 @@ export class EditComponent {
     }
   }
   sendObject() {
-    // this.vueedit = false;
     const tabvalue = [this.valueObject, this.selected];
-    //, this.vueedit, btncancel];
     this.objectChange.emit(tabvalue);
     this.toggleEdit();
   }

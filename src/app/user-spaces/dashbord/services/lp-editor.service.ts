@@ -18,9 +18,17 @@ export class LpEditorService {
   public currentSubject = this.subject.asObservable();
   isProjects = false;
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+  private queryParams = {
+    input: [],
+    search: [],
+    numeric: [],
+    items: [],
+    queries: {},
+    queriesNumerisFilters: {},
+  };
+  private idProject = undefined;
+
+  constructor(private http: HttpClient) { }
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
     return this.http
@@ -81,8 +89,6 @@ export class LpEditorService {
         })
       );
   }
-
-
 
   sendProjectNames(value: {
     idUser: any;

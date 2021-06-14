@@ -15,12 +15,12 @@ export class LpdLpdService {
   /* Emittter value dataSources after filter USER */
   public dataSources$ = new BehaviorSubject<any>(undefined);
 
+  // data: [],
   public permaLink = {
     input: [],
     numeric: [],
     search: [],
     items: [],
-    data: [],
     name: [],
     queries: {},
     queriesNumerisFilters: {}

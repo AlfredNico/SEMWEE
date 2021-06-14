@@ -10,44 +10,69 @@ import * as csv from 'csvtojson';
 @Component({
   selector: 'app-viwer-import',
   template: `
+    <div class="w-100 bg-white" style="padding: 4em 3em;">
     <div
-      [formGroup]="form"
-      class="p-5"
-      fxLayout="column"
-      fxLayoutAlign="space-around start"
+    [formGroup]="form"
+    class="p-5"
+    fxLayout="column"
+    fxLayoutAlign="space-around start"
+  >
+    <div
+        class="uploaded_file w-100"
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        appDragDropp
+        (fileDropped)="convertFile($event)"
     >
-      <div
+
+    <img
+        src="assets/images/cloud.png"
+        height="50"
+        width="50"
+        style="margin: 1em;"
+    />
+    <div for="file" class="py-2">
+        Locate one or more files on your computer to upload
+    </div>
+    
+    <div
         fxLayout="row"
         fxLayoutAlign="space-around center"
-        fxLayoutGap="20px"
-      >
-        <mat-label for="file" class="py-2">
-          Locate one or more files on your computer to upload:
-        </mat-label>
-        <button mat-raised-button (click)="fileInput.click()">
-          {{ file ? file.name : 'Select' }}
-        </button>
-        <input
-          hidden
-          type="file"
-          id="file"
-          name="file"
-          class="py-2"
-          formControlName="fileSource"
-          #fileInput
-          (change)="convertFile($event)"
-        />
-      </div>
-      <button
-        type="submit"
-        mat-raised-button
-        (click)="form.valid && onSubmit()"
-      >
-        Next
-        <mat-icon aria-label="close icon">double_arrow</mat-icon>
+        class="w-100"
+    >
+      <button mat-raised-button color="accent" (click)="fileInput.click()">
+        {{ file ? file.name : 'Select' }}
       </button>
+      <input
+        hidden
+        type="file"
+        id="file"
+        name="file"
+        class="py-2"
+        formControlName="fileSource"
+        #fileInput
+        (change)="convertFile($event)"
+      />
     </div>
+
+    </div>
+    
+  </div>
+</div>
   `,
+  styles: [
+    `
+      /* .img_uploaded {
+        position: absolute;
+      } */
+      .uploaded_file {
+        padding: 10px;
+        border: dashed 3px #40425d;
+        margin: 10px 0;
+        border-radius: 12px;
+        background: #ffffff;
+      }
+    `],
 })
 export class ViwerImportComponent implements OnInit {
   public form = new FormGroup({
@@ -55,6 +80,7 @@ export class ViwerImportComponent implements OnInit {
   });
 
   file: File | null | undefined;
+  fileDropped: any;
 
   @Output() dataImported = new EventEmitter<any>(null);
   private data: { header: string[]; content: any[]; name: any[] } = {
@@ -83,14 +109,12 @@ export class ViwerImportComponent implements OnInit {
   }
 
   convertFile(event: any) {
-    if ((event.target.files[0]['name'] as string).includes('.csv')) {
-      const file = event.target.files[0];
-      this.sizeFile = event.target.files[0].size;
-      this.file = event.target.files[0];
+    const file = event.target ? event.target.files[0] : event[0];
+    if ((file['name'] as string).includes('.csv')) {
+      this.sizeFile = file.size;
+      this.file = file;
 
-      console.log(event.target.files[0]);
-
-      this.ProjectName = event.target.files[0]['name'].replace('.csv', '');
+      this.ProjectName = file['name'].replace('.csv', '');
       this.readFileContent(file)
         .then((csvContent) => {
           const csv = [];
@@ -123,8 +147,8 @@ export class ViwerImportComponent implements OnInit {
           this.onSubmit();
         })
         .catch((error) => console.log(error));
-    } else {
-      this.nofits.warn('This is no csv file !');
+    // } else {
+    //   this.nofits.warn('This is no csv file !');
     }
   }
 

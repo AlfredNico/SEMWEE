@@ -60,6 +60,7 @@
           [idProject]='idProject'
           [dataViews]='dataViews'
           [dataSources]='dataSource.data'
+          [items]='items'
           ></app-facet-filter-target>
 
         </mat-tab>
@@ -159,7 +160,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
 
@@ -255,7 +256,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'>
+                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
                 <mat-menu #sousFilter="matMenu">
@@ -362,7 +363,7 @@
     <div *ngIf="vueEdit" class= "containerCustomized"  >
         <div class="sousdiv">
           <div class="testbutton" [style.top.px]="top" [style.left.px]="left">
-            <app-edit   [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
+            <app-edit [(tab_arraw)] = "tab_arraw"  [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>
           </div>
            </div>
     </div>

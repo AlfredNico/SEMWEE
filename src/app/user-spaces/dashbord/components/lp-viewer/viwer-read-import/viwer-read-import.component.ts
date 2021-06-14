@@ -39,6 +39,7 @@ export class ViwerReadImportComponent
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
+  public items = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
@@ -59,10 +60,9 @@ export class ViwerReadImportComponent
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
   private isFiltered = false;
-  // public formGroup = new FormGroup({});
   public formGroup = this.fb.group({});
 
-  public items: any[] = [];
+
   public hoverIndex;
   public vueEdit: boolean = false;
   public nameCells;
@@ -73,9 +73,11 @@ export class ViwerReadImportComponent
   public ActualyData: any = null;
   public indexRowdata = undefined;
   public idHeader = 0;
+  public tab_arraw: boolean[] = [];
+  public testConverter: boolean = true;
+  public CountCell = 0;
   top = 0;
   left = null;
-  right = null;
   public domTab: any;
 
   constructor(
@@ -93,6 +95,8 @@ export class ViwerReadImportComponent
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
 
+        this.items = this.lpviLped.permaLink.items;
+
         Object.values(this.lpviLped.permaLink).map(x => {
           if (Array.isArray(x) === true)
             if ((x as any[]).length != 0)
@@ -101,8 +105,9 @@ export class ViwerReadImportComponent
               this.isFiltered = true;
         });
 
+        // this.dataSource.data = this.lpviLped.permaLink['data'];
         if (this.isFiltered == true)
-          this.dataSource.data = this.lpviLped.permaLink['data'];
+          this.dataSource.data = this.dataFilters(this.dataViews)
         else this.dataSource.data = this.dataViews;
 
       } else if (Object.keys(this.dataAfterUploaded).length === 3) {
@@ -392,18 +397,33 @@ export class ViwerReadImportComponent
   tooglevueEdit($event) {
     this.vueEdit = false;
   }
-  action(value, namecells, index, $event) {
-    console.log($event)
-    this.domTab = $event.path[3];
-    // this.domTab.style.background = '#f3f2f2c7';
+
+  positionPopup($event) {
+    let i = 0;
+    while (true) {
+      if ($event.path[i].nodeName === "TD") {
+        this.domTab = $event.path[i]
+        break;
+      }
+      i++;
+    }
+    this.domTab.style.fontWeight = "bold";
     const totaleleft = 41 - $event.offsetX;
     const totaletop = (($event.clientY - 6) - ($event.offsetY + 2));
     this.top = totaletop;
     if (window.innerWidth > $event.clientX + 520) {
       this.left = $event.clientX + totaleleft + 33;
+      this.tab_arraw = [true, false]
     } else {
-      this.left = $event.clientX - 650;
+
+      const leftfixe = $event.clientX + totaleleft;
+      this.left = (leftfixe - 455) - this.domTab.offsetWidth;
+      this.tab_arraw = [false, true]
     }
+  }
+  action(value, namecells, index, $event) {
+    // console.log($event);
+    this.positionPopup($event);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     if (regex3.exec(value[namecells])) {
@@ -418,37 +438,40 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
-    // this.domTab.style.background = 'none';
+    // console.log("Test 1 ", value)
+    // console.log("Test 2 ", this.objectOne)
+    let numbercoll = '';
+    if (value[2] === undefined) {
+      this.domTab.style.fontWeight = "initial";
+      numbercoll = this.CountCell === 0 ? `Edit single cell on row ${this.objectOne[0] + 1},` : `Mass edit ${this.CountCell} cells in `;
+    }
     this.vueEdit = value[0];
-    console.log(this.idHeader);
-    if (value[1] === '') {
+    console.log("Id Header", this.idHeader);
+    if (value[1] === '' && this.testConverter) {
       console.log('envoye des donnée');
       this.indexRowdata = undefined;
-      const name_dinamic = `Edit single cell on row ${this.objectOne[0] + 1
-        }, column ${this.nameCells}`;
+
+      const name_dinamic = value[2] === undefined ?
+        `${numbercoll} column ${this.nameCells}` : value[2];
       const actualydata = this.ActualyData ? this.ActualyData['idName'] : -1;
+
       if (this.ActualyData) {
         this.listNameHistory.splice(
           this.listNameHistory.indexOf(this.ActualyData) + 1
         );
       }
-      this.lpViewer
-        .sendFiles(
-          {
-            namehistory: name_dinamic,
-            idProject: this.idProject,
-            fileData: this.dataSource.data,
-            idHeader: this.idHeader,
-          },
-          actualydata
-        )
-        .subscribe((res) => {
-          this.listNameHistory.push(res);
-        });
+      this.lpViewer.sendFiles({
+        namehistory: name_dinamic, idProject: this.idProject,
+        fileData: this.dataSource.data, idHeader: this.idHeader,
+      }, actualydata)
+        .subscribe((res) => { this.listNameHistory.push(res); });
       this.ActualyData = null;
     }
+    this.CountCell = 0;
+    this.testConverter = true;
   }
   ConcerterToString(newValue) {
+
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
 
@@ -467,6 +490,7 @@ export class ViwerReadImportComponent
             true
           ).format('DD/MM/YYYY');
         }
+        this.CountCell++;
       });
     } else {
       this.dataSource.data.forEach((item) => {
@@ -476,7 +500,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = newValue.toString();
-        } else {
+          this.CountCell++;
         }
       });
     }
@@ -485,6 +509,7 @@ export class ViwerReadImportComponent
     const parsed = parseInt(newValue);
     if (isNaN(parsed)) {
       alert('not a valid number');
+      this.testConverter = false
     } else {
       this.dataSource.data.forEach((item) => {
         if (
@@ -494,17 +519,15 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = parsed;
+          this.CountCell++;
         }
       });
     }
   }
   ConverterToDate(newValue) {
-    const reg =
-      /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
-    const reg1 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
-    const regex3 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    const reg = /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+    const reg1 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+    const regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     let string_date = newValue;
     const regex2 = new RegExp('[-\\/ ]');
 
@@ -518,6 +541,7 @@ export class ViwerReadImportComponent
             'YYYY-MM-DD',
             true
           ).format();
+          this.CountCell++;
         }
       });
       // .format('DD'/MM/YYYY);
@@ -530,6 +554,7 @@ export class ViwerReadImportComponent
             'DD-MM-YYYY',
             true
           ).format();
+          this.CountCell++;
         }
       });
     } else if (regex3.exec(string_date)) {
@@ -546,10 +571,12 @@ export class ViwerReadImportComponent
             'DD-MM-YYYY',
             true
           ).format();
+          this.CountCell++;
         }
       });
     } else {
-      alert('format date incorect');
+      alert('format date incorrect');
+      this.testConverter = false
     }
   }
   ConverterToBooleen(newValue) {
@@ -562,6 +589,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = false;
+          this.CountCell++;
         }
       });
     } else {
@@ -573,6 +601,7 @@ export class ViwerReadImportComponent
           item[this.nameCells] === this.lastValue
         ) {
           item[this.nameCells] = true;
+          this.CountCell++;
         }
       });
     }
@@ -601,7 +630,7 @@ export class ViwerReadImportComponent
     });
   }
   otherData(value) {
-    console.log(value);
+    // console.log(value);
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -616,17 +645,14 @@ export class ViwerReadImportComponent
     });
   }
   updateHeader(value) {
-    console.log('mea ', value);
     let updateHeader: any;
     let tabforUpdate: any[] = ['All'];
     this.nameHeader.forEach((el, index) => {
-      // console.log(typeof el['_elementRef'].nativeElement.innerText);
       tabforUpdate.push(el['_elementRef'].nativeElement.innerText);
       if (index === value - 1) {
         updateHeader = el['_elementRef'].nativeElement;
       }
     });
-    // console.log('tab For Update : ', updateHeader);
 
     this.dialog
       .open(UpdatesHeaderComponent, {
@@ -650,6 +676,7 @@ export class ViwerReadImportComponent
               );
             }
             this.idHeader = idHeader;
+            // Rename column RANK(2013) to RANK(2013)24
             const name_dinamic = `Edit header table on column ${value + 1}`;
             this.lpViewer
               .sendFiles(
@@ -669,5 +696,22 @@ export class ViwerReadImportComponent
         })
       )
       .subscribe();
+  }
+
+  private dataFilters(data: any[]) {
+    return data.filter((value, index) => this.checkFiltesData(index));
+  }
+
+  private checkFiltesData(index: number): boolean {
+    const q1 = this.chechQueryFilter(index, this.lpviLped.permaLink['numeric']);
+    const q2 = this.chechQueryFilter(index, this.lpviLped.permaLink['input']);
+    const q3 = this.chechQueryFilter(index, this.lpviLped.permaLink['search']);
+
+    return q1 && q2 && q3;
+  }
+
+  private chechQueryFilter(index: number, queries: boolean[]): boolean {
+    if (queries.length !== 0) return queries[index];
+    return true;
   }
 }
