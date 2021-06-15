@@ -1,6 +1,6 @@
 <main class="w-100 p-0" fxLayout="column">
-  <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="btn btn-primary ">
+    <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
+        <button class="btn btn-primary ">
       <span class="svg-icon svg-icon-md">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -13,7 +13,7 @@
       </span>
       Open
     </button>
-    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" aria-expanded="false" [matMenuTriggerFor]="importMenu">
+        <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" aria-expanded="false" [matMenuTriggerFor]="importMenu">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -30,72 +30,52 @@
         keyboard_arrow_down
       </mat-icon>
     </button>
-    <mat-menu #importMenu="matMenu">
-      <button mat-menu-item>
+        <mat-menu #importMenu="matMenu">
+            <button mat-menu-item>
         Table options
       </button>
-      <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
-      <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 1</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
-    <mat-menu #sousItem2="matMenu">
-      <button mat-menu-item>Sous item 1</button>
-      <button mat-menu-item>Soous item 2</button>
-    </mat-menu>
-    <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
-  </div>
-  <div class="row p-0">
-    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3; resize: both;
+            <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
+            <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 1</button>
+            <button mat-menu-item>Item 2</button>
+        </mat-menu>
+        <mat-menu #sousItem2="matMenu">
+            <button mat-menu-item>Sous item 1</button>
+            <button mat-menu-item>Soous item 2</button>
+        </mat-menu>
+        <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
+    </div>
+    <div class="row p-0">
+        <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3; resize: both;
     overflow: auto;">
-      <mat-tab-group
-        mat-align-tabs="start"
-        [color]="'#f0f1f6'"
-        [backgroundColor]="'#f0f1f6'"
-        class="mat-group scroll ps"
-        *ngIf="dataViews.length !== 0"
-        perfectScrollbar
-      >
-        <mat-tab label="Facet/Filter">
-          <app-facet-filter-target
-          [idProject]='idProject'
-          [items]='items'
-          [dataViews]='dataViews'
-          [dataSources]='dataSource.data'
-          ></app-facet-filter-target>
+            <mat-tab-group mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'" class="mat-group scroll ps" *ngIf="dataViews.length !== 0" perfectScrollbar>
+                <mat-tab label="Facet/Filter">
+                    <app-facet-filter-target [idProject]='idProject' [items]='items' [dataViews]='dataViews' [dataSources]='dataSource.data'></app-facet-filter-target>
 
-        </mat-tab>
-        <mat-tab label="Undo / Redo">
-          <!-- <h1>Mea</h1> -->
-            <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata" (callOtherData)="otherData($event)"
-            ></app-undo-redo>
-        </mat-tab>
-      </mat-tab-group>
-    </aside>
+                </mat-tab>
+                <mat-tab label="Undo / Redo">
+                    <!-- <h1>Mea</h1> -->
+                    <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata" (callOtherData)="otherData($event)"></app-undo-redo>
+                </mat-tab>
+            </mat-tab-group>
+        </aside>
 
-    <aside class="col p-0" fxFlex="75%">
-      <div class="p-0">
-        <div
-          class="w-100 scroll ps"
-          style="
+        <aside class="col p-0" fxFlex="75%">
+            <div class="p-0">
+                <div class="w-100 scroll ps" style="
             max-width: 100%;
             overflow: auto;
             max-height: calc(100vh - 300px);
-          " perfectScrollbar
-        >
-          <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="w-100 table-viewer">
-            <div
-              *ngFor="
+          " perfectScrollbar>
+                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="w-100 table-viewer">
+                        <div *ngFor="
                 let column of displayedColumns;
                 let index = index;
                 let last = last
-              "
-            >
-              <!-- all-start-flag Column -->
-              <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
-                <th mat-header-cell *matHeaderCellDef
-                [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }"
-                >
-                  <span fxLayout fxLayoutGap="15px" class="hover-span">
+              ">
+                            <!-- all-start-flag Column -->
+                            <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
+                                <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }">
+                                    <span fxLayout fxLayoutGap="15px" class="hover-span">
                     <mat-icon
                       style="color: #fff"
                       [inline]="true"
@@ -114,84 +94,70 @@
                       </div>
                     </div>
                   </span>
-                </th>
-                <mat-menu #tableOptionMenu="matMenu">
-                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                                </th>
+                                <mat-menu #tableOptionMenu="matMenu">
+                                    <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item (click)="inputFilter(column)">
+                                    <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item [matMenuTriggerFor]="editCells">
+                                    <mat-divider></mat-divider>
+                                    <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item>
+                                    <mat-divider></mat-divider>
+                                    <button mat-menu-item>
                     Update column
                   </button>
-                </mat-menu>
-                <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
-                  <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
-                  <button mat-menu-item>Timeline facet</button>
-                  <button mat-menu-item>Scatterplot facet</button>
-                  <mat-divider></mat-divider>
-                  <!-- Edit Cell -->
-                  <button mat-menu-item>Custum Numeric facet</button>
-                  <button mat-menu-item>Custumized facet</button>
-                </mat-menu>
-                <mat-menu #editCells="matMenu">
-                  <button mat-menu-item>Transform...</button>
-                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
+                                </mat-menu>
+                                <mat-menu #sousItem1="matMenu">
+                                    <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
+                                    <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
+                                    <button mat-menu-item>Timeline facet</button>
+                                    <button mat-menu-item>Scatterplot facet</button>
+                                    <mat-divider></mat-divider>
+                                    <!-- Edit Cell -->
+                                    <button mat-menu-item>Custum Numeric facet</button>
+                                    <button mat-menu-item>Custumized facet</button>
+                                </mat-menu>
+                                <mat-menu #editCells="matMenu">
+                                    <button mat-menu-item>Transform...</button>
+                                    <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
                     Common transforms
                   </button>
-                  <button mat-menu-item>Fill down</button>
-                  <button mat-menu-item>Blank down</button>
-                  <button mat-menu-item>Split mutli-valued cells...</button>
-                  <button mat-menu-item>Join multi-valued cells</button>
-                  <button mat-menu-item>Cluster and edit...</button>
-                  <button mat-menu-item>Replace</button>
-                </mat-menu>
-                <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
-                  </app-edit-cell>
-                </mat-menu>
+                                    <button mat-menu-item>Fill down</button>
+                                    <button mat-menu-item>Blank down</button>
+                                    <button mat-menu-item>Split mutli-valued cells...</button>
+                                    <button mat-menu-item>Join multi-valued cells</button>
+                                    <button mat-menu-item>Cluster and edit...</button>
+                                    <button mat-menu-item>Replace</button>
+                                </mat-menu>
+                                <mat-menu #commonTransforms="matMenu">
+                                    <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
+                                    </app-edit-cell>
+                                </mat-menu>
 
-                <td
-                  mat-cell
-                  *matCellDef="
+                                <td mat-cell *matCellDef="
                     let indexRow = index;
                     let even = even;
                     let odd = odd
-                  "
-                  [class.odd]="odd"
-                  [class.even]="even"
-                  #td
-                  class="th-content p-0"
-                >
-                  <div fxLayout="row" fxLayoutAlign="space-around center">
-                    <!-- <i class='rotateimg180 fas fa-flag fa-lg'></i> -->
-                    <i
-                      style="color: #959CBD"
-                      class="rotateimg180 far fa-flag fa-lg"
-                    ></i>
-                    <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
-                    <i style="color: #959CBD" class="far fa-star fa-lg"></i>
+                  " [class.odd]="odd" [class.even]="even" #td class="th-content p-0">
+                                    <div fxLayout="row" fxLayoutAlign="space-around center">
+                                        <!-- <i class='rotateimg180 fas fa-flag fa-lg'></i> -->
+                                        <i style="color: #959CBD" class="rotateimg180 far fa-flag fa-lg"></i>
+                                        <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
+                                        <i style="color: #959CBD" class="far fa-star fa-lg"></i>
 
-                    <p class="text-center font-size-h4 m-0">{{ indexRow+1 }}.</p>
-                  </div>
-                </td>
-              </ng-container>
+                                        <p class="text-center font-size-h4 m-0">{{ indexRow+1 }}.</p>
+                                    </div>
+                                </td>
+                            </ng-container>
 
-              <!-- others Column -->
-              <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
-                <th
-                  mat-header-cell
-                  *matHeaderCellDef
-                  [ngClass]="{ 'd-none': isColumnDisplay(column), 'active-column': active === column, 'active-none': icon === '' && active === column }"
-                >
-                  <span fxLayout fxLayoutGap="15px" class="hover-span">
+                            <!-- others Column -->
+                            <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
+                                <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'd-none': isColumnDisplay(column), 'active-column': active === column, 'active-none': icon === '' && active === column }">
+                                    <span fxLayout fxLayoutGap="15px" class="hover-span">
                     <mat-icon
                       style="color: #fff"
                       [inline]="true"
@@ -210,111 +176,91 @@
                       </div>
                     </div>
                   </span>
-                </th>
-                <mat-menu #tableOptionMenu="matMenu">
-                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                                </th>
+                                <mat-menu #tableOptionMenu="matMenu">
+                                    <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
-                  <button mat-menu-item [matMenuTriggerFor]="sousFilter">
+                                    <button mat-menu-item [matMenuTriggerFor]="sousFilter">
                     Filter
                   </button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item [matMenuTriggerFor]="editCells">
+                                    <mat-divider></mat-divider>
+                                    <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
-                  <button mat-menu-item (click)="updateHeader(index)">
+                                    <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                                    <button mat-menu-item (click)="updateHeader(index)">
                     Update column
                   </button>
-                </mat-menu>
-                <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
-                  <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
-                  <button mat-menu-item>Timeline facet</button>
-                  <button mat-menu-item>Scatterplot facet</button>
-                  <mat-divider></mat-divider>
-                  <!-- Edit Cell -->
-                  <button mat-menu-item>Custum Numeric facet</button>
-                  <button mat-menu-item>Custumized facet</button>
-                </mat-menu>
-                <mat-menu #editCells="matMenu">
-                  <button mat-menu-item>Transform...</button>
-                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
+                                </mat-menu>
+                                <mat-menu #sousItem1="matMenu">
+                                    <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
+                                    <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
+                                    <button mat-menu-item>Timeline facet</button>
+                                    <button mat-menu-item>Scatterplot facet</button>
+                                    <mat-divider></mat-divider>
+                                    <!-- Edit Cell -->
+                                    <button mat-menu-item>Custum Numeric facet</button>
+                                    <button mat-menu-item>Custumized facet</button>
+                                </mat-menu>
+                                <mat-menu #editCells="matMenu">
+                                    <button mat-menu-item>Transform...</button>
+                                    <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
                     Common transforms
                   </button>
-                  <button mat-menu-item>Fill down</button>
-                  <button mat-menu-item>Blank down</button>
-                  <button mat-menu-item>Split mutli-valued cells...</button>
-                  <button mat-menu-item>Join multi-valued cells</button>
-                  <button mat-menu-item>Cluster and edit...</button>
-                  <button mat-menu-item>Replace</button>
-                </mat-menu>
-                <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
-                  </app-edit-cell>
-                </mat-menu>
-                <mat-menu #sousFilter="matMenu">
-                  <button mat-menu-item (click)="inputFilter(column)">
+                                    <button mat-menu-item>Fill down</button>
+                                    <button mat-menu-item>Blank down</button>
+                                    <button mat-menu-item>Split mutli-valued cells...</button>
+                                    <button mat-menu-item>Join multi-valued cells</button>
+                                    <button mat-menu-item>Cluster and edit...</button>
+                                    <button mat-menu-item>Replace</button>
+                                </mat-menu>
+                                <mat-menu #commonTransforms="matMenu">
+                                    <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
+                                    </app-edit-cell>
+                                </mat-menu>
+                                <mat-menu #sousFilter="matMenu">
+                                    <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
-                  <button mat-menu-item (click)="dateFilter(column)">
+                                    <button mat-menu-item (click)="dateFilter(column)">
                     Date filter
                   </button>
-                </mat-menu>
-                <td
-                  mat-cell
-                  *matCellDef="
+                                </mat-menu>
+                                <td mat-cell *matCellDef="
                     let element;
                     let indexRow = index;
                     let even = even;
                     let odd = odd
-                  "
-                  [class.odd]="odd"
-                  [class.even]="even"
-                  [ngClass]="{ 'd-none': isColumnDisplay(column) }"
-                  #td
-                  class="th-content text-truncate"
-                  style="position: relative;"
-                >
-                  <ng-container
-                    *ngTemplateOutlet="
+                  " [class.odd]="odd" [class.even]="even" [ngClass]="{ 'd-none': isColumnDisplay(column) }" #td class="th-content text-truncate" style="position: relative;">
+                                    <ng-container *ngTemplateOutlet="
                       (element[column] | typeof) === 'string'
                         ? stringTemplate
                         : numberTemplate;
                       context: { value: element[column] }
-                    "
-                  >
-                  </ng-container>
+                    ">
+                                    </ng-container>
 
-                  <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
-                      <!-- (currentValue | isURL) -->
-                      <p
-                        class="text-left text-truncate mat-body-p"
-                        *ngIf="
+                                    <ng-template #stringTemplate let-currentValue="value">
+                                        <div class="row justify-content-between px-3 text-truncate">
+                                            <!-- (currentValue | isURL) -->
+                                            <p class="text-left text-truncate mat-body-p" *ngIf="
                           (currentValue | isURL) === false;
                           else templeteURL
-                        "
-                      >
-                      {{currentValue}}
-                      <!-- -->
-                      <button href="#"  class="btn only-show-on-hover  btn-light-primary font-weight-bold mr-2 otherStyle "  (click)="action(element,column,indexRow, $event)" 
-                      >edit</button>
+                        ">
+                                                {{currentValue}}
+                                                <!-- -->
+                                                <button href="#" class="btn only-show-on-hover  btn-light-primary font-weight-bold mr-2 otherStyle " (click)="action(element,column,indexRow, $event)">edit</button>
 
-                        <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
+                                                <!-- <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
                         (click)="action(element,column,indexRow, $event)">edit</button> -->
-                      </p>
-                      <ng-template #templeteURL>
-                        <a
-                          #templeteURL
-                          [href]="
+                                            </p>
+                                            <ng-template #templeteURL>
+                                                <a #templeteURL [href]="
                             senitizer.bypassSecurityTrustResourceUrl(
                               currentValue
                             )
-                          "
-                          target="_blank"
-                          class="text-truncate"
-                          >{{ currentValue }}</a
+                          " target="_blank" class="text-truncate">{{ currentValue }}</a
                         >
                          <button href="#"  class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle" (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
@@ -323,7 +269,7 @@
 
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="justify-content-between px-3 text-truncate">
-                      <p class="text-right">{{ currentValue }}
+                      <p class="cg">{{ currentValue }}
                         <button mat-raised-button 
                         class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle"
                         (click)="action(element,column,indexRow, $event)">edit</button>
