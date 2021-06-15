@@ -44,9 +44,15 @@
     </mat-menu>
     <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
-  <div class="row p-0">
-    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3; resize: both;
-    overflow: auto;">
+  <div class="row p-0" #container>
+    <aside class="p-0" [ngStyle]="{'width': ws + 'px'}" style="border-right: 4px solid #EBEDF3; resize: both;
+    overflow: auto;"
+    mwlResizable
+    [enableGhostResize]="true"
+    resizeCursorPrecision="10"
+    [resizeEdges]="{bottom: false, right: true, top: false, left: false}"
+    (resizeEnd)="onResizeEnd($event)"
+    >
       <mat-tab-group
         mat-align-tabs="start"
         [color]="'#f0f1f6'"
@@ -72,7 +78,7 @@
       </mat-tab-group>
     </aside>
 
-    <aside class="col p-0" fxFlex="75%">
+    <aside class="p-0" [ngStyle]="{'width':'calc(100% - ' + ws + 'px)'}">
       <div class="p-0">
         <div
           class="w-100 scroll ps"
@@ -323,7 +329,7 @@
 
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="justify-content-between px-3 text-truncate">
-                      <p class="text-right">{{ currentValue }}
+                      <p class="text-center cg">{{ currentValue }}
                         <button mat-raised-button 
                         class="btn only-show-on-hover btn-light-primary font-weight-bold mr-2 otherStyle"
                         (click)="action(element,column,indexRow, $event)">edit</button>

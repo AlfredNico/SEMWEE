@@ -26,6 +26,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -54,6 +55,7 @@ export class ViwerReadImportComponent
   } = undefined;
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
+  @ViewChild('container') container : ElementRef;
 
   public tabIndex = 0;
   public icon = '';
@@ -79,6 +81,7 @@ export class ViwerReadImportComponent
   top = 0;
   left = null;
   public domTab: any;
+  public ws: any;
 
   constructor(
     public dialog: MatDialog,
@@ -135,10 +138,23 @@ export class ViwerReadImportComponent
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      let containt = (this.container.nativeElement as HTMLElement).offsetWidth / 4;
+      this.ws = containt > 300 ? containt : 300;
+    }, 0);
 
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) this.dataSource.data = res;
     });
+  }
+
+  onResizeEnd(e: ResizeEvent) {
+    console.log('size', this.ws);
+    this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
+  }
+
+  addToSummary(content){
+    content.isSelected = true;
   }
 
   public openTablesOptionns() {
