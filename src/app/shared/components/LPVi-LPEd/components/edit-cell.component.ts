@@ -4,9 +4,15 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-edit-cell',
   template: `
-    <button mat-menu-item (click)="convertToTitlecase(column)">To TitleCase</button>
-    <button mat-menu-item (click)="convertToUppercase(column)">To Uppercase</button>
-    <button mat-menu-item (click)="convertToLowercase(column)">To Lowercase</button>
+    <button mat-menu-item (click)="convertToTitlecase(column)">
+      To TitleCase
+    </button>
+    <button mat-menu-item (click)="convertToUppercase(column)">
+      To Uppercase
+    </button>
+    <button mat-menu-item (click)="convertToLowercase(column)">
+      To Lowercase
+    </button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
     <button mat-menu-item (click)="convertToDate(column)">To Date</button>
@@ -16,76 +22,81 @@ import * as moment from 'moment';
     <button mat-menu-item (click)="convertToNull(column)">To Null</button>
     <button mat-menu-item (click)="convertToEmpty(column)">To Empty</button>
   `,
-  styles: []
+  styles: [],
 })
 export class EditCellComponent implements OnInit {
-
   @Input('dataSource') dataSource: any[] = [];
+  @Input('dataViews') dataViews: any[] = [];
   @Input('columnName') column: string = undefined;
   @Output() toggleChanges = new EventEmitter<any[]>();
   public numberCount: number = 0;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
-
+  ngOnInit(): void {}
 
   /* Convert To Title case */
   public convertToTitlecase(nameCell: string) {
-    this.dataSource.forEach(item => {
-      if (typeof (item[nameCell]) === 'string') {
+    this.dataSource.forEach((item) => {
+      if (typeof item[nameCell] === 'string') {
         item[nameCell] = this.toTitleCase(item[nameCell]);
         this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toTitlecase()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toTitlecase()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Uppercase */
   public convertToUppercase(nameCell: string) {
-    this.dataSource.forEach(item => {
-      if (typeof (item[nameCell]) === 'string') {
+    this.dataSource.forEach((item) => {
+      if (typeof item[nameCell] === 'string') {
         item[nameCell] = (item[nameCell] as string).toUpperCase();
         this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toUppercase()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toUppercase()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Lowercase */
   public convertToLowercase(nameCell: string) {
-    this.dataSource.forEach(item => {
-      if (typeof (item[nameCell]) === 'string') {
+    this.dataSource.forEach((item) => {
+      if (typeof item[nameCell] === 'string') {
         item[nameCell] = (item[nameCell] as string).toLowerCase();
         this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toLowercase()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toLowercase()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Number */
   public convertToNumber(nameCell: string) {
-    this.dataSource.forEach(item => {
+    this.dataSource.forEach((item) => {
       if (Number.isInteger(Number(item[nameCell]))) {
         item[nameCell] = Number(item[nameCell]);
         this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toNumber()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toNumber()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Date */
   public convertToDate(nameCell: string) {
-    const reg2 = /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
-    const reg1 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+    const reg2 =
+      /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+    const reg1 =
+      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
     const regex2 = new RegExp('[-\\/ ]');
 
     this.dataSource.forEach((item) => {
@@ -108,28 +119,31 @@ export class EditCellComponent implements OnInit {
         ).format();
         this.numberCount++;
       }
-    })
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toDate()`
+    });
+
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toDate()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Text */
   public convertToText(nameCell: string) {
-    this.dataSource.forEach(item => {
-      if (typeof (item[nameCell]) !== 'string') {
-        item[nameCell] = (item[nameCell]).toString();
-        this.numberCount++
+    this.dataSource.forEach((item) => {
+      if (typeof item[nameCell] !== 'string') {
+        item[nameCell] = item[nameCell].toString();
+        this.numberCount++;
       }
     });
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toText()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toText()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Boolean */
   public convertToBoolean(nameCell: string) {
-    this.dataSource.forEach(item => {
-      if (typeof (item[nameCell]) === 'string') {
+    this.dataSource.forEach((item) => {
+      if (typeof item[nameCell] === 'string') {
         if (item[nameCell].toLowerCase() === 'true') {
           item[nameCell] = true;
           this.numberCount++;
@@ -141,45 +155,47 @@ export class EditCellComponent implements OnInit {
     });
 
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toBoolean()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toBoolean()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Null */
   public convertToNull(nameCell: string) {
-    this.dataSource.forEach(item => {
+    this.dataSource.forEach((item) => {
       item[nameCell] = null;
       this.numberCount++;
     });
 
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toNull()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toNull()`;
     this.toggleEdit(names);
   }
 
   /* Convert To Empty */
   public convertToEmpty(nameCell: string) {
-    this.dataSource.forEach(item => {
-      item[nameCell] = "";
+    this.dataSource.forEach((item) => {
+      item[nameCell] = '';
       this.numberCount++;
     });
 
     this.dataSource = this.dataSource;
-    const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toEmpty()`
+    const names = `Update on ${this
+      .numberCount++} cells in column ${nameCell}: value.toEmpty()`;
     this.toggleEdit(names);
   }
 
   public toTitleCase(str) {
     return str.replace(
       /\w\S*/g,
-      (str: string) =>
-        str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
+      (str: string) => str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
     );
   }
 
   public toggleEdit(namesHistorique) {
     const tab = [false, '', namesHistorique];
     this.toggleChanges.emit(tab);
-    this.numberCount = 0
+    this.numberCount = 0;
   }
 }

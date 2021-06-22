@@ -81,7 +81,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             [item]="item"
             [dataViews]="dataViews"
             [dataSources]="dataSources"
-            (numericQueriesEmitter)="callAfterNumericFilter($event)"
+            (timeLineQueriesEmitter)="callAfterTimeLineEmitter($event)"
             (removeFromItem)="removeFromItemEmitter($event, 'timeLine')"
             (minimize)="minimizeEmitter($event)"
           ></app-time-line>
@@ -111,7 +111,10 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   private inputQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
   private numericQeury: boolean[] = [];
+  private timeLineQeury: boolean[] = [];
   private queriesNumerisFilters = {};
+  private queriesTimeLineFilters = {};
+
   // public items: any[] = [];
 
   /* INPUT */
@@ -248,14 +251,42 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.savePermalink(); // SAVE PERMALINK
   }
 
+  public callAfterTimeLineEmitter(event: any) {
+    if (event['end'] !== null && event['start'] !== null) {
+      console.log(event['end'], '//', event['start']);
+      let q = [],
+        ss = [];
+
+      this.dataSources = this.dataViews.filter((value, index) => {
+        const dt = new Date(value[`${event['head']}`]);
+        console.log('data=', dt.getDate());
+        // if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+        //   if (v < event['end'] && v > event['start']) q[index] = true;
+        //   else q[index] = false;
+        //   return (ss = q[index]);
+        // } else {
+        //   return Object.keys(this.queriesTimeLineFilters).every((x) => {
+        //     // const s = this.queriesTimeLineFilters[x];
+        //     // // !isNaN(Date.parse(v))
+        //     // if (v < event['end'] && v > event['start']) q[index] = true;
+        //     // else q[index] = false;
+        //     // if (x === event['head']) ss = q;
+        //     // return (ss = s[index] && q[index]);
+        //   });
+        // }
+      });
+
+      // this.queriesTimeLineFilters[`${event.head}`] = event.head;
+      this.lpviLped.dataSources$.next(this.dataSources);
+      this.savePermalink(); // SAVE PERMALINK
+    }
+  }
+
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
     const value = Object.values(event.query).toString();
     const keys = Object.keys(event.query).toString();
 
-    // if (event.index !== -1) this.items[event.index] = event.item;
-    // this.checkedInput[keys] = value;
-
-    this.queries[keys] = value;
+    this.queries[keys] = value; //save querie from input filter
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
   }

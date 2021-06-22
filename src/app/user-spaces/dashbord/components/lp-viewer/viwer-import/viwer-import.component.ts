@@ -81,9 +81,15 @@ export class ViwerImportComponent implements OnInit {
   fileDropped: any;
 
   @Output() dataImported = new EventEmitter<any>(null);
-  private data: { header: string[]; content: any[]; name: any[] } = {
+  private data: {
+    header: string[];
+    content: any[];
+    name: any[];
+    showData: any[];
+  } = {
     header: [],
     content: [],
+    showData: [],
     name: [],
   };
   @Input() user: User = undefined;
@@ -126,22 +132,28 @@ export class ViwerImportComponent implements OnInit {
           });
           this.parsedCsv = csv;
           this.parsedCsv.pop();
+          const showData = [];
 
           const header = this.parsedCsv.shift().toString().split(',');
-          const content = this.parsedCsv.map((value) =>
-            value.reduce((tdObj, td, index) => {
-              tdObj[header[index]] = td;
-              tdObj['start'] = false;
-              tdObj['flag'] = false;
-              return tdObj;
-            }, {})
-          );
+          // const content = this.parsedCsv.map((value, indexMap) => {
+          //   let object = value.reduce((tdObj, td, index) => {
+          //     tdObj[header[index]] = td;
+          //     tdObj['start'] = false;
+          //     tdObj['flag'] = false;
+
+          //     return tdObj;
+          //   }, {});
+
+          //   if (indexMap < 10) showData.push(object);
+          //   return object;
+          // });
 
           this.data.header = [...new Set([...header])].filter(
             (item) => item != undefined && item != ''
           );
           this.data.header.unshift('all');
-          this.data.content = content;
+          this.data.content = this.parsedCsv;
+          this.data.showData = showData;
           this.onSubmit();
         })
         .catch((error) => console.log(error));

@@ -73,12 +73,6 @@
     </aside>
 
     <aside class="col p-0" fxFlex="75%">
-      <!-- <div class="px-5" style="background: #EBEDF3; height: 50px">
-        <h2 class="m-auto font-weight-bold">matching rows</h2>
-        <h4 class="m-auto font-weight-normal">(1000 total)</h4>
-        <span fxFlex></span>
-        <h4 class="m-auto font-weight-normal">Extensions</h4>
-      </div> -->
       <div class="p-0">
         <div
           class="w-100 scroll ps"
@@ -96,7 +90,6 @@
                 let last = last
               "
             >
-              <!-- all-start-flag Column -->
               <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
                 <th mat-header-cell *matHeaderCellDef
                 [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }"
@@ -114,7 +107,6 @@
                     <div mat-sort-header>
                       All
                       <div class="pl-3 icon">
-                        <!-- <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i> -->
                         <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
                         <i *ngIf="icon === 'desc' && active === column" class="fa fa-arrow-down"></i>
                       </div>
@@ -143,7 +135,6 @@
                   <button mat-menu-item>Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
-                  <!-- Edit Cell -->
                   <button mat-menu-item>Custum Numeric facet</button>
                   <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
@@ -181,8 +172,8 @@
                     <i
                       style="color: #959CBD"
                       class="rotateimg180 far fa-flag fa-lg"
-                    ></i>
-                    <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
+                    ></i> -->
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
                     <i style="color: #959CBD" class="far fa-star fa-lg"></i>
 
                     <p class="text-center font-size-h4 m-0">{{ indexRow+1 }}.</p>
@@ -190,7 +181,6 @@
                 </td>
               </ng-container>
 
-              <!-- others Column -->
               <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
                 <th
                   mat-header-cell
@@ -210,7 +200,6 @@
                     <div #updateHeader mat-sort-header  id={{index}}>
                       {{ column | removeUnderscore | capitalizeFirstPipe }}
                       <div class="pl-3 icon">
-                        <!-- <i *ngIf="icon === '' && active === column" class="fas fa-sort"></i> -->
                         <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
                         <i *ngIf="icon === 'desc' && active === column" class="fa fa-arrow-down"></i>
                       </div>
@@ -236,10 +225,9 @@
                 <mat-menu #sousItem1="matMenu">
                   <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
                   <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
-                  <button mat-menu-item>Timeline facet</button>
+                  <button mat-menu-item (click)="timeLineFacter(column)">Timeline facet</button>
                   <button mat-menu-item>Scatterplot facet</button>
                   <mat-divider></mat-divider>
-                  <!-- Edit Cell -->
                   <button mat-menu-item>Custum Numeric facet</button>
                   <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
@@ -256,7 +244,7 @@
                   <button mat-menu-item>Replace</button>
                 </mat-menu>
                 <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell [dataSource]="dataSource.data" [columnName]='column' (toggleChanges)="toggleedit($event)">
+                  <app-edit-cell [dataSource]="dataSource.data" [dataViews]="dataViews" [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
 
@@ -338,18 +326,30 @@
             </tr>
           </table>
         </div>
-        <mat-paginator
+        <!-- <mat-paginator
           appStylePaginator
           showFirstLastButtons
           [showTotalPages]="3"
           [length]="dataSource.data.length"
           [pageSize]="10"
           [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-        ></mat-paginator>
+        ></mat-paginator> -->
+        <!-- [pageIndex]="pageIndex" -->
+        <mat-paginator #paginator
+          appStylePaginator
+          showFirstLastButtons
+          [showTotalPages]="3"
+          [length]="dataViews.length"
+          [pageSize]="10"
+          [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          (page)="getServerData($event)"
+            >
+        </mat-paginator>
       </div>
     </aside>
 
-    <div *ngIf="vueEdit" class= "containerCustomized"  >
+    <div *ngIf="vueEdit" class= "containerCustomized">
         <div class="sousdiv">
           <div class="testbutton" [style.top.px]="top" [style.left.px]="left">
             <app-edit [(tab_arraw)] = "tab_arraw"  [(vueedit)]="vueEdit" [(eObject)]="objectOne" [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)" (toggleChange)="toggleedit($event)"></app-edit>

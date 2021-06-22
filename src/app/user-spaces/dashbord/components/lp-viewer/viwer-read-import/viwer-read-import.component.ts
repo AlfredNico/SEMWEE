@@ -26,6 +26,8 @@ import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+import { newArray } from '@angular/compiler/src/util';
+import { Paginator } from '@app/user-spaces/dashbord/interfaces/paginator';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -41,8 +43,8 @@ export class ViwerReadImportComponent
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
-  // public items = [];
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  // // public items = [];
+  // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
@@ -53,6 +55,7 @@ export class ViwerReadImportComponent
     facetQueries: any;
     searchQueries: any;
   } = undefined;
+
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
 
@@ -61,6 +64,8 @@ export class ViwerReadImportComponent
   public active: any = '';
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
+  // public dataSource: any[] = [];
+  public paginator: Paginator;
   private isFiltered = false;
   public formGroup = this.fb.group({});
   public items: any[] = [];
@@ -81,6 +86,10 @@ export class ViwerReadImportComponent
   top = 0;
   left = null;
   public domTab: any;
+
+  length: number;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
 
   constructor(
     public dialog: MatDialog,
@@ -110,14 +119,27 @@ export class ViwerReadImportComponent
         if (this.isFiltered == true)
           this.dataSource.data = this.dataFilters(this.dataViews);
         else this.dataSource.data = this.dataViews;
-      } else if (Object.keys(this.dataAfterUploaded).length === 3) {
+      } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
         this.displayedColumns = this.dataAfterUploaded['header'];
-        this.dataSource.data = this.dataViews =
-          this.dataAfterUploaded['content'];
+        this.dataViews = this.dataAfterUploaded['content'];
         this.listNameHistory = this.dataAfterUploaded['name'];
+        this.dataSource.data = this.dataAfterUploaded['showData'];
+        console.log('ok=', this.dataAfterUploaded);
       }
+
+      // this.paginator = {
+      //   datasource: this.dataSource.data,
+      //   length: this.dataSource.data.length,
+      //   // pageEvent: this.getServerData(event),
+      //   pageIndex: 1,
+      //   pageSize: 10,
+      // };
     }
+  }
+
+  public getServerData(event: any): void {
+    console.log('event=', event);
   }
 
   ngOnInit(): void {}
@@ -135,8 +157,8 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.data.paginator = this.paginator;
+    // this.dataSource.data.sort = this.sort;
 
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) this.dataSource.data = res;
@@ -308,6 +330,27 @@ export class ViwerReadImportComponent
     });
   }
 
+  public timeLineFacter(column: any): void {
+    let minIdx = 0,
+      maxIdx = 0,
+      date = [];
+
+    this.dataViews.map((item, index) => {
+      if (!isNaN(Date.parse(item[column]))) {
+        date.push(item[column]);
+        if (item[column] > date[minIdx]) maxIdx = index;
+        if (item[column] < date[maxIdx]) minIdx = index;
+      }
+    });
+    this.lpviLped.itemsObservables$.next({
+      type: 'timeLine',
+      isMinimize: false,
+      head: column,
+      startDate: date[minIdx],
+      endDate: date[maxIdx],
+    });
+  }
+
   combinate(i, otherValue) {
     return i + otherValue;
   }
@@ -371,9 +414,7 @@ export class ViwerReadImportComponent
           : `Mass edit ${this.CountCell} cells in `;
     }
     this.vueEdit = value[0];
-    console.log('Id Header', this.idHeader);
     if (value[1] === '' && this.testConverter) {
-      console.log('envoye des donnée');
       this.indexRowdata = undefined;
 
       const name_dinamic =
@@ -405,6 +446,7 @@ export class ViwerReadImportComponent
     this.CountCell = 0;
     this.testConverter = true;
   }
+
   ConcerterToString(newValue) {
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
