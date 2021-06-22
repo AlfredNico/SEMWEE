@@ -172,7 +172,7 @@
                     <i
                       style="color: #959CBD"
                       class="rotateimg180 far fa-flag fa-lg"
-                    ></i> -->
+                    ></i>
                     <i class="fa fa-star fa-lg" aria-hidden="true"></i>
                     <i style="color: #959CBD" class="far fa-star fa-lg"></i>
 
@@ -263,17 +263,18 @@
                   class="th-content text-truncate"
                   style="position: relative;"
                 >
-                  <ng-container
+                {{ element[index] }}
+                  <!-- <ng-container
                     *ngTemplateOutlet="
-                      (element[column] | typeof) === 'string'
+                      (element[indexRow] | typeof) === 'string'
                         ? stringTemplate
                         : numberTemplate;
-                      context: { value: element[column] }
+                      context: { value: element[indexRow] }
                     "
                   >
-                  </ng-container>
+                  </ng-container> -->
 
-                  <ng-template #stringTemplate let-currentValue="value">
+                  <!-- <ng-template #stringTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate" (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
                       <p
                         class="text-left text-truncate mat-body-p"
@@ -311,7 +312,7 @@
                         (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                     </div>
-                  </ng-template>
+                  </ng-template>-->
                 </td>
               </ng-container>
             </div>
