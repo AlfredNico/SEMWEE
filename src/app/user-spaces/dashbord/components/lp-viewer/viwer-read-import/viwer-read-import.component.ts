@@ -125,7 +125,7 @@ export class ViwerReadImportComponent
         this.dataViews = this.dataAfterUploaded['content'];
         this.listNameHistory = this.dataAfterUploaded['name'];
         this.dataSource.data = this.dataAfterUploaded['showData'];
-        console.log('ok=', this.dataAfterUploaded);
+        // console.log('ok=', this.dataAfterUploaded);
       }
 
       // this.paginator = {

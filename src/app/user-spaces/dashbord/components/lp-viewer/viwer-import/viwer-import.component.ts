@@ -135,6 +135,9 @@ export class ViwerImportComponent implements OnInit {
           const showData = [];
 
           const header = this.parsedCsv.shift().toString().split(',');
+          for (let index = 0; index < 10; index++)
+            showData.push(this.parsedCsv[index]);
+
           // const content = this.parsedCsv.map((value, indexMap) => {
           //   let object = value.reduce((tdObj, td, index) => {
           //     tdObj[header[index]] = td;
@@ -152,7 +155,7 @@ export class ViwerImportComponent implements OnInit {
             (item) => item != undefined && item != ''
           );
           this.data.header.unshift('all');
-          this.data.content = this.parsedCsv;
+          this.data.content = this.parsedCsv.slice(0,250);
           this.data.showData = showData;
           this.onSubmit();
         })
