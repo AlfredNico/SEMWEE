@@ -394,6 +394,10 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   private inputFilterFonciont() {
     let qqq = '',
       i1 = 0;
+    // const dataFiltered = [];
+    // for (let index = 0; index < this.dataViews.length - 1; index++) {
+    //   const value = this.dataViews[index];
+    // }
 
     this.dataSources = this.dataViews.filter((value, index) => {
       if (Object.values(this.queries).every((x) => x === null || x === '')) {
