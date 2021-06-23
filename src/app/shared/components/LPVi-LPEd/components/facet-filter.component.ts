@@ -259,7 +259,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
       this.dataSources = this.dataViews.filter((value, index) => {
         const dt = new Date(value[`${event['head']}`]);
-        console.log('data=', dt.getDate());
         // if (Object.keys(this.queriesTimeLineFilters).length === 0) {
         //   if (v < event['end'] && v > event['start']) q[index] = true;
         //   else q[index] = false;
