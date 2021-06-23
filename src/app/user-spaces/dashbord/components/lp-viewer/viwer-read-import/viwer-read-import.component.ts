@@ -118,7 +118,7 @@ export class ViwerReadImportComponent
 
         if (this.isFiltered == true)
           this.dataSource.data = this.dataFilters(this.dataViews);
-        else this.dataSource.data = this.dataViews;
+        else this.dataSource.data = this.dataViews.slice(1, 10);
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
         this.displayedColumns = this.dataAfterUploaded['header'];
@@ -128,17 +128,22 @@ export class ViwerReadImportComponent
         // console.log('ok=', this.dataAfterUploaded);
       }
 
-      // this.paginator = {
-      //   datasource: this.dataSource.data,
-      //   length: this.dataSource.data.length,
-      //   // pageEvent: this.getServerData(event),
-      //   pageIndex: 1,
-      //   pageSize: 10,
-      // };
+      this.paginator = {
+        pageIndex: 1,
+        pageSize: 10,
+        previousPageIndex: 1,
+        length: this.dataViews.length,
+        pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
+        showTotalPages: 3
+      }
     }
   }
 
   public getServerData(event: any): void {
+    console.log('event=', event);
+  }
+
+  public nextPage(event: any){
     console.log('event=', event);
   }
 
@@ -163,6 +168,10 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) this.dataSource.data = res;
     });
+
+    // this.paginator.nextPage = () => {
+    //   console.log('OK');
+    // }
   }
 
   public openTablesOptionns() {

@@ -135,21 +135,19 @@ export class ViwerImportComponent implements OnInit {
           const showData = [];
 
           const header = this.parsedCsv.shift().toString().split(',');
-          for (let index = 0; index < 10; index++)
-            showData.push(this.parsedCsv[index]);
 
-          // const content = this.parsedCsv.map((value, indexMap) => {
-          //   let object = value.reduce((tdObj, td, index) => {
-          //     tdObj[header[index]] = td;
-          //     tdObj['start'] = false;
-          //     tdObj['flag'] = false;
+          const content = this.parsedCsv.map((value, indexMap) => {
+            let object = value.reduce((tdObj, td, index) => {
+              tdObj[header[index]] = td;
+              tdObj['start'] = false;
+              tdObj['flag'] = false;
 
-          //     return tdObj;
-          //   }, {});
+              return tdObj;
+            }, {});
 
-          //   if (indexMap < 10) showData.push(object);
-          //   return object;
-          // });
+            if (indexMap < 10) showData.push(object);
+            return object;
+          });
 
           this.data.header = [...new Set([...header])].filter(
             (item) => item != undefined && item != ''
