@@ -155,9 +155,9 @@ export class ViwerImportComponent implements OnInit {
             (item) => item != undefined && item != ''
           );
           this.data.header.unshift('all');
-          this.data.content = this.parsedCsv.slice(0,250);
-          this.data.showData = showData;
-          this.onSubmit();
+          this.onSubmit(this.parsedCsv);
+          this.data.content = this.parsedCsv;
+          this.data.showData =  this.parsedCsv.slice(0,10);
         })
         .catch((error) => console.log(error));
     } else this.nofits.warn('This is no csv file !');
@@ -172,7 +172,7 @@ export class ViwerImportComponent implements OnInit {
     });
   }
 
-  public onSubmit() {
+  public onSubmit(dataContent) {
     if (this.file) {
       const value = {
         idUser: this.user._id,
@@ -199,7 +199,8 @@ export class ViwerImportComponent implements OnInit {
               {
                 namehistory: 'Create project',
                 idProject: idProject['idProject'],
-                fileData: this.data.content,
+                fileData: dataContent,
+                // fileData: this.data.content,
                 idHeader: 0,
               },
               -1
