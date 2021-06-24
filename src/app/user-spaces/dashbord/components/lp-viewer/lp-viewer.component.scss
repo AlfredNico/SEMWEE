@@ -1,4 +1,20 @@
 :host ::ng-deep {
+  .ftp {
+    font-family: Poppins!important;
+  }
+
+  .fs-18 {
+    font-size: 18px;
+  }
+
+  .fw-500 {
+      font-weight: 500 !important;
+  }
+
+  .text-dark {
+    color: #181C32 !important;
+  }
+
   .mat-horizontal-stepper-header-container {
     display: none !important;
   }

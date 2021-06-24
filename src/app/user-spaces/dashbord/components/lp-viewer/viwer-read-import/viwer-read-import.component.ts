@@ -37,7 +37,8 @@ import { ResizeEvent } from 'angular-resizable-element';
   ],
 })
 export class ViwerReadImportComponent
-  implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource = new MatTableDataSource<any>([]);
@@ -55,7 +56,8 @@ export class ViwerReadImportComponent
   } = undefined;
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
-  @ViewChild('container') container : ElementRef;
+  @ViewChild('container') container: ElementRef;
+  @Input() isFavorate: boolean = false;
 
   public tabIndex = 0;
   public icon = '';
@@ -89,7 +91,7 @@ export class ViwerReadImportComponent
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
     private readonly lpviLped: LpdLpdService
-  ) { }
+  ) {}
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
@@ -121,7 +123,7 @@ export class ViwerReadImportComponent
     }
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.lpviLped.permaLink = {
@@ -139,7 +141,8 @@ export class ViwerReadImportComponent
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     setTimeout(() => {
-      let containt = (this.container.nativeElement as HTMLElement).offsetWidth / 4;
+      let containt =
+        (this.container.nativeElement as HTMLElement).offsetWidth / 4;
       this.ws = containt > 300 ? containt : 300;
     }, 0);
 
@@ -153,8 +156,8 @@ export class ViwerReadImportComponent
     this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
   }
 
-  addToSummary(content){
-    content.isSelected = true;
+  onFavorite() {
+    this.isFavorate = !this.isFavorate;
   }
 
   public openTablesOptionns() {
@@ -204,8 +207,8 @@ export class ViwerReadImportComponent
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
-        ? (this.icon = 'desc')
-        : (this.icon = '');
+      ? (this.icon = 'desc')
+      : (this.icon = '');
     this.active = $e.active;
   }
 
@@ -299,7 +302,7 @@ export class ViwerReadImportComponent
       type: 'datefilter',
       isMinimize: false,
       head: column,
-      value: ''
+      value: '',
     });
   }
 

@@ -29,15 +29,15 @@
                             </td>
                             <td>
                                 <div class="text-dark font-weight-bolder mb-1 font-size-lg ft-style">{{ project.nameProject }}</div>
-                                <span class="text-muted font-weight-bold d-block ft-os">Name Project</span>
+                                <span class="text-muted font-weight-bold d-block ftp">Name Project</span>
                             </td>
                             <td class="text-right pr-0">
                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg ft-style">{{ project.projectsize | formatFileSize:false }}</span>
-                                <span class="text-muted font-weight-bold ft-os">File Size</span>
+                                <span class="text-muted font-weight-bold ftp">File Size</span>
                             </td>
                             <td class="text-right">
                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg ft-style">{{ project?.updated_at | date: 'MMM d, y, h:mm a' }}</span>
-                                <span class="text-muted font-weight-bold ft-os">Last Update</span>
+                                <span class="text-muted font-weight-bold ftp">Last Update</span>
                             </td>
                             <td class="text-right">
                                 <div (click)="onDelete(project)" class="btn btn-light btn-hover-primary fx" [matTooltip]="'Delete project'">
@@ -52,7 +52,7 @@
                                         </svg>
                                         <!--end::Svg Icon-->
                                       </span>
-                                    <span class="text-del">Delete</span>
+                                    <span class="text-del ftp">Delete</span>
                                 </div>
                             </td>
                         <!-- </a> -->

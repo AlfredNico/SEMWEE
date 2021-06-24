@@ -1,6 +1,22 @@
 <main class="w-100 p-0" fxLayout="column">
-    <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-        <button class="btn btn-primary ">
+  <!-- <div fxLayout class="pt-0 py-3 px-0 justify-content-start" fxLayoutGap="5px">
+    <h3 class="card-title align-items-start" fxLayout="column">
+      <span class="fw-500 text-dark ftp fs-18"
+        >Projects Overview</span>
+      <span class="text-muted mt-0 fw-500 font-size-sm ftp fs-15"
+        >Projects</span
+      >
+    </h3>
+  </div> -->
+    <div fxLayout="row" class="pt-0 py-3 px-0" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+      <div>
+        <h3 class="card-title align-items-start ftp m-0" fxLayout="column" >
+          <span class="fw-500 text-dark ftp fs-18 pl-20px">DataTable View</span>
+          <span class="text-muted mt-0 pl-20px fw-500 ftp">{{ dataSource.data.length }} Matching Rows</span>
+        </h3>
+      </div>
+      <div>
+        <button class="btn btn-primary mr-3">
       <span class="svg-icon svg-icon-md">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -42,6 +58,7 @@
       <button mat-menu-item>Sous item 1</button>
       <button mat-menu-item>Soous item 2</button>
     </mat-menu>
+      </div>
     <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
   <div class="row p-0" #container>
@@ -166,8 +183,11 @@
                                     <div fxLayout="row" fxLayoutAlign="space-around center">
                                         <!-- <i class='rotateimg180 fas fa-flag fa-lg'></i> -->
                                         <i style="color: #959CBD" class="rotateimg180 far fa-flag fa-lg"></i>
-                                        <!-- <i class="fa fa-star fa-lg" aria-hidden="true"></i> -->
-                                        <i style="color: #959CBD" class="far fa-star fa-lg"></i>
+                                        <i style="color: #959CBD" class="far fa-star fa-lg" aria-hidden="true"></i>
+                                        <!-- <i style="color: #959CBD" class="fa" [class.fa-star]="isFavorate"
+                                        [class.fa-star-o]="!isFavorate"
+                                        (click)="onFavorite()"
+                                        ></i> -->
 
                                         <p class="text-center font-size-h4 m-0">{{ indexRow+1 }}.</p>
                                     </div>

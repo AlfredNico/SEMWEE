@@ -10,6 +10,10 @@ import * as csv from 'csvtojson';
 @Component({
   selector: 'app-viwer-import',
   template: `
+    <h3 class="card-title align-items-start" fxLayout="column">
+            <span class="fw-500 text-dark ftp fs-18 space"
+              >Import File</span>
+    </h3>
     <div class="w-100 bg-white" style="padding: 4em 3em;">
       <div
         [formGroup]="form"
@@ -68,6 +72,10 @@ import * as csv from 'csvtojson';
         margin: 10px 0;
         border-radius: 12px;
         background: #ffffff;
+      }
+      .space {
+        padding: 16px 0px 0px 40px;
+        margin: 0!important;
       }
     `,
   ],

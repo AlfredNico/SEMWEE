@@ -5,9 +5,9 @@
       <div class="col-md-9">
         <div class="card-header border-0">
           <h3 class="card-title align-items-start" fxLayout="column">
-            <span class="font-weight-bolder text-dark ft-os ft-size-18"
+            <span class="fw-500 text-dark ftp fs-18"
               >Projects Overview</span>
-            <span class="text-muted mt-0 font-weight-bold font-size-sm ft-os ft-size-15"
+            <span class="text-muted mt-0 fw-500 font-size-sm ftp fs-15"
               >{{ (allProjects$ | async)?.length }} Projects</span
             >
           </h3>
@@ -20,7 +20,7 @@
             [routerLink]="['/user-space/lp-viewer']"
             style="color: white !important"
             ><button mat-raised-button color="primary">
-              <span class="menu-text">Import</span>
+              <span class="menu-text ftp">Import</span>
             </button>
           </a>
         </div>
