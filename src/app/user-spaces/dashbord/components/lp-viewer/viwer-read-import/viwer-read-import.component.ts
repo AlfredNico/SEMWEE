@@ -26,8 +26,10 @@ import { Options } from '@angular-slider/ngx-slider';
 import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
-import { newArray } from '@angular/compiler/src/util';
-import { Paginator } from '@app/user-spaces/dashbord/interfaces/paginator';
+import {
+  PageEvent,
+  Paginator,
+} from '@app/user-spaces/dashbord/interfaces/paginator';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -91,6 +93,9 @@ export class ViwerReadImportComponent
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 25, 100];
 
+  // ------------------
+  pageEvent: PageEvent;
+
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder,
@@ -129,22 +134,57 @@ export class ViwerReadImportComponent
       }
 
       this.paginator = {
-        pageIndex: 1,
+        pageIndex: 0,
         pageSize: 10,
+        nextPage: 0,
         previousPageIndex: 1,
         length: this.dataViews.length,
         pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
-        showTotalPages: 3
-      }
+        showTotalPages: 3,
+      };
     }
   }
 
-  public getServerData(event: any): void {
-    console.log('event=', event);
+  public getServerData(event?: PageEvent): void {
+    // console.log('event=', event,'//', this.paginator);
+    if (event.pageIndex != this.paginator.pageIndex) {
+      if (event.pageIndex > this.paginator.pageIndex) {
+        // console.log(
+        //   '//',
+        //   event.pageSize * (event.pageIndex + 1) - event.pageSize,
+        //   '//',
+        //   event.pageIndex + 1
+        // );
+        this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+        const data = this.dataViews.slice(
+          this.paginator.nextPage,
+          event.pageSize * (event.pageIndex + 1)
+        );
+        this.dataSource.data = data;
+      } else if (event.pageIndex < this.paginator.pageIndex) {
+        this.paginator.nextPage = this.paginator.nextPage - event.pageSize;
+        const data = this.dataViews.slice(
+          this.paginator.nextPage,
+          event.pageSize * (event.pageIndex + 1)
+        );
+        this.dataSource.data = data;
+      } else if (event.pageSize > this.paginator.pageSize) {
+        console.log('ok', event.pageSize);
+      }
+      // else {
+
+      // }
+    }
+
+    this.paginator = {
+      ...this.paginator,
+      ...event,
+    };
   }
 
-  public nextPage(event: any){
-    console.log('event=', event);
+  onPaginateChange(event: any) {
+    console.log('event=', event, '//', this.paginator);
+    return event;
   }
 
   ngOnInit(): void {}
@@ -641,6 +681,10 @@ export class ViwerReadImportComponent
       this.idHeader = response[1]['idHeader'];
       this.dataSource.data = response[0].slice(0,10);
       this.dataViews= response[0];
+      this.paginator = {
+        ...this.paginator,
+        pageIndex: 0
+      };
       console.log('idHeader : ', this.idHeader);
       // console.log(this.dataSource.data)
       // console.log("-----------------------and----------------------")

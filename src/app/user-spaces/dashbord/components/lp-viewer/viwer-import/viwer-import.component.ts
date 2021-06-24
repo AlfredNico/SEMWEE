@@ -135,20 +135,23 @@ export class ViwerImportComponent implements OnInit {
 
           const header = this.parsedCsv.shift().toString().split(',');
 
-          const content = this.parsedCsv.map((value) => 
-           value.reduce((tdObj, td, index) => {
+          const content = this.parsedCsv.map((value, indexMap) =>
+            value.reduce((tdObj, td, index) => {
               tdObj[header[index]] = td;
               tdObj['start'] = false;
               tdObj['flag'] = false;
+              tdObj['index'] = indexMap + 1;
 
               return tdObj;
-            }, {}));
+            }, {})
+          );
+
           this.data.header = [...new Set([...header])].filter(
             (item) => item != undefined && item != ''
           );
           this.data.header.unshift('all');
           this.data.content = content;
-          this.data.showData = content.slice(0,10);
+          this.data.showData = content.slice(0, 10);
           this.onSubmit();
         })
         .catch((error) => console.log(error));
@@ -192,6 +195,12 @@ export class ViwerImportComponent implements OnInit {
               0
             )
             .subscribe();
+
+          this.dataImported.emit({
+            idProject: idProject['idProject'],
+            data: this.data,
+            idHeader: 0,
+          });
         }
           this.dataImported.emit({
             idProject: idProject['idProject'],
