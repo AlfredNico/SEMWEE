@@ -148,6 +148,7 @@
 
                 <td mat-cell *matCellDef="
                     let indexRow = index;
+                    let element;
                     let even = even;
                     let odd = odd
                   " [class.odd]="odd" [class.even]="even" #td class="th-content p-0">
@@ -157,7 +158,7 @@
                     <i class="fa fa-star fa-lg" aria-hidden="true"></i>
                     <i style="color: #959CBD" class="far fa-star fa-lg"></i>
 
-                    <p class="text-center font-size-h4 m-0">{{ indexRow+1 }}.</p>
+                    <p class="text-center font-size-h4 m-0">{{ element['index'] }}.</p>
                   </div>
                 </td>
               </ng-container>
@@ -297,12 +298,12 @@
           [pageSize]="10"
           [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
         ></mat-paginator> -->
-        <!-- [pageIndex]="pageIndex" (page)="getServerData($event)" -->
+        <!-- [pageIndex]="pageIndex" (page)="getServerData($event)" (page)='getServerData($event)' -->
         <mat-paginator #paginator appStylePaginator showFirstLastButtons [showTotalPages]="3"
         [length]="dataViews.length"
         [pageSize]="10"
         [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-          (page)='getServerData($event)'>
+           (selectChange)="onPaginateChange($event)" (page)="getServerData($event)">
         </mat-paginator>
       </div>
     </aside>

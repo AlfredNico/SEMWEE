@@ -140,6 +140,7 @@ export class ViwerImportComponent implements OnInit {
               tdObj[header[index]] = td;
               tdObj['start'] = false;
               tdObj['flag'] = false;
+              tdObj['index'] = indexMap + 1;
 
               return tdObj;
             }, {})
@@ -183,11 +184,6 @@ export class ViwerImportComponent implements OnInit {
               idProject: idProject['idProject'],
             },
           ];
-          this.dataImported.emit({
-            idProject: idProject['idProject'],
-            data: this.data,
-            idHeader: 0,
-          });
           this.lpViewerService
             .sendFiles(
               {
@@ -199,6 +195,12 @@ export class ViwerImportComponent implements OnInit {
               -1
             )
             .subscribe();
+
+          this.dataImported.emit({
+            idProject: idProject['idProject'],
+            data: this.data,
+            idHeader: 0,
+          });
         }
       });
     }
