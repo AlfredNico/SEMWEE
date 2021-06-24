@@ -62,7 +62,9 @@ export class EditComponent {
     this.toggleEdit();
   }
   ConverterToNumber() {
-    const parsed = parseInt(this.valueObject);
+    const replace = typeof (this.valueObject) === "string" ? this.valueObject.replace(',', '.') : this.valueObject;
+    const parsed = parseFloat(replace);
+    // const parsed = parseInt(this.valueObject);
     if (isNaN(parsed)) {
       alert('not a valid number');
     } else {

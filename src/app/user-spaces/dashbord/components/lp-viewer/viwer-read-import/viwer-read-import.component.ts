@@ -193,7 +193,14 @@ export class ViwerReadImportComponent
     // this.dataSource.data.sort = this.sort;
 
     this.lpviLped.dataSources$.subscribe((res) => {
-      if (res) this.dataSource.data = res;
+      if (res) {
+        this.dataSource.data =res [0].slice(0,this.paginator.pageSize);
+        this.paginator = {
+          ...this.paginator,
+          pageIndex: 0,
+          nextPage:0
+        };
+      }
     });
 
     // this.paginator.nextPage = () => {
@@ -293,7 +300,7 @@ export class ViwerReadImportComponent
         if (res) {
           header_now = res[0]['nameUpdate'].split(',');
           const tabnewObject = [];
-          this.dataSource.data.forEach((valueObject) => {
+          this.dataViews.forEach((valueObject) => {
             const object = {};
             header_now.forEach((key) => {
               object[key] = valueObject[key];
@@ -425,7 +432,7 @@ export class ViwerReadImportComponent
     }
   }
   action(value, namecells, index, $event) {
-    // console.log($event);
+
     this.positionPopup($event);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
@@ -441,6 +448,7 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
+  
     let numbercoll = '';
     if (value[2] === undefined) {
       this.domTab.style.fontWeight = 'initial';
@@ -457,25 +465,31 @@ export class ViwerReadImportComponent
         value[2] === undefined
           ? `${numbercoll} column ${this.nameCells}`
           : value[2];
-      const actualydata = this.ActualyData ? this.ActualyData['idName'] : -1;
-
+      let actualydata;
+    
       if (this.ActualyData) {
         this.listNameHistory.splice(
           this.listNameHistory.indexOf(this.ActualyData) + 1
         );
+        actualydata = this.ActualyData.idName + 1;
+        
+      }else{
+        actualydata = this.listNameHistory.length;
       }
+
       this.lpViewer
         .sendFiles(
           {
             namehistory: name_dinamic,
             idProject: this.idProject,
-            fileData: this.dataSource.data,
+            fileData: this.dataViews,
             idHeader: this.idHeader,
           },
           actualydata
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
+          console.log(res)
         });
       this.ActualyData = null;
     }
@@ -483,7 +497,7 @@ export class ViwerReadImportComponent
     this.testConverter = true;
   }
 
-  ConcerterToString(newValue) {
+  ConverterToString(newValue) {
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
 
@@ -491,7 +505,7 @@ export class ViwerReadImportComponent
       const regex2 = new RegExp('[-\\/ ]');
       const tab = newValue.split(regex2);
       const tab1 = tab[2].toString().split('T');
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (
           regex3.exec(item[this.nameCells]) &&
           item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
@@ -505,7 +519,7 @@ export class ViwerReadImportComponent
         this.CountCell++;
       });
     } else {
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (
           item[this.nameCells] === this.lastValue.toString() ||
           parseInt(item[this.nameCells]) === parseInt(this.lastValue) ||
@@ -518,12 +532,14 @@ export class ViwerReadImportComponent
     }
   }
   ConverterToNumber(newValue) {
-    const parsed = parseInt(newValue);
+    // const parsed = parseInt(newValue);
+    const replace = typeof (newValue) === "string" ? newValue.replace(',', '.') : newValue;
+    const parsed = parseFloat(replace);
     if (isNaN(parsed)) {
       alert('not a valid number');
       this.testConverter = false;
     } else {
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (
           item[this.nameCells] === this.lastValue.toString() ||
           (parseInt(item[this.nameCells]) &&
@@ -549,7 +565,7 @@ export class ViwerReadImportComponent
     // .format('YYYY/MM/DD');
     if (reg1.exec(string_date)) {
       const tab = string_date.split(regex2);
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (item[this.nameCells] === this.lastValue.toString()) {
           item[this.nameCells] = moment(
             `${tab[0]}-${tab[1]}-${tab[2]}`,
@@ -562,7 +578,7 @@ export class ViwerReadImportComponent
       // .format('DD'/MM/YYYY);
     } else if (reg.exec(string_date)) {
       const tab = string_date.split(regex2);
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (item[this.nameCells] === this.lastValue.toString()) {
           item[this.nameCells] = moment(
             `${tab[0]}-${tab[1]}-${tab[2]}`,
@@ -576,7 +592,7 @@ export class ViwerReadImportComponent
       // console.log("C'est un objet");
       const tab = string_date.split(regex2);
       const tab1 = tab[2].toString().split('T');
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (
           regex3.exec(item[this.nameCells]) &&
           item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
@@ -596,7 +612,7 @@ export class ViwerReadImportComponent
   }
   ConverterToBooleen(newValue) {
     if (newValue != 'true' || !newValue) {
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (
           item[this.nameCells] === this.lastValue.toString() ||
           (parseInt(item[this.nameCells]) &&
@@ -608,7 +624,7 @@ export class ViwerReadImportComponent
         }
       });
     } else {
-      this.dataSource.data.forEach((item) => {
+      this.dataViews.forEach((item) => {
         if (
           item[this.nameCells] === this.lastValue.toString() ||
           (parseInt(item[this.nameCells]) &&
@@ -624,7 +640,7 @@ export class ViwerReadImportComponent
 
   oneObjectfunc(updateObject) {
     if (updateObject[1] === 'string') {
-      this.ConcerterToString(updateObject[0]);
+      this.ConverterToString(updateObject[0]);
     } else if (updateObject[1] === 'number') {
       this.ConverterToNumber(updateObject[0]);
     } else if (updateObject[1] === 'boolean') {
@@ -644,19 +660,25 @@ export class ViwerReadImportComponent
       }
     });
   }
-  otherData(value) {
+  getAllDataByListName(value) {
     // console.log(value);
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
+      // console.log(response);
+      
       const header = JSON.parse(
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
       // console.log(header);
       this.updateDisplaycolumn(header);
-      this.idHeader = response[0]['idHeader'];
-      this.dataSource.data = JSON.parse(response[0]['datahistory']);
+      this.idHeader = response[1]['idHeader'];
+      this.lpviLped.dataSources$.next(response);
+      this.dataViews= response[0];
       console.log('idHeader : ', this.idHeader);
+      // console.log(this.dataSource.data)
+      // console.log("-----------------------and----------------------")
+      // console.log(this.dataViews)
     });
   }
   updateHeader(value) {

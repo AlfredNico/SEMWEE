@@ -192,7 +192,7 @@ export class ViwerImportComponent implements OnInit {
                 fileData: this.data.content,
                 idHeader: 0,
               },
-              -1
+              0
             )
             .subscribe();
 
@@ -202,6 +202,12 @@ export class ViwerImportComponent implements OnInit {
             idHeader: 0,
           });
         }
+          this.dataImported.emit({
+            idProject: idProject['idProject'],
+            data: this.data,
+            idHeader: 0,
+          });
+          
       });
     }
   }

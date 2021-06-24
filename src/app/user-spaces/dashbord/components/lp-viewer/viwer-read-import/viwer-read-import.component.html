@@ -66,7 +66,7 @@
         <mat-tab label="Undo / Redo">
           <!-- <h1>Mea</h1> -->
           <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata"
-            (callOtherData)="otherData($event)"></app-undo-redo>
+            (callOtherData)="getAllDataByListName($event)"></app-undo-redo>
         </mat-tab>
       </mat-tab-group>
     </aside>
