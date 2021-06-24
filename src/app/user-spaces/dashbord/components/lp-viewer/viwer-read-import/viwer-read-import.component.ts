@@ -194,6 +194,7 @@ export class ViwerReadImportComponent
 
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) {
+        // this.dataSource.data = res
         this.dataSource.data =res [0].slice(0,this.paginator.pageSize);
         this.paginator = {
           ...this.paginator,
@@ -665,20 +666,17 @@ export class ViwerReadImportComponent
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
-      // console.log(response);
       
       const header = JSON.parse(
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
-      // console.log(header);
+   
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      this.lpviLped.dataSources$.next(response);
       this.dataViews= response[0];
+      this.dataSource.data = this.dataViews.slice(0,10)
+      console.log(this.dataViews.slice(0,10))
       console.log('idHeader : ', this.idHeader);
-      // console.log(this.dataSource.data)
-      // console.log("-----------------------and----------------------")
-      // console.log(this.dataViews)
     });
   }
   updateHeader(value) {
