@@ -248,8 +248,8 @@
                           else templeteURL
                         ">
                         {{currentValue}}
-                        <button href="#" *ngIf="hoverIndex == combinate(indexRow,column)"
-                          class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
+                        <button
+                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                       <ng-template #templeteURL>
@@ -258,8 +258,8 @@
                               currentValue
                             )
                           " target="_blank" class="text-truncate">{{ currentValue }}</a>
-                        <button href="#" *ngIf="hoverIndex == combinate(indexRow,column)"
-                          class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
+                        <button
+                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
