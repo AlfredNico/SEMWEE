@@ -148,26 +148,13 @@ export class ViwerReadImportComponent
   public getServerData(event?: PageEvent): void {
     // console.log('event=', event,'//', this.paginator);
     if (event.pageIndex != this.paginator.pageIndex) {
+      const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
+      const lenghtPage = event.pageSize * (event.pageIndex + 1);
+      this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
       if (event.pageIndex > this.paginator.pageIndex) {
-        // console.log(
-        //   '//',
-        //   event.pageSize * (event.pageIndex + 1) - event.pageSize,
-        //   '//',
-        //   event.pageIndex + 1
-        // );
-        this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
-        const data = this.dataViews.slice(
-          this.paginator.nextPage,
-          event.pageSize * (event.pageIndex + 1)
-        );
-        this.dataSource.data = data;
+        this.dataSource.data = this.dataViews.slice(page, lenghtPage);
       } else if (event.pageIndex < this.paginator.pageIndex) {
-        this.paginator.nextPage = this.paginator.nextPage - event.pageSize;
-        const data = this.dataViews.slice(
-          this.paginator.nextPage,
-          event.pageSize * (event.pageIndex + 1)
-        );
-        this.dataSource.data = data;
+        this.dataSource.data = this.dataViews.slice(page, lenghtPage);
       } else if (event.pageSize > this.paginator.pageSize) {
         console.log('ok', event.pageSize);
       }
@@ -206,7 +193,14 @@ export class ViwerReadImportComponent
     // this.dataSource.data.sort = this.sort;
 
     this.lpviLped.dataSources$.subscribe((res) => {
-      if (res) this.dataSource.data = res;
+      if (res) {
+        this.dataSource.data =res [0].slice(0,this.paginator.pageSize);
+        this.paginator = {
+          ...this.paginator,
+          pageIndex: 0,
+          nextPage:0
+        };
+      }
     });
 
     // this.paginator.nextPage = () => {
@@ -679,12 +673,8 @@ export class ViwerReadImportComponent
       // console.log(header);
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      this.dataSource.data = response[0].slice(0,10);
+      this.lpviLped.dataSources$.next(response);
       this.dataViews= response[0];
-      this.paginator = {
-        ...this.paginator,
-        pageIndex: 0
-      };
       console.log('idHeader : ', this.idHeader);
       // console.log(this.dataSource.data)
       // console.log("-----------------------and----------------------")
