@@ -146,7 +146,7 @@ export class ViwerReadImportComponent
   }
 
   public getServerData(event?: PageEvent): void {
-    // console.log('event=', event,'//', this.paginator);
+    console.log('event=', event,'//', this.paginator);
     if (event.pageIndex != this.paginator.pageIndex) {
       const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
       const lenghtPage = event.pageSize * (event.pageIndex + 1);
@@ -195,7 +195,8 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) {
         // this.dataSource.data = res
-        this.dataSource.data =res [0].slice(0,this.paginator.pageSize);
+        // console.log(res)
+        this.dataSource.data =res.slice(0,10);
         this.paginator = {
           ...this.paginator,
           pageIndex: 0,
@@ -662,7 +663,7 @@ export class ViwerReadImportComponent
     });
   }
   getAllDataByListName(value) {
-    // console.log(value);
+    
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -674,8 +675,9 @@ export class ViwerReadImportComponent
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
       this.dataViews= response[0];
-      this.dataSource.data = this.dataViews.slice(0,10)
-      console.log(this.dataViews.slice(0,10))
+      let min = (this.paginator.pageIndex) * this.paginator.pageSize;
+      let max =  (this.paginator.pageIndex+1) *this.paginator.pageSize;
+      this.dataSource.data = this.dataViews.slice(min,max);
       console.log('idHeader : ', this.idHeader);
     });
   }
