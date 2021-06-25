@@ -122,8 +122,8 @@ export class ViwerReadImportComponent
         });
 
         if (this.isFiltered == true)
-          this.dataSource.data = this.dataFilters(this.dataViews).slice(0, 10);
-        else this.dataSource.data = this.dataViews.slice(0, 10);
+          this.dataSource.data = this.dataFilters(this.dataViews)?.slice(0, 10);
+        else this.dataSource.data = this.dataViews?.slice(0, 10);
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
         this.displayedColumns = this.dataAfterUploaded['header'];
@@ -155,12 +155,12 @@ export class ViwerReadImportComponent
         this.dataSource.data = this.dataViews.slice(page, lenghtPage);
       } else if (event.pageIndex < this.paginator.pageIndex) {
         this.dataSource.data = this.dataViews.slice(page, lenghtPage);
-      } else if (event.pageSize > this.paginator.pageSize) {
-        console.log('ok', event.pageSize);
       }
-      // else {
-
-      // }
+    } else if (event.pageSize != this.paginator.pageSize) {
+      const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
+      const lenghtPage = event.pageSize * (event.pageIndex + 1);
+      this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+      this.dataSource.data = this.dataViews.slice(page, lenghtPage);
     }
 
     this.paginator = {
@@ -195,7 +195,7 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) {
         // this.dataSource.data = res
-        this.dataSource.data = res[0].slice(0, 10);
+        this.dataSource.data = res.slice(0, 10);
         this.paginator = {
           ...this.paginator,
           pageIndex: 0,
