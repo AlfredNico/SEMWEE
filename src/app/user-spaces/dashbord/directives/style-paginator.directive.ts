@@ -6,9 +6,11 @@ import {
   Self,
   ViewContainerRef,
   Input,
+  AfterViewInit,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatButton } from '@angular/material/button';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 interface PageObject {
   length: number;
@@ -31,6 +33,7 @@ export class StylePaginatorDirective {
     pageSize: 0,
     previousPageIndex: 0,
   };
+  private _isFetchData = false;
 
   @Input()
   get showTotalPages(): number {
@@ -58,7 +61,8 @@ export class StylePaginatorDirective {
   constructor(
     @Host() @Self() @Optional() private readonly matPag: MatPaginator,
     private vr: ViewContainerRef,
-    private ren: Renderer2
+    private ren: Renderer2,
+    private readonly lpviLped: LpdLpdService
   ) {
     //to rerender buttons on items per page change and first, last, next and prior buttons
     this.matPag.page.subscribe((e: PageObject) => {
@@ -73,6 +77,23 @@ export class StylePaginatorDirective {
       this._curPageObj = e;
 
       this.initPageRange();
+    });
+
+    this.lpviLped.dataSources$.subscribe((res) => {
+      if (res) {
+        this._curPageObj = {
+          length: 0,
+          pageIndex: 0,
+          pageSize: 0,
+          previousPageIndex: 0,
+        };
+        this._rangeStart = 0;
+        this._rangeEnd = 0;
+
+        this._isFetchData = true;
+        this.initPageRange();
+        //   this.createButton(0, 0);
+      }
     });
   }
 
@@ -89,40 +110,110 @@ export class StylePaginatorDirective {
     if (this._buttons.length > 0) {
       this._buttons.forEach((button) => {
         this.ren.removeChild(actionContainer, button);
+        // if (this._isFetchData) {
+        //   this.ren.removeAttribute(actionContainer, 'disabled');
+        //   // if (button.hasAttribute('disabled')) console.log('OKOK');
+        //   // return this._actionContainers[index].removeAttribute('disabled');
+        //   // this.ren.setStyle(actionContainer, 'background-color', 'red');
+        //   //Empty state array
+        // }
+        // this._isFetchData = false;
       });
-      //Empty state array
+
       this._buttons.length = 0;
     }
 
     //initialize next page and last page buttons
     if (this._buttons.length == 0) {
-      let nodeArray = this.vr.element.nativeElement.childNodes[0].childNodes[0]
-        .childNodes[2].childNodes;
+      // console.log('btn=', this._isFetchData);
+
+      let nodeArray =
+        this.vr.element.nativeElement.childNodes[0].childNodes[0].childNodes[2]
+          .childNodes;
       setTimeout(() => {
         for (let i = 0; i < nodeArray.length; i++) {
           if (nodeArray[i].nodeName === 'BUTTON') {
-            if (nodeArray[i].innerHTML.length > 100 && nodeArray[i].disabled) {
-              this.ren.setStyle(nodeArray[i], 'background-color', 'rgba(236, 241, 246, 1)');
-              // 'rgba(190, 130, 130, 1)'
-              this.ren.setStyle(nodeArray[i], 'color', 'rgba(181, 181, 195, 1)');
-              this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
-              this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
-              this.ren.setStyle(nodeArray[i], 'margin', '.5%');
-            } else if (nodeArray[i].innerHTML.length > 100 && !nodeArray[i].disabled) {
-              this.ren.setStyle(nodeArray[i], 'background-color', 'rgba(236, 241, 246, 1)');
-              this.ren.setStyle(nodeArray[i], 'color', 'rgba(181, 181, 195, 1)');
-              this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
-              this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
-              this.ren.setStyle(nodeArray[i], 'margin', '.5%');
-            } else if (nodeArray[i].disabled) {
-              this.ren.setStyle(nodeArray[i], 'background-color', 'rgba(54, 153, 255, 1)');
-              this.ren.setStyle(nodeArray[i], 'color', 'white');
-            } else if (!nodeArray[i].disabled) {
-              this.ren.setStyle(nodeArray[i], 'background-color', 'transparent');
-              this.ren.setStyle(nodeArray[i], 'color', 'rgba(138, 140, 159, 1)');
+            if (!this._isFetchData) {
+              if (
+                nodeArray[i].innerHTML.length > 100 &&
+                nodeArray[i].disabled
+              ) {
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'background-color',
+                  'rgba(236, 241, 246, 1)'
+                );
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'color',
+                  'rgba(181, 181, 195, 1)'
+                );
+                this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
+                this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
+                this.ren.setStyle(nodeArray[i], 'margin', '.5%');
+              } else if (
+                nodeArray[i].innerHTML.length > 100 &&
+                !nodeArray[i].disabled
+              ) {
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'background-color',
+                  'rgba(236, 241, 246, 1)'
+                );
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'color',
+                  'rgba(181, 181, 195, 1)'
+                );
+                this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
+                this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
+                this.ren.setStyle(nodeArray[i], 'margin', '.5%');
+              } else if (nodeArray[i].disabled) {
+                // } else if (this._isFetchData) {
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'background-color',
+                  'rgba(54, 153, 255, 1)'
+                );
+                this.ren.setStyle(nodeArray[i], 'color', 'white');
+              } else if (!nodeArray[i].disabled) {
+                // } else if (!this._isFetchData) {
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'background-color',
+                  'transparent'
+                );
+                this.ren.setStyle(
+                  nodeArray[i],
+                  'color',
+                  'rgba(138, 140, 159, 1)'
+                );
+              }
             }
+          } else if (this._isFetchData) {
+            console.log(nodeArray[i]);
+            // if (i == 0) {
+            //   this.ren.setStyle(
+            //     nodeArray[i],
+            //     'background-color',
+            //     'rgba(54, 153, 255, 1)'
+            //   );
+            //   this.ren.setStyle(nodeArray[i], 'color', 'white');
+            // } else {
+            //   this.ren.setStyle(
+            //     nodeArray[i],
+            //     'background-color',
+            //     'transparent'
+            //   );
+            //   this.ren.setStyle(
+            //     nodeArray[i],
+            //     'color',
+            //     'rgba(138, 140, 159, 1)'
+            //   );
+            // }
           }
         }
+        // this._isFetchData = false;
       });
     }
 
@@ -160,21 +251,21 @@ export class StylePaginatorDirective {
         this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
         break;
       // case this._pageGapTxt:
-        // let newIndex = this._curPageObj.pageIndex + this._showTotalPages;
+      // let newIndex = this._curPageObj.pageIndex + this._showTotalPages;
 
-        // if (newIndex >= this.numOfPages) newIndex = this.lastPageIndex;
+      // if (newIndex >= this.numOfPages) newIndex = this.lastPageIndex;
 
-        // if (pageIndex != this.lastPageIndex) {
-        //   this.ren.listen(linkBtn, 'click', () => {
-        //     console.log('working: ', pageIndex);
-        //     this.switchPage(newIndex);
-        //   });
-        // }
+      // if (pageIndex != this.lastPageIndex) {
+      //   this.ren.listen(linkBtn, 'click', () => {
+      //     console.log('working: ', pageIndex);
+      //     this.switchPage(newIndex);
+      //   });
+      // }
 
-        // if (pageIndex == this.lastPageIndex) {
-        //   this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
-        // }
-        // break;
+      // if (pageIndex == this.lastPageIndex) {
+      //   this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
+      // }
+      // break;
       default:
         this.ren.listen(linkBtn, 'click', () => {
           this.switchPage(i);

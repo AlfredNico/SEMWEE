@@ -122,7 +122,7 @@ export class ViwerReadImportComponent
         });
 
         if (this.isFiltered == true)
-          this.dataSource.data = this.dataFilters(this.dataViews);
+          this.dataSource.data = this.dataFilters(this.dataViews).slice(0, 10);
         else this.dataSource.data = this.dataViews.slice(0, 10);
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
@@ -194,11 +194,11 @@ export class ViwerReadImportComponent
 
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) {
-        this.dataSource.data =res [0].slice(0,this.paginator.pageSize);
+        this.dataSource.data = res.slice(0, 10);
         this.paginator = {
           ...this.paginator,
           pageIndex: 0,
-          nextPage:0
+          nextPage: 0,
         };
       }
     });
@@ -432,7 +432,6 @@ export class ViwerReadImportComponent
     }
   }
   action(value, namecells, index, $event) {
-
     this.positionPopup($event);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
@@ -448,7 +447,6 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
-  
     let numbercoll = '';
     if (value[2] === undefined) {
       this.domTab.style.fontWeight = 'initial';
@@ -466,14 +464,13 @@ export class ViwerReadImportComponent
           ? `${numbercoll} column ${this.nameCells}`
           : value[2];
       let actualydata;
-    
+
       if (this.ActualyData) {
         this.listNameHistory.splice(
           this.listNameHistory.indexOf(this.ActualyData) + 1
         );
         actualydata = this.ActualyData.idName + 1;
-        
-      }else{
+      } else {
         actualydata = this.listNameHistory.length;
       }
 
@@ -489,7 +486,7 @@ export class ViwerReadImportComponent
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
-          console.log(res)
+          console.log(res);
         });
       this.ActualyData = null;
     }
@@ -533,7 +530,8 @@ export class ViwerReadImportComponent
   }
   ConverterToNumber(newValue) {
     // const parsed = parseInt(newValue);
-    const replace = typeof (newValue) === "string" ? newValue.replace(',', '.') : newValue;
+    const replace =
+      typeof newValue === 'string' ? newValue.replace(',', '.') : newValue;
     const parsed = parseFloat(replace);
     if (isNaN(parsed)) {
       alert('not a valid number');
@@ -666,16 +664,16 @@ export class ViwerReadImportComponent
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
       // console.log(response);
-      
+
       const header = JSON.parse(
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
       // console.log(header);
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      this.lpviLped.dataSources$.next(response);
-      this.dataViews= response[0];
-      console.log('idHeader : ', this.idHeader);
+      this.lpviLped.dataSources$.next(response[0]);
+      this.dataViews = response[0];
+      // console.log('idHeader : ', response);
       // console.log(this.dataSource.data)
       // console.log("-----------------------and----------------------")
       // console.log(this.dataViews)
