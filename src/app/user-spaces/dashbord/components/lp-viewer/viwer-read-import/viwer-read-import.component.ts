@@ -662,7 +662,7 @@ export class ViwerReadImportComponent
     });
   }
   getAllDataByListName(value) {
-    // console.log(value);
+    
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -674,8 +674,9 @@ export class ViwerReadImportComponent
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
       this.dataViews= response[0];
-      this.dataSource.data = this.dataViews.slice(0,10)
-      console.log(this.dataViews.slice(0,10))
+      let min = (this.paginator.pageIndex) * this.paginator.pageSize;
+      let max =  (this.paginator.pageIndex+1) *this.paginator.pageSize;
+      this.dataSource.data = this.dataViews.slice(min,max);
       console.log('idHeader : ', this.idHeader);
     });
   }
