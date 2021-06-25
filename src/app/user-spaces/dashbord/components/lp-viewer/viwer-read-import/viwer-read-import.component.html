@@ -299,7 +299,7 @@
           [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
         ></mat-paginator> -->
         <!-- [pageIndex]="pageIndex" (page)="getServerData($event)" (page)='getServerData($event)' -->
-        <mat-paginator #paginator appStylePaginator showFirstLastButtons [showTotalPages]="3"
+        <mat-paginator #paginator appStylePaginator [showFirstLastButtons]="true" [showTotalPages]="3"
         [length]="dataViews.length"
         [pageSize]="10"
         [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"

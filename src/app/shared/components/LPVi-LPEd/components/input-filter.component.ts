@@ -93,6 +93,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
     else this.inputValue = this.item['value'];
 
     this.form.addControl(this.item['head'], new FormControl(this.inputValue));
+  
   }
 
   ngAfterViewInit(): void {
@@ -108,4 +109,5 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
       this.form.reset();
     });
   }
+
 }

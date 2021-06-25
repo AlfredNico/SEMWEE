@@ -122,8 +122,8 @@ export class ViwerReadImportComponent
         });
 
         if (this.isFiltered == true)
-          this.dataSource.data = this.dataFilters(this.dataViews);
-        else this.dataSource.data = this.dataViews.slice(0, 10);
+          this.dataSource.data = this.dataFilters(this.dataViews)?.slice(0, 10);
+        else this.dataSource.data = this.dataViews?.slice(0, 10);
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
         this.displayedColumns = this.dataAfterUploaded['header'];
@@ -155,12 +155,12 @@ export class ViwerReadImportComponent
         this.dataSource.data = this.dataViews.slice(page, lenghtPage);
       } else if (event.pageIndex < this.paginator.pageIndex) {
         this.dataSource.data = this.dataViews.slice(page, lenghtPage);
-      } else if (event.pageSize > this.paginator.pageSize) {
-        console.log('ok', event.pageSize);
       }
-      // else {
-
-      // }
+    } else if (event.pageSize != this.paginator.pageSize) {
+      const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
+      const lenghtPage = event.pageSize * (event.pageIndex + 1);
+      this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+      this.dataSource.data = this.dataViews.slice(page, lenghtPage);
     }
 
     this.paginator = {
@@ -195,12 +195,11 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.subscribe((res) => {
       if (res) {
         // this.dataSource.data = res
-        // console.log(res)
-        this.dataSource.data =res.slice(0,10);
+        this.dataSource.data = res.slice(0, 10);
         this.paginator = {
           ...this.paginator,
           pageIndex: 0,
-          nextPage:0
+          nextPage: 0,
         };
       }
     });
@@ -434,7 +433,6 @@ export class ViwerReadImportComponent
     }
   }
   action(value, namecells, index, $event) {
-
     this.positionPopup($event);
     const regex3 =
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
@@ -450,7 +448,6 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
-  
     let numbercoll = '';
     if (value[2] === undefined) {
       this.domTab.style.fontWeight = 'initial';
@@ -468,14 +465,13 @@ export class ViwerReadImportComponent
           ? `${numbercoll} column ${this.nameCells}`
           : value[2];
       let actualydata;
-    
+
       if (this.ActualyData) {
         this.listNameHistory.splice(
           this.listNameHistory.indexOf(this.ActualyData) + 1
         );
         actualydata = this.ActualyData.idName + 1;
-        
-      }else{
+      } else {
         actualydata = this.listNameHistory.length;
       }
 
@@ -491,7 +487,7 @@ export class ViwerReadImportComponent
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
-          console.log(res)
+          console.log(res);
         });
       this.ActualyData = null;
     }
@@ -535,7 +531,8 @@ export class ViwerReadImportComponent
   }
   ConverterToNumber(newValue) {
     // const parsed = parseInt(newValue);
-    const replace = typeof (newValue) === "string" ? newValue.replace(',', '.') : newValue;
+    const replace =
+      typeof newValue === 'string' ? newValue.replace(',', '.') : newValue;
     const parsed = parseFloat(replace);
     if (isNaN(parsed)) {
       alert('not a valid number');
@@ -662,23 +659,25 @@ export class ViwerReadImportComponent
       }
     });
   }
-  getAllDataByListName(value) {
+  getAllDataByListName(value) { 
     
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
-      
       const header = JSON.parse(
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
-   
+
+      console.log("before data")
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      this.dataViews= response[0];
       let min = (this.paginator.pageIndex) * this.paginator.pageSize;
       let max =  (this.paginator.pageIndex+1) *this.paginator.pageSize;
-      this.dataSource.data = this.dataViews.slice(min,max);
-      console.log('idHeader : ', this.idHeader);
+      this.dataSource.data = response[0].slice(min,max);
+      console.log("after data")
+      this.dataViews= response[0];
+     
+    
     });
   }
   updateHeader(value) {
