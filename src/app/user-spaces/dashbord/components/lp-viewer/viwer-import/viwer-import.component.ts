@@ -6,6 +6,7 @@ import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 // import { Converter } from 'csvtojson';
 import * as csv from 'csvtojson';
+import { InstructionService } from '@app/services/instruction.service';
 
 @Component({
   selector: 'app-viwer-import',
@@ -101,11 +102,15 @@ export class ViwerImportComponent implements OnInit {
   csvContent: string;
   parsedCsv: string[][];
   sizeFile: any;
+  headerRegex = ["id", "category", "subcategory", "facet", "custom"];
+  acceptHeader: boolean = true;
+  lastIndex: number;
 
   constructor(
     private lpViewerService: LpViwersService,
     private readonly common: CommonService,
-    private readonly nofits: NotificationService
+    private readonly nofits: NotificationService,
+    private readonly instr: InstructionService
   ) {}
 
   ngOnInit(): void {}
@@ -123,34 +128,80 @@ export class ViwerImportComponent implements OnInit {
       this.ProjectName = file['name'].replace('.csv', '');
       this.readFileContent(file)
         .then((csvContent) => {
-          const csv = [];
-          const lines = this.processCsv(csvContent);
-          const sep1 = lines[0].split(';').length;
-          const sep2 = lines[0].split(',').length;
-          const csvSeparator = sep1 > sep2 ? ';' : ',';
-          lines.forEach((element) => {
-            const cols: string[] = element.split(csvSeparator);
-            csv.push(cols);
-          });
-          this.parsedCsv = csv;
-          this.parsedCsv.pop();
+          try {
 
-          const header = this.parsedCsv.shift().toString().split(',');
-          const content = this.parsedCsv.map((value) =>
-            value.reduce((tdObj, td, index) => {
-              tdObj[header[index]] = td;
-              tdObj['start'] = false;
-              tdObj['flag'] = false;
-              return tdObj;
-            }, {})
-          );
+            const csv = [];
+            const lines = this.processCsv(csvContent);
+            const sep1 = lines[0].split(';').length;
+            const sep2 = lines[0].split(',').length;
+            const csvSeparator = sep1 > sep2 ? ';' : ',';
+            lines.forEach((element) => {
+              const cols: string[] = element.split(csvSeparator);
+              csv.push(cols);
+            });
+            this.parsedCsv = csv;
+            this.parsedCsv.pop();
 
-          this.data.header = [...new Set([...header])].filter(
-            (item) => item != undefined && item != ''
-          );
-          this.data.header.unshift('all');
-          this.data.content = content;
-          this.onSubmit();
+            const header = this.parsedCsv.shift().toString().split(',');
+
+            let ind = 0;
+
+            for(let i=0; i < header.length-1; i++) {
+              
+              if(!(/\s/g.test(header[i]))) {
+                this.acceptHeader = header[i].toLowerCase() == this.headerRegex[ind] ? true : false;
+                if(!this.acceptHeader) {
+                  this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
+                  throw "exit";
+                }
+              } else {
+                this.lastIndex = i;
+                let prevRegex = this.headerRegex[ind-1];
+                let initNumber = prevRegex == "subcategory" ? 2 : 1;
+
+                for(let k = this.lastIndex; k < header.length; k++) {
+
+                  this.acceptHeader = false;
+                  
+                  if(header[k].toLowerCase() == prevRegex+" "+initNumber) this.acceptHeader = true;
+                  else if(header[k].toLowerCase() == prevRegex+" "+initNumber+" value") {
+                    this.acceptHeader = true;
+                    initNumber++;
+                  }
+                  
+                  if(!this.acceptHeader) {
+                    i=k;
+                    break;
+                  }
+                }
+              }
+              if(this.headerRegex.length === ind) {
+                this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i-1]+' doesn\'t follow the recommendation. For more help, see the documentation');
+                throw "exit";
+              }
+              ind++;
+            }
+
+            const content = this.parsedCsv.map((value) =>
+              value.reduce((tdObj, td, index) => {
+                tdObj[header[index]] = td;
+                tdObj['start'] = false;
+                tdObj['flag'] = false;
+                return tdObj;
+              }, {})
+            );
+
+            this.data.header = [...new Set([...header])].filter(
+              (item) => item != undefined && item != ''
+            );
+            this.data.header.unshift('all');
+            this.data.content = content;
+            this.onSubmit();
+
+          } catch(e) {
+            console.log(e);
+          }
+          
         })
         .catch((error) => console.log(error));
     } else this.nofits.warn('This is no csv file !');

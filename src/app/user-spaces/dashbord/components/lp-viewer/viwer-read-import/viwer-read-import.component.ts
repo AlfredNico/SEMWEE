@@ -152,7 +152,7 @@ export class ViwerReadImportComponent
   }
 
   onResizeEnd(e: ResizeEvent) {
-    console.log('size', this.ws);
+    // console.log('size', this.ws);
     this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
   }
 

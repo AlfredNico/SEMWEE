@@ -18,24 +18,24 @@
                         <!-- <div> -->
 
                         
-                        <tr *ngFor="let project of (allProjects$ | async)" (click)="navigateURL(project._id)" class="content-project txt-project-content">
+                        <tr *ngFor="let project of (allProjects$ | async)" class="content-project txt-project-content">
                         <!-- <a  class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content"> -->
-                            <td>
+                            <td (click)="navigateURL(project._id)">
                                 <!-- <div class="symbol symbol-50 symbol-light mr-5">
                                     <span class="symbol-label"> -->
                                         <img [src]="'assets/media/svg/icons/Files/csv.svg'" class="w-50px align-self-center" alt="." />
                                     <!-- </span>
                                 </div> -->
                             </td>
-                            <td>
+                            <td (click)="navigateURL(project._id)">
                                 <div class="text-dark font-weight-bolder mb-1 font-size-lg ft-style">{{ project.nameProject }}</div>
                                 <span class="text-muted font-weight-bold d-block ftp">Name Project</span>
                             </td>
-                            <td class="text-right pr-0">
+                            <td class="text-right pr-0" (click)="navigateURL(project._id)">
                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg ft-style">{{ project.projectsize | formatFileSize:false }}</span>
                                 <span class="text-muted font-weight-bold ftp">File Size</span>
                             </td>
-                            <td class="text-right">
+                            <td class="text-right" (click)="navigateURL(project._id)">
                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg ft-style">{{ project?.updated_at | date: 'MMM d, y, h:mm a' }}</span>
                                 <span class="text-muted font-weight-bold ftp">Last Update</span>
                             </td>
