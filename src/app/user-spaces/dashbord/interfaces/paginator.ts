@@ -8,9 +8,6 @@ export interface Paginator {
   previousPageIndex: number;
   pageIndex: number;
   pageSize: number;
-  length: number;
-  pageSizeOptions: number[];
-  showTotalPages: number;
   nextPage: number;
 }
 

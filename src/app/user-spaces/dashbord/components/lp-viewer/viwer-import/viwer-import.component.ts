@@ -6,6 +6,7 @@ import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 // import { Converter } from 'csvtojson';
 import * as csv from 'csvtojson';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-viwer-import',
@@ -102,11 +103,13 @@ export class ViwerImportComponent implements OnInit {
 
   constructor(
     private lpViewerService: LpViwersService,
-    private readonly common: CommonService,
-    private readonly nofits: NotificationService
+    private readonly nofits: NotificationService,
+    private readonly lpviLped: LpdLpdService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.lpviLped.isLoading$.next(false); // disable loading spinner
+  }
 
   processCsv(content) {
     return content.split('\n');
@@ -115,6 +118,8 @@ export class ViwerImportComponent implements OnInit {
   convertFile(event: any) {
     const file = event.target ? event.target.files[0] : event[0];
     if ((file['name'] as string).includes('.csv')) {
+      this.lpviLped.isLoading$.next(true); // enable loading spinner
+
       this.sizeFile = file.size;
       this.file = file;
 
@@ -202,12 +207,11 @@ export class ViwerImportComponent implements OnInit {
             idHeader: 0,
           });
         }
-          this.dataImported.emit({
-            idProject: idProject['idProject'],
-            data: this.data,
-            idHeader: 0,
-          });
-          
+        this.dataImported.emit({
+          idProject: idProject['idProject'],
+          data: this.data,
+          idHeader: 0,
+        });
       });
     }
   }

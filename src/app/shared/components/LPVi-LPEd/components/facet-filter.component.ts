@@ -356,7 +356,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         let str = '';
         item['content']?.map((element: any) => {
           if (element['include'] === true) {
-            const q = `value["${item['head']}"].toString().includes("${element[0]}")`;
+            const q = `value["${item['head']}"].toString()==="${element[0]}"`;
             if (i2 === 0) str = q;
             else str = `${str}||${q}`;
             i2++;
