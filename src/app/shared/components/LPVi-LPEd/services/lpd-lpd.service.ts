@@ -13,6 +13,7 @@ export class LpdLpdService {
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
   /* Emittter value dataSources after filter USER */
   public dataSources$ = new BehaviorSubject<any>(undefined);
+  public dataPaginator$ = new BehaviorSubject<boolean>(false);
   public inputSubject = new Subject();
 
   // data: [],

@@ -7,14 +7,12 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  OnInit,
   ViewChild,
   ViewChildren,
   QueryList,
   OnDestroy,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -35,12 +33,12 @@ import {
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
-  providers: [
-    { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
-  ],
+  // providers: [
+  //   { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
+  // ],
 })
 export class ViwerReadImportComponent
-  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+  implements AfterViewInit, OnChanges, OnDestroy
 {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
@@ -66,6 +64,7 @@ export class ViwerReadImportComponent
   public active: any = '';
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
+  public dataSourceFilter: any[] = [];
   // public dataSource: any[] = [];
   public paginator: Paginator;
   private isFiltered = false;
@@ -121,13 +120,24 @@ export class ViwerReadImportComponent
             else if (Object.keys(x).length !== 0) this.isFiltered = true;
         });
 
-        if (this.isFiltered == true)
-          this.dataSource.data = this.dataFilters(this.dataViews)?.slice(0, 10);
-        else this.dataSource.data = this.dataViews?.slice(0, 10);
+        if (this.isFiltered == true){
+          this.dataSourceFilter = this.dataFilters(
+            this.dataViews
+          );
+          this.dataSource.data = this.dataSourceFilter?.slice(0, 10);
+        }
+        else{
+          this.dataSourceFilter = this.dataViews;
+          this.dataSource.data = this.dataSourceFilter?.slice(
+            0,
+            10
+          );
+        }
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
         this.displayedColumns = this.dataAfterUploaded['header'];
-        this.dataViews = this.dataAfterUploaded['content'];
+        this.dataSourceFilter = this.dataViews =
+          this.dataAfterUploaded['content'];
         this.listNameHistory = this.dataAfterUploaded['name'];
         this.dataSource.data = this.dataAfterUploaded['showData'];
         // console.log('ok=', this.dataAfterUploaded);
@@ -138,43 +148,28 @@ export class ViwerReadImportComponent
         pageSize: 10,
         nextPage: 0,
         previousPageIndex: 1,
-        length: this.dataViews.length,
-        pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
-        showTotalPages: 3,
       };
+      // this.lpviLped.isLoading$.next(false); // disable loading spinner
     }
   }
 
   public getServerData(event?: PageEvent): void {
-    console.log('event=', event,'//', this.paginator);
-    if (event.pageIndex != this.paginator.pageIndex) {
+    if (this.dataSource.data.length > 9) {
       const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
       const lenghtPage = event.pageSize * (event.pageIndex + 1);
       this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
-      if (event.pageIndex > this.paginator.pageIndex) {
-        this.dataSource.data = this.dataViews.slice(page, lenghtPage);
-      } else if (event.pageIndex < this.paginator.pageIndex) {
-        this.dataSource.data = this.dataViews.slice(page, lenghtPage);
-      }
-    } else if (event.pageSize != this.paginator.pageSize) {
-      const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
-      const lenghtPage = event.pageSize * (event.pageIndex + 1);
-      this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+
       this.dataSource.data = this.dataViews.slice(page, lenghtPage);
+      if(this.paginator.pageSize != event.pageSize)
+        this.lpviLped.dataPaginator$.next(true);
+
+
+      this.paginator = {
+        ...this.paginator,
+        ...event,
+      };
     }
-
-    this.paginator = {
-      ...this.paginator,
-      ...event,
-    };
   }
-
-  onPaginateChange(event: any) {
-    console.log('event=', event, '//', this.paginator);
-    return event;
-  }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.lpviLped.permaLink = {
@@ -192,15 +187,17 @@ export class ViwerReadImportComponent
     // this.dataSource.data.paginator = this.paginator;
     // this.dataSource.data.sort = this.sort;
 
-    this.lpviLped.dataSources$.subscribe((res) => {
+    this.lpviLped.dataSources$.subscribe((res: any[]) => {
       if (res) {
-        // this.dataSource.data = res
-        this.dataSource.data = res.slice(0, 10);
         this.paginator = {
           ...this.paginator,
           pageIndex: 0,
           nextPage: 0,
         };
+        this.dataSourceFilter = res;
+        this.dataSource.data = res.slice(0, this.paginator.pageSize);
+        this.lpviLped.dataPaginator$.next(true);
+
       }
     });
 
