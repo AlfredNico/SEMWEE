@@ -115,15 +115,19 @@ export class ViwerReadImportComponent
             else if (Object.keys(x).length !== 0) this.isFiltered = true;
         });
 
-        if (this.isFiltered == true)
-          this.dataSourceFilter = this.dataSource.data = this.dataFilters(
+        if (this.isFiltered == true){
+          this.dataSourceFilter = this.dataFilters(
             this.dataViews
-          )?.slice(0, 10);
-        else
-          this.dataSourceFilter = this.dataSource.data = this.dataViews?.slice(
+          );
+          this.dataSource.data = this.dataSourceFilter?.slice(0, 10);
+        }
+        else{
+          this.dataSourceFilter = this.dataViews;
+          this.dataSource.data = this.dataSourceFilter?.slice(
             0,
             10
           );
+        }
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
         this.displayedColumns = this.dataAfterUploaded['header'];
@@ -140,7 +144,7 @@ export class ViwerReadImportComponent
         nextPage: 0,
         previousPageIndex: 1,
       };
-      this.lpviLped.isLoading$.next(false); // disable loading spinner
+      // this.lpviLped.isLoading$.next(false); // disable loading spinner
     }
   }
 
@@ -151,6 +155,9 @@ export class ViwerReadImportComponent
       this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
 
       this.dataSource.data = this.dataViews.slice(page, lenghtPage);
+      if(this.paginator.pageSize != event.pageSize)
+        this.lpviLped.dataPaginator$.next(true);
+
 
       this.paginator = {
         ...this.paginator,
@@ -186,6 +193,8 @@ export class ViwerReadImportComponent
         };
         this.dataSourceFilter = res;
         this.dataSource.data = res.slice(0, this.paginator.pageSize);
+        this.lpviLped.dataPaginator$.next(true);
+
       }
     });
 
@@ -645,7 +654,8 @@ export class ViwerReadImportComponent
       }
     });
   }
-  getAllDataByListName(value) {
+  getAllDataByListName(value) { 
+    
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -653,13 +663,16 @@ export class ViwerReadImportComponent
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
 
+      console.log("before data")
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      this.dataViews = response[0];
-      let min = this.paginator.pageIndex * this.paginator.pageSize;
-      let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
-      this.dataSource.data = this.dataViews.slice(min, max);
-      console.log('idHeader : ', this.idHeader);
+      let min = (this.paginator.pageIndex) * this.paginator.pageSize;
+      let max =  (this.paginator.pageIndex+1) *this.paginator.pageSize;
+      this.dataSource.data = response[0].slice(min,max);
+      console.log("after data")
+      this.dataViews= response[0];
+     
+    
     });
   }
   updateHeader(value) {
