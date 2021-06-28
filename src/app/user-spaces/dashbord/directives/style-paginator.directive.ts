@@ -51,7 +51,9 @@ export class StylePaginatorDirective {
   }
 
   get numOfPages(): number {
-    return this.matPag.getNumberOfPages();
+    return this.matPag.getNumberOfPages() == 0
+      ? 3
+      : this.matPag.getNumberOfPages();
   }
 
   get lastPageIndex(): number {
@@ -118,7 +120,7 @@ export class StylePaginatorDirective {
     //initialize next page and last page buttons
     if (this._buttons.length == 0) {
       let nodeArray =
-        this.vr.element.nativeElement.childNodes[0].childNodes[0].childNodes[2]
+        this.vr.element.nativeElement?.childNodes[0].childNodes[0].childNodes[2]
           .childNodes;
       setTimeout(() => {
         for (let i = 0; i < nodeArray.length; i++) {

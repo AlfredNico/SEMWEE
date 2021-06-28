@@ -8,6 +8,7 @@ import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-v
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LpdLpdService } from '../LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-lp-viewer-projects',
@@ -23,12 +24,11 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private notifs: NotificationService,
     public triggerServices: TriggerService,
-    private router: Router
+    private router: Router,
+    private readonly lpviLped: LpdLpdService
   ) {}
 
-  ngOnInit(): void {
-    // console.log("LPVi "+ this.allProjects$);
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {}
 
@@ -62,11 +62,8 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  onEdit(item: LPAllProjects) {}
-
   public navigateURL(_id: any) {
-    // this.common.isLoading$.next(true);
-    // this.router.navigate(['/user-space/lp-viewer', _id]);
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     this.router.navigate(['user-space/lp-viewer'], {
       queryParams: { idProject: _id },
     });
