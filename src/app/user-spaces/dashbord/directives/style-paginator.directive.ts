@@ -81,7 +81,7 @@ export class StylePaginatorDirective {
       this.initPageRange();
     });
 
-    this.lpviLped.dataSources$.subscribe((res) => {
+    this.lpviLped.dataPaginator$.subscribe((res) => {
       if (res) {
         this._curPageObj = {
           length: 0,

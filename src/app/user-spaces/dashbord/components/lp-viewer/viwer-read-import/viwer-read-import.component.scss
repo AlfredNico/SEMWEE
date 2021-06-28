@@ -350,3 +350,15 @@
     -webkit-tap-highlight-color: transparent;
     transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+.mat-menu-item{
+  padding: 0px 8px;
+}
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 50px;
+}
+.example-margin {
+  margin: 0 10px;
+}
