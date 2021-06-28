@@ -1,4 +1,8 @@
 {
+    "recommendations": [
+        "editorconfig.editorconfig"
+    ],
+    
     // "editor.wordWrap": "on",
     "typescript.tsdk": "node_modules\\typescript\\lib",
     "editor.wordWrap": "wordWrapColumn",
