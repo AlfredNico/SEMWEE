@@ -7,6 +7,7 @@ import { NotificationService } from '@app/services/notification.service';
 // import { Converter } from 'csvtojson';
 import * as csv from 'csvtojson';
 import { InstructionService } from '@app/services/instruction.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-viwer-import',
@@ -105,18 +106,27 @@ export class ViwerImportComponent implements OnInit {
   headerRegex = ["id", "category", "subcategory", "facet", "custom"];
   acceptHeader: boolean = true;
   lastIndex: number;
+  exit: boolean = false;
 
   constructor(
     private lpViewerService: LpViwersService,
     private readonly common: CommonService,
     private readonly nofits: NotificationService,
-    private readonly instr: InstructionService
+    private readonly instr: InstructionService,
+    private route: ActivatedRoute, 
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
 
   processCsv(content) {
     return content.split('\n');
+  }
+
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
 
   convertFile(event: any) {
@@ -152,7 +162,7 @@ export class ViwerImportComponent implements OnInit {
                 this.acceptHeader = header[i].toLowerCase() == this.headerRegex[ind] ? true : false;
                 if(!this.acceptHeader) {
                   this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
-                  throw "exit";
+                  this.exit = true;
                 }
               } else {
                 this.lastIndex = i;
@@ -163,23 +173,32 @@ export class ViwerImportComponent implements OnInit {
 
                   this.acceptHeader = false;
                   
-                  if(header[k].toLowerCase() == prevRegex+" "+initNumber) this.acceptHeader = true;
+                  if((prevRegex == "facet") && (header[k].toLowerCase() == prevRegex+" "+initNumber)) this.acceptHeader = true;
+                  else if(header[k].toLowerCase() == prevRegex+" "+initNumber) {
+                    this.acceptHeader = true;
+                    initNumber++;
+                  }
                   else if(header[k].toLowerCase() == prevRegex+" "+initNumber+" value") {
                     this.acceptHeader = true;
                     initNumber++;
                   }
                   
                   if(!this.acceptHeader) {
-                    i=k;
+                    i=k-1;
                     break;
                   }
                 }
               }
               if(this.headerRegex.length === ind) {
-                this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i-1]+' doesn\'t follow the recommendation. For more help, see the documentation');
-                throw "exit";
+                this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i+1]+' doesn\'t follow the recommendation. For more help, see the documentation');
+                this.exit = true;
               }
               ind++;
+
+              if(this.exit == true) {
+                  this.reload();
+                  throw "exit";
+              }
             }
 
             const content = this.parsedCsv.map((value) =>
