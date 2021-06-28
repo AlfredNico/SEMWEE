@@ -140,12 +140,12 @@ export class ViwerImportComponent implements OnInit {
 
           const header = this.parsedCsv.shift().toString().split(',');
 
-          const content = this.parsedCsv.map((value, indexMap) =>
+          const content = this.parsedCsv.map((value) =>
             value.reduce((tdObj, td, index) => {
               tdObj[header[index]] = td;
               tdObj['start'] = false;
               tdObj['flag'] = false;
-              tdObj['index'] = indexMap + 1;
+              // tdObj['index'] = indexMap + 1;
 
               return tdObj;
             }, {})

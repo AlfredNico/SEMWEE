@@ -21,18 +21,19 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { FormBuilder } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
-import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import {
   PageEvent,
   Paginator,
 } from '@app/user-spaces/dashbord/interfaces/paginator';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
+  providers: [DatePipe],
   // providers: [
   //   { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
   // ],
@@ -88,19 +89,13 @@ export class ViwerReadImportComponent
   left = null;
   public domTab: any;
 
-  length: number;
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-
-  // ------------------
-  pageEvent: PageEvent;
-
   constructor(
     public dialog: MatDialog,
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    private readonly lpviLped: LpdLpdService
+    private readonly lpviLped: LpdLpdService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnChanges(): void {
@@ -161,6 +156,8 @@ export class ViwerReadImportComponent
         ...this.paginator,
         ...event,
       };
+
+      console.log(event.pageIndex);
     }
   }
 
@@ -369,18 +366,19 @@ export class ViwerReadImportComponent
 
     this.dataViews.map((item, index) => {
       if (!isNaN(Date.parse(item[column]))) {
-        date.push(item[column]);
-        if (item[column] > date[minIdx]) maxIdx = index;
-        if (item[column] < date[maxIdx]) minIdx = index;
+        console.log(this.datePipe.transform(item[column], 'yyyy-MM-dd'));
+        // date.push(item[column]);
+        // if (item[column] > date[minIdx]) maxIdx = index;
+        // if (item[column] < date[maxIdx]) minIdx = index;
       }
     });
-    this.lpviLped.itemsObservables$.next({
-      type: 'timeLine',
-      isMinimize: false,
-      head: column,
-      startDate: date[minIdx],
-      endDate: date[maxIdx],
-    });
+    // this.lpviLped.itemsObservables$.next({
+    //   type: 'timeLine',
+    //   isMinimize: false,
+    //   head: column,
+    //   startDate: date[minIdx],
+    //   endDate: date[maxIdx],
+    // });
   }
 
   combinate(i, otherValue) {
