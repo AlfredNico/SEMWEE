@@ -103,7 +103,7 @@ export class ViwerImportComponent implements OnInit {
   csvContent: string;
   parsedCsv: string[][];
   sizeFile: any;
-  headerRegex = ["id", "category", "subcategory", "facet", "custom"];
+  headerRegex = ["id", "category", "category", "subcategory", "facet", "path", "name", "full title", "short title", "main heading", "meta description", "rel canonical tag", "meta name robots index", "meta name robots follow", "x-robots-tag index", "x-robots-tag follow", "x-robots-tag canonical", "meta keywords", "description", "tags", "price", "currency", "available", "main image", "main image alt", "custom"];
   acceptHeader: boolean = true;
   lastIndex: number;
   exit: boolean = false;
@@ -159,6 +159,9 @@ export class ViwerImportComponent implements OnInit {
             for(let i=0; i < header.length-1; i++) {
               
               if(!(/\s/g.test(header[i]))) {
+                console.log('header[i].toLowerCase()', header[i].toLowerCase());
+                console.log('this.headerRegex[ind]', this.headerRegex[ind]);
+
                 this.acceptHeader = header[i].toLowerCase() == this.headerRegex[ind] ? true : false;
                 if(!this.acceptHeader) {
                   this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
@@ -166,28 +169,107 @@ export class ViwerImportComponent implements OnInit {
                 }
               } else {
                 this.lastIndex = i;
-                let prevRegex = this.headerRegex[ind-1];
-                let initNumber = prevRegex == "subcategory" ? 2 : 1;
 
-                for(let k = this.lastIndex; k < header.length; k++) {
+                console.log('-----------------this.headerRegex[ind]', this.headerRegex[ind])
+
+                let prevRegex = this.headerRegex[ind];
+                let initNumber = prevRegex == "category" ? 2 : 1;
+                let word = header[i].split(" ");
+
+                if(word[0].toLowerCase() == "custom") {
+
+                  for(let k = this.lastIndex; k < header.length; k++) {
+
+                    this.acceptHeader = false;
+
+                    console.log("3- Custom")
+                    console.log('k', k)
+                    console.log('header.length', header.length)
+                    console.log("prevRegex ---------- initNumber", prevRegex+" ------------ "+initNumber)
+                    
+                    
+                    
+                    console.log("header[k].toLowerCase()", "-"+header[k].toLowerCase()+"-")
+
+                    console.log('comp 1', "-"+prevRegex+" data name "+initNumber+"-");
+
+                    console.log('comp 2', "-"+prevRegex+" data "+initNumber+"-");
+
+                    if(header[k].toLowerCase() == prevRegex+" data name "+initNumber || header[k].toLowerCase() == prevRegex+" data "+initNumber){
+                      console.log('Not false');
+                    }
+                    
+
+                    if(header[k].toLowerCase() == (prevRegex+" data name "+initNumber).toString()) {
+
+                      this.acceptHeader = true;
+                      console.log("Comparaison -- DATA NAME --", header[k].toLowerCase() == prevRegex+" data name "+initNumber);
+                      
+
+                    } else if(header[k].toLowerCase() == (prevRegex+" data "+initNumber).toString()) {
+                      // console.log("prevRegex initNumber", prevRegex+" data "+initNumber)
+                      console.log("Comparaison -- DATA --", header[k].toLowerCase() == prevRegex+" data "+initNumber);
+                      this.acceptHeader = true;
+                      initNumber++;
+                    }
+
+                    // else if(header[k].toLowerCase() == "")
+
+                    console.log("this.acceptHeader", this.acceptHeader);
+
+                     if(!this.acceptHeader) {
+                      this.instr.infoIterropt('The file\'s process has stopped because the header '+header[k]+' doesn\'t follow the recommendation. For more help, see the documentation');
+                      this.exit = true;
+                    }else if(header[k+1] == "" || header[k+1] == null){
+                      console.log('ok');
+                      this.exit = true;
+                    }
+                    // if(!this.acceptHeader) {
+                    //   i=k-1;
+                    //   break;
+                    // }
+                  }
+
+                }
+                else if(!(Number.isInteger(Number(word[1])))) {
 
                   this.acceptHeader = false;
-                  
-                  if((prevRegex == "facet") && (header[k].toLowerCase() == prevRegex+" "+initNumber)) this.acceptHeader = true;
-                  else if(header[k].toLowerCase() == prevRegex+" "+initNumber) {
-                    this.acceptHeader = true;
-                    initNumber++;
-                  }
-                  else if(header[k].toLowerCase() == prevRegex+" "+initNumber+" value") {
-                    this.acceptHeader = true;
-                    initNumber++;
-                  }
-                  
+
+                  console.log("2- Split text")
+                  console.log("header[i].toLowerCase()", header[i].toLowerCase())
+
+                  this.acceptHeader = header[i].toLowerCase() == prevRegex ? true : false;
                   if(!this.acceptHeader) {
-                    i=k-1;
-                    break;
+                    this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
+                    this.exit = true;
+                  }
+
+                } else {
+                  for(let k = this.lastIndex; k < header.length; k++) {
+
+                    this.acceptHeader = false;
+
+                    console.log("4- ")
+                  console.log("header[i].toLowerCase()", header[i].toLowerCase())
+                    
+                    if((prevRegex == "facet") && (header[k].toLowerCase() == prevRegex+" "+initNumber)) this.acceptHeader = true;
+                    else if(header[k].toLowerCase() == prevRegex+" "+initNumber) {
+                      this.acceptHeader = true;
+                      initNumber++;
+                    }
+                    else if(header[k].toLowerCase() == prevRegex+" "+initNumber+" value") {
+                      this.acceptHeader = true;
+                      initNumber++;
+                    }
+                    
+                    if(!this.acceptHeader) {
+                      i=k-1;
+                      break;
+                    }
                   }
                 }
+
+                
               }
               if(this.headerRegex.length === ind) {
                 this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i+1]+' doesn\'t follow the recommendation. For more help, see the documentation');
