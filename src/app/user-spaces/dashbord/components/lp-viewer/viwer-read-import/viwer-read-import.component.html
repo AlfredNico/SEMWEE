@@ -136,11 +136,10 @@
                     let odd = odd
                   " [class.odd]="odd" [class.even]="even" #td class="th-content p-0">
                   <div fxLayout="row" fxLayoutAlign="space-around center">
-                    <!-- <i class='rotateimg180 fas fa-flag fa-lg'></i> -->
                     <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
+                    <i style="cursor: pointer!;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
                     <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
                   </div>
                 </td>
