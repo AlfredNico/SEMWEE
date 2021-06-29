@@ -128,7 +128,7 @@
                     (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
-
+<!-- xmlns -->
                 <td mat-cell *matCellDef="
                     let indexRow = index;
                     let element;
@@ -139,7 +139,7 @@
                     <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <i style="cursor: pointer!;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
+                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
                     <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
                   </div>
                 </td>

@@ -234,14 +234,15 @@ export class ViwerReadImportComponent
 
     let name_dinamic;
     if(nameUpdate === "Start"){
-      value.start = value.start ? false : true;
-      name_dinamic = `${nameUpdate} row ${indice}`;
+  
+        value.start = value.start ? false : true;
+        name_dinamic = value.start ?  `${nameUpdate} row ${indice}`:`Un${nameUpdate} row ${indice}`;
+      
     }else{
-      value.flag = value.flag ? false : true;
-      name_dinamic = `${nameUpdate} row ${indice}`;
+
+        value.flag = value.flag  ? false : true;
+        name_dinamic = value.flag ? `${nameUpdate} row ${indice}` :`Un${nameUpdate} row ${indice}`;
     }
-
-
     let actualydata;
     if (this.ActualyData) {
       this.listNameHistory.splice(
