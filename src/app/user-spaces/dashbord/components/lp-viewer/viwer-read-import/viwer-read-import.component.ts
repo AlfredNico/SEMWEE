@@ -18,7 +18,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import * as moment from 'moment';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
@@ -61,6 +61,11 @@ export class ViwerReadImportComponent
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
 
+  formfilterStart = new FormGroup({
+    first: new FormControl(false),
+    second: new FormControl(false),
+  });
+  public dataSourceFilterStart = [];
   public tabIndex = 0;
   public icon = '';
   public active: any = '';
@@ -107,7 +112,7 @@ export class ViwerReadImportComponent
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
 
-        this.items = this.lpviLped.permaLink.items; //set items filters
+        this.items = this.lpviLped.permaLink.items;
 
         Object.values(this.lpviLped.permaLink).map((x) => {
           if (Array.isArray(x) === true)
@@ -129,7 +134,6 @@ export class ViwerReadImportComponent
           this.dataAfterUploaded['content'];
         this.listNameHistory = this.dataAfterUploaded['name'];
         this.dataSource = this.dataAfterUploaded['showData'];
-        // console.log('ok=', this.dataAfterUploaded);
       }
       // console.log('data', this.dataSource);
 
@@ -145,21 +149,19 @@ export class ViwerReadImportComponent
   }
 
   public getServerData(event?: PageEvent): void {
-    if (this.dataSource.length > 9) {
-      // const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
-      let page = event.pageIndex * event.pageSize;
-      const lenghtPage = event.pageSize * (event.pageIndex + 1);
-      this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+    // const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
+    let page = event.pageIndex * event.pageSize;
+    const lenghtPage = event.pageSize * (event.pageIndex + 1);
+    this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
 
-      this.dataSource = this.dataViews.slice(page, lenghtPage);
-      if (this.paginator.pageSize != event.pageSize)
-        this.lpviLped.dataPaginator$.next(true);
+    this.dataSource = this.dataViews.slice(page, lenghtPage);
+    if (this.paginator.pageSize != event.pageSize)
+      this.lpviLped.dataPaginator$.next(true);
 
-      this.paginator = {
-        ...this.paginator,
-        ...event,
-      };
-    }
+    this.paginator = {
+      ...this.paginator,
+      ...event,
+    };
   }
 
   ngOnDestroy(): void {
@@ -175,9 +177,6 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
-
     this.lpviLped.dataSources$.subscribe((res: any[]) => {
       if (res) {
         this.paginator = {
@@ -190,10 +189,6 @@ export class ViwerReadImportComponent
         this.lpviLped.dataPaginator$.next(true);
       }
     });
-
-    // this.paginator.nextPage = () => {
-    //   console.log('OK');
-    // }
   }
 
   public openTablesOptionns() {
@@ -220,6 +215,42 @@ export class ViwerReadImportComponent
         })
       )
       .subscribe();
+  }
+
+  updateStart(value, indice, nameUpdate) {
+    let name_dinamic;
+    if (nameUpdate === 'Start') {
+      value.start = value.start ? false : true;
+      name_dinamic = `${nameUpdate} row ${indice}`;
+    } else {
+      value.flag = value.flag ? false : true;
+      name_dinamic = `${nameUpdate} row ${indice}`;
+    }
+
+    let actualydata;
+    if (this.ActualyData) {
+      this.listNameHistory.splice(
+        this.listNameHistory.indexOf(this.ActualyData) + 1
+      );
+      actualydata = this.ActualyData.idName + 1;
+    } else {
+      actualydata = this.listNameHistory.length;
+    }
+    this.lpViewer
+      .sendFiles(
+        {
+          namehistory: name_dinamic,
+          idProject: this.idProject,
+          fileData: this.dataViews,
+          idHeader: this.idHeader,
+        },
+        actualydata
+      )
+      .subscribe((res) => {
+        this.listNameHistory.push(res);
+        console.log(res);
+      });
+    this.ActualyData = null;
   }
 
   public openEditColumn(columnName: string) {
@@ -734,6 +765,30 @@ export class ViwerReadImportComponent
   private chechQueryFilter(index: number, queries: boolean[]): boolean {
     if (queries.length !== 0) return queries[index];
     return true;
+  }
+
+  onChangeEventFilterStartAndFlag() {
+    const first = this.formfilterStart.value.first;
+    const second = this.formfilterStart.value.second;
+    if (first && second) {
+      this.dataSourceFilter = this.dataViews.filter(
+        (value) => value.start === true && value.flag === true
+      );
+    } else if (!first && !second) {
+      this.dataSourceFilter = this.dataViews;
+    } else {
+      if (first && !second) {
+        this.dataSourceFilter = this.dataViews.filter(
+          (value) => value.start === true
+        );
+      } else if (!first && second) {
+        this.dataSourceFilter = this.dataViews.filter(
+          (value) => value.flag === true
+        );
+      }
+    }
+
+    this.lpviLped.dataSources$.next(this.dataSourceFilter);
   }
 }
 

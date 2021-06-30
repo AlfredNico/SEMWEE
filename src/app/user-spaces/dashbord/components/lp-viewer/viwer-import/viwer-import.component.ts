@@ -159,6 +159,7 @@ export class ViwerImportComponent implements OnInit {
           this.data.content = content;
           this.data.showData = content.slice(0, 10);
           this.onSubmit();
+          // console.log(this.data.content)
         })
         .catch((error) => console.log(error));
     } else this.nofits.warn('This is no csv file !');

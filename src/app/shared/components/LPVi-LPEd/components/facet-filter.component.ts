@@ -276,7 +276,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         }
       });
 
-      // this.queriesTimeLineFilters[`${event.head}`] = event.head;
       this.lpviLped.dataSources$.next(this.dataSources);
       this.savePermalink(); // SAVE PERMALINK
     }
