@@ -7,14 +7,8 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
 
 @Component({
   selector: 'app-time-line',
@@ -150,12 +144,7 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
     end: new FormControl([Validators.required]),
   });
 
-  constructor(
-    private readonly lpViewer: LpViwersService,
-    private fb: FormBuilder,
-    private datePipe: DatePipe,
-    private dateAdapter: DateAdapter<Date>
-  ) {
+  constructor(private dateAdapter: DateAdapter<Date>) {
     this.dateAdapter.setLocale('en-US');
   }
 

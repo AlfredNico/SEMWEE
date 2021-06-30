@@ -26,17 +26,11 @@ import {
   PageEvent,
   Paginator,
 } from '@app/user-spaces/dashbord/interfaces/paginator';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-viwer-read-import',
-  // templateUrl: './viwer-read-import.component2.html',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
-  // styleUrls: ['./viwer-read-import.component2.scss'],
-  // providers: [
-  //   { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
-  // ],
 })
 export class ViwerReadImportComponent
   implements AfterViewInit, OnChanges, OnDestroy
