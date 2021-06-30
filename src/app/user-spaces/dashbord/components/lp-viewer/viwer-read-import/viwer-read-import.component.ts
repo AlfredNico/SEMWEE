@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -31,9 +30,10 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-viwer-read-import',
+  // templateUrl: './viwer-read-import.component2.html',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
-  providers: [DatePipe],
+  // styleUrls: ['./viwer-read-import.component2.scss'],
   // providers: [
   //   { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
   // ],
@@ -43,7 +43,8 @@ export class ViwerReadImportComponent
 {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any = [];
+  // dataSource = new MatTableDataSource<any>([]);
   // // public items = [];
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -94,8 +95,7 @@ export class ViwerReadImportComponent
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    private readonly lpviLped: LpdLpdService,
-    private datePipe: DatePipe
+    private readonly lpviLped: LpdLpdService
   ) {}
 
   ngOnChanges(): void {
@@ -115,18 +115,12 @@ export class ViwerReadImportComponent
             else if (Object.keys(x).length !== 0) this.isFiltered = true;
         });
 
-        if (this.isFiltered == true){
-          this.dataSourceFilter = this.dataFilters(
-            this.dataViews
-          );
-          this.dataSource.data = this.dataSourceFilter?.slice(0, 10);
-        }
-        else{
+        if (this.isFiltered == true) {
+          this.dataSourceFilter = this.dataFilters(this.dataViews);
+          this.dataSource = this.dataSourceFilter?.slice(0, 10);
+        } else {
           this.dataSourceFilter = this.dataViews;
-          this.dataSource.data = this.dataSourceFilter?.slice(
-            0,
-            10
-          );
+          this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
       } else if (Object.keys(this.dataAfterUploaded).length === 4) {
         this.items = []; //set items filters
@@ -134,37 +128,37 @@ export class ViwerReadImportComponent
         this.dataSourceFilter = this.dataViews =
           this.dataAfterUploaded['content'];
         this.listNameHistory = this.dataAfterUploaded['name'];
-        this.dataSource.data = this.dataAfterUploaded['showData'];
+        this.dataSource = this.dataAfterUploaded['showData'];
         // console.log('ok=', this.dataAfterUploaded);
       }
+      // console.log('data', this.dataSource);
 
       this.paginator = {
         pageIndex: 0,
         pageSize: 10,
         nextPage: 0,
         previousPageIndex: 1,
+        pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
       };
-      // this.lpviLped.isLoading$.next(false); // disable loading spinner
+      this.lpviLped.isLoading$.next(false); // disable loading spinner
     }
   }
 
   public getServerData(event?: PageEvent): void {
-    if (this.dataSource.data.length > 9) {
-      const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
+    if (this.dataSource.length > 9) {
+      // const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
+      let page = event.pageIndex * event.pageSize;
       const lenghtPage = event.pageSize * (event.pageIndex + 1);
       this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
 
-      this.dataSource.data = this.dataViews.slice(page, lenghtPage);
-      if(this.paginator.pageSize != event.pageSize)
+      this.dataSource = this.dataViews.slice(page, lenghtPage);
+      if (this.paginator.pageSize != event.pageSize)
         this.lpviLped.dataPaginator$.next(true);
-
 
       this.paginator = {
         ...this.paginator,
         ...event,
       };
-
-      console.log(event.pageIndex);
     }
   }
 
@@ -181,8 +175,8 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
-    // this.dataSource.data.paginator = this.paginator;
-    // this.dataSource.data.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
 
     this.lpviLped.dataSources$.subscribe((res: any[]) => {
       if (res) {
@@ -192,9 +186,8 @@ export class ViwerReadImportComponent
           nextPage: 0,
         };
         this.dataSourceFilter = res;
-        this.dataSource.data = res.slice(0, this.paginator.pageSize);
+        this.dataSource = res.slice(0, this.paginator.pageSize);
         this.lpviLped.dataPaginator$.next(true);
-
       }
     });
 
@@ -369,25 +362,25 @@ export class ViwerReadImportComponent
   }
 
   public timeLineFacter(column: any): void {
-    let minIdx = 0,
-      maxIdx = 0,
-      date = [];
-
-    this.dataViews.map((item, index) => {
-      if (!isNaN(Date.parse(item[column]))) {
-        console.log(this.datePipe.transform(item[column], 'yyyy-MM-dd'));
-        // date.push(item[column]);
-        // if (item[column] > date[minIdx]) maxIdx = index;
-        // if (item[column] < date[maxIdx]) minIdx = index;
+    const result = this.dataViews.reduce(
+      (item, value) => {
+        if (item.minDate > value[column]) item.minDate = value[column];
+        if (item.maxDate < value[column]) item.maxDate = value[column];
+        return item;
+      },
+      {
+        maxDate: this.dataViews[0][column],
+        minDate: this.dataViews[0][column],
       }
+    );
+
+    this.lpviLped.itemsObservables$.next({
+      type: 'timeLine',
+      isMinimize: false,
+      head: column,
+      startDate: result?.minDate,
+      endDate: result?.maxDate,
     });
-    // this.lpviLped.itemsObservables$.next({
-    //   type: 'timeLine',
-    //   isMinimize: false,
-    //   head: column,
-    //   startDate: date[minIdx],
-    //   endDate: date[maxIdx],
-    // });
   }
 
   combinate(i, otherValue) {
@@ -654,8 +647,7 @@ export class ViwerReadImportComponent
       }
     });
   }
-  getAllDataByListName(value) { 
-    
+  getAllDataByListName(value) {
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -663,16 +655,14 @@ export class ViwerReadImportComponent
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
 
-      console.log("before data")
+      console.log('before data');
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      let min = (this.paginator.pageIndex) * this.paginator.pageSize;
-      let max =  (this.paginator.pageIndex+1) *this.paginator.pageSize;
-      this.dataSource.data = response[0].slice(min,max);
-      console.log("after data")
-      this.dataViews= response[0];
-     
-    
+      let min = this.paginator.pageIndex * this.paginator.pageSize;
+      let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
+      this.dataSource = response[0].slice(min, max);
+      console.log('after data');
+      this.dataViews = response[0];
     });
   }
   updateHeader(value) {
@@ -714,7 +704,7 @@ export class ViwerReadImportComponent
                 {
                   namehistory: name_dinamic,
                   idProject: this.idProject,
-                  fileData: this.dataSource.data,
+                  fileData: this.dataSource,
                   idHeader: this.idHeader,
                 },
                 actualy
@@ -746,3 +736,41 @@ export class ViwerReadImportComponent
     return true;
   }
 }
+
+// start MatPaginator Inputs
+// pageSize = 10;
+// pageSizeOptions: number[] = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000];
+// test = true;
+// isDisable = false;
+// public selectedName: any;
+// end MatPaginator Inputs
+
+// setPageSizeOptions(setPageSizeOptionsInput: string) {
+//   this.pageSizeOptions = setPageSizeOptionsInput
+//     .split(',')
+//     .map((str) => +str);
+// }
+
+// onPageChanged(e: PageEvent): void {
+//   this.lpviLped.isLoading$.next(true);
+//   let firstCut = e.pageIndex * e.pageSize;
+//   let secondCut = firstCut + e.pageSize;
+//   this.dataSource = this.dataViews.slice(firstCut, secondCut);
+//   this.lpviLped.isLoading$.next(false);
+// }
+
+// // @HostListener('window:scroll', [])
+// // onScroll(): void {
+// //   if (this.bottomReached()) {
+// //     // this.elements = [...this.elements, this.count++];
+// //     console.log('OK');
+// //   }
+// // }
+
+// @HostListener('scroll', ['$event']) private onScroll($event: Event): void {
+//   console.log('OKOK');
+// }
+
+// private bottomReached(): boolean {
+//   return window.innerHeight + window.scrollY >= document.body.offsetHeight;
+// }
