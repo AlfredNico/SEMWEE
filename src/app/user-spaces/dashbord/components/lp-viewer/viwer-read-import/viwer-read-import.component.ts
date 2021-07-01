@@ -14,14 +14,12 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
-import { getCustomPaginatorIntl } from './custom-paginator.component';
 import * as moment from 'moment';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import {
@@ -33,16 +31,14 @@ import {
   selector: 'app-viwer-read-import',
   templateUrl: './viwer-read-import.component.html',
   styleUrls: ['./viwer-read-import.component.scss'],
-  // providers: [
-  //   { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() },
-  // ],
 })
 export class ViwerReadImportComponent
   implements AfterViewInit, OnChanges, OnDestroy
 {
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any = [];
+  // dataSource = new MatTableDataSource<any>([]);
   // // public items = [];
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -59,7 +55,6 @@ export class ViwerReadImportComponent
 
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
-
 
   formfilterStart = new FormGroup({
     first: new FormControl(false),
@@ -95,10 +90,6 @@ export class ViwerReadImportComponent
   left = null;
   public domTab: any;
 
-  length: number;
-  pageSize = 10;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
-
   // ------------------
   pageEvent: PageEvent;
   Columns_replace:String;
@@ -122,7 +113,7 @@ export class ViwerReadImportComponent
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
 
-        this.items = this.lpviLped.permaLink.items; 
+        this.items = this.lpviLped.permaLink.items;
 
         Object.values(this.lpviLped.permaLink).map((x) => {
           if (Array.isArray(x) === true)
@@ -130,54 +121,88 @@ export class ViwerReadImportComponent
             else if (Object.keys(x).length !== 0) this.isFiltered = true;
         });
 
-        if (this.isFiltered == true){
-          this.dataSourceFilter = this.dataFilters(
-            this.dataViews
-          );
-          this.dataSource.data = this.dataSourceFilter?.slice(0, 10);
-        }
-        else{
+        if (this.isFiltered == true) {
+          this.dataSourceFilter = this.dataFilters(this.dataViews);
+          this.dataSource = this.dataSourceFilter?.slice(0, 10);
+        } else {
           this.dataSourceFilter = this.dataViews;
-          this.dataSource.data = this.dataSourceFilter?.slice(
-            0,
-            10
-          );
+          this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
-      } else if (Object.keys(this.dataAfterUploaded).length === 4) {
+      } else {
         this.items = []; //set items filters
-        this.displayedColumns = this.dataAfterUploaded['header'];
-        this.dataSourceFilter = this.dataViews =
-          this.dataAfterUploaded['content'];
-        this.listNameHistory = this.dataAfterUploaded['name'];
-        this.dataSource.data = this.dataAfterUploaded['showData'];
-      
+        this.displayedColumns = this.dataAfterUploaded['data']['header'];
+
+        this.dataSourceFilter = this.dataViews = this.readCsvFile(
+          this.dataAfterUploaded['data']['contentCsv'],
+          this.dataAfterUploaded['data']['header'],
+          this.dataAfterUploaded['idProject']
+        );
+        this.listNameHistory = [
+          {
+            idName: 0,
+            name: 'Create project',
+            idProject: this.dataAfterUploaded['idProject'],
+          },
+        ];
+        this.dataSource = this.dataSourceFilter.slice(0, 10);
       }
+      // console.log('data', this.dataSource);
 
       this.paginator = {
         pageIndex: 0,
         pageSize: 10,
         nextPage: 0,
         previousPageIndex: 1,
+        pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
       };
 
       this.lpviLped.isLoading$.next(false);
     }
   }
 
+  private readCsvFile(
+    contentCsv: any[],
+    header: string[],
+    idProject: any
+  ): any[] {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
+
+    const content = contentCsv.map((value) =>
+      value.reduce(
+        (tdObj, td, index) => {
+          tdObj[header[index]] = td;
+          return tdObj;
+        },
+        { star: false, flag: false }
+      )
+    );
+    this.lpViewer
+      .sendFiles(
+        {
+          namehistory: 'Create project',
+          idProject: idProject,
+          fileData: content,
+          idHeader: 0,
+        },
+        0
+      )
+      .subscribe();
+    return content;
+  }
+
   public getServerData(event?: PageEvent): void {
-      const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
-      const lenghtPage = event.pageSize * (event.pageIndex + 1);
-      this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+    let page = event.pageIndex * event.pageSize;
+    const lenghtPage = event.pageSize * (event.pageIndex + 1);
+    this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
 
-      this.dataSource.data = this.dataSourceFilter.slice(page, lenghtPage);
-      if(this.paginator.pageSize != event.pageSize)
-        this.lpviLped.dataPaginator$.next(true);
+    this.dataSource = this.dataViews.slice(page, lenghtPage);
+    if (this.paginator.pageSize != event.pageSize)
+      this.lpviLped.dataPaginator$.next(true);
 
-
-      this.paginator = {
-        ...this.paginator,
-        ...event,
-      };
+    this.paginator = {
+      ...this.paginator,
+      ...event,
+    };
   }
 
   ngOnDestroy(): void {
@@ -207,13 +232,11 @@ export class ViwerReadImportComponent
           nextPage: 0,
         };
         this.dataSourceFilter = res;
-        this.dataSource.data = res.slice(0, this.paginator.pageSize);
+        this.dataSource = res.slice(0, this.paginator.pageSize);
         this.lpviLped.dataPaginator$.next(true);
         // console.log("In read Componnent ",this.dataSourceFilter)
       }
     });
-    
-
   }
 
   public openTablesOptionns() {
@@ -246,8 +269,7 @@ export class ViwerReadImportComponent
     this.savedata(name_dinamic);
   }
 
-  updateStart(value,indice,nameUpdate){
-
+  updateStart(value, indice, nameUpdate) {
     let name_dinamic;
    
       if(nameUpdate === "Star"){
@@ -443,23 +465,24 @@ export class ViwerReadImportComponent
   }
 
   public timeLineFacter(column: any): void {
-    let minIdx = 0,
-      maxIdx = 0,
-      date = [];
-
-    this.dataViews.map((item, index) => {
-      if (!isNaN(Date.parse(item[column]))) {
-        date.push(item[column]);
-        if (item[column] > date[minIdx]) maxIdx = index;
-        if (item[column] < date[maxIdx]) minIdx = index;
+    const result = this.dataViews.reduce(
+      (item, value) => {
+        if (item.minDate > value[column]) item.minDate = value[column];
+        if (item.maxDate < value[column]) item.maxDate = value[column];
+        return item;
+      },
+      {
+        maxDate: this.dataViews[0][column],
+        minDate: this.dataViews[0][column],
       }
-    });
+    );
+
     this.lpviLped.itemsObservables$.next({
       type: 'timeLine',
       isMinimize: false,
       head: column,
-      startDate: date[minIdx],
-      endDate: date[maxIdx],
+      startDate: result?.minDate,
+      endDate: result?.maxDate,
     });
 
     this.selectedIndex = 0;
@@ -729,8 +752,7 @@ export class ViwerReadImportComponent
       }
     });
   }
-  getAllDataByListName(value) { 
-    
+  getAllDataByListName(value) {
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -738,16 +760,14 @@ export class ViwerReadImportComponent
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
 
-      console.log("before data")
+      console.log('before data');
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      let min = (this.paginator.pageIndex) * this.paginator.pageSize;
-      let max =  (this.paginator.pageIndex+1) *this.paginator.pageSize;
-      this.dataSource.data = response[0].slice(min,max);
-      console.log("after data")
-      this.dataViews= response[0];
-     
-    
+      let min = this.paginator.pageIndex * this.paginator.pageSize;
+      let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
+      this.dataSource = response[0].slice(min, max);
+      console.log('after data');
+      this.dataViews = response[0];
     });
   }
   updateHeader(value) {
@@ -789,7 +809,7 @@ export class ViwerReadImportComponent
                 {
                   namehistory: name_dinamic,
                   idProject: this.idProject,
-                  fileData: this.dataSource.data,
+                  fileData: this.dataSource,
                   idHeader: this.idHeader,
                 },
                 actualy
@@ -821,27 +841,31 @@ export class ViwerReadImportComponent
     return true;
   }
 
-  onChangeEventFilterStartAndFlag(){
+  onChangeEventFilterStartAndFlag() {
     const first = this.formfilterStart.value.first;
-    const second  = this.formfilterStart.value.second;
-    if(first && second){
-      this.dataSourceFilter = this.dataViews.filter(value => value.start === true  && value.flag === true);
-    }else if(!first && !second){
+    const second = this.formfilterStart.value.second;
+    if (first && second) {
+      this.dataSourceFilter = this.dataViews.filter(
+        (value) => value.start === true && value.flag === true
+      );
+    } else if (!first && !second) {
       this.dataSourceFilter = this.dataViews;
-    }else{
-      if(first && !second){
-      this.dataSourceFilter = this.dataViews.filter(value => value.start === true);
-      }else if(!first && second){
-        this.dataSourceFilter = this.dataViews.filter(value => value.flag === true);
+    } else {
+      if (first && !second) {
+        this.dataSourceFilter = this.dataViews.filter(
+          (value) => value.start === true
+        );
+      } else if (!first && second) {
+        this.dataSourceFilter = this.dataViews.filter(
+          (value) => value.flag === true
+        );
       }
     }
 
     this.lpviLped.dataSources$.next(this.dataSourceFilter);
-
   }
 
   removeAppSearch($item){
     this.Columns_replace = undefined;
   }
- 
 }

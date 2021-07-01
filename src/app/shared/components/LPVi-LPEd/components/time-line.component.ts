@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -6,13 +7,8 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-time-line',
@@ -47,41 +43,52 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
           <div class="pointer px-1">reset</div>
         </div>
         <div
-          class="custom-slider"
+          class="custom-slider w-100"
           style.height.px="50"
           *ngIf="
             (item?.endDate !== undefined || item?.startDate !== undefined) &&
               item['isMinimize'] === false;
             else noDate
           "
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+          [formGroup]="FormRange"
+          style="background: rgb(227, 233, 255);"
         >
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input
-              [formGroup]="FormRange"
-              [rangePicker]="picker"
-            >
-              <input
-                matStartDate
-                formControlName="start"
-                placeholder="Start date"
-              />
-              <input matEndDate formControlName="end" placeholder="End date" />
-            </mat-date-range-input>
+          <mat-form-field
+            appearance="fill"
+            class="w-50"
+            style="background: rgb(227, 233, 255);"
+          >
+            <mat-label>start date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="startPicker"
+              formControlName="start"
+              [max]="end"
+            />
             <mat-datepicker-toggle
               matSuffix
-              [for]="picker"
+              [for]="startPicker"
             ></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-            <mat-error
-              *ngIf="FormRange.controls.start.hasError('matStartDateInvalid')"
-              >Invalid start date</mat-error
-            >
-            <mat-error
-              *ngIf="FormRange.controls.end.hasError('matEndDateInvalid')"
-              >Invalid end date</mat-error
-            >
+            <mat-datepicker #startPicker></mat-datepicker>
           </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-50">
+            <mat-label>end date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="endPicker"
+              formControlName="end"
+              [min]="start"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="endPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+          <!-- </div> -->
         </div>
         <ng-template #noDate>
           <div
@@ -108,7 +115,14 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
       </div>
     </div>
   `,
-  styles: [],
+  styles: [
+    `
+      div.mat-form-field-flex {
+        background: whitesmoke !important;
+      }
+    `,
+  ],
+  providers: [DatePipe],
 })
 export class TimeLineComponent implements AfterViewInit, OnInit {
   /* INPUT */
@@ -130,26 +144,32 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
     end: new FormControl([Validators.required]),
   });
 
-  constructor(
-    private readonly lpViewer: LpViwersService,
-    private fb: FormBuilder
-  ) {}
+  constructor(private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.setLocale('en-US');
+  }
 
   ngOnInit(): void {
     this.FormRange.patchValue({
-      start: new Date(this.item['startDate']),
-      end: new Date(this.item['endDate']),
+      start: this.item['startDate'],
+      end: this.item['endDate'],
     });
+  }
+
+  get end() {
+    return this.FormRange.get('end').value;
+  }
+
+  get start() {
+    return this.FormRange.get('start').value;
   }
 
   ngAfterViewInit(): void {
     this.FormRange.valueChanges.subscribe((query) => {
-      // if (query['end'] != null && query['start'] != null) {
-      //   this.timeLineQueriesEmitter.emit({
-      //     head: this.item['head'],
-      //     ...query,
-      //   });
-      // }
+      this.timeLineQueriesEmitter.emit({
+        head: this.item['head'],
+        start: Date.parse(query['start']),
+        end: Date.parse(query['end']),
+      });
     });
   }
 }

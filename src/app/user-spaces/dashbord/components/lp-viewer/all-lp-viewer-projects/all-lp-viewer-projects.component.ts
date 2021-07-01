@@ -27,7 +27,6 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
     private common: CommonService,
     private notifs: NotificationService,
     private auth: AuthService,
-    private triggerServices: TriggerService,
     private router: Router
   ) {
     this.user = this.auth.currentUserSubject.value;

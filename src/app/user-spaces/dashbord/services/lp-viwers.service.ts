@@ -41,13 +41,13 @@ export class LpViwersService {
   }
 
   public getSavedProjects(idProject): Observable<any> {
-    return this.http.get(
-      `${environment.baseUrl}/lpviewer/get-permalink/${idProject}`
-    ).pipe(
-      map(res => {
-        return res;
-      })
-    )
+    return this.http
+      .get(`${environment.baseUrl}/lpviewer/get-permalink/${idProject}`)
+      .pipe(
+        map((res) => {
+          return res;
+        })
+      );
   }
 
   upload(file: File, idUser: any): Observable<any> {

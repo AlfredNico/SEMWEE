@@ -258,29 +258,29 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public callAfterTimeLineEmitter(event: any) {
     if (event['end'] !== null && event['start'] !== null) {
-      console.log(event['end'], '//', event['start']);
       let q = [],
         ss = [];
 
       this.dataSources = this.dataViews.filter((value, index) => {
-        const dt = new Date(value[`${event['head']}`]);
-        // if (Object.keys(this.queriesTimeLineFilters).length === 0) {
-        //   if (v < event['end'] && v > event['start']) q[index] = true;
-        //   else q[index] = false;
-        //   return (ss = q[index]);
-        // } else {
-        //   return Object.keys(this.queriesTimeLineFilters).every((x) => {
-        //     // const s = this.queriesTimeLineFilters[x];
-        //     // // !isNaN(Date.parse(v))
-        //     // if (v < event['end'] && v > event['start']) q[index] = true;
-        //     // else q[index] = false;
-        //     // if (x === event['head']) ss = q;
-        //     // return (ss = s[index] && q[index]);
-        //   });
-        // }
+        const v = Date.parse(value[`${event['head']}`]);
+        if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+          if (v <= event['end'] && v >= event['start']) q[index] = true;
+          else q[index] = false;
+          this.timeLineQeury[index] = ss = q[index];
+          return this.filtersData(index);
+        } else {
+          return Object.keys(this.queriesTimeLineFilters).every((x) => {
+            const s = this.queriesTimeLineFilters[x];
+            // !isNaN(Date.parse(v))
+            if (v <= event['end'] && v >= event['start']) q[index] = true;
+            else q[index] = false;
+            if (x === event['head']) ss = q;
+            this.timeLineQeury[index] = ss = s[index] && q[index];
+            return this.filtersData(index);
+          });
+        }
       });
 
-      // this.queriesTimeLineFilters[`${event.head}`] = event.head;
       this.lpviLped.dataSources$.next(this.dataSources);
       this.savePermalink(); // SAVE PERMALINK
     }
@@ -392,17 +392,15 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     const q1 = this.chechQueryFilter(index, this.numericQeury);
     const q2 = this.chechQueryFilter(index, this.searchQueries);
     const q3 = this.chechQueryFilter(index, this.inputQueries);
+    const q4 = this.chechQueryFilter(index, this.timeLineQeury);
 
-    return q1 && q2 && q3;
+    return q1 && q2 && q3 && q4;
   }
 
   private inputFilterFonciont() {
     let qqq = '',
       i1 = 0;
-    // const dataFiltered = [];
-    // for (let index = 0; index < this.dataViews.length - 1; index++) {
-    //   const value = this.dataViews[index];
-    // }
+    this.lpviLped.isLoading$.next(true); // disable loading spinner
 
     this.dataSources = this.dataViews.filter((value, index) => {
       if (Object.values(this.queries).every((x) => x === null || x === '')) {
@@ -435,7 +433,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
     this.lpviLped.dataSources$.next(this.dataSources);
-
+    this.lpviLped.isLoading$.next(false); // disable loading spinner
     this.savePermalink(); // SAVE PERMALINK
   }
 

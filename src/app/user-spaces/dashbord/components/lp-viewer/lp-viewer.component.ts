@@ -53,7 +53,7 @@ export class LpViewerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
-      this.lpVilpEdService.isLoading$.next(true);
+      this.lpVilpEdService.isLoading$.next(true); // load spinner
       this.lpVilpEdService
         .getSavedProjects(this.idProject)
         .subscribe((res: any) => {
@@ -72,23 +72,23 @@ export class LpViewerComponent implements AfterViewInit {
 
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
-          } else this.router.navigateByUrl('user-space/lp-editor');
+          }
+          //else this.router.navigateByUrl('user-space/lp-editor');
         });
     }
   }
 
   public nextReadFile(value: { idProject: any; data: any }) {
-    this.dataAfterUploaded = value.data;
-
-    if (value[0] !== undefined) {
-      this.router.navigate(['user-space/lp-viewer'], {
-        queryParams: { idProject: value[0][0]['_id'] },
-      });
-    } else {
-      this.router.navigate(['user-space/lp-viewer'], {
-        queryParams: { idProject: value.idProject },
-      });
-    }
+    this.dataAfterUploaded = value;
+    // if (value[0] !== undefined) {
+    //   this.router.navigate(['user-space/lp-viewer'], {
+    //     queryParams: { idProject: value[0][0]['_id'] },
+    //   });
+    // } else {
+    this.router.navigate(['user-space/lp-viewer'], {
+      queryParams: { idProject: value.idProject },
+    });
+    // }
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
     this.stepper.next();

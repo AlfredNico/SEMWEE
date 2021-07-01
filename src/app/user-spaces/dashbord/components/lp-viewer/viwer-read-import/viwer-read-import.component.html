@@ -137,13 +137,13 @@
                         <section class="example-section">
                           <mat-checkbox class="example-margin" formControlName="second" (change)="onChangeEventFilterStartAndFlag()">
                             Filter Flag
-                          </mat-checkbox> 
+                          </mat-checkbox>
                         </section>
-                       </form> 
+                       </form>
                   </div>
 
                 </mat-menu>
-               
+
                 <mat-menu #commonTransforms="matMenu">
                   <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'
                     (toggleChanges)="toggleedit($event)">
@@ -159,9 +159,9 @@
                   <div fxLayout="row" fxLayoutAlign="space-around center">
                     <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
-                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Star')"></i>
-                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Star')"></i>
-                    <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
+                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
+                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
+                    <p class="text-center font-size-h4 m-0" >{{ paginator.pageIndex * paginator.pageSize + indexRow + 1  }}.</p>
                   </div>
                 </td>
               </ng-container>
@@ -296,15 +296,6 @@
             </tr>
           </table>
         </div>
-        <!-- <mat-paginator
-          appStylePaginator
-          showFirstLastButtons
-          [showTotalPages]="3"
-          [length]="dataSource.data.length"
-          [pageSize]="10"
-          [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-        ></mat-paginator> -->
-        <!-- [pageIndex]="pageIndex" (page)="getServerData($event)" (page)='getServerData($event)' -->
         <mat-paginator #paginator appStylePaginator [showFirstLastButtons]="true" [showTotalPages]="3"
         [length]="this.dataSourceFilter.length"
         [pageSize]="10"
