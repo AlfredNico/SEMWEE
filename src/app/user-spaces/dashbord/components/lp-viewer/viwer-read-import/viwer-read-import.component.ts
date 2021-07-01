@@ -100,6 +100,8 @@ export class ViwerReadImportComponent
 
   // ------------------
   pageEvent: PageEvent;
+  Columns_replace:String;
+  Columns_replaces:any[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -155,6 +157,8 @@ export class ViwerReadImportComponent
         nextPage: 0,
         previousPageIndex: 1,
       };
+
+      this.lpviLped.isLoading$.next(false);
     }
   }
 
@@ -187,7 +191,13 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
-
+    this.lpviLped.searchReplace$.subscribe((value)=>{
+    
+      if (value !== undefined) {
+        this.Columns_replace  = value["head"];
+        this.Columns_replaces.push("test");
+      }
+    })
     this.lpviLped.dataSources$.subscribe((res: any[]) => {
       if (res) {
         this.paginator = {
@@ -198,6 +208,7 @@ export class ViwerReadImportComponent
         this.dataSourceFilter = res;
         this.dataSource.data = res.slice(0, this.paginator.pageSize);
         this.lpviLped.dataPaginator$.next(true);
+        // console.log("In read Componnent ",this.dataSourceFilter)
       }
     });
     
@@ -229,20 +240,29 @@ export class ViwerReadImportComponent
       )
       .subscribe();
   }
+  update_Search_Replace(name_dinamic){
+    console.log(name_dinamic);
+    this.savedata(name_dinamic);
+  }
 
   updateStart(value,indice,nameUpdate){
 
     let name_dinamic;
-    if(nameUpdate === "Start"){
+   
+      if(nameUpdate === "Star"){
   
         value.start = value.start ? false : true;
         name_dinamic = value.start ?  `${nameUpdate} row ${indice}`:`Un${nameUpdate} row ${indice}`;
       
-    }else{
+        }else{
+        
+            value.flag = value.flag  ? false : true;
+            name_dinamic = value.flag ? `${nameUpdate} row ${indice}` :`Un${nameUpdate} row ${indice}`;
+        }
+    this.savedata(name_dinamic);
+  }
 
-        value.flag = value.flag  ? false : true;
-        name_dinamic = value.flag ? `${nameUpdate} row ${indice}` :`Un${nameUpdate} row ${indice}`;
-    }
+  savedata(name_dinamic){
     let actualydata;
     if (this.ActualyData) {
       this.listNameHistory.splice(
@@ -264,10 +284,9 @@ export class ViwerReadImportComponent
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
-          console.log(res);
+          // console.log(res);
         });
       this.ActualyData = null;
-
   }
 
   public openEditColumn(columnName: string) {
@@ -378,6 +397,13 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
       value: '',
+    });
+  }
+  public searchReplace(column: any) {
+    this.lpviLped.searchReplace$.next({
+      type: 'search_replace',
+      isMinimize: false,
+      head: column,
     });
   }
 

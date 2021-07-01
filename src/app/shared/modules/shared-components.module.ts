@@ -17,6 +17,7 @@ import { FacetFilterComponent } from '../components/LPVi-LPEd/components/facet-f
 import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
+// import { SearchReplaceComponent } from '@app/user-spaces/dashbord/components/lp-viewer/search_filter_replace/search-filter-replace.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     SearchFilterComponent,
     FacetFilterComponent,
     TimeLineComponent,
+    // SearchReplaceComponent
   ],
   imports: [
     MatStepperModule, // stepper module

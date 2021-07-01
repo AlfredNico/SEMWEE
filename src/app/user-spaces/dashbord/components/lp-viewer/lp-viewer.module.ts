@@ -17,6 +17,7 @@ import { SharedComponentsModule } from '@app/shared/modules/shared-components.mo
 import { EditComponent } from './editLpViewer/edit.component';
 import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
 import { DragDroppDirective } from '../../directives/drag-dropp.directive';
+import { SearchReplaceComponent } from './search_filter_replace/search-filter-replace.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DragDroppDirective } from '../../directives/drag-dropp.directive';
     EditComponent,
     UndoRedoComponent,
     DragDroppDirective,
+    SearchReplaceComponent
   ],
   imports: [
     SharedComponentsModule,

@@ -60,13 +60,31 @@
         class="mat-group scroll ps" *ngIf="dataViews.length !== 0" perfectScrollbar>
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target [idProject]='idProject' [items]='items' [dataViews]='dataViews'
-            [dataSources]='dataSource.data'></app-facet-filter-target>
+            [dataSources]='dataSource.data' [datasourceFilter]='dataSourceFilter' (sendData)="update_Search_Replace($event)"></app-facet-filter-target>
 
         </mat-tab>
         <mat-tab label="Undo / Redo">
           <!-- <h1>Mea</h1> -->
           <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata"
             (callOtherData)="getAllDataByListName($event)"></app-undo-redo>
+        </mat-tab>
+
+      
+         <mat-tab label="Search / Replace">
+           <div *ngIf="Columns_replace">
+              <ng-template #searchReplace>
+                <app-search-replace 
+                  [nameColumn]="Columns_replace"
+                  [datasourceFilter]="dataSourceFilter"
+                  (sendData)="update_Search_Replace($event)"
+                >
+                  </app-search-replace>
+              </ng-template>
+      
+              <ng-container *ngTemplateOutlet="searchReplace">
+                This text is not displayed
+              </ng-container> 
+           </div>
         </mat-tab>
       </mat-tab-group>
     </aside>
@@ -109,7 +127,7 @@
                       <form [formGroup]="formfilterStart" >
                         <section class="example-section">
                           <mat-checkbox class="example-margin" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()"> 
-                            Filter Start
+                            Filter Star
                           </mat-checkbox>
                         </section>
 
@@ -138,8 +156,8 @@
                   <div fxLayout="row" fxLayoutAlign="space-around center">
                     <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
-                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
+                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Star')"></i>
+                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Star')"></i>
                     <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
                   </div>
                 </td>
@@ -169,6 +187,9 @@
                   </button>
                   <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
+                  </button>
+                  <button mat-menu-item (click)="searchReplace(column)">
+                    Search replace 
                   </button>
                   <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
@@ -296,6 +317,7 @@
           <app-edit [(tab_arraw)]="tab_arraw" [(vueedit)]="vueEdit" [(eObject)]="objectOne"
             [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)"
             (toggleChange)="toggleedit($event)"></app-edit>
+            <app-search-replace></app-search-replace>
         </div>
       </div>
     </div>
