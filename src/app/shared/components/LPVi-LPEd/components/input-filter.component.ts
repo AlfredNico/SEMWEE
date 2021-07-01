@@ -42,16 +42,21 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           class="py-0"
           *ngIf="item['isMinimize'] === false"
           [formGroup]="form"
+          fxLayout="row"
+          fxLayoutAlign="space-around center"
+          style="background: rgb(54, 153, 255);"
         >
           <input
             autocomplete="off"
             type="search"
-            class="w-100"
             placeholder="Filter ..."
             [formControlName]="item['head']"
             appearance="outline"
-            class="form-control"
+            class="form-control w-100"
           />
+          <button mat-icon-button (click)="search()">
+            <mat-icon>search</mat-icon>
+          </button>
         </div>
         <div
           fxLayout="row"
@@ -93,21 +98,29 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
     else this.inputValue = this.item['value'];
 
     this.form.addControl(this.item['head'], new FormControl(this.inputValue));
-  
   }
 
   ngAfterViewInit(): void {
     this.form.valueChanges.subscribe((query) => {
+      if (query[`${this.item['head']}`] == '')
+        this.formGroup.emit({
+          query: query,
+          item: this.item,
+          index: this.index,
+        });
+    });
+
+    // this.lpVilpEd.inputSubject.subscribe((_) => {
+    //   this.form.reset();
+    // });
+  }
+
+  public search(): void {
+    if (this.form.value != '')
       this.formGroup.emit({
-        query: query,
+        query: this.form.value,
         item: this.item,
         index: this.index,
       });
-    });
-
-    this.lpVilpEd.inputSubject.subscribe((_) => {
-      this.form.reset();
-    });
   }
-
 }
