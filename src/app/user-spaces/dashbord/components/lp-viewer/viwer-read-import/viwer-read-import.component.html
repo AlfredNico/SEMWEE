@@ -56,7 +56,9 @@
   </div>
   <div class="row p-0">
     <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3">
-      <mat-tab-group mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
+      <mat-tab-group
+        [selectedIndex]="selectedIndex"
+       mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
         class="mat-group scroll ps" *ngIf="dataViews.length !== 0" perfectScrollbar>
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target [idProject]='idProject' [items]='items' [dataViews]='dataViews'
@@ -77,6 +79,7 @@
                   [nameColumn]="Columns_replace"
                   [datasourceFilter]="dataSourceFilter"
                   (sendData)="update_Search_Replace($event)"
+                  (removeFromItem)="removeAppSearch($event)"
                 >
                   </app-search-replace>
               </ng-template>

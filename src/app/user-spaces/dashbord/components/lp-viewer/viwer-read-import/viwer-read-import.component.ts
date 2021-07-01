@@ -48,6 +48,7 @@ export class ViwerReadImportComponent
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
+  selectedIndex = 1;
 
   @Input('idProject') idProject = undefined;
   @Input('filtersData') filtersData: {
@@ -101,7 +102,6 @@ export class ViwerReadImportComponent
   // ------------------
   pageEvent: PageEvent;
   Columns_replace:String;
-  Columns_replaces:any[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -109,7 +109,9 @@ export class ViwerReadImportComponent
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
     private readonly lpviLped: LpdLpdService
-  ) {}
+  ) {
+    // this.selectedIndex = 1;
+  }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
@@ -195,7 +197,6 @@ export class ViwerReadImportComponent
     
       if (value !== undefined) {
         this.Columns_replace  = value["head"];
-        this.Columns_replaces.push("test");
       }
     })
     this.lpviLped.dataSources$.subscribe((res: any[]) => {
@@ -241,7 +242,7 @@ export class ViwerReadImportComponent
       .subscribe();
   }
   update_Search_Replace(name_dinamic){
-    console.log(name_dinamic);
+    // console.log(name_dinamic);
     this.savedata(name_dinamic);
   }
 
@@ -260,6 +261,8 @@ export class ViwerReadImportComponent
             name_dinamic = value.flag ? `${nameUpdate} row ${indice}` :`Un${nameUpdate} row ${indice}`;
         }
     this.savedata(name_dinamic);
+
+    this.selectedIndex = 1
   }
 
   savedata(name_dinamic){
@@ -389,6 +392,7 @@ export class ViwerReadImportComponent
       head: column,
       content: value,
     });
+    this.selectedIndex = 0; 
   }
 
   public inputFilter(column: any) {
@@ -398,6 +402,7 @@ export class ViwerReadImportComponent
       head: column,
       value: '',
     });
+    this.selectedIndex = 0;
   }
   public searchReplace(column: any) {
     this.lpviLped.searchReplace$.next({
@@ -405,6 +410,7 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
     });
+    this.selectedIndex = 3
   }
 
   public numericFacter(column: any) {
@@ -433,6 +439,7 @@ export class ViwerReadImportComponent
       maxValue: maxValue,
       options: options,
     });
+    this.selectedIndex = 0
   }
 
   public timeLineFacter(column: any): void {
@@ -454,6 +461,8 @@ export class ViwerReadImportComponent
       startDate: date[minIdx],
       endDate: date[maxIdx],
     });
+
+    this.selectedIndex = 0;
   }
 
   combinate(i, otherValue) {
@@ -548,12 +557,12 @@ export class ViwerReadImportComponent
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
-          console.log(res);
         });
       this.ActualyData = null;
     }
     this.CountCell = 0;
     this.testConverter = true;
+    this.selectedIndex = 1 ;
   }
 
   ConverterToString(newValue) {
@@ -830,5 +839,9 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.next(this.dataSourceFilter);
 
   }
-  
+
+  removeAppSearch($item){
+    this.Columns_replace = undefined;
+  }
+ 
 }
