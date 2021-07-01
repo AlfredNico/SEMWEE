@@ -121,13 +121,23 @@ export class ViwerReadImportComponent
           this.dataSourceFilter = this.dataViews;
           this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
-      } else if (Object.keys(this.dataAfterUploaded).length === 4) {
+      } else {
         this.items = []; //set items filters
-        this.displayedColumns = this.dataAfterUploaded['header'];
-        this.dataSourceFilter = this.dataViews =
-          this.dataAfterUploaded['content'];
-        this.listNameHistory = this.dataAfterUploaded['name'];
-        this.dataSource = this.dataAfterUploaded['showData'];
+        this.displayedColumns = this.dataAfterUploaded['data']['header'];
+
+        this.dataSourceFilter = this.dataViews = this.readCsvFile(
+          this.dataAfterUploaded['data']['contentCsv'],
+          this.dataAfterUploaded['data']['header'],
+          this.dataAfterUploaded['idProject']
+        );
+        this.listNameHistory = [
+          {
+            idName: 0,
+            name: 'Create project',
+            idProject: this.dataAfterUploaded['idProject'],
+          },
+        ];
+        this.dataSource = this.dataSourceFilter.slice(0, 10);
       }
       // console.log('data', this.dataSource);
 
@@ -142,8 +152,37 @@ export class ViwerReadImportComponent
     }
   }
 
+  private readCsvFile(
+    contentCsv: any[],
+    header: string[],
+    idProject: any
+  ): any[] {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
+
+    const content = contentCsv.map((value) =>
+      value.reduce(
+        (tdObj, td, index) => {
+          tdObj[header[index]] = td;
+          return tdObj;
+        },
+        { star: false, flag: false }
+      )
+    );
+    this.lpViewer
+      .sendFiles(
+        {
+          namehistory: 'Create project',
+          idProject: idProject,
+          fileData: content,
+          idHeader: 0,
+        },
+        0
+      )
+      .subscribe();
+    return content;
+  }
+
   public getServerData(event?: PageEvent): void {
-    // const page = event.pageSize * (event.pageIndex + 1) - event.pageSize;
     let page = event.pageIndex * event.pageSize;
     const lenghtPage = event.pageSize * (event.pageIndex + 1);
     this.paginator.nextPage = this.paginator.nextPage + event.pageSize;

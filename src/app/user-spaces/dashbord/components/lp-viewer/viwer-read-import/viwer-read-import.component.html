@@ -57,7 +57,7 @@
   <div class="row p-0">
     <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3">
       <mat-tab-group mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
-        class="mat-group scroll ps" *ngIf="dataViews.length !== 0" perfectScrollbar>
+        class="mat-group scroll ps" perfectScrollbar>
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target [idProject]='idProject' [items]='items' [dataViews]='dataViews'
             [dataSources]='dataSource.data'></app-facet-filter-target>
@@ -108,7 +108,7 @@
                   <div>
                       <form [formGroup]="formfilterStart" >
                         <section class="example-section">
-                          <mat-checkbox class="example-margin" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()"> 
+                          <mat-checkbox class="example-margin" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()">
                             Filter Start
                           </mat-checkbox>
                         </section>
@@ -116,13 +116,13 @@
                         <section class="example-section">
                           <mat-checkbox class="example-margin" formControlName="second" (change)="onChangeEventFilterStartAndFlag()">
                             Filter Flag
-                          </mat-checkbox> 
+                          </mat-checkbox>
                         </section>
-                       </form> 
+                       </form>
                   </div>
 
                 </mat-menu>
-               
+
                 <mat-menu #commonTransforms="matMenu">
                   <app-edit-cell [dataSource]="dataSource.data" [columnName]='column'
                     (toggleChanges)="toggleedit($event)">
@@ -140,7 +140,7 @@
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
                     <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
+                    <p class="text-center font-size-h4 m-0" >{{ paginator.pageIndex * paginator.pageSize + indexRow + 1  }}.</p>
                   </div>
                 </td>
               </ng-container>

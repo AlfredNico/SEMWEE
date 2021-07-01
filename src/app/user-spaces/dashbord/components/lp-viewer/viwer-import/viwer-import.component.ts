@@ -84,19 +84,14 @@ export class ViwerImportComponent implements OnInit {
   @Output() dataImported = new EventEmitter<any>(null);
   private data: {
     header: string[];
-    content: any[];
-    name: any[];
-    showData: any[];
+    contentCsv: any[];
   } = {
     header: [],
-    content: [],
-    showData: [],
-    name: [],
+    contentCsv: [],
   };
   @Input() user: User = undefined;
   private ProjectName: string = '';
 
-  //////////////
   csvContent: string;
   parsedCsv: string[][];
   sizeFile: any;
@@ -111,19 +106,14 @@ export class ViwerImportComponent implements OnInit {
     this.lpviLped.isLoading$.next(false); // disable loading spinner
   }
 
-  processCsv(content) {
-    return content.split('\n');
-  }
-
   convertFile(event: any) {
     const file = event.target ? event.target.files[0] : event[0];
     if ((file['name'] as string).includes('.csv')) {
-      this.lpviLped.isLoading$.next(true); // enable loading spinner
-
       this.sizeFile = file.size;
       this.file = file;
 
       this.ProjectName = file['name'].replace('.csv', '');
+
       this.readFileContent(file)
         .then((csvContent) => {
           const csv = [];
@@ -139,33 +129,24 @@ export class ViwerImportComponent implements OnInit {
           this.parsedCsv.pop();
 
           const header = this.parsedCsv.shift().toString().split(',');
-          // header.unshift('star', 'flag');
-
-          const content = this.parsedCsv.map((value) =>
-            value.reduce(
-              (tdObj, td, index) => {
-                tdObj[header[index]] = td;
-                return tdObj;
-              },
-              { star: false, flag: false }
-            )
-          );
 
           this.data.header = [...new Set([...header])].filter(
             (item) => item != undefined && item != ''
           );
 
           this.data.header.unshift('all');
-          this.data.content = content;
-          this.data.showData = content.slice(0, 10);
+          this.data.contentCsv = csv;
           this.onSubmit();
-          // console.log(this.data.content)
         })
         .catch((error) => console.log(error));
     } else this.nofits.warn('This is no csv file !');
   }
 
-  readFileContent(file) {
+  private processCsv(content) {
+    return content.split('\n');
+  }
+
+  private readFileContent(file) {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
       reader.onload = (event) => resolve(event.target.result);
@@ -184,36 +165,17 @@ export class ViwerImportComponent implements OnInit {
       };
       this.lpViewerService.sendProjectNames(value).subscribe((idProject) => {
         if (idProject) {
-          this.data.name = [
-            {
-              idName: 0,
-              name: 'Create project',
-              idProject: idProject['idProject'],
-            },
-          ];
-          this.lpViewerService
-            .sendFiles(
-              {
-                namehistory: 'Create project',
-                idProject: idProject['idProject'],
-                fileData: this.data.content,
-                idHeader: 0,
-              },
-              0
-            )
-            .subscribe();
-
           this.dataImported.emit({
             idProject: idProject['idProject'],
             data: this.data,
-            idHeader: 0,
+            //idHeader: 0,
           });
         }
-        this.dataImported.emit({
-          idProject: idProject['idProject'],
-          data: this.data,
-          idHeader: 0,
-        });
+        // this.dataImported.emit({
+        //   idProject: idProject['idProject'],
+        //   data: this.data,
+        //   idHeader: 0,
+        // });
       });
     }
   }
