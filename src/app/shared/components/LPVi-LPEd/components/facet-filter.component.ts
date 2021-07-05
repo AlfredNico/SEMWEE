@@ -243,7 +243,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         )
           q[index] = true;
         else q[index] = false;
-        return (ss = q[index]);
+
+        this.numericQeury[index] = ss = q[index];
+        return this.filtersData(index);
       } else {
         return Object.keys(this.queriesNumerisFilters).every((x) => {
           const s = this.queriesNumerisFilters[x];
@@ -257,7 +259,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
           if (x === event['head']) ss = q;
 
-          return (ss = s[index] && q[index]);
+          this.numericQeury[index] = ss = s[index] && q[index];
+          return this.filtersData(index);
         });
       }
     });
@@ -304,6 +307,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public minimizeEmitter(item: any): void {
+    console.log('item=', item);
     const index = this.items.indexOf(item);
 
     if (index !== -1) {

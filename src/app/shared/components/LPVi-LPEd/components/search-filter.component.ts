@@ -129,8 +129,6 @@ export class SearchFilterComponent implements AfterViewInit {
   constructor() {}
 
   ngAfterViewInit(): void {
-    // this.couter = this.couterInclude();
-    // this.observable$ = of(this.couterInclude());
     this.itemSubject.subscribe(
       (_) => (this.observable$ = of(this.couterInclude()))
     );
@@ -154,7 +152,6 @@ export class SearchFilterComponent implements AfterViewInit {
   }
 
   public include(headName: any, contentName: string) {
-    // this.couter = 1;
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val, i) => {

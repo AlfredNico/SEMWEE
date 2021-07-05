@@ -24,12 +24,12 @@ import { FormatFileSizePipe } from '@app/user-spaces/dashbord/pipe/format-filesi
     LandingPageModule,
     ProjectsModule,
     AvatarModule,
-    RouterModule.forChild([{ path: '', component: AllLPViewerProjectsComponent }]),
+    RouterModule.forChild([
+      { path: '', component: AllLPViewerProjectsComponent },
+    ]),
   ],
   exports: [RouterModule],
   providers: [LPViewerProjectsService],
-  entryComponents: [
-    LPViewerProjectsComponent,
-  ],
+  entryComponents: [LPViewerProjectsComponent],
 })
-export class AllLPViewerProjectsModule { }
+export class AllLPViewerProjectsModule {}

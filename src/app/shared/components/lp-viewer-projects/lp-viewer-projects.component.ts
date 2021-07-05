@@ -1,9 +1,16 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/services/notification.service';
 import { RemoveComponent } from '@app/user-spaces/dashbord/components/projects/dialog/remove.component';
 import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
+import { Paginator } from '@app/user-spaces/dashbord/interfaces/paginator';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
@@ -15,10 +22,15 @@ import { LpdLpdService } from '../LPVi-LPEd/services/lpd-lpd.service';
   templateUrl: './lp-viewer-projects.component.html',
   styleUrls: ['./lp-viewer-projects.component.scss'],
 })
-export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
+export class LPViewerProjectsComponent implements OnChanges {
   @Input() public allProjects$: Observable<LPAllProjects[]> = new Observable<
     LPAllProjects[]
   >(undefined);
+
+  public allProjects: any[] = [];
+  public dataSources: any[] = [];
+  public paginator: Paginator;
+
   constructor(
     private lPViewerProjectsService: LPViewerProjectsService,
     public dialog: MatDialog,
@@ -28,11 +40,36 @@ export class LPViewerProjectsComponent implements OnInit, AfterViewInit {
     private readonly lpviLped: LpdLpdService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnChanges(): void {
+    // this.allProjects$.subscribe(res)
+    this.allProjects$.subscribe((resulat) => {
+      this.dataSources = resulat;
+      this.allProjects = resulat;
+    });
 
-  ngAfterViewInit(): void {}
+    this.paginator = {
+      pageIndex: 0,
+      pageSize: 10,
+      nextPage: 0,
+      previousPageIndex: 1,
+      pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
+    };
+  }
 
-  onDeteils(item: LPAllProjects) {}
+  getServerData(event: any) {
+    let page = event.pageIndex * event.pageSize;
+    const lenghtPage = event.pageSize * (event.pageIndex + 1);
+    this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
+
+    this.allProjects = this.dataSources.slice(page, lenghtPage);
+    if (this.paginator.pageSize != event.pageSize)
+      this.lpviLped.dataPaginator$.next(true);
+
+    this.paginator = {
+      ...this.paginator,
+      ...event,
+    };
+  }
 
   onDelete(item: LPAllProjects) {
     this.dialog
