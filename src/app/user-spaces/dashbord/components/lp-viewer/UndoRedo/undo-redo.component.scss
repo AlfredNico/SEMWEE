@@ -4,3 +4,7 @@ mat-list-item:hover{
 .active{
     background-color: #f7f7f7;
 }
+
+::ng-deep .mat-list-item-content {
+    font-family: Poppins!important;
+}

@@ -12,6 +12,7 @@ export class LpdLpdService {
   /* Emittter value from clicked USER */
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
   public searchReplace$ = new BehaviorSubject<any>(undefined);
+  public resetfilter = new Subject<any>();
   /* Emittter value dataSources after filter USER */
   public dataSources$ = new BehaviorSubject<any>(undefined);
   public dataPaginator$ = new BehaviorSubject<boolean>(false);
@@ -57,7 +58,7 @@ export class LpdLpdService {
             this.formInputQuery = { ...JSON.parse(res[2][0]['value']) };
 
           const header = JSON.parse(
-            JSON.stringify(res[0][0]['nameUpdate'].split('"').join(''))
+            JSON.stringify(res[0][0]?.nameUpdate.split('"').join(''))
           ).split(',');
 
           header.unshift('all');
@@ -67,6 +68,7 @@ export class LpdLpdService {
             formInputQuery: this.formInputQuery,
             permaLink: this.permaLink,
             name: res[4],
+            projectName: res[5],
           };
         })
       );

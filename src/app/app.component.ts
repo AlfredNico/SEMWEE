@@ -1,22 +1,20 @@
 import { BottonSheetComponent } from './shared/components/botton-sheet/botton-sheet.component';
 import { IdbService } from './services/idb.service';
-import { InterruptedService } from './shared/services/interrupted.service';
 import { Component, HostListener, OnDestroy } from '@angular/core';
 import {
-  ActivationEnd,
-  Event,
   NavigationCancel,
   NavigationEnd,
-  NavigationError,
   NavigationStart,
   RouteConfigLoadEnd,
   RouteConfigLoadStart,
   Router,
 } from '@angular/router';
 import { CommonService } from './shared/services/common.service';
-import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material/bottom-sheet';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { HttpCancelService } from './shared/services/http-cancel.service';
+import {
+  MatBottomSheet,
+  MatBottomSheetConfig,
+} from '@angular/material/bottom-sheet';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -48,22 +46,21 @@ export class AppComponent implements OnDestroy {
     hasBackdrop: false,
     disableClose: false,
     panelClass: 'bottom-sheet-container',
-    direction: 'ltr'
+    direction: 'ltr',
   };
 
   routerLoaderTimout: any;
   public unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
-
   constructor(
     private router: Router,
     private common: CommonService,
     private readonly idb: IdbService,
-    private _bottomSheet: MatBottomSheet,
+    private _bottomSheet: MatBottomSheet
   ) {
     // this.interrupted.isInterrompted.next(false);
     this.idb.connectToIDB();
-    this.common.isLoading$.subscribe(res => {
+    this.common.isLoading$.subscribe((res) => {
       if (res === false) {
         // this.common.showSpinner('root')
         this.common.hideSpinner('root');
@@ -71,7 +68,7 @@ export class AppComponent implements OnDestroy {
       }
       // else {
       // }
-    })
+    });
 
     this.common.loader$ = this.common.loaderSubject;
     // page progress bar percentage

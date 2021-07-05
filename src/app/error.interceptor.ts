@@ -11,7 +11,6 @@ import { AuthService } from './authentification/services/auth.service';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { NotificationService } from './services/notification.service';
-import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { CommonService } from './shared/services/common.service';
 
@@ -34,7 +33,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
             this.notifs.warn(error);
             // window.location.reload();
-          }else if (err.status === 0) {
+          } else if (err.status === 0) {
             this.notifs.warn('Server not responding !');
           } else {
             this.notifs.warn(error);

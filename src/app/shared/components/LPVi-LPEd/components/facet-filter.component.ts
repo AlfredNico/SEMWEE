@@ -12,7 +12,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   selector: 'app-facet-filter-target',
   template: `
     <div *ngIf="items.length > 0; else noItems">
-      <div class="w-100 px-2 pb-3">
+      <div class="w-100 pl-4 pr-2 pb-3">
         <button class="rounded btn btn-custom">Refresh</button>
         <span fxFlex></span>
         <button class="rounded btn btn-custom mr-2" (click)="resetAll()">
@@ -105,9 +105,9 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
     </div>
 
     <ng-template #noItems>
-      <div style="background: #EEE5FF;" class="w-100 px-3 py-5">
-        <h1>Using facets and filters</h1>
-        <p class="m-0">
+      <div style="background: #F5F6FA;" class="w-100 ml-4 px-3 py-5">
+        <h1 class="ftp">Using facets and filters</h1>
+        <p class="m-0 ftp">
           Use facets and filters to select subsets of your data to act on.
           Choose facet and filter methods from the menus at the top of each data
           column.
@@ -159,6 +159,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngAfterViewInit(): void {
+    this.lpviLped.resetfilter.subscribe((res: any) => {
+      this.resetAll();
+    });
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
@@ -206,11 +209,15 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             include: false,
           };
         });
-      } else if (item['type'] === 'search') {
+      } else if (item['type'] === 'input') {
         this.items[index] = {
           ...item,
           value: '',
         };
+        // this.lpviLped.permaLink.queries[`${item['head']}`] = {
+
+        // };
+        // this.lpviLped.permaLink.queries[`${item['head']}`]);
       } else if (item['type'] === 'numeric') {
         this.items[index] = {
           ...item,
@@ -472,6 +479,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         queries: this.queries,
         queriesNumerisFilters: this.queriesNumerisFilters,
       }),
+    };
+
+    this.lpviLped.permaLink = {
+      ...this.lpviLped.permaLink,
+      input: this.inputQueries,
+      search: this.searchQueries,
+      numeric: this.numericQeury,
+      items: this.items,
+      queries: this.queries,
+      queriesNumerisFilters: this.queriesNumerisFilters,
     };
 
     this.lpviLped.isLoading$.next(false); // desaable loading spinner

@@ -118,6 +118,15 @@ export class LpEditorService {
   }
 
   public addFilter(value: { idProject: any; value: any }) {
+    //    public permaLink = {
+    //   input: [],
+    //   numeric: [],
+    //   search: [],
+    //   items: [],
+    //   name: [],
+    //   queries: {},
+    //   queriesNumerisFilters: {},
+    // };
     return this.http.post(
       `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`,
       value

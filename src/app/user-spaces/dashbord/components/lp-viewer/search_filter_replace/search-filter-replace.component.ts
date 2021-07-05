@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NotificationService } from '@app/services/notification.service';
 
 @Component({
   selector: 'app-search-replace',
@@ -16,7 +17,7 @@ export class SearchReplaceComponent implements OnInit {
     new_value: new FormControl(''),
   });
 
-  constructor() {}
+  constructor( private readonly nofits: NotificationService ) {}
   ngOnInit() {}
   searchReplace() {
     const first_value = this.formSearch.value.char_value;
@@ -40,9 +41,7 @@ export class SearchReplaceComponent implements OnInit {
         const name_dinamic = `Replace "${first_value}" to "${second_value}" on column "${this.nameColumn}".`;
         this.sendData.emit(name_dinamic);
       } else
-        alert(
-          `${first_value} on type text not found in colomn ${this.nameColumn}`
-        );
+        this.nofits.info(`${first_value} on type text not found in colomn ${this.nameColumn}`);
     }
   }
 }

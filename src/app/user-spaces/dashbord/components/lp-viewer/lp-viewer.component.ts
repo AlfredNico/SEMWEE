@@ -1,12 +1,10 @@
 import { User } from '@app/classes/users';
 import { AuthService } from '@app/authentification/services/auth.service';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/shared/services/common.service';
-import { LpViwersService } from '../../services/lp-viwers.service';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
-// import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-lp-viewer',
@@ -30,8 +28,6 @@ export class LpViewerComponent implements AfterViewInit {
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private common: CommonService,
-    //private lpviewer: LpViwersService,
     private lpVilpEdService: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
@@ -44,12 +40,6 @@ export class LpViewerComponent implements AfterViewInit {
       }
     });
   }
-
-  // ngDoCheck(): void {
-  //   this.common.hideSpinner('table');
-  // }
-
-  ngOnInit(): void { }
 
   ngAfterViewInit() {
     if (this.idProject !== undefined) {
@@ -72,22 +62,19 @@ export class LpViewerComponent implements AfterViewInit {
             this.dataAfterUploaded = res;
             this.lpVilpEdService.isLoading$.next(false);
           }
-          //else this.router.navigateByUrl('user-space/lp-editor');
         });
     }
   }
 
-  public nextReadFile(value: { idProject: any; data: any }) {
+  public nextReadFile(value: {
+    idProject: any;
+    file: File;
+    projectName: string;
+  }) {
     this.dataAfterUploaded = value;
-    // if (value[0] !== undefined) {
-    //   this.router.navigate(['user-space/lp-viewer'], {
-    //     queryParams: { idProject: value[0][0]['_id'] },
-    //   });
-    // } else {
     this.router.navigate(['user-space/lp-viewer'], {
       queryParams: { idProject: value.idProject },
     });
-    // }
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
     this.stepper.next();
