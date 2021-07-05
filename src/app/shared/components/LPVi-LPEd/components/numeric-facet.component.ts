@@ -47,15 +47,6 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
             (userChangeEnd)="userChangeEnd($event)"
           ></ngx-slider>
         </div>
-        <!-- <ng-template #noNumber>
-          <div
-            class="text-center"
-            [style.height.px]="50"
-            *ngIf="item['isMinimize'] === false"
-          >
-            <p [style.color]="'#F64E60'">No nunber</p>
-          </div>
-        </ng-template> -->
         <div
           fxLayout="row"
           fxLayoutAlign="center center"
@@ -69,17 +60,12 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
       </div>
     </div>
   `,
-  // styleUrls: ['./numeric-facet.component.scss']
 })
 export class NumericFacetComponent implements AfterViewInit {
   /* INPUT */
   @Input('items') items: any[] = [];
   @Input('item') item: any = undefined;
   @Input('dataViews') public dataViews: any[] = [];
-  // @Input('dataSources') public dataSources: any[] = [];
-  // @Input('minValue') minValue: number = 0;
-  // @Input('maxValue') maxValue: number = 2000;
-  // @Input('options') options: Options = undefined;
 
   /* OUTPUT */
   @Output('numericQueriesEmitter') numericQueriesEmitter =

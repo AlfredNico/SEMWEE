@@ -34,8 +34,16 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 white-color fw-600" (click)="invert()" [ngStyle]="{color: !item['invert'] ? '#74788D' : null}">invert</div>
-          <div class="pointer px-1 white-color fw-600" (click)="reset()">reset</div>
+          <div
+            class="pointer px-1 white-color fw-600"
+            (click)="invert()"
+            [ngStyle]="{ color: !item['invert'] ? '#74788D' : null }"
+          >
+            invert
+          </div>
+          <div class="pointer px-1 white-color fw-600" (click)="reset()">
+            reset
+          </div>
         </div>
         <div
           class="py-0"
@@ -57,14 +65,16 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             <mat-icon>search</mat-icon>
           </button>
         </div>
-        <div class="py-3 px-3 level2 rounded-bottom" *ngIf="item['isMinimize'] === false">
+        <div
+          class="py-3 px-3 level2 rounded-bottom"
+          *ngIf="item['isMinimize'] === false"
+        >
           <mat-checkbox
             [checked]="item['sensitive']"
             (change)="changeStatus($event)"
             style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
             >case sensitive</mat-checkbox
           >
-          <!-- <mat-checkbox>regular expression</mat-checkbox> -->
         </div>
       </div>
     </div>

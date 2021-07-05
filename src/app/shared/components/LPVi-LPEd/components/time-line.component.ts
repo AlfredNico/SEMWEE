@@ -82,31 +82,13 @@ import { DateAdapter } from '@angular/material/core';
             ></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
-          <!-- </div> -->
         </div>
-        <!-- <ng-template #noDate>
-          <div
-            class="text-center"
-            [style.color]="'#FC7B7B'"
-            [style.height.px]="50"
-            *ngIf="item['isMinimize'] === false"
-          >
-            No Date
-          </div>
-        </ng-template> -->
         <div
           [style.height.px]="10"
           style="background: white"
           *ngIf="item['isMinimize'] === false"
           class="rounded-bottom"
-        >
-          <!-- <div fxLayout="row" fxLayoutAlign="center center" class="py-1">
-            <mat-checkbox class="mx-1">Time</mat-checkbox>
-            <mat-checkbox class="mx-1">Non-Time</mat-checkbox>
-            <mat-checkbox class="mx-1">Blank</mat-checkbox>
-            <mat-checkbox class="mx-1">Error</mat-checkbox>
-          </div> -->
-        </div>
+        ></div>
       </div>
     </div>
   `,
