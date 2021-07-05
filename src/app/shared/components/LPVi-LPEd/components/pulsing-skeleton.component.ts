@@ -4,13 +4,13 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-pulsing-skeleton',
   template: `
     <table class="w-100 table-viewer">
-      <tr>
+      <tr [style.background]="'#2C374D'">
         <th class="border-bottom" *ngFor="let td of [0, 1, 2, 3, 4]">
           <img
             src="assets/images/gif/skeleton.gif"
             width="150"
             height="30"
-            class="mx-5 mt-3 my-6 rounded"
+            class="mx-5 my-5 rounded"
           />
         </th>
       </tr>
@@ -22,13 +22,14 @@ import { Component, OnInit } from '@angular/core';
         "
         [class.odd]="odd"
         [class.even]="even"
+        class="my-5"
       >
         <td class="border-bottom" *ngFor="let td of [0, 1, 2, 3, 4]">
           <img
             src="assets/images/gif/skeleton.gif"
             width="150"
             height="20"
-            class="mx-5 mt-3 my-3 rounded"
+            class="mx-5 my-4 rounded"
           />
         </td>
       </tr>

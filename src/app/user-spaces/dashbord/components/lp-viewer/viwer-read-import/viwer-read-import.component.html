@@ -13,12 +13,14 @@
       style="background: #f0f1f6 !important"
     >
       <div fxLayout="row" class="mr-5">
-        <h3 class="card-title align-items-start ftp m-0">
-          <span class="fw-500 text-dark ftp fs-18 pl-0 text-truncate" style="max-width: 350px;" [matTooltip]="projectName">{{ projectName }}
+        <h3 class="card-title align-items-start ftp my-0 ml-0 mr-6 text-truncate" style="max-width: 350px;" >
+          <span class="fw-500 text-dark ftp fs-18 pl-0" [matTooltip]="projectName">
+            {{ projectName }}
           </span>
         </h3>
-        <h6 class="card-title align-items-start ftp m-0 border-left">
-          <span class="fw-500 ftp fs-18 pl-20px mr-5 text-truncate" style="max-width: 350px; color: #727988;">Total lines: {{ dataSourceFilter?.length }}
+        <h6 class="card-title align-items-start ftp m-0 border-left text-truncate" style="max-width: 350px">
+          <span class="fw-500 ftp fs-18 pl-20px mr-5" style="color: #727988;">
+            Total lines: {{ dataSourceFilter?.length }}
           </span>
         </h6>
       </div>

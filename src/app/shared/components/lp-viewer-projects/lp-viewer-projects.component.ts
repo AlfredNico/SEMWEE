@@ -41,7 +41,6 @@ export class LPViewerProjectsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    // this.allProjects$.subscribe(res)
     this.allProjects$.subscribe((resulat) => {
       this.dataSources = resulat;
       this.allProjects = resulat;
