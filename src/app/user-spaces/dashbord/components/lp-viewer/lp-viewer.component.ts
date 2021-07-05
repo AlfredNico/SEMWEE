@@ -3,7 +3,6 @@ import { AuthService } from '@app/authentification/services/auth.service';
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '@app/shared/services/common.service';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({

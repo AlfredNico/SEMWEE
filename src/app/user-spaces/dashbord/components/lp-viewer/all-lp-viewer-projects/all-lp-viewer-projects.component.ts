@@ -7,11 +7,10 @@ import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
-import { CommonService } from '@app/shared/services/common.service';
 import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-all-lp-viewer-projects',

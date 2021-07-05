@@ -104,15 +104,16 @@
   </div>
 
   <mat-paginator
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 25, 100]" (page)="getServerData($event)">
-  </mat-paginator>
-  <!-- [showTotalPages]="3" -->
-  <!-- <mat-paginator *ngIf="dataSources.length != 0" #paginator appStylePaginator [showFirstLastButtons]="true"
-  [length]="this.dataSources.length"
+  *ngIf="dataSources.length != 0"
+  #paginator
+  appStylePaginator
+  [showFirstLastButtons]="true"
+  [showTotalPages]="3"
+  [length]="dataSources.length"
   [pageSize]="10"
   [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-    (page)="getServerData($event)">
-  </mat-paginator> -->
+  (page)="getServerData($event)"
+>
+</mat-paginator>
 
 </div>
