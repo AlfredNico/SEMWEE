@@ -495,6 +495,7 @@ export class ViwerReadImportComponent
       value: '',
       invert: true,
       sensitive: false,
+      expression: false,
     });
     this.selectedIndex = 0;
   }

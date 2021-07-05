@@ -368,6 +368,10 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
     let search: boolean;
 
+    // this.dataViews.filter((value, index) => {
+    //   console.log(value);
+    // });
+
     this.dataSources = this.dataViews.filter((value, index) => {
       let i1: number = 0;
       let queries: boolean;
@@ -375,22 +379,26 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         let i2: number = 0;
         let str = '';
         item['content']?.map((element: any) => {
-          if (element['include'] === true) {
-            const q = `value["${item['head']}"].toString()==="${element[0]}"`;
+          if (element['include'] == true) {
+            const q = `value["${item['head']}"].trim()==="${element[0]}".trim()`;
             if (i2 === 0) str = q;
             else str = `${str}||${q}`;
             i2++;
           }
         });
-        search = str !== '' ? eval(str) : true;
-        if (i1 === 0) queries = search;
-        else queries = queries && search;
+        // console.log(eval(str));
+        // search = str !== '' ? eval(str) : true;
+        // search = str !== '' ? eval(str) : true;
+        if (i1 === 0) queries = eval(str);
+        else queries = queries && eval(str);
         i1++;
       });
       this.searchQueries[index] = queries;
 
       return this.filtersData(index);
     });
+
+    console.log(this.dataSources);
 
     this.lpviLped.dataSources$.next(this.dataSources);
 
@@ -435,16 +443,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
           ) {
             const lower = (
               this.queries[property]['value'] as string
-            ).toString();
+            );
             let ss = '';
             if (!this.queries[property]['sensitive']) {
               if (this.queries[property]['invert'])
-                ss = `value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
+                ss = `value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
               else
-                ss = `!value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
+                ss = `!value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
             } else if (this.queries[property]['sensitive'])
               // ss = `value[${property}]==${this.queries[property]['value']}`;
-              ss = `value["${property}"].toString().toLowerCase()=="${lower}".toLowerCase()`;
+              ss = `value["${property}"].trim()=="${lower}".trim()`;
 
             if (i2 === 0) s = ss;
             else s = s + '&&' + ss;

@@ -66,14 +66,21 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           </button>
         </div>
         <div
+          fxLayout="row"
           class="py-3 px-3 level2 rounded-bottom"
           *ngIf="item['isMinimize'] === false"
         >
           <mat-checkbox
-            [checked]="item['sensitive']"
-            (change)="changeStatus($event)"
+            [checked]="item['expression']"
+            (change)="changeStatus($event, 'expression')"
             style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
-            >case sensitive</mat-checkbox
+            >Regular expression</mat-checkbox
+          >
+          <mat-checkbox
+            [checked]="item['sensitive']"
+            (change)="changeStatus($event, 'sensitive')"
+            style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
+            >Case sensitive</mat-checkbox
           >
         </div>
       </div>
@@ -143,11 +150,17 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
     this.filter();
   }
 
-  public changeStatus(e: any) {
-    this.item = {
-      ...this.item,
-      sensitive: e['checked'],
-    };
+  public changeStatus(e: any, nameStatus: string) {
+    if (nameStatus == 'sensitive')
+      this.item = {
+        ...this.item,
+        sensitive: e['checked'],
+      };
+    else
+      this.item = {
+        ...this.item,
+        expression: e['checked'],
+      };
 
     this.filter();
   }

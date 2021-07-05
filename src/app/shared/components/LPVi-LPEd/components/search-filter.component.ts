@@ -11,7 +11,7 @@ import { Observable, of, Subject } from 'rxjs';
 @Component({
   selector: 'app-search-filter',
   template: `
-    <div class="mx-1 pb-2" appFluidHeight>
+    <div class="mx-1 pb-2 pl-3" appFluidHeight>
       <div class="p-0 w-100 rounded style-border">
         <div class="py-2 px-2 rounded-top level1 bb" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">

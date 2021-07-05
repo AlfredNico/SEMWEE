@@ -19,7 +19,7 @@
           </span>
         </h3>
         <h6 class="card-title align-items-start ftp m-0 border-left text-truncate" style="max-width: 350px">
-          <span class="fw-500 ftp fs-18 pl-20px mr-5" style="color: #727988;">
+          <span *ngIf="dataViews.length != 0" class="fw-500 ftp fs-18 pl-20px mr-5" style="color: #727988;">
             Total lines: {{ dataSourceFilter?.length }}
           </span>
         </h6>
