@@ -159,6 +159,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngAfterViewInit(): void {
+    this.lpviLped.resetfilter.subscribe((res: any) => {
+      this.resetAll();
+    });
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
