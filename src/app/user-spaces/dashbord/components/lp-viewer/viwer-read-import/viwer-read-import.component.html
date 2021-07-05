@@ -159,15 +159,9 @@
                   <div fxLayout="row" fxLayoutAlign="space-around center">
                     <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
-<<<<<<< HEAD
                     <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
                     <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
                     <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
-=======
-                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <p class="text-center font-size-h4 m-0" >{{ paginator.pageIndex * paginator.pageSize + indexRow + 1  }}.</p>
->>>>>>> ed5ce63f8f728488157dee91b11cca3752cc37f1
                   </div>
                 </td>
               </ng-container>
