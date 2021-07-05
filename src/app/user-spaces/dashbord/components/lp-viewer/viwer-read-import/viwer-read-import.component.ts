@@ -38,9 +38,6 @@ export class ViwerReadImportComponent
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource: any = [];
-  // dataSource = new MatTableDataSource<any>([]);
-  // // public items = [];
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
@@ -139,7 +136,6 @@ export class ViwerReadImportComponent
         ];
         this.dataSource = this.dataSourceFilter.slice(0, 10);
       }
-      // console.log('data', this.dataSource);
 
       this.paginator = {
         pageIndex: 0,
@@ -370,8 +366,7 @@ export class ViwerReadImportComponent
   }
 
   public searchFacet(column: any) {
-    let distances = {},
-      isExist = false;
+    let distances = {};
     this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });
@@ -385,6 +380,7 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
       content: value,
+      invert: true,
     });
   }
 
@@ -394,6 +390,8 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
       value: '',
+      invert: true,
+      sensitive: false,
     });
   }
 
@@ -422,6 +420,7 @@ export class ViwerReadImportComponent
       minValue: minValue,
       maxValue: maxValue,
       options: options,
+      invert: true,
     });
   }
 
@@ -438,12 +437,15 @@ export class ViwerReadImportComponent
       }
     );
 
+    console.log('OK', result);
+
     this.lpviLped.itemsObservables$.next({
       type: 'timeLine',
       isMinimize: false,
       head: column,
       startDate: result?.minDate,
       endDate: result?.maxDate,
+      invert: true,
     });
   }
 

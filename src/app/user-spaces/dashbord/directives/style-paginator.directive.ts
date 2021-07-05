@@ -120,8 +120,8 @@ export class StylePaginatorDirective {
     //initialize next page and last page buttons
     if (this._buttons.length == 0) {
       let nodeArray =
-        this.vr.element.nativeElement?.childNodes[0].childNodes[0].childNodes[2]
-          .childNodes;
+        this.vr.element?.nativeElement?.childNodes[0]?.childNodes[0]
+          .childNodes[2].childNodes;
       setTimeout(() => {
         for (let i = 0; i < nodeArray.length; i++) {
           if (this._isFetchData) {

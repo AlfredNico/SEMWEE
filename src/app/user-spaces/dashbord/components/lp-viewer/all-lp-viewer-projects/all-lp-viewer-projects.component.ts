@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import { CommonService } from '@app/shared/services/common.service';
 import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
@@ -27,7 +28,8 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
     private common: CommonService,
     private notifs: NotificationService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private readonly lpviLped: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
   }
@@ -35,7 +37,8 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.allProjects$ = this.LPViewerProjectsService.refresh$.pipe(
       // tap(() => {
-      //   this.triggerServices.trigrer$.next(true);
+      //   // this.triggerServices.trigrer$.next(true);
+      //   this.lpviLped.isLoading$.next(false); // disable loading spinner
       // }),
       switchMap((_) =>
         this.LPViewerProjectsService.getAllProjects(this.user._id)
@@ -50,14 +53,14 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
         if (result && result.length == 0) {
           this.router.navigateByUrl('/user-space/lp-viewer');
         }
-        this.common.hideSpinner();
+        this.lpviLped.isLoading$.next(false); // disable loading spinner
       },
       (error) => {
         if (error instanceof HttpErrorResponse) {
           this.notifs.warn(error.message);
         }
         this.router.navigateByUrl('/user-space/lp-viewer');
-        // this.common.hideSpinner();
+        this.lpviLped.isLoading$.next(false); // disable loading spinner
       }
     );
   }

@@ -43,6 +43,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           <app-search-filter
             [items]="items"
             [item]="item"
+            [index]="index"
             [dataViews]="dataViews"
             (itemsEmitter)="itemsEmitter($event)"
             (removeFromItem)="removeFromItemEmitter($event, 'search')"
@@ -282,10 +283,10 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
-    const value = Object.values(event.query).toString();
-    const keys = Object.keys(event.query).toString();
+    // const value = Object.values(event.query).toString();
+    // const keys = Object.keys(event.query).toString();
 
-    this.queries[keys] = value; //save querie from input filter
+    this.queries[event.item['head']] = event.query; //save querie from input filter
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
   }
@@ -405,15 +406,27 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       } else {
         let s = '',
           i2 = 0;
-        Object.keys(value).some((property) => {
+        Object.keys(this.queries).some((property) => {
           if (
             this.queries[property] != '' &&
             typeof value[property] === 'string' &&
             this.queries[property] !== undefined &&
+            this.queries[property]['value'] !== undefined &&
             value[property] !== undefined
           ) {
-            const lower = (this.queries[property] as any).toLowerCase();
-            const ss = `value["${property}"].toString().toLowerCase().includes("${lower}")`;
+            const lower = (
+              this.queries[property]['value'] as string
+            ).toString();
+            let ss = '';
+            if (!this.queries[property]['sensitive']) {
+              if (this.queries[property]['invert'])
+                ss = `value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
+              else
+                ss = `!value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
+            } else if (this.queries[property]['sensitive'])
+              // ss = `value[${property}]==${this.queries[property]['value']}`;
+              ss = `value["${property}"].toString()==="${lower}"`;
+
             if (i2 === 0) s = ss;
             else s = s + '&&' + ss;
             i2++;
