@@ -28,6 +28,7 @@ import {
 } from '@app/user-spaces/dashbord/interfaces/paginator';
 import { ResizeEvent } from 'angular-resizable-element';
 import { of } from 'rxjs';
+import { NotificationService } from '@app/services/notification.service';
 
 //filter data
 function compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -108,7 +109,8 @@ export class ViwerReadImportComponent
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    private readonly lpviLped: LpdLpdService
+    private readonly lpviLped: LpdLpdService,
+    private notifs: NotificationService
   ) {}
 
   ngOnChanges(): void {
@@ -515,36 +517,52 @@ export class ViwerReadImportComponent
   }
 
   public numericFacter(column: any) {
-    let minValue = 100000,
-      maxValue = 0;
-    this.dataViews.map((item: any) => {
-      if (Number.isInteger(Number(item[column])) === true) {
-        if (Number(item[column]) >= maxValue) maxValue = Number(item[column]);
-        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
-      }
-    });
-    const options: Options = {
-      floor: minValue,
-      ceil: maxValue,
-      hidePointerLabels: true,
-      hideLimitLabels: true,
-      draggableRange: true,
-      showSelectionBar: true,
-    };
-
-    this.lpviLped.itemsObservables$.next({
-      type: 'numeric',
-      isMinimize: false,
-      head: column,
-      minValue: minValue,
-      maxValue: maxValue,
-      options: options,
-      invert: true,
-    });
     this.selectedIndex = 0;
+
+    const result = this.dataViews.reduce(
+      (item, value) => {
+        if (Number.isInteger(Number(value[column])) === true) {
+          if (item.minNumber > value[column]) item.minNumber = value[column];
+          if (item.maxNumber < value[column]) item.maxNumber = value[column];
+        }
+        return item;
+      },
+      {
+        maxNumber: this.dataViews[0][column],
+        minNumber: this.dataViews[0][column],
+      }
+    );
+
+    if (
+      result.minNumber &&
+      result.maxNumber &&
+      typeof result.minNumber == 'number' &&
+      typeof result.maxNumber == 'number'
+    ) {
+      const options: Options = {
+        floor: Math.trunc(result.minNumber),
+        ceil: Math.trunc(result.maxNumber),
+        hidePointerLabels: true,
+        hideLimitLabels: true,
+        draggableRange: true,
+        showSelectionBar: true,
+      };
+
+      this.lpviLped.itemsObservables$.next({
+        type: 'numeric',
+        isMinimize: false,
+        head: column,
+        minValue: result.minNumber,
+        maxValue: result.maxNumber,
+        options: options,
+        invert: true,
+      });
+    } else this.notifs.info(`${column} is not a type Number`);
   }
 
   public timeLineFacter(column: any): void {
+    this.selectedIndex = 0;
+
     const result = this.dataViews.reduce(
       (item, value) => {
         if (item.minDate > value[column]) item.minDate = value[column];
@@ -557,17 +575,23 @@ export class ViwerReadImportComponent
       }
     );
 
-    this.lpviLped.itemsObservables$.next({
-      type: 'timeLine',
-      isMinimize: false,
-      head: column,
-      startDate: result?.minDate,
-      endDate: result?.maxDate,
-      invert: true,
-    });
-
-    this.selectedIndex = 0;
+    if (
+      result.maxDate &&
+      result.minDate &&
+      result?.maxDate.toString().length == 25 &&
+      result?.minDate.toString().length == 25
+    ) {
+      this.lpviLped.itemsObservables$.next({
+        type: 'timeLine',
+        isMinimize: false,
+        head: column,
+        startDate: result?.minDate,
+        endDate: result?.maxDate,
+        invert: true,
+      });
+    } else this.notifs.info(`${column} is not a type DateTime`);
   }
+
   tooglevueEdit($event) {
     this.vueEdit = false;
   }
@@ -820,6 +844,7 @@ export class ViwerReadImportComponent
   }
 
   getAllDataByListName(value) {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -831,9 +856,12 @@ export class ViwerReadImportComponent
       this.idHeader = response[1]['idHeader'];
       let min = this.paginator.pageIndex * this.paginator.pageSize;
       let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
-      this.dataSource = response[0].slice(min, max);
+
       this.dataViews = response[0];
+      this.dataSourceFilter = this.dataFilters(response[0]);
+      this.dataSource = this.dataSourceFilter.slice(min, max);
     });
+    this.lpviLped.isLoading$.next(false); // disable loading spinner
   }
 
   updateHeader(value) {

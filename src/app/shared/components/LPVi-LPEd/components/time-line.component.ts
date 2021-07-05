@@ -43,8 +43,7 @@ import { DateAdapter } from '@angular/material/core';
           style.height.px="50"
           *ngIf="
             (item?.endDate !== undefined || item?.startDate !== undefined) &&
-              item['isMinimize'] === false;
-            else noDate
+            item['isMinimize'] === false
           "
           fxLayout="row"
           fxLayoutAlign="space-between center"
@@ -85,7 +84,7 @@ import { DateAdapter } from '@angular/material/core';
           </mat-form-field>
           <!-- </div> -->
         </div>
-        <ng-template #noDate>
+        <!-- <ng-template #noDate>
           <div
             class="text-center"
             [style.color]="'#FC7B7B'"
@@ -94,7 +93,7 @@ import { DateAdapter } from '@angular/material/core';
           >
             No Date
           </div>
-        </ng-template>
+        </ng-template> -->
         <div
           [style.height.px]="10"
           style="background: white"
@@ -114,17 +113,18 @@ import { DateAdapter } from '@angular/material/core';
   styles: [
     `
       ::ng-deep .mat-form-field-wrapper {
-        background: white!important;
+        background: white !important;
       }
 
-      ::ng-deep .mat-label, .mat-datepicker-input {
-        font-family: Poppins!important;
+      ::ng-deep .mat-label,
+      .mat-datepicker-input {
+        font-family: Poppins !important;
         font-weight: 600;
       }
 
       ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-          background-color: #F3F6F9;
-        border-radius: 0!important;
+        background-color: #f3f6f9;
+        border-radius: 0 !important;
       }
 
       ::ng-deep .mat-form-field-appearance-fill {
@@ -158,6 +158,7 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.isValidDate());
     this.FormRange.patchValue({
       start: this.item['startDate'],
       end: this.item['endDate'],
@@ -180,5 +181,11 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
         end: Date.parse(query['end']),
       });
     });
+  }
+
+  public isValidDate() {
+    return !(
+      this.item['startDate'].length == 25 && this.item['endDate'].length == 25
+    );
   }
 }

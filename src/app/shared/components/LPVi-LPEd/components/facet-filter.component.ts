@@ -206,11 +206,15 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             include: false,
           };
         });
-      } else if (item['type'] === 'search') {
+      } else if (item['type'] === 'input') {
         this.items[index] = {
           ...item,
           value: '',
         };
+        // this.lpviLped.permaLink.queries[`${item['head']}`] = {
+
+        // };
+        // this.lpviLped.permaLink.queries[`${item['head']}`]);
       } else if (item['type'] === 'numeric') {
         this.items[index] = {
           ...item,
@@ -468,6 +472,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         queries: this.queries,
         queriesNumerisFilters: this.queriesNumerisFilters,
       }),
+    };
+
+    this.lpviLped.permaLink = {
+      ...this.lpviLped.permaLink,
+      input: this.inputQueries,
+      search: this.searchQueries,
+      numeric: this.numericQeury,
+      items: this.items,
+      queries: this.queries,
+      queriesNumerisFilters: this.queriesNumerisFilters,
     };
 
     this.lpviLped.isLoading$.next(false); // desaable loading spinner

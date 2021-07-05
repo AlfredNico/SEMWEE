@@ -14,7 +14,15 @@ import { Component, OnInit } from '@angular/core';
           />
         </th>
       </tr>
-      <tr *ngFor="let tr of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+      <tr
+        *ngFor="
+          let tr of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+          let even = even;
+          let odd = odd
+        "
+        [class.odd]="odd"
+        [class.even]="even"
+      >
         <td class="border-bottom" *ngFor="let td of [0, 1, 2, 3, 4]">
           <img
             src="assets/images/gif/skeleton.gif"
@@ -26,7 +34,16 @@ import { Component, OnInit } from '@angular/core';
       </tr>
     </table>
   `,
-  styles: [``],
+  styles: [
+    `
+      .odd {
+        background: #f5f6fa;
+      }
+      .even {
+        background: #fff;
+      }
+    `,
+  ],
 })
 export class PulsingSkeletonComponent implements OnInit {
   constructor() {}
