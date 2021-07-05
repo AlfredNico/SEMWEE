@@ -1,7 +1,7 @@
 <main class="w-100 p-0" fxLayout="column">
   <div
     fxLayout="row"
-    class="pt-0 pb-3 px-0"
+    class="pt-0 pb-0 px-0"
     fxLayoutAlign="space-between center"
     fxLayoutGap="5px"
   >
@@ -14,11 +14,17 @@
     >
       <div>
         <h3 class="card-title align-items-start ftp m-0" fxLayout="row">
-          <span class="fw-500 text-dark ftp fs-18 pl-0 mr-5 text-truncate" style="max-width: 350px;" [matTooltip]="projectName">{{ projectName }}</span>
-            <span class="fw-500 text-dark ftp fs-18 pl-20px border-left">
-              {{ dataSourceFilter?.length }} Rows
-            </span>
+          <span class="fw-500 text-dark ftp fs-18 pl-0 mr-5 text-truncate" style="max-width: 350px;" [matTooltip]="projectName">{{ projectName }}
+          </span>
         </h3>
+            <!-- <span class="fw-500 text-dark ftp fs-18 pl-20px border-left"> -->
+        <h6 class="card-title align-items-start ftp m-0" fxLayout="row">
+          <span class="fw-500 ftp fs-18 pl-20px mr-5 text-truncate" style="max-width: 350px; color: #727988;">Total lines: {{ dataSourceFilter?.length }}
+          </span>
+            <!-- <span class="fw-500 text-dark ftp fs-18 pl-20px border-left">
+              {{ dataSourceFilter?.length }} Rows
+            </span> -->
+        </h6>
       </div>
       <div>
         <button class="btn btn-primary btn-open mr-3">

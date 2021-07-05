@@ -105,9 +105,9 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
     </div>
 
     <ng-template #noItems>
-      <div style="background: #EEE5FF;" class="w-100 px-3 py-5">
-        <h1>Using facets and filters</h1>
-        <p class="m-0">
+      <div style="background: #F5F6FA;" class="w-100 ml-4 px-3 py-5">
+        <h1 class="ftp">Using facets and filters</h1>
+        <p class="m-0 ftp">
           Use facets and filters to select subsets of your data to act on.
           Choose facet and filter methods from the menus at the top of each data
           column.
