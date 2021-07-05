@@ -91,9 +91,7 @@
       (resizeEnd)="onResizeEnd($event)"
     >
     <div class="card br" *ngIf="isLooading == true; else filter_content">
-      <div class="wrapper-skeleton">
-        <div class="tab-content br animate"></div>
-      </div>
+      <img src="assets/images/gif/skeleton.gif" width="100%">
     </div>
     <ng-template #filter_content>
       <mat-tab-group
@@ -154,32 +152,8 @@
           "
           perfectScrollbar
         >
-        <table  class="w-100 table-viewer" *ngIf="isLooading == true; else table_content">
-          <tr>
-            <th style="border: 1px solid #e0e0e0;"> <div class="header-content br animate"></div></th>
-            <th style="border: 1px solid #e0e0e0;"> <div class="header-content br animate"></div></th>
-            <th style="border: 1px solid #e0e0e0;"> <div class="header-content br animate"></div></th>
-            <th style="border: 1px solid #e0e0e0;"> <div class="header-content br animate"></div></th>
-            <th style="border: 1px solid #e0e0e0;"> <div class="header-content br animate"></div></th>
-            <th style="border: 1px solid #e0e0e0;"> <div class="header-content br animate"></div></th>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-            <td style="border: 1px solid #e0e0e0;"><div class="header-content br animate"></div></td>
-          </tr>
-        </table>
+
+        <app-pulsing-skeleton *ngIf="isLooading == true; else table_content"></app-pulsing-skeleton>
         <!-- <div class="br" *ngIf="isLooading == true; else table_content">
           <div class="wrapper-skeleton">
             <div class="header-content br animate"></div>

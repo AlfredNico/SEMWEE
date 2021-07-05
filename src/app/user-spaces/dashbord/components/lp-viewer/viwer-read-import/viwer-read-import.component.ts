@@ -193,33 +193,34 @@ export class ViwerReadImportComponent
             this.displayedColumns = [...new Set([...header])].filter(
               (item) => item != undefined && item != ''
             );
-            const content = parsedCsv.map((value, indexMap) =>
-              value.reduce(
-                (tdObj, td, index) => {
-                  tdObj[header[index]] = td;
-                  // tdObj['index'] = indexMap + 1;
-                  return tdObj;
-                },
-                { star: false, flag: false, index: indexMap + 1 }
-              )
-            );
-            this.displayedColumns.unshift('all');
-            this.dataViews = this.dataSourceFilter = content;
-            this.dataSource = this.dataSourceFilter.slice(0, 10);
-            this.isLooading = false;
-            this.lpViewer
-              .sendFiles(
-                {
-                  namehistory: 'Create project',
-                  idProject: idProject,
-                  fileData: this.dataViews,
-                  idHeader: 0,
-                  header: this.displayedColumns,
-                },
-                0
-              )
-              .subscribe();
-          }, 1000);
+            setTimeout(() => {
+              const content = parsedCsv.map((value, indexMap) =>
+                value.reduce(
+                  (tdObj, td, index) => {
+                    tdObj[header[index]] = td;
+                    return tdObj;
+                  },
+                  { star: false, flag: false, index: indexMap + 1 }
+                )
+              );
+              this.displayedColumns.unshift('all');
+              this.dataViews = this.dataSourceFilter = content;
+              this.dataSource = this.dataSourceFilter.slice(0, 10);
+              // this.isLooading = false;
+              this.lpViewer
+                .sendFiles(
+                  {
+                    namehistory: 'Create project',
+                    idProject: idProject,
+                    fileData: this.dataViews,
+                    idHeader: 0,
+                    header: this.displayedColumns,
+                  },
+                  0
+                )
+                .subscribe();
+            }, 500);
+          }, 500);
         } catch (e) {
           console.log(e);
         }
@@ -352,7 +353,7 @@ export class ViwerReadImportComponent
           idProject: this.idProject,
           fileData: this.dataViews,
           idHeader: this.idHeader,
-          header: this.displayedColumns,
+          header: [],
         },
         actualydata
       )
@@ -620,7 +621,7 @@ export class ViwerReadImportComponent
             idProject: this.idProject,
             fileData: this.dataViews,
             idHeader: this.idHeader,
-            header: this.displayedColumns,
+            header: [],
           },
           actualydata
         )
@@ -852,7 +853,7 @@ export class ViwerReadImportComponent
                   idProject: this.idProject,
                   fileData: this.dataSource,
                   idHeader: this.idHeader,
-                  header: this.displayedColumns,
+                  header: [],
                 },
                 actualy
               )
