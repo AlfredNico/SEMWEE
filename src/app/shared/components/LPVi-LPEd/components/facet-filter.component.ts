@@ -214,10 +214,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
           ...item,
           value: '',
         };
-        // this.lpviLped.permaLink.queries[`${item['head']}`] = {
-
-        // };
-        // this.lpviLped.permaLink.queries[`${item['head']}`]);
       } else if (item['type'] === 'numeric') {
         this.items[index] = {
           ...item,
@@ -314,8 +310,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public minimizeEmitter(item: any): void {
-    console.log('item=', item);
-    const index = this.items.indexOf(item);
+    const index = this.items.findIndex((elem) => elem['head'] == item['head']);
 
     if (index !== -1) {
       this.items[index] = {
