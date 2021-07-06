@@ -32,14 +32,24 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
           class="py-2 px-2 level2"
           *ngIf="item['isMinimize'] === false"
         >
-          <div class="pr-3 pointer black-color fw-600">1 choices</div>
+          <div class="pr-3 pointer black-color fw-600">
+            {{ couter }} choices
+          </div>
           <div>
             Sort by :
-            <span class="px-1 pointer black-color fw-600" (click)="sortByName()"
+            <span
+              class="px-1 pointer black-color fw-600"
+              [ngStyle]="{
+                color: isSortName ? 'rgb(27, 197, 189)' : null
+              }"
+              (click)="sortByName()"
               >name</span
             >
             <span
               class="px-1 pointer black-color fw-600"
+              [ngStyle]="{
+                color: isSortCount ? 'rgb(27, 197, 189)' : null
+              }"
               (click)="sortByCount()"
               >count</span
             >
@@ -101,6 +111,11 @@ export class SearchFilterComponent implements OnInit {
   @Output('removeFromItem') removeFromItem: any = new EventEmitter();
   @Output('itemsEmitter') itemsEmitter: any = new EventEmitter();
 
+  //VARIABLE
+  public couter: number = 0;
+  public isSortName: boolean = false;
+  public isSortCount: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {}
@@ -114,16 +129,16 @@ export class SearchFilterComponent implements OnInit {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include'],
           };
+          this.couter--;
         }
       });
     }
 
     this.itemsEmitter.emit(this.items);
-
-    // this.checkIncludesExcludes();
   }
 
   public include(headName: any, contentName: string) {
+    // this.couter = 0;
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val, i) => {
@@ -132,6 +147,7 @@ export class SearchFilterComponent implements OnInit {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include'],
           };
+          this.couter++;
         }
       });
     }
@@ -140,11 +156,23 @@ export class SearchFilterComponent implements OnInit {
   }
 
   public sortByName(): void {
-    this.items[this.index].content.map((value, index) => {
-      console.log(value);
-    });
+    this.isSortName = !this.isSortName;
+    this.items[this.index].content.sort((prev, next) =>
+      this.isSortName ? this.ASC(prev, next, 0) : this.DESC(prev, next, 0)
+    );
   }
   public sortByCount(): void {
-    console.log(this.items[this.index].content);
+    this.isSortCount = !this.isSortCount;
+    this.items[this.index].content.sort((prev, next) =>
+      this.isSortCount ? this.ASC(prev, next, 1) : this.DESC(prev, next, 1)
+    );
+  }
+
+  private DESC(i, ii, key) {
+    return i[key] > ii[key] ? -1 : i[key] < ii[key] ? 1 : 0;
+  }
+
+  private ASC(i, ii, key) {
+    return i[key] > ii[key] ? 1 : i[key] < ii[key] ? -1 : 0;
   }
 }

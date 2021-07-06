@@ -215,6 +215,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   /* EMITTER FUNCTION AFTER FILTER FROM COMPONENTS */
   public callAfterNumericFilter(event: any) {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     let q = [],
       ss;
 
@@ -250,42 +251,41 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.queriesNumerisFilters[`${event['head']}`] = this.numericQeury = q;
     this.lpviLped.dataSources$.next(this.dataSources);
     this.savePermalink(); // SAVE PERMALINK
+    this.lpviLped.isLoading$.next(false); // desaable loading spinner
   }
 
   public callAfterTimeLineEmitter(event: any) {
-    if (event['end'] !== null && event['start'] !== null) {
-      let q = [],
-        ss = [];
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
 
-      this.dataSources = this.dataViews.filter((value, index) => {
-        const v = Date.parse(value[`${event['head']}`]);
-        if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+    let q = [],
+      ss = [];
+
+    this.dataSources = this.dataViews.filter((value, index) => {
+      const v = Date.parse(value[`${event['head']}`]);
+      if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+        if (v <= event['end'] && v >= event['start']) q[index] = true;
+        else q[index] = false;
+        this.timeLineQeury[index] = ss = q[index];
+        return this.filtersData(index);
+      } else {
+        return Object.keys(this.queriesTimeLineFilters).every((x) => {
+          const s = this.queriesTimeLineFilters[x];
+          // !isNaN(Date.parse(v))
           if (v <= event['end'] && v >= event['start']) q[index] = true;
           else q[index] = false;
-          this.timeLineQeury[index] = ss = q[index];
+          if (x === event['head']) ss = q;
+          this.timeLineQeury[index] = ss = s[index] && q[index];
           return this.filtersData(index);
-        } else {
-          return Object.keys(this.queriesTimeLineFilters).every((x) => {
-            const s = this.queriesTimeLineFilters[x];
-            // !isNaN(Date.parse(v))
-            if (v <= event['end'] && v >= event['start']) q[index] = true;
-            else q[index] = false;
-            if (x === event['head']) ss = q;
-            this.timeLineQeury[index] = ss = s[index] && q[index];
-            return this.filtersData(index);
-          });
-        }
-      });
+        });
+      }
+    });
 
-      this.lpviLped.dataSources$.next(this.dataSources);
-      this.savePermalink(); // SAVE PERMALINK
-    }
+    this.lpviLped.dataSources$.next(this.dataSources);
+    this.savePermalink(); // SAVE PERMALINK
+    this.lpviLped.isLoading$.next(false); // desable loading spinner
   }
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
-    // const value = Object.values(event.query).toString();
-    // const keys = Object.keys(event.query).toString();
-
     this.queries[event.item['head']] = event.query; //save querie from input filter
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
@@ -345,6 +345,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public itemsEmitter(event?: any) {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     if (event !== undefined) this.items = event;
 
     let search: boolean;
@@ -376,6 +377,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.lpviLped.dataSources$.next(this.dataSources);
 
     this.savePermalink(); // SAVE PERMALINK
+    this.lpviLped.isLoading$.next(false); // desable loading spinner
   }
 
   /* VERIFY ALL QUERY FILTERS */
@@ -425,7 +427,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                 ss = `!value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
             } else if (this.queries[property]['sensitive'])
               // ss = `value[${property}]==${this.queries[property]['value']}`;
-              ss = `value["${property}"].toString()==="${lower}"`;
+              ss = `value["${property}"].toString().toLowerCase()=="${lower}".toLowerCase()`;
 
             if (i2 === 0) s = ss;
             else s = s + '&&' + ss;

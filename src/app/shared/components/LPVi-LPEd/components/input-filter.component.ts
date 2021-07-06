@@ -7,7 +7,6 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
 import { LpdLpdService } from '../services/lpd-lpd.service';
 
 @Component({
@@ -44,7 +43,9 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           >
             invert
           </div>
-          <div class="pointer px-1 black-color fw-600">reset</div>
+          <div class="pointer px-1 black-color fw-600" (click)="reset()">
+            reset
+          </div>
         </div>
         <div
           class="py-0"
@@ -138,15 +139,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
       invert: !this.item['invert'],
     };
 
-    this.formGroup.emit({
-      query: {
-        value: this.form.value[this.item['head']],
-        invert: this.item['invert'],
-        sensitive: this.item['sensitive'],
-      },
-      item: this.item,
-      index: this.index,
-    });
+    this.filter();
   }
 
   public changeStatus(e: any) {
@@ -155,9 +148,26 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
       sensitive: e['checked'],
     };
 
+    this.filter();
+  }
+
+  public reset(): void {
+    this.form.reset();
+    this.item = {
+      ...this.item,
+      invert: true,
+      sensitive: false,
+    };
+
+    this.filter();
+  }
+
+  private filter(): void {
     this.formGroup.emit({
       query: {
-        value: this.form.value[this.item['head']],
+        value: this.form.value[this.item['head']]
+          ? this.form.value[this.item['head']]
+          : '',
         invert: this.item['invert'],
         sensitive: this.item['sensitive'],
       },
