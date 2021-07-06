@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-search-filter',
@@ -33,7 +41,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
           *ngIf="item['isMinimize'] === false"
         >
           <div class="pr-3 pointer black-color fw-600">
-            {{ couter }} choices
+            {{ observable$ | async }} choices
           </div>
           <div>
             Sort by :
@@ -99,7 +107,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   `,
   styles: [],
 })
-export class SearchFilterComponent implements OnInit {
+export class SearchFilterComponent implements AfterViewInit {
   /* INPUT */
   @Input('items') items: any[] = [];
   @Input('dataViews') dataViews: any[] = [];
@@ -112,13 +120,21 @@ export class SearchFilterComponent implements OnInit {
   @Output('itemsEmitter') itemsEmitter: any = new EventEmitter();
 
   //VARIABLE
-  public couter: number = 0;
+  public couter: number;
   public isSortName: boolean = false;
   public isSortCount: boolean = false;
+  private itemSubject = new Subject();
+  public observable$: Observable<number>;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngAfterViewInit(): void {
+    // this.couter = this.couterInclude();
+    // this.observable$ = of(this.couterInclude());
+    this.itemSubject.subscribe(
+      (_) => (this.observable$ = of(this.couterInclude()))
+    );
+  }
 
   public exclude(headName: any, contentName: string) {
     const index = this.items.indexOf(headName);
@@ -129,16 +145,16 @@ export class SearchFilterComponent implements OnInit {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include'],
           };
-          this.couter--;
         }
       });
     }
+    this.itemSubject.next();
 
     this.itemsEmitter.emit(this.items);
   }
 
   public include(headName: any, contentName: string) {
-    // this.couter = 0;
+    // this.couter = 1;
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val, i) => {
@@ -147,11 +163,10 @@ export class SearchFilterComponent implements OnInit {
             ...this.items[index].content[i],
             include: !this.items[index].content[i]['include'],
           };
-          this.couter++;
         }
       });
     }
-
+    this.itemSubject.next();
     this.itemsEmitter.emit(this.items);
   }
 
@@ -174,5 +189,13 @@ export class SearchFilterComponent implements OnInit {
 
   private ASC(i, ii, key) {
     return i[key] > ii[key] ? 1 : i[key] < ii[key] ? -1 : 0;
+  }
+
+  private couterInclude(): number {
+    this.couter = 0;
+    this.items[this.index].content.forEach((element) => {
+      if (element['include']) this.couter++;
+    });
+    return this.couter;
   }
 }

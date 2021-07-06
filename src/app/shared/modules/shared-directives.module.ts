@@ -27,4 +27,4 @@ import { FileSizePipe } from '@app/user-spaces/dashbord/pipe/file-size.pipe';
     StylePaginatorDirective,
   ],
 })
-export class SharedDirectivesModule { }
+export class SharedDirectivesModule {}

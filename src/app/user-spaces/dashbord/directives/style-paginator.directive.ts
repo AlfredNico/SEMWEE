@@ -23,7 +23,6 @@ interface PageObject {
   selector: '[appStylePaginator]',
 })
 export class StylePaginatorDirective {
-  // private _pageGapTxt = '...';
   private _rangeStart: number;
   private _rangeEnd: number;
   private _buttons = [];
@@ -51,9 +50,10 @@ export class StylePaginatorDirective {
   }
 
   get numOfPages(): number {
-    return this.matPag.getNumberOfPages() == 0
-      ? 3
-      : this.matPag.getNumberOfPages();
+    // return this.matPag.getNumberOfPages() == 0
+    //   ? 3
+    //   : this.matPag.getNumberOfPages();
+    return this.matPag.getNumberOfPages();
   }
 
   get lastPageIndex(): number {

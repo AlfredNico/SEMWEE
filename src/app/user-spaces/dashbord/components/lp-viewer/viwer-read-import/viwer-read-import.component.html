@@ -77,7 +77,7 @@
             overflow: auto;
             max-height: calc(100vh - 300px);
           " perfectScrollbar>
-          <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
+          <table mat-table *ngIf="displayedColumns.length != 0" [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
             class="w-100 table-viewer">
             <div *ngFor="
                 let column of displayedColumns;
