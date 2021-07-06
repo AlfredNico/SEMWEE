@@ -26,6 +26,7 @@ import {
   PageEvent,
   Paginator,
 } from '@app/user-spaces/dashbord/interfaces/paginator';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -55,6 +56,8 @@ export class ViwerReadImportComponent
 
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
+  @ViewChild('container') container: ElementRef;
+  @Input() isFavorate: boolean = false;
 
   formfilterStart = new FormGroup({
     first: new FormControl(false),
@@ -73,7 +76,6 @@ export class ViwerReadImportComponent
   public formGroup = this.fb.group({});
   public items: any[] = [];
 
-  public hoverIndex;
   public vueEdit: boolean = false;
   public nameCells;
   public lastValue;
@@ -89,6 +91,7 @@ export class ViwerReadImportComponent
   top = 0;
   left = null;
   public domTab: any;
+  public ws: any;
 
   // ------------------
   pageEvent: PageEvent;
@@ -238,6 +241,21 @@ export class ViwerReadImportComponent
         // console.log("In read Componnent ",this.dataSourceFilter)
       }
     });
+
+    setTimeout(() => {
+      let containt =
+        (this.container.nativeElement as HTMLElement).offsetWidth / 4;
+      this.ws = containt > 300 ? containt : 300;
+    }, 0);
+  }
+
+  onResizeEnd(e: ResizeEvent) {
+    // console.log('size', this.ws);
+    this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
+  }
+
+  onFavorite() {
+    this.isFavorate = !this.isFavorate;
   }
 
   public openTablesOptionns() {
@@ -437,6 +455,15 @@ export class ViwerReadImportComponent
     this.selectedIndex = 3
   }
 
+  public dateFilter(column: any) {
+    this.lpviLped.itemsObservables$.next({
+      type: 'datefilter',
+      isMinimize: false,
+      head: column,
+      value: '',
+    });
+  }
+
   public numericFacter(column: any) {
     let minValue = 100000,
       maxValue = 0;
@@ -488,18 +515,6 @@ export class ViwerReadImportComponent
     });
 
     this.selectedIndex = 0;
-  }
-
-  combinate(i, otherValue) {
-    return i + otherValue;
-  }
-
-  enter(i, otherValue) {
-    this.hoverIndex = i + otherValue;
-  }
-
-  leave(i, otherValue) {
-    this.hoverIndex = null;
   }
   tooglevueEdit($event) {
     this.vueEdit = false;

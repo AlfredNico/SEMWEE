@@ -1,6 +1,22 @@
 <main class="w-100 p-0" fxLayout="column">
-  <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="btn btn-primary ">
+  <!-- <div fxLayout class="pt-0 py-3 px-0 justify-content-start" fxLayoutGap="5px">
+    <h3 class="card-title align-items-start" fxLayout="column">
+      <span class="fw-500 text-dark ftp fs-18"
+        >Projects Overview</span>
+      <span class="text-muted mt-0 fw-500 font-size-sm ftp fs-15"
+        >Projects</span
+      >
+    </h3>
+  </div> -->
+    <div fxLayout="row" class="pt-0 py-3 px-0" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+      <div>
+        <h3 class="card-title align-items-start ftp m-0" fxLayout="column" >
+          <span class="fw-500 text-dark ftp fs-18 pl-20px">DataTable View</span>
+          <!-- <span class="text-muted mt-0 pl-20px fw-500 ftp">{{ dataSource.data.length }} Matching Rows</span> -->
+        </h3>
+      </div>
+      <div>
+        <button class="btn btn-primary mr-3">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -40,8 +56,8 @@
         keyboard_arrow_down
       </mat-icon>
     </button>
-    <mat-menu #importMenu="matMenu">
-      <button mat-menu-item>
+        <mat-menu #importMenu="matMenu">
+            <button mat-menu-item>
         Table options
       </button>
       <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
@@ -52,10 +68,18 @@
       <button mat-menu-item>Sous item 1</button>
       <button mat-menu-item>Soous item 2</button>
     </mat-menu>
+      </div>
     <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
-  <div class="row p-0">
-    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3">
+  <div class="row p-0" #container>
+    <aside class="p-0" [ngStyle]="{'width': ws + 'px'}" style="border-right: 4px solid #EBEDF3; resize: both;
+    overflow: auto;"
+    mwlResizable
+    [enableGhostResize]="true"
+    resizeCursorPrecision="10"
+    [resizeEdges]="{bottom: false, right: true, top: false, left: false}"
+    (resizeEnd)="onResizeEnd($event)"
+    >
       <mat-tab-group
         [(selectedIndex)]="selectedIndex"
        mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
@@ -92,7 +116,7 @@
       </mat-tab-group>
     </aside>
 
-    <aside class="col p-0" fxFlex="75%">
+    <aside class="p-0" [ngStyle]="{'width':'calc(100% - ' + ws + 'px)'}">
       <div class="p-0">
         <div class="w-100 scroll ps" style="
             max-width: 100%;
@@ -183,9 +207,9 @@
                       </div>
                     </div>
                   </span>
-                </th>
-                <mat-menu #tableOptionMenu="matMenu">
-                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                                </th>
+                                <mat-menu #tableOptionMenu="matMenu">
+                                    <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
                   <button mat-menu-item (click)="inputFilter(column)">
@@ -198,8 +222,8 @@
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
-                  <button mat-menu-item (click)="updateHeader(index)">
+                                    <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                                    <button mat-menu-item (click)="updateHeader(index)">
                     Update column
                   </button>
                 </mat-menu>
@@ -207,24 +231,8 @@
                   <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
                   <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
                   <button mat-menu-item (click)="timeLineFacter(column)">Timeline facet</button>
-                  <button mat-menu-item>Scatterplot facet</button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item>Custum Numeric facet</button>
-                  <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
                 <mat-menu #editCells="matMenu">
-                  <button mat-menu-item>Transform...</button>
-                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
-                    Common transforms
-                  </button>
-                  <button mat-menu-item>Fill down</button>
-                  <button mat-menu-item>Blank down</button>
-                  <button mat-menu-item>Split mutli-valued cells...</button>
-                  <button mat-menu-item>Join multi-valued cells</button>
-                  <button mat-menu-item>Cluster and edit...</button>
-                  <button mat-menu-item>Replace</button>
-                </mat-menu>
-                <mat-menu #commonTransforms="matMenu">
                   <app-edit-cell [dataSource]="dataSource.data" [dataViews]="dataViews"
                     [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
@@ -247,12 +255,8 @@
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate"
-                      (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <p class="text-left text-truncate mat-body-p" *ngIf="
-                          (currentValue | isURL) === false;
-                          else templeteURL
-                        ">
+                    <div class="row justify-content-between px-3 text-truncate">
+                      <p class="text-left text-truncate mat-body-p">
                         {{currentValue}}
                         <button
                           class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
@@ -273,10 +277,10 @@
 
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate"
-                      (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
+                      >
                       <p class="text-right">
                         {{ currentValue }}
-                        <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
+                        <button mat-raised-button
                           class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>

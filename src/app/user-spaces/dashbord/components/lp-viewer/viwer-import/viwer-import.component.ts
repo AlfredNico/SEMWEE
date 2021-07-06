@@ -7,10 +7,16 @@ import { NotificationService } from '@app/services/notification.service';
 // import { Converter } from 'csvtojson';
 import * as csv from 'csvtojson';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+import { InstructionService } from '@app/services/instruction.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-viwer-import',
   template: `
+    <h3 class="card-title align-items-start" fxLayout="column">
+            <span class="fw-500 text-dark ftp fs-18 space"
+              >Import File</span>
+    </h3>
     <div class="w-100 bg-white" style="padding: 4em 3em;">
       <div
         [formGroup]="form"
@@ -70,6 +76,10 @@ import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd
         border-radius: 12px;
         background: #ffffff;
       }
+      .space {
+        padding: 16px 0px 0px 40px;
+        margin: 0!important;
+      }
     `,
   ],
 })
@@ -95,15 +105,29 @@ export class ViwerImportComponent implements OnInit {
   csvContent: string;
   parsedCsv: string[][];
   sizeFile: any;
+  headerRegex = ["id", "category", "category", "subcategory", "facet", "path", "name", "full title", "short title", "main heading", "meta description", "rel canonical tag", "meta name robots index", "meta name robots follow", "x-robots-tag index", "x-robots-tag follow", "x-robots-tag canonical", "meta keywords", "description", "tags", "price", "currency", "available", "main image", "main image alt", "custom"];
+  acceptHeader: boolean = true;
+  lastIndex: number;
+  exit: boolean = false;
 
   constructor(
     private lpViewerService: LpViwersService,
+    private readonly lpviLped: LpdLpdService,
+    private readonly common: CommonService,
     private readonly nofits: NotificationService,
-    private readonly lpviLped: LpdLpdService
+    private readonly instr: InstructionService,
+    private route: ActivatedRoute, 
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.lpviLped.isLoading$.next(false); // disable loading spinner
+  }
+
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
 
   convertFile(event: any) {
@@ -116,27 +140,122 @@ export class ViwerImportComponent implements OnInit {
 
       this.readFileContent(file)
         .then((csvContent) => {
-          const csv = [];
-          const lines = this.processCsv(csvContent);
-          const sep1 = lines[0].split(';').length;
-          const sep2 = lines[0].split(',').length;
-          const csvSeparator = sep1 > sep2 ? ';' : ',';
-          lines.forEach((element) => {
-            const cols: string[] = element.split(csvSeparator);
-            csv.push(cols);
-          });
-          this.parsedCsv = csv;
-          this.parsedCsv.pop();
+          try {
 
-          const header = this.parsedCsv.shift().toString().split(',');
+            const csv = [];
+            const lines = this.processCsv(csvContent);
+            const sep1 = lines[0].split(';').length;
+            const sep2 = lines[0].split(',').length;
+            const csvSeparator = sep1 > sep2 ? ';' : ',';
+            lines.forEach((element) => {
+              const cols: string[] = element.split(csvSeparator);
+              csv.push(cols);
+            });
+            this.parsedCsv = csv;
+            this.parsedCsv.pop();
 
-          this.data.header = [...new Set([...header])].filter(
-            (item) => item != undefined && item != ''
-          );
+            const header = this.parsedCsv.shift().toString().split(',');
 
-          this.data.header.unshift('all');
-          this.data.contentCsv = csv;
-          this.onSubmit();
+            let ind = 0;
+
+            // for(let i=0; i < header.length-1; i++) {
+              
+            //   if(!(/\s/g.test(header[i]))) {
+            //     this.acceptHeader = header[i].toLowerCase() == this.headerRegex[ind] ? true : false;
+            //     if(!this.acceptHeader) {
+            //       this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
+            //       this.exit = true;
+            //     }
+            //   } else {
+            //     this.lastIndex = i;
+
+            //     let prevRegex = this.headerRegex[ind];
+            //     let initNumber = prevRegex == "category" ? 2 : 1;
+            //     let word = header[i].split(" ");
+
+            //     if(word[0].toLowerCase() == "custom") {
+
+            //       for(let k = this.lastIndex; k < header.length; k++) {
+
+            //         this.acceptHeader = false;
+            //         let word = header[k].split(" ");
+
+            //         if(header[k].toLowerCase() == prevRegex+" data name "+initNumber)
+            //           this.acceptHeader = true;
+            //         else if(header[k].toLowerCase() == prevRegex+" data "+initNumber) {
+            //           this.acceptHeader = true;
+            //           initNumber++;
+            //         } else if((k == header.length -1) && (word.length == 3)) {
+            //           this.acceptHeader = true;
+            //           i=k-1;
+            //         }
+
+            //          if(!this.acceptHeader) {
+            //           this.instr.infoIterropt('The file\'s process has stopped because the header '+header[k]+' doesn\'t follow the recommendation. For more help, see the documentation');
+            //           this.exit = true;
+            //         }
+
+            //       }
+
+            //     }
+            //     else if(!(Number.isInteger(Number(word[1])))) {
+
+            //       this.acceptHeader = false;
+
+            //       this.acceptHeader = header[i].toLowerCase() == prevRegex ? true : false;
+            //       if(!this.acceptHeader) {
+            //         this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
+            //         this.exit = true;
+            //       }
+
+            //     } else {
+            //       for(let k = this.lastIndex; k < header.length; k++) {
+
+            //         this.acceptHeader = false;
+                    
+            //         if((prevRegex == "facet") && (header[k].toLowerCase() == prevRegex+" "+initNumber)) this.acceptHeader = true;
+            //         else if(header[k].toLowerCase() == prevRegex+" "+initNumber) {
+            //           this.acceptHeader = true;
+            //           initNumber++;
+            //         }
+            //         else if(header[k].toLowerCase() == prevRegex+" "+initNumber+" value") {
+            //           this.acceptHeader = true;
+            //           initNumber++;
+            //         }
+                    
+            //         if(!this.acceptHeader) {
+            //           i=k-1;
+            //           break;
+            //         }
+            //       }
+            //     }
+
+                
+            //   }
+            //   if(this.headerRegex.length === ind) {
+            //     this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i+1]+' doesn\'t follow the recommendation. For more help, see the documentation');
+            //     this.exit = true;
+            //   }
+            //   ind++;
+
+            //   // if(this.exit == true) {
+            //   //     this.reload();
+            //   //     throw "exit";
+            //   // }
+            // }
+
+            this.data.header = [...new Set([...header])].filter(
+              (item) => item != undefined && item != ''
+            );
+
+            this.data.header.unshift('all');
+            this.data.contentCsv = csv;
+            this.onSubmit();
+
+          } catch(e) {
+            console.log(e);
+          }
+          
         })
         .catch((error) => console.log(error));
     } else this.nofits.warn('This is no csv file !');

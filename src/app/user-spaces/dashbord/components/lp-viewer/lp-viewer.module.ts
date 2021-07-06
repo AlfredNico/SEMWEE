@@ -18,6 +18,7 @@ import { EditComponent } from './editLpViewer/edit.component';
 import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
 import { DragDroppDirective } from '../../directives/drag-dropp.directive';
 import { SearchReplaceComponent } from './search_filter_replace/search-filter-replace.component';
+import { ResizableModule } from 'angular-resizable-element';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SearchReplaceComponent } from './search_filter_replace/search-filter-re
   imports: [
     SharedComponentsModule,
     PerfectScrollbarModule,
+    ResizableModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }]),
   ],
   exports: [RouterModule],
