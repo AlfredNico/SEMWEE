@@ -1,13 +1,9 @@
-import { CommonService } from './../../../../../shared/services/common.service';
 import { LpViwersService } from './../../../services/lp-viwers.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
-// import { Converter } from 'csvtojson';
-import * as csv from 'csvtojson';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
-import { InstructionService } from '@app/services/instruction.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -186,14 +182,8 @@ export class ViwerImportComponent implements OnInit {
           this.dataImported.emit({
             idProject: idProject['idProject'],
             data: this.data,
-            //idHeader: 0,
           });
         }
-        // this.dataImported.emit({
-        //   idProject: idProject['idProject'],
-        //   data: this.data,
-        //   idHeader: 0,
-        // });
       });
     }
   }
