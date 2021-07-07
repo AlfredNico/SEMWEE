@@ -786,7 +786,7 @@ export class ViwerReadImportComponent
   }
 
   private dataFilters(data: any[]) {
-    return data.filter((value, index) => this.checkFiltesData(index));
+    return data.filter((_, index) => this.checkFiltesData(index));
   }
 
   private checkFiltesData(index: number): boolean {
@@ -826,41 +826,3 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.next(this.dataSourceFilter);
   }
 }
-
-// start MatPaginator Inputs
-// pageSize = 10;
-// pageSizeOptions: number[] = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000];
-// test = true;
-// isDisable = false;
-// public selectedName: any;
-// end MatPaginator Inputs
-
-// setPageSizeOptions(setPageSizeOptionsInput: string) {
-//   this.pageSizeOptions = setPageSizeOptionsInput
-//     .split(',')
-//     .map((str) => +str);
-// }
-
-// onPageChanged(e: PageEvent): void {
-//   this.lpviLped.isLoading$.next(true);
-//   let firstCut = e.pageIndex * e.pageSize;
-//   let secondCut = firstCut + e.pageSize;
-//   this.dataSource = this.dataViews.slice(firstCut, secondCut);
-//   this.lpviLped.isLoading$.next(false);
-// }
-
-// // @HostListener('window:scroll', [])
-// // onScroll(): void {
-// //   if (this.bottomReached()) {
-// //     // this.elements = [...this.elements, this.count++];
-// //     console.log('OK');
-// //   }
-// // }
-
-// @HostListener('scroll', ['$event']) private onScroll($event: Event): void {
-//   console.log('OKOK');
-// }
-
-// private bottomReached(): boolean {
-//   return window.innerHeight + window.scrollY >= document.body.offsetHeight;
-// }
