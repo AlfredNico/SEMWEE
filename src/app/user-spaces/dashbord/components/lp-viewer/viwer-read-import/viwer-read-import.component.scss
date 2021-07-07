@@ -4,6 +4,10 @@
 
 ::ng-deep {
     /* Styles for tab labels */
+    // * {
+    //     font-family: Poppins!important;
+    // }
+    
     aside {
         min-height: calc(100vh - 17rem) !important;
     }
@@ -119,7 +123,7 @@
             // background: #42425e;
             padding-top: 1px;
             font-size: 1.3rem;
-            color: #B5B5C3;
+            color: #74788D;
             width: 100%;
             text-transform: uppercase;
             font-weight: 600;
@@ -148,6 +152,11 @@
             padding: 0 10px;
         }
     }
+    
+}
+
+::ng-deep .mat-sort-header-content {
+    font-family: Poppins!important;
 }
 
 .otherStyle {
@@ -171,6 +180,7 @@
         .mat-footer-cell {
             color: #3F4254;
             font-size: 1.15rem;
+            font-weight: 500;
         }
         .mat-body-p {
             margin: 0 !important;
@@ -181,7 +191,7 @@
         margin: 0;
     }
     .bg-light {
-        background-color: #cdcdd7 !important;
+        background-color: #A2A5B3 !important;
     }
     .other-type {
         color: #1BC5BD;

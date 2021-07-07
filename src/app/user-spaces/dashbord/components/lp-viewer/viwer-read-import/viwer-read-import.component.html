@@ -16,7 +16,7 @@
         </h3>
       </div>
       <div>
-        <button class="btn btn-primary mr-3">
+        <button class="btn btn-primary mr-3 ftp">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -33,7 +33,7 @@
       </span>
       Open
     </button>
-    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle ftp"
       aria-expanded="false" [matMenuTriggerFor]="importMenu">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
@@ -138,7 +138,7 @@
                       class="option-icon bg-light" [matMenuTriggerFor]="tableOptionMenu">
                       arrow_drop_down
                     </mat-icon>
-                    <div mat-sort-header>
+                    <div mat-sort-header style="font-family: Poppins!important;">
                       All
                       <div class="pl-3 icon">
                         <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
@@ -153,13 +153,13 @@
                   <div>
                       <form [formGroup]="formfilterStart" >
                         <section class="example-section">
-                          <mat-checkbox class="example-margin" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()"> 
+                          <mat-checkbox class="example-margin ftp" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()"> 
                             Filter Star
                           </mat-checkbox>
                         </section>
 
                         <section class="example-section">
-                          <mat-checkbox class="example-margin" formControlName="second" (change)="onChangeEventFilterStartAndFlag()">
+                          <mat-checkbox class="example-margin ftp" formControlName="second" (change)="onChangeEventFilterStartAndFlag()">
                             Filter Flag
                           </mat-checkbox>
                         </section>
@@ -185,7 +185,7 @@
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
                     <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
-                    <p class="text-center font-size-h4 m-0" >{{ element['index'] }}.</p>
+                    <p class="text-center font-size-h4 m-0 ftp" >{{ element['index'] }}.</p>
                   </div>
                 </td>
               </ng-container>
@@ -198,7 +198,7 @@
                       class="option-icon bg-light" [matMenuTriggerFor]="tableOptionMenu">
                       arrow_drop_down
                     </mat-icon>
-                    <div #updateHeader mat-sort-header id={{index}}>
+                    <div #updateHeader mat-sort-header id={{index}}  style="font-family: Poppins!important;">
                       {{ column | removeUnderscore | capitalizeFirstPipe }}
                       <div class="pl-3 icon">
                         <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
@@ -208,8 +208,8 @@
                     </div>
                   </span>
                                 </th>
-                                <mat-menu #tableOptionMenu="matMenu">
-                                    <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                <mat-menu #tableOptionMenu="matMenu">
+                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
                   </button>
                   <button mat-menu-item (click)="inputFilter(column)">
@@ -222,8 +222,8 @@
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                                    <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
-                                    <button mat-menu-item (click)="updateHeader(index)">
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item (click)="updateHeader(index)">
                     Update column
                   </button>
                 </mat-menu>
@@ -256,10 +256,10 @@
 
                   <ng-template #stringTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate">
-                      <p class="text-left text-truncate mat-body-p">
+                      <p class="text-left text-truncate mat-body-p ftp">
                         {{currentValue}}
                         <button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
+                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                       <ng-template #templeteURL>
@@ -267,9 +267,9 @@
                             senitizer.bypassSecurityTrustResourceUrl(
                               currentValue
                             )
-                          " target="_blank" class="text-truncate">{{ currentValue }}</a>
+                          " target="_blank" class="text-truncate ftp">{{ currentValue }}</a>
                         <button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
+                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
@@ -278,10 +278,10 @@
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate"
                       >
-                      <p class="text-right">
+                      <p class="text-right ftp">
                         {{ currentValue }}
                         <button mat-raised-button
-                          class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
+                          class="btn btn-light-primary font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                     </div>
@@ -294,7 +294,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
             <tr class="mat-row" *matNoDataRow>
-              <td class="text-center" [colSpan]="displayedColumns.length">
+              <td class="text-center ftp" [colSpan]="displayedColumns.length">
                 No data
               </td>
             </tr>

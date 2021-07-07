@@ -105,10 +105,6 @@ export class ViwerImportComponent implements OnInit {
   csvContent: string;
   parsedCsv: string[][];
   sizeFile: any;
-  headerRegex = ["id", "category", "category", "subcategory", "facet", "path", "name", "full title", "short title", "main heading", "meta description", "rel canonical tag", "meta name robots index", "meta name robots follow", "x-robots-tag index", "x-robots-tag follow", "x-robots-tag canonical", "meta keywords", "description", "tags", "price", "currency", "available", "main image", "main image alt", "custom"];
-  acceptHeader: boolean = true;
-  lastIndex: number;
-  exit: boolean = false;
 
   constructor(
     private lpViewerService: LpViwersService,
@@ -155,94 +151,6 @@ export class ViwerImportComponent implements OnInit {
             this.parsedCsv.pop();
 
             const header = this.parsedCsv.shift().toString().split(',');
-
-            let ind = 0;
-
-            // for(let i=0; i < header.length-1; i++) {
-              
-            //   if(!(/\s/g.test(header[i]))) {
-            //     this.acceptHeader = header[i].toLowerCase() == this.headerRegex[ind] ? true : false;
-            //     if(!this.acceptHeader) {
-            //       this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
-            //       this.exit = true;
-            //     }
-            //   } else {
-            //     this.lastIndex = i;
-
-            //     let prevRegex = this.headerRegex[ind];
-            //     let initNumber = prevRegex == "category" ? 2 : 1;
-            //     let word = header[i].split(" ");
-
-            //     if(word[0].toLowerCase() == "custom") {
-
-            //       for(let k = this.lastIndex; k < header.length; k++) {
-
-            //         this.acceptHeader = false;
-            //         let word = header[k].split(" ");
-
-            //         if(header[k].toLowerCase() == prevRegex+" data name "+initNumber)
-            //           this.acceptHeader = true;
-            //         else if(header[k].toLowerCase() == prevRegex+" data "+initNumber) {
-            //           this.acceptHeader = true;
-            //           initNumber++;
-            //         } else if((k == header.length -1) && (word.length == 3)) {
-            //           this.acceptHeader = true;
-            //           i=k-1;
-            //         }
-
-            //          if(!this.acceptHeader) {
-            //           this.instr.infoIterropt('The file\'s process has stopped because the header '+header[k]+' doesn\'t follow the recommendation. For more help, see the documentation');
-            //           this.exit = true;
-            //         }
-
-            //       }
-
-            //     }
-            //     else if(!(Number.isInteger(Number(word[1])))) {
-
-            //       this.acceptHeader = false;
-
-            //       this.acceptHeader = header[i].toLowerCase() == prevRegex ? true : false;
-            //       if(!this.acceptHeader) {
-            //         this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i]+' doesn\'t follow the recommendation. For more help, see the documentation');
-            //         this.exit = true;
-            //       }
-
-            //     } else {
-            //       for(let k = this.lastIndex; k < header.length; k++) {
-
-            //         this.acceptHeader = false;
-                    
-            //         if((prevRegex == "facet") && (header[k].toLowerCase() == prevRegex+" "+initNumber)) this.acceptHeader = true;
-            //         else if(header[k].toLowerCase() == prevRegex+" "+initNumber) {
-            //           this.acceptHeader = true;
-            //           initNumber++;
-            //         }
-            //         else if(header[k].toLowerCase() == prevRegex+" "+initNumber+" value") {
-            //           this.acceptHeader = true;
-            //           initNumber++;
-            //         }
-                    
-            //         if(!this.acceptHeader) {
-            //           i=k-1;
-            //           break;
-            //         }
-            //       }
-            //     }
-
-                
-            //   }
-            //   if(this.headerRegex.length === ind) {
-            //     this.instr.infoIterropt('The file\'s process has stopped because the header '+header[i+1]+' doesn\'t follow the recommendation. For more help, see the documentation');
-            //     this.exit = true;
-            //   }
-            //   ind++;
-
-            //   // if(this.exit == true) {
-            //   //     this.reload();
-            //   //     throw "exit";
-            //   // }
-            // }
 
             this.data.header = [...new Set([...header])].filter(
               (item) => item != undefined && item != ''
