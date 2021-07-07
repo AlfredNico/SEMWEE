@@ -1,13 +1,10 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
 import { LpdLpdService } from '../services/lpd-lpd.service';
 
@@ -33,7 +30,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
               ? searchTemplate
               : item.type === 'input'
               ? inputTemplate
-              : item.type === 'datefilter' 
+              : item.type === 'datefilter'
               ? dateTemplate
               : item.type === 'numeric'
               ? numericTemplate
@@ -70,14 +67,14 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 
         <ng-template #dateTemplate let-currentValue="value">
           <app-date-filter
-          [items]="items"
-          [item]="item"
-          [index]="index"
-          [dataViews]="dataViews"
-          (formGroup)="formGroupEmitter($event)"
-          (removeFromItem)="removeFromItemEmitter($event, 'input')"
-          (minimize)="minimizeEmitter($event)"
-          (itemsEmitter)="itemsEmitter($event)"
+            [items]="items"
+            [item]="item"
+            [index]="index"
+            [dataViews]="dataViews"
+            (formGroup)="formGroupEmitter($event)"
+            (removeFromItem)="removeFromItemEmitter($event, 'input')"
+            (minimize)="minimizeEmitter($event)"
+            (itemsEmitter)="itemsEmitter($event)"
           ></app-date-filter>
         </ng-template>
 
@@ -117,15 +114,13 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
         </p>
       </div>
     </ng-template>
-
   `,
   styleUrls: ['./facet-filter.component.scss'],
 })
 export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   /* VARIABLES */
-  public form = new FormGroup({});
   private queries = {};
-  public Columns = "";
+  public Columns = '';
   /* ALL QUERY FILTERS VALUES */
   private inputQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
@@ -192,7 +187,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
-    // this.queries = _.mapValues(this.queries, () => '');
     Object.keys(this.queries).forEach((v) => (this.queries[v] = ''));
     Object.keys(this.lpviLped.permaLink.queries).forEach(
       (v) => (this.lpviLped.permaLink.queries[v] = '')
@@ -271,7 +265,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.queriesNumerisFilters[`${event['head']}`] = this.numericQeury = q;
     this.lpviLped.dataSources$.next(this.dataSources);
     this.savePermalink(); // SAVE PERMALINK
-    this.lpviLped.isLoading$.next(false); // desaable loading spinner
   }
 
   public callAfterTimeLineEmitter(event: any) {
@@ -302,7 +295,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.lpviLped.dataSources$.next(this.dataSources);
     this.savePermalink(); // SAVE PERMALINK
-    this.lpviLped.isLoading$.next(false); // desable loading spinner
   }
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
@@ -397,7 +389,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.lpviLped.dataSources$.next(this.dataSources);
 
     this.savePermalink(); // SAVE PERMALINK
-    this.lpviLped.isLoading$.next(false); // desable loading spinner
   }
 
   /* VERIFY ALL QUERY FILTERS */
@@ -463,7 +454,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
     this.lpviLped.dataSources$.next(this.dataSources);
-    this.lpviLped.isLoading$.next(false); // disable loading spinner
     this.savePermalink(); // SAVE PERMALINK
   }
 
@@ -480,6 +470,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       }),
     };
 
+    this.lpviLped.isLoading$.next(false); // desaable loading spinner
     this.lpEditor.addFilter(permalink).subscribe();
   }
 }

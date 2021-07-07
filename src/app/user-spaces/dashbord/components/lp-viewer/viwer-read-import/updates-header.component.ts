@@ -6,21 +6,30 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
 @Component({
   selector: 'app-updates-header',
   template: `
-    <div class="w-100 panel" [formGroup]="form" fxLayout="column">
+    <div
+      class="panel"
+      [formGroup]="form"
+      fxLayout="column"
+      [style.width.px]="500"
+    >
       <mat-dialog-content class="w-100  m-0 p-0">
         <div class="w-100 p-0 m-0">
           <h2>Update Header Column</h2>
         </div>
 
         <mat-form-field appearance="outline" class="w-100">
-          <label>Header Column</label>
-          <input class="form-control" placeholder="Header Column" autocomplete="off" formControlName="columName" />
+          <mat-label>Header Column</mat-label>
+          <input
+            matInput
+            placeholder="Header Column"
+            autocomplete="off"
+            formControlName="columName"
+          />
         </mat-form-field>
       </mat-dialog-content>
 
       <mat-dialog-actions class="w-100 p-0" align="end">
         <button mat-raised-button color="accent" (click)="onClick()">
-          <!-- (click)="!loading && onClick()" -->
           <span *ngIf="!loading"> Apply </span>
           <i
             *ngIf="loading"
@@ -42,7 +51,7 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
     `,
   ],
 })
-export class UpdatesHeaderComponent implements OnInit {
+export class UpdatesHeaderComponent {
   public loading: boolean = false;
   edidtableColumns: string[] = [];
   public index: number = 0;
@@ -70,8 +79,6 @@ export class UpdatesHeaderComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
-
   public onClick() {
     const tabCopy = this.data.table.slice();
     const valueForm = Object.values(this.form.value)
@@ -82,18 +89,14 @@ export class UpdatesHeaderComponent implements OnInit {
       .trim();
     this.data.edidtableColumns.innerText = valueForm;
 
-    console.log('first table : ', this.data.table);
     tabCopy[this.data.index] = valueForm;
-    console.log('last table : ', tabCopy);
 
     this.lpViewer
       .postDisplayColums(this.data.idproject, this.data.idHeader, tabCopy)
       .subscribe((res) => {
         if (res) {
-          // console.log(res);
           this.dialogRef.close(res['idHeader']);
         }
       });
-    // console.log(this.dialogRef.getState());
   }
 }

@@ -14,8 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-viwer-import',
   template: `
     <h3 class="card-title align-items-start" fxLayout="column">
-            <span class="fw-500 text-dark ftp fs-18 space"
-              >Import File</span>
+      <span class="fw-500 text-dark ftp fs-18 space">Import File</span>
     </h3>
     <div class="w-100 bg-white" style="padding: 4em 3em;">
       <div
@@ -66,9 +65,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   `,
   styles: [
     `
-      /* .img_uploaded {
-        position: absolute;
-      } */
       .uploaded_file {
         padding: 10px;
         border: dashed 3px #40425d;
@@ -78,7 +74,7 @@ import { ActivatedRoute, Router } from '@angular/router';
       }
       .space {
         padding: 16px 0px 0px 40px;
-        margin: 0!important;
+        margin: 0 !important;
       }
     `,
   ],
@@ -109,10 +105,8 @@ export class ViwerImportComponent implements OnInit {
   constructor(
     private lpViewerService: LpViwersService,
     private readonly lpviLped: LpdLpdService,
-    private readonly common: CommonService,
     private readonly nofits: NotificationService,
-    private readonly instr: InstructionService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
@@ -128,7 +122,7 @@ export class ViwerImportComponent implements OnInit {
 
   convertFile(event: any) {
     const file = event.target ? event.target.files[0] : event[0];
-    if ((file['name'] as string).includes('.csv')) {
+    if (file && (file?.name as string).includes('.csv')) {
       this.sizeFile = file.size;
       this.file = file;
 
@@ -137,7 +131,6 @@ export class ViwerImportComponent implements OnInit {
       this.readFileContent(file)
         .then((csvContent) => {
           try {
-
             const csv = [];
             const lines = this.processCsv(csvContent);
             const sep1 = lines[0].split(';').length;
@@ -159,11 +152,9 @@ export class ViwerImportComponent implements OnInit {
             this.data.header.unshift('all');
             this.data.contentCsv = csv;
             this.onSubmit();
-
-          } catch(e) {
+          } catch (e) {
             console.log(e);
           }
-          
         })
         .catch((error) => console.log(error));
     } else this.nofits.warn('This is no csv file !');

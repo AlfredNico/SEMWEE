@@ -16,8 +16,20 @@ export class BytesPipe implements PipeTransform {
     TB: { max: Number.MAX_SAFE_INTEGER, prev: 'GB' },
   };
 
-  transform(input: any, decimal: number = 0, from: ByteUnit = 'B', to?: ByteUnit): any {
-    if (!(isNumberFinite(input) && isNumberFinite(decimal) && isInteger(decimal) && isPositive(decimal))) {
+  transform(
+    input: any,
+    decimal: number = 0,
+    from: ByteUnit = 'B',
+    to?: ByteUnit
+  ): any {
+    if (
+      !(
+        isNumberFinite(input) &&
+        isNumberFinite(decimal) &&
+        isInteger(decimal) &&
+        isPositive(decimal)
+      )
+    ) {
       return input;
     }
 
@@ -31,7 +43,10 @@ export class BytesPipe implements PipeTransform {
     if (to) {
       const format = BytesPipe.formats[to];
 
-      const result = toDecimal(BytesPipe.calculateResult(format, bytes), decimal);
+      const result = toDecimal(
+        BytesPipe.calculateResult(format, bytes),
+        decimal
+      );
 
       return BytesPipe.formatResult(result, to);
     }
@@ -40,7 +55,10 @@ export class BytesPipe implements PipeTransform {
       if (BytesPipe.formats.hasOwnProperty(key)) {
         const format = BytesPipe.formats[key];
         if (bytes < format.max) {
-          const result = toDecimal(BytesPipe.calculateResult(format, bytes), decimal);
+          const result = toDecimal(
+            BytesPipe.calculateResult(format, bytes),
+            decimal
+          );
 
           return BytesPipe.formatResult(result, key);
         }
@@ -52,7 +70,10 @@ export class BytesPipe implements PipeTransform {
     return `${result} ${unit}`;
   }
 
-  static calculateResult(format: { max: number; prev?: ByteUnit }, bytes: number) {
+  static calculateResult(
+    format: { max: number; prev?: ByteUnit },
+    bytes: number
+  ) {
     const prev = format.prev ? BytesPipe.formats[format.prev] : undefined;
     return prev ? bytes / prev.max : bytes;
   }

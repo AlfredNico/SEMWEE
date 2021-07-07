@@ -118,7 +118,7 @@ export class StylePaginatorDirective {
     }
 
     //initialize next page and last page buttons
-    if (this._buttons.length == 0) {
+    if (this._buttons.length == 0 && this.ren) {
       let nodeArray =
         this.vr.element?.nativeElement?.childNodes[0]?.childNodes[0]
           .childNodes[2].childNodes;
@@ -126,9 +126,9 @@ export class StylePaginatorDirective {
         for (let i = 0; i < nodeArray.length; i++) {
           if (this._isFetchData) {
             if (i == 0 || i == 1) {
-              this.ren.setAttribute(nodeArray[i], 'disabled', 'true');
+              this.ren?.setAttribute(nodeArray[i], 'disabled', 'true');
             } else if (i == 5 || i == 6)
-              this.ren.setAttribute(nodeArray[i], 'disabled', 'false');
+              this.ren?.setAttribute(nodeArray[i], 'disabled', 'false');
           }
           if (nodeArray[i].nodeName === 'BUTTON') {
             if (nodeArray[i].innerHTML.length > 100 && nodeArray[i].disabled) {
@@ -142,9 +142,9 @@ export class StylePaginatorDirective {
                 'color',
                 'rgba(181, 181, 195, 1)'
               );
-              this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
-              this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
-              this.ren.setStyle(nodeArray[i], 'margin', '.5%');
+              this.ren?.setStyle(nodeArray[i], 'box-shadow', 'none');
+              this.ren?.setStyle(nodeArray[i], 'border-radius', '5px');
+              this.ren?.setStyle(nodeArray[i], 'margin', '.5%');
             } else if (
               nodeArray[i].innerHTML.length > 100 &&
               !nodeArray[i].disabled
@@ -159,9 +159,9 @@ export class StylePaginatorDirective {
                 'color',
                 'rgba(181, 181, 195, 1)'
               );
-              this.ren.setStyle(nodeArray[i], 'box-shadow', 'none');
-              this.ren.setStyle(nodeArray[i], 'border-radius', '5px');
-              this.ren.setStyle(nodeArray[i], 'margin', '.5%');
+              this.ren?.setStyle(nodeArray[i], 'box-shadow', 'none');
+              this.ren?.setStyle(nodeArray[i], 'border-radius', '5px');
+              this.ren?.setStyle(nodeArray[i], 'margin', '.5%');
             } else if (nodeArray[i].disabled) {
               // } else if (this._isFetchData) {
               this.ren.setStyle(
@@ -169,15 +169,15 @@ export class StylePaginatorDirective {
                 'background-color',
                 'rgba(54, 153, 255, 1)'
               );
-              this.ren.setStyle(nodeArray[i], 'color', 'white');
+              this.ren?.setStyle(nodeArray[i], 'color', 'white');
             } else if (!nodeArray[i].disabled) {
               // } else if (!this._isFetchData) {
-              this.ren.setStyle(
+              this.ren?.setStyle(
                 nodeArray[i],
                 'background-color',
                 'transparent'
               );
-              this.ren.setStyle(
+              this.ren?.setStyle(
                 nodeArray[i],
                 'color',
                 'rgba(138, 140, 159, 1)'
@@ -185,26 +185,6 @@ export class StylePaginatorDirective {
             }
           }
         }
-        // if (i == 0) {
-        //   this.ren.setStyle(
-        //     nodeArray[i],
-        //     'background-color',
-        //     'rgba(54, 153, 255, 1)'
-        //   );
-        //   this.ren.setStyle(nodeArray[i], 'color', 'white');
-        // } else {
-        //   this.ren.setStyle(
-        //     nodeArray[i],
-        //     'background-color',
-        //     'transparent'
-        //   );
-        //   this.ren.setStyle(
-        //     nodeArray[i],
-        //     'color',
-        //     'rgba(138, 140, 159, 1)'
-        //   );
-        // }
-        // this._isFetchData = false;
       });
     }
 
@@ -220,14 +200,6 @@ export class StylePaginatorDirective {
           nextPageNode
         );
       }
-
-      // if (i == this._rangeEnd) {
-      //   this.ren.insertBefore(
-      //     actionContainer,
-      //     this.createButton(this._pageGapTxt, this._rangeEnd),
-      //     nextPageNode
-      //   );
-      // }
     }
   }
 
@@ -246,22 +218,6 @@ export class StylePaginatorDirective {
       case pageIndex:
         this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
         break;
-      // case this._pageGapTxt:
-      // let newIndex = this._curPageObj.pageIndex + this._showTotalPages;
-
-      // if (newIndex >= this.numOfPages) newIndex = this.lastPageIndex;
-
-      // if (pageIndex != this.lastPageIndex) {
-      //   this.ren.listen(linkBtn, 'click', () => {
-      //     console.log('working: ', pageIndex);
-      //     this.switchPage(newIndex);
-      //   });
-      // }
-
-      // if (pageIndex == this.lastPageIndex) {
-      //   this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
-      // }
-      // break;
       default:
         this.ren.listen(linkBtn, 'click', () => {
           this.switchPage(i);

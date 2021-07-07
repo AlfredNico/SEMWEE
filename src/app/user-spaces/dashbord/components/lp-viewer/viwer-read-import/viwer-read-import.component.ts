@@ -153,7 +153,6 @@ export class ViwerReadImportComponent
         previousPageIndex: 1,
         pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
       };
-
       this.lpviLped.isLoading$.next(false);
     }
   }
@@ -232,7 +231,6 @@ export class ViwerReadImportComponent
         this.dataSourceFilter = res;
         this.dataSource = res.slice(0, this.paginator.pageSize);
         this.lpviLped.dataPaginator$.next(true);
-        // console.log("In read Componnent ",this.dataSourceFilter)
       }
     });
 
@@ -244,7 +242,6 @@ export class ViwerReadImportComponent
   }
 
   onResizeEnd(e: ResizeEvent) {
-    // console.log('size', this.ws);
     this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
   }
 
@@ -278,7 +275,6 @@ export class ViwerReadImportComponent
       .subscribe();
   }
   update_Search_Replace(name_dinamic) {
-    // console.log(name_dinamic);
     this.savedata(name_dinamic);
   }
 
@@ -299,7 +295,6 @@ export class ViwerReadImportComponent
     this.savedata(name_dinamic);
 
     this.selectedIndex = 1;
-    console.log(this.selectedIndex);
   }
 
   savedata(name_dinamic) {
@@ -324,7 +319,6 @@ export class ViwerReadImportComponent
       )
       .subscribe((res) => {
         this.listNameHistory.push(res);
-        // console.log(res);
       });
     this.ActualyData = null;
   }
@@ -406,10 +400,6 @@ export class ViwerReadImportComponent
           new AngularCsv(tabnewObject, res[1]['nameProject'], csvOptions);
         }
       });
-  }
-
-  public openButton() {
-    console.log('open button');
   }
 
   public searchFacet(column: any) {
@@ -503,8 +493,6 @@ export class ViwerReadImportComponent
         minDate: this.dataViews[0][column],
       }
     );
-
-    console.log('OK', result);
 
     this.lpviLped.itemsObservables$.next({
       type: 'timeLine',
@@ -699,7 +687,6 @@ export class ViwerReadImportComponent
         }
       });
     } else if (regex3.exec(string_date)) {
-      // console.log("C'est un objet");
       const tab = string_date.split(regex2);
       const tab1 = tab[2].toString().split('T');
       this.dataViews.forEach((item) => {
@@ -761,15 +748,13 @@ export class ViwerReadImportComponent
   }
 
   updateDisplaycolumn(newHeader) {
-    // console.log(newHeader);
     this.nameHeader.forEach((value, index) => {
       let textValue = value['_elementRef'].nativeElement.innerText;
-      // console.log(textValue);
-      if (textValue !== newHeader[index].trim()) {
+      if (textValue !== newHeader[index].trim())
         value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
-      }
     });
   }
+
   getAllDataByListName(value) {
     this.ActualyData = value;
     this.idHeader = value.idHeader;
@@ -778,16 +763,15 @@ export class ViwerReadImportComponent
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
 
-      console.log('before data');
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
       let min = this.paginator.pageIndex * this.paginator.pageSize;
       let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
       this.dataSource = response[0].slice(min, max);
-      console.log('after data');
       this.dataViews = response[0];
     });
   }
+
   updateHeader(value) {
     let updateHeader: any;
     let tabforUpdate: any[] = ['All'];
@@ -812,7 +796,6 @@ export class ViwerReadImportComponent
       .pipe(
         map((idHeader: any) => {
           if (idHeader) {
-            console.log('Actualy data : ', this.ActualyData);
             const actualy = this.ActualyData ? this.ActualyData['idName'] : -1;
             if (this.ActualyData) {
               this.listNameHistory.splice(
@@ -834,7 +817,6 @@ export class ViwerReadImportComponent
               )
               .subscribe((res) => {
                 this.listNameHistory.push(res);
-                console.log(res);
               });
           }
         })

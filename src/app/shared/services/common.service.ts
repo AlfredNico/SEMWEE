@@ -3,9 +3,25 @@ import { NotificationService } from '@app/services/notification.service';
 import { Injectable } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
-import { BehaviorSubject, interval, Observable, Subject, Subscription } from 'rxjs';
-import { startWith, take, takeUntil, takeWhile, tap, timeInterval } from 'rxjs/operators';
-import { MatBottomSheet, MatBottomSheetConfig } from '@angular/material/bottom-sheet';
+import {
+  BehaviorSubject,
+  interval,
+  Observable,
+  Subject,
+  Subscription,
+} from 'rxjs';
+import {
+  startWith,
+  take,
+  takeUntil,
+  takeWhile,
+  tap,
+  timeInterval,
+} from 'rxjs/operators';
+import {
+  MatBottomSheet,
+  MatBottomSheetConfig,
+} from '@angular/material/bottom-sheet';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
@@ -28,19 +44,18 @@ export class CommonService {
   );
   public loader$: Observable<number>;
 
-
   readonly config: MatBottomSheetConfig = {
     hasBackdrop: false,
     disableClose: false,
     panelClass: 'bottom-sheet-container',
-    direction: 'ltr'
+    direction: 'ltr',
   };
 
   constructor(
     private readonly spinner: NgxSpinnerService,
     private _bottomSheet: MatBottomSheet,
     private coockie: CookieService
-  ) { }
+  ) {}
 
   public showSpinner(name = 'root', fullScreen = true, template?: any) {
     const options: Spinner = {
@@ -64,38 +79,38 @@ export class CommonService {
       .pipe(
         tap((spinner) => {
           if (spinner) {
-            this.isLoading$.subscribe((res) => {
-              if (res === true) {
-                this.isLoading = true;
-                this.subscription$ = this.intervalCount
-                  .pipe(
-                    take(11),
-                    startWith(0),
-                    takeUntil(this.onDestroy$))
-                  .subscribe((x) => {
-                    if (x === 10) {
-                      this.subscription$.unsubscribe();
-                      this.onDestroy$.next();
-                      this.onDestroy$.complete();
-                      this.checkAlerts(x, res)
-                    }
-                  });
-              } else {
-                this.isLoading = false;
-                this.subscription$.unsubscribe();
-                this.onDestroy$.next();
-                this.onDestroy$.complete();
-                // this.intervalCount = interval(1000);
-                this._bottomSheet.dismiss();
-              }
-            });
+            // this.isLoading$.subscribe((res) => {
+            //   if (res === true) {
+            //     this.isLoading = true;
+            //     this.subscription$ = this.intervalCount
+            //       .pipe(
+            //         take(11),
+            //         startWith(0),
+            //         takeUntil(this.onDestroy$))
+            //       .subscribe((x) => {
+            //         if (x === 10) {
+            //           this.subscription$.unsubscribe();
+            //           this.onDestroy$.next();
+            //           this.onDestroy$.complete();
+            //           this.checkAlerts(x, res)
+            //         }
+            //       });
+            //   } else {
+            //     this.isLoading = false;
+            //     this.subscription$.unsubscribe();
+            //     this.onDestroy$.next();
+            //     this.onDestroy$.complete();
+            //     // this.intervalCount = interval(1000);
+            //     this._bottomSheet.dismiss();
+            //   }
+            // });
             if (spinner.show === true) {
-              this._bottomSheet.dismiss();
-              this.isLoading = false;
-              // this.intervalCount = interval(1000);
-              this.onDestroy$.next();
-              this.onDestroy$.complete();
-              this.subscription$.unsubscribe();
+              // this._bottomSheet.dismiss();
+              // this.isLoading = false;
+              // // this.intervalCount = interval(1000);
+              // this.onDestroy$.next();
+              // this.onDestroy$.complete();
+              // this.subscription$.unsubscribe();
               this.spinner.hide(name);
             }
           }
@@ -105,12 +120,16 @@ export class CommonService {
       .subscribe();
   }
 
-  public getSpinner(name: string) {
+  public getSpinner(name = 'root') {
     return this.spinner.getSpinner(name);
   }
 
   private checkAlerts(response: number, isRes: boolean): void {
-    if (response === 10 && this.isLoading === true && !this.coockie.check('info')) {
+    if (
+      response === 10 &&
+      this.isLoading === true &&
+      !this.coockie.check('info')
+    ) {
       this.intervalCount = interval(1000);
       this.subscription$.unsubscribe();
       this.isLoading = false;
