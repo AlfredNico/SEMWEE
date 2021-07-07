@@ -75,7 +75,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     `,
   ],
 })
-export class ViwerImportComponent implements OnInit {
+export class ViwerImportComponent {
   public form = new FormGroup({
     fileSource: new FormControl('', [Validators.required]),
   });
@@ -105,11 +105,6 @@ export class ViwerImportComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
-  ngOnInit(): void {
-    this.lpviLped.isLoading$.next(false); // disable loading spinner
-  }
-
   reload() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
@@ -119,6 +114,7 @@ export class ViwerImportComponent implements OnInit {
   convertFile(event: any) {
     const file = event.target ? event.target.files[0] : event[0];
     if (file && (file?.name as string).includes('.csv')) {
+      this.lpviLped.isLoading$.next(true); // enable loading spinner
       this.sizeFile = file.size;
       this.file = file;
 
