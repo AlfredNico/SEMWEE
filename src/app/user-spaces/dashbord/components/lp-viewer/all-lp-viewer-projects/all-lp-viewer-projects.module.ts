@@ -9,11 +9,13 @@ import { SharedModule } from '@app/shared/modules/shared.module';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { LPViewerProjectsComponent } from '@app/shared/components/lp-viewer-projects/lp-viewer-projects.component';
 import { AvatarModule } from '@app/shared/modules/avatar.module';
+import { FormatFileSizePipe } from '@app/user-spaces/dashbord/pipe/format-filesize.pipe';
 
 @NgModule({
   declarations: [
     AllLPViewerProjectsComponent,
     LPViewerProjectsComponent,
+    FormatFileSizePipe,
   ],
   imports: [
     CommonModule,

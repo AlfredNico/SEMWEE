@@ -11,7 +11,6 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { NgBytesPipeModule } from '@app/user-spaces/dashbord/pipe/bytes.pipe';
 
 @NgModule({
   declarations: [],
@@ -26,7 +25,6 @@ import { NgBytesPipeModule } from '@app/user-spaces/dashbord/pipe/bytes.pipe';
     NgxSpinnerModule,
     TranslateModule,
     MatBottomSheetModule,
-    NgBytesPipeModule,
   ],
 })
 export class SharedModule {}

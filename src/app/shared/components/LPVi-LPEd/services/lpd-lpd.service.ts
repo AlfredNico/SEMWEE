@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 export class LpdLpdService {
   /* Emittter value from clicked USER */
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
+  public searchReplace$ = new BehaviorSubject<any>(undefined);
   /* Emittter value dataSources after filter USER */
   public dataSources$ = new BehaviorSubject<any>(undefined);
   public dataPaginator$ = new BehaviorSubject<boolean>(false);

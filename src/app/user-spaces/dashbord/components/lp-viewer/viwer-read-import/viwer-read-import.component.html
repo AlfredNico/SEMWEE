@@ -1,6 +1,22 @@
 <main class="w-100 p-0" fxLayout="column">
-  <div fxLayout class="pt-0 py-3 px-0 justify-content-end" fxLayoutGap="5px">
-    <button class="btn btn-primary ">
+  <!-- <div fxLayout class="pt-0 py-3 px-0 justify-content-start" fxLayoutGap="5px">
+    <h3 class="card-title align-items-start" fxLayout="column">
+      <span class="fw-500 text-dark ftp fs-18"
+        >Projects Overview</span>
+      <span class="text-muted mt-0 fw-500 font-size-sm ftp fs-15"
+        >Projects</span
+      >
+    </h3>
+  </div> -->
+    <div fxLayout="row" class="pt-0 py-3 px-0" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+      <div>
+        <h3 class="card-title align-items-start ftp m-0" fxLayout="column" >
+          <span class="fw-500 text-dark ftp fs-18 pl-20px">DataTable View</span>
+          <!-- <span class="text-muted mt-0 pl-20px fw-500 ftp">{{ dataSource.data.length }} Matching Rows</span> -->
+        </h3>
+      </div>
+      <div>
+        <button class="btn btn-primary mr-3 ftp">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -17,7 +33,7 @@
       </span>
       Open
     </button>
-    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle ftp"
       aria-expanded="false" [matMenuTriggerFor]="importMenu">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
@@ -40,8 +56,8 @@
         keyboard_arrow_down
       </mat-icon>
     </button>
-    <mat-menu #importMenu="matMenu">
-      <button mat-menu-item>
+        <mat-menu #importMenu="matMenu">
+            <button mat-menu-item>
         Table options
       </button>
       <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
@@ -52,25 +68,54 @@
       <button mat-menu-item>Sous item 1</button>
       <button mat-menu-item>Soous item 2</button>
     </mat-menu>
+      </div>
     <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
   </div>
-  <div class="row p-0">
-    <aside class="col p-0" fxFlex="25%" style="border-right: 4px solid #EBEDF3">
-      <mat-tab-group mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
-        class="mat-group scroll ps" perfectScrollbar>
+  <div class="row p-0" #container>
+    <aside class="p-0" [ngStyle]="{'width': ws + 'px'}" style="border-right: 4px solid #EBEDF3; resize: both;
+    overflow: auto;"
+    mwlResizable
+    [enableGhostResize]="true"
+    resizeCursorPrecision="10"
+    [resizeEdges]="{bottom: false, right: true, top: false, left: false}"
+    (resizeEnd)="onResizeEnd($event)"
+    >
+      <mat-tab-group
+        [(selectedIndex)]="selectedIndex"
+       mat-align-tabs="start" [color]="'#f0f1f6'" [backgroundColor]="'#f0f1f6'"
+        class="mat-group scroll ps" *ngIf="dataViews.length !== 0" perfectScrollbar>
         <mat-tab label="Facet/Filter">
           <app-facet-filter-target [idProject]='idProject' [items]='items' [dataViews]='dataViews'
-            [dataSources]='dataSource.data'></app-facet-filter-target>
+            [dataSources]='dataSource.data' [datasourceFilter]='dataSourceFilter' (sendData)="update_Search_Replace($event)"></app-facet-filter-target>
 
         </mat-tab>
         <mat-tab label="Undo / Redo">
           <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata"
             (callOtherData)="getAllDataByListName($event)"></app-undo-redo>
         </mat-tab>
+
+      
+         <mat-tab label="Search / Replace">
+           <div *ngIf="Columns_replace">
+              <ng-template #searchReplace>
+                <app-search-replace 
+                  [nameColumn]="Columns_replace"
+                  [datasourceFilter]="dataSourceFilter"
+                  (sendData)="update_Search_Replace($event)"
+                  (removeFromItem)="removeAppSearch($event)"
+                >
+                  </app-search-replace>
+              </ng-template>
+      
+              <ng-container *ngTemplateOutlet="searchReplace">
+                This text is not displayed
+              </ng-container> 
+           </div>
+        </mat-tab>
       </mat-tab-group>
     </aside>
 
-    <aside class="col p-0" fxFlex="75%">
+    <aside class="p-0" [ngStyle]="{'width':'calc(100% - ' + ws + 'px)'}">
       <div class="p-0">
         <div class="w-100 scroll ps" style="
             max-width: 100%;
@@ -92,7 +137,7 @@
                       class="option-icon bg-light" [matMenuTriggerFor]="tableOptionMenu">
                       arrow_drop_down
                     </mat-icon>
-                    <div mat-sort-header>
+                    <div mat-sort-header style="font-family: Poppins!important;">
                       All
                       <div class="pl-3 icon">
                         <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
@@ -107,13 +152,13 @@
                   <div>
                       <form [formGroup]="formfilterStart" >
                         <section class="example-section">
-                          <mat-checkbox class="example-margin" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()">
-                            Filter Start
+                          <mat-checkbox class="example-margin ftp" formControlName="first"  (change)="onChangeEventFilterStartAndFlag()"> 
+                            Filter Star
                           </mat-checkbox>
                         </section>
 
                         <section class="example-section">
-                          <mat-checkbox class="example-margin" formControlName="second" (change)="onChangeEventFilterStartAndFlag()">
+                          <mat-checkbox class="example-margin ftp" formControlName="second" (change)="onChangeEventFilterStartAndFlag()">
                             Filter Flag
                           </mat-checkbox>
                         </section>
@@ -127,7 +172,7 @@
                     (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
                 </mat-menu>
-
+<!-- xmlns -->
                 <td mat-cell *matCellDef="
                     let indexRow = index;
                     let element;
@@ -137,9 +182,9 @@
                   <div fxLayout="row" fxLayoutAlign="space-around center">
                     <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
-                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["start"]' (click)="updateStart(element,element['index'],'Start')"></i>
-                    <p class="text-center font-size-h4 m-0" >{{ paginator.pageIndex * paginator.pageSize + indexRow + 1  }}.</p>
+                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
+                    <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
+                    <p class="text-center font-size-h4 m-0 ftp" >{{ element['index'] }}.</p>
                   </div>
                 </td>
               </ng-container>
@@ -152,7 +197,7 @@
                       class="option-icon bg-light" [matMenuTriggerFor]="tableOptionMenu">
                       arrow_drop_down
                     </mat-icon>
-                    <div #updateHeader mat-sort-header id={{index}}>
+                    <div #updateHeader mat-sort-header id={{index}}  style="font-family: Poppins!important;">
                       {{ column | removeUnderscore | capitalizeFirstPipe }}
                       <div class="pl-3 icon">
                         <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
@@ -161,7 +206,7 @@
                       </div>
                     </div>
                   </span>
-                </th>
+                                </th>
                 <mat-menu #tableOptionMenu="matMenu">
                   <button mat-menu-item [matMenuTriggerFor]="sousItem1">
                     Facet
@@ -169,11 +214,14 @@
                   <button mat-menu-item (click)="inputFilter(column)">
                     Text filter
                   </button>
+                  <button mat-menu-item (click)="searchReplace(column)">
+                    Search replace 
+                  </button>
                   <mat-divider></mat-divider>
                   <button mat-menu-item [matMenuTriggerFor]="editCells">
                     Edit cells
                   </button>
-                  <hr style="border-top: 1px solid #CCCCCC; margin: 0;">
+                  <mat-divider></mat-divider>
                   <button mat-menu-item (click)="updateHeader(index)">
                     Update column
                   </button>
@@ -182,24 +230,8 @@
                   <button mat-menu-item (click)="searchFacet(column)">Text facet</button>
                   <button mat-menu-item (click)="numericFacter(column)">Numeric facet</button>
                   <button mat-menu-item (click)="timeLineFacter(column)">Timeline facet</button>
-                  <button mat-menu-item>Scatterplot facet</button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item>Custum Numeric facet</button>
-                  <button mat-menu-item>Custumized facet</button>
                 </mat-menu>
                 <mat-menu #editCells="matMenu">
-                  <button mat-menu-item>Transform...</button>
-                  <button mat-menu-item [matMenuTriggerFor]="commonTransforms">
-                    Common transforms
-                  </button>
-                  <button mat-menu-item>Fill down</button>
-                  <button mat-menu-item>Blank down</button>
-                  <button mat-menu-item>Split mutli-valued cells...</button>
-                  <button mat-menu-item>Join multi-valued cells</button>
-                  <button mat-menu-item>Cluster and edit...</button>
-                  <button mat-menu-item>Replace</button>
-                </mat-menu>
-                <mat-menu #commonTransforms="matMenu">
                   <app-edit-cell [dataSource]="dataSource.data" [dataViews]="dataViews"
                     [columnName]='column' (toggleChanges)="toggleedit($event)">
                   </app-edit-cell>
@@ -222,15 +254,11 @@
                   </ng-container>
 
                   <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate"
-                      (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <p class="text-left text-truncate mat-body-p" *ngIf="
-                          (currentValue | isURL) === false;
-                          else templeteURL
-                        ">
+                    <div class="row justify-content-between px-3 text-truncate">
+                      <p class="text-left text-truncate mat-body-p ftp">
                         {{currentValue}}
                         <button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
+                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                       <ng-template #templeteURL>
@@ -238,9 +266,9 @@
                             senitizer.bypassSecurityTrustResourceUrl(
                               currentValue
                             )
-                          " target="_blank" class="text-truncate">{{ currentValue }}</a>
+                          " target="_blank" class="text-truncate ftp">{{ currentValue }}</a>
                         <button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle"
+                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
@@ -248,11 +276,11 @@
 
                   <ng-template #numberTemplate let-currentValue="value">
                     <div class="row justify-content-between px-3 text-truncate"
-                      (mouseenter)="enter(indexRow,column)" (mouseleave)="leave(indexRow,column)">
-                      <p class="text-right">
+                      >
+                      <p class="text-right ftp">
                         {{ currentValue }}
-                        <button mat-raised-button *ngIf="hoverIndex == combinate(indexRow,column)"
-                          class="btn btn-light-primary font-weight-bold mr-2 otherStyle"
+                        <button mat-raised-button
+                          class="btn btn-light-primary font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                     </div>
@@ -265,7 +293,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
             <tr class="mat-row" *matNoDataRow>
-              <td class="text-center" [colSpan]="displayedColumns.length">
+              <td class="text-center ftp" [colSpan]="displayedColumns.length">
                 No data
               </td>
             </tr>
@@ -286,6 +314,7 @@
           <app-edit [(tab_arraw)]="tab_arraw" [(vueedit)]="vueEdit" [(eObject)]="objectOne"
             [(selected)]="selected" [(nameCells)]="nameCells" (objectChange)="oneObjectfunc($event)"
             (toggleChange)="toggleedit($event)"></app-edit>
+            <app-search-replace></app-search-replace>
         </div>
       </div>
     </div>

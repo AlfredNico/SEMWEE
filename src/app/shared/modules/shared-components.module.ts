@@ -15,8 +15,10 @@ import { NumericFacetComponent } from '../components/LPVi-LPEd/components/numeri
 import { SearchFilterComponent } from '../components/LPVi-LPEd/components/search-filter.component';
 import { FacetFilterComponent } from '../components/LPVi-LPEd/components/facet-filter.component';
 import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.component';
+
 import { HttpClientModule } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
+// import { SearchReplaceComponent } from '@app/user-spaces/dashbord/components/lp-viewer/search_filter_replace/search-filter-replace.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     SearchFilterComponent,
     FacetFilterComponent,
     TimeLineComponent,
+    // SearchReplaceComponent
   ],
   imports: [
     MatStepperModule, // stepper module
@@ -55,9 +58,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     FacetFilterComponent,
     TimeLineComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-  providers: [
-    // LpdLpdService
-  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
-export class SharedComponentsModule {}
+export class SharedComponentsModule { }

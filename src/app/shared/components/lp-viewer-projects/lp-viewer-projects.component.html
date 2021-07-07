@@ -1,20 +1,67 @@
 <div class="card-body pt-2" style="padding: 0;">
-    <!--begin::Item-->
-    <div class="d-flex align-items-center content-project" *ngFor="let project of (allProjects$ | async)">
-        <a (click)="navigateURL(project._id)" class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content">
-            <div class="text-dark mb-1 font-size-lg">{{ project.nameProject }}</div>
-            <span class="text-muted">Last updated : {{ project?.updated_at | date: 'MMM d, y, h:mm a' }}</span>
-        </a>
-        <!--end::Text-->
-        <div class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content text-left">
-          <div class="text-dark mb-1 font-size-lg">File size : {{ project.projectsize }} octets</div>
-        </div>
-        <!--begin::Dropdown-->
-        <div class="dropdown dropdown-inline ml-2" data-placement="left">
-            <div (click)="onDelete(project)" class="btn btn-danger">Delete
+    <div class="tab-content mt-5">
+        <!--begin::Tap pane-->
+        <!-- <div class="tab-pane fade" role="tabpanel"> -->
+            <!--begin::Table-->
+            <div class="table-responsive">
+                <table class="table table-borderless table-vertical-center tab">
+                    <thead>
+                        <tr>
+                            <th class="p-0 w-5"></th>
+                            <th class="p-0 w-45"></th>
+                            <th class="p-0 w-15"></th>
+                            <th class="p-0 w-25"></th>
+                            <th class="p-0 w-10"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <div> -->
+
+                        
+                        <tr *ngFor="let project of (allProjects$ | async)" class="content-project txt-project-content">
+                        <!-- <a  class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content"> -->
+                            <td (click)="navigateURL(project._id)">
+                                <!-- <div class="symbol symbol-50 symbol-light mr-5">
+                                    <span class="symbol-label"> -->
+                                        <img [src]="'assets/media/svg/icons/Files/csv.svg'" class="w-50px align-self-center" alt="." />
+                                    <!-- </span>
+                                </div> -->
+                            </td>
+                            <td (click)="navigateURL(project._id)">
+                                <div class="text-dark font-weight-bolder mb-1 font-size-lg ft-style">{{ project.nameProject }}</div>
+                                <span class="text-muted font-weight-bold d-block ftp">Name Project</span>
+                            </td>
+                            <td class="text-right pr-0" (click)="navigateURL(project._id)">
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg ft-style">{{ project.projectsize | formatFileSize:false }}</span>
+                                <span class="text-muted font-weight-bold ftp">File Size</span>
+                            </td>
+                            <td class="text-right" (click)="navigateURL(project._id)">
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg ft-style">{{ project?.updated_at | date: 'MMM d, y, h:mm a' }}</span>
+                                <span class="text-muted font-weight-bold ftp">Last Update</span>
+                            </td>
+                            <td class="text-right">
+                                <div (click)="onDelete(project)" class="btn btn-light btn-hover-primary fx" [matTooltip]="'Delete project'">
+                                    <span class="svg-icon svg-icon-md svg-icon-primary">
+                                        <!--begin::Svg Icon | path:assets/media/svg/icons/General/Trash.svg-->
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero" />
+                                            <path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3" />
+                                          </g>
+                                        </svg>
+                                        <!--end::Svg Icon-->
+                                      </span>
+                                    <span class="text-del ftp">Delete</span>
+                                </div>
+                            </td>
+                        <!-- </a> -->
+                        </tr>
+
+                        <!-- </div> -->
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <!--end::Dropdown-->
+        <!-- </div> -->
     </div>
-    <!--end::Item-->
 </div>

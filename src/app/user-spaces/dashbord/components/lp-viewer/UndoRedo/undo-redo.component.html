@@ -2,8 +2,6 @@
     <h2 mat-subheader>History</h2>
     <mat-list-item  *ngFor="let nameHistory of dataNameHistory ; let i = index" style="cursor:pointer" (click)="linkHistory(nameHistory,i)" [ngClass]="{active: indexRow <= i }">
         {{i}}. {{nameHistory.name}}
-      
-        <!-- Mea Amor -->
         <mat-divider style="border-top-color: #f3f3f3;"></mat-divider>
     </mat-list-item>
 </mat-list>

@@ -26,6 +26,7 @@ import {
   PageEvent,
   Paginator,
 } from '@app/user-spaces/dashbord/interfaces/paginator';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -41,6 +42,7 @@ export class ViwerReadImportComponent
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
+  selectedIndex = 1;
 
   @Input('idProject') idProject = undefined;
   @Input('filtersData') filtersData: {
@@ -51,6 +53,8 @@ export class ViwerReadImportComponent
 
   @Input('dataAfterUploaded') dataAfterUploaded: any = undefined;
   @Input('inputFilters') inputFilters: any = undefined;
+  @ViewChild('container') container: ElementRef;
+  @Input() isFavorate: boolean = false;
 
   formfilterStart = new FormGroup({
     first: new FormControl(false),
@@ -63,13 +67,11 @@ export class ViwerReadImportComponent
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
   public dataSourceFilter: any[] = [];
-  // public dataSource: any[] = [];
   public paginator: Paginator;
   private isFiltered = false;
   public formGroup = this.fb.group({});
   public items: any[] = [];
 
-  public hoverIndex;
   public vueEdit: boolean = false;
   public nameCells;
   public lastValue;
@@ -85,6 +87,11 @@ export class ViwerReadImportComponent
   top = 0;
   left = null;
   public domTab: any;
+  public ws: any;
+
+  // ------------------
+  pageEvent: PageEvent;
+  Columns_replace: String;
 
   constructor(
     public dialog: MatDialog,
@@ -92,7 +99,9 @@ export class ViwerReadImportComponent
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
     private readonly lpviLped: LpdLpdService
-  ) {}
+  ) {
+    // this.selectedIndex = 1;
+  }
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
@@ -144,7 +153,8 @@ export class ViwerReadImportComponent
         previousPageIndex: 1,
         pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
       };
-      this.lpviLped.isLoading$.next(false); // disable loading spinner
+
+      this.lpviLped.isLoading$.next(false);
     }
   }
 
@@ -155,10 +165,11 @@ export class ViwerReadImportComponent
   ): any[] {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
 
-    const content = contentCsv.map((value) =>
+    const content = contentCsv.map((value, indexMap) =>
       value.reduce(
         (tdObj, td, index) => {
           tdObj[header[index]] = td;
+          tdObj['index'] = indexMap + 1;
           return tdObj;
         },
         { star: false, flag: false }
@@ -206,6 +217,11 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
+    this.lpviLped.searchReplace$.subscribe((value) => {
+      if (value !== undefined) {
+        this.Columns_replace = value['head'];
+      }
+    });
     this.lpviLped.dataSources$.subscribe((res: any[]) => {
       if (res) {
         this.paginator = {
@@ -216,8 +232,24 @@ export class ViwerReadImportComponent
         this.dataSourceFilter = res;
         this.dataSource = res.slice(0, this.paginator.pageSize);
         this.lpviLped.dataPaginator$.next(true);
+        // console.log("In read Componnent ",this.dataSourceFilter)
       }
     });
+
+    setTimeout(() => {
+      let containt =
+        (this.container.nativeElement as HTMLElement).offsetWidth / 4;
+      this.ws = containt > 300 ? containt : 300;
+    }, 0);
+  }
+
+  onResizeEnd(e: ResizeEvent) {
+    // console.log('size', this.ws);
+    this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
+  }
+
+  onFavorite() {
+    this.isFavorate = !this.isFavorate;
   }
 
   public openTablesOptionns() {
@@ -245,17 +277,32 @@ export class ViwerReadImportComponent
       )
       .subscribe();
   }
+  update_Search_Replace(name_dinamic) {
+    // console.log(name_dinamic);
+    this.savedata(name_dinamic);
+  }
 
   updateStart(value, indice, nameUpdate) {
     let name_dinamic;
-    if (nameUpdate === 'Start') {
-      value.start = value.start ? false : true;
-      name_dinamic = `${nameUpdate} row ${indice}`;
+
+    if (nameUpdate === 'Star') {
+      value.star = value.star ? false : true;
+      name_dinamic = value.star
+        ? `${nameUpdate} row ${indice}`
+        : `Un${nameUpdate} row ${indice}`;
     } else {
       value.flag = value.flag ? false : true;
-      name_dinamic = `${nameUpdate} row ${indice}`;
+      name_dinamic = value.flag
+        ? `${nameUpdate} row ${indice}`
+        : `Un${nameUpdate} row ${indice}`;
     }
+    this.savedata(name_dinamic);
 
+    this.selectedIndex = 1;
+    console.log(this.selectedIndex);
+  }
+
+  savedata(name_dinamic) {
     let actualydata;
     if (this.ActualyData) {
       this.listNameHistory.splice(
@@ -277,7 +324,7 @@ export class ViwerReadImportComponent
       )
       .subscribe((res) => {
         this.listNameHistory.push(res);
-        console.log(res);
+        // console.log(res);
       });
     this.ActualyData = null;
   }
@@ -382,6 +429,7 @@ export class ViwerReadImportComponent
       content: value,
       invert: true,
     });
+    this.selectedIndex = 0;
   }
 
   public inputFilter(column: any) {
@@ -392,6 +440,24 @@ export class ViwerReadImportComponent
       value: '',
       invert: true,
       sensitive: false,
+    });
+    this.selectedIndex = 0;
+  }
+  public searchReplace(column: any) {
+    this.lpviLped.searchReplace$.next({
+      type: 'search_replace',
+      isMinimize: false,
+      head: column,
+    });
+    this.selectedIndex = 3;
+  }
+
+  public dateFilter(column: any) {
+    this.lpviLped.itemsObservables$.next({
+      type: 'datefilter',
+      isMinimize: false,
+      head: column,
+      value: '',
     });
   }
 
@@ -422,6 +488,7 @@ export class ViwerReadImportComponent
       options: options,
       invert: true,
     });
+    this.selectedIndex = 0;
   }
 
   public timeLineFacter(column: any): void {
@@ -447,18 +514,8 @@ export class ViwerReadImportComponent
       endDate: result?.maxDate,
       invert: true,
     });
-  }
 
-  combinate(i, otherValue) {
-    return i + otherValue;
-  }
-
-  enter(i, otherValue) {
-    this.hoverIndex = i + otherValue;
-  }
-
-  leave(i, otherValue) {
-    this.hoverIndex = null;
+    this.selectedIndex = 0;
   }
   tooglevueEdit($event) {
     this.vueEdit = false;
@@ -541,12 +598,12 @@ export class ViwerReadImportComponent
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
-          console.log(res);
         });
       this.ActualyData = null;
     }
     this.CountCell = 0;
     this.testConverter = true;
+    this.selectedIndex = 1;
   }
 
   ConverterToString(newValue) {
@@ -807,14 +864,14 @@ export class ViwerReadImportComponent
     const second = this.formfilterStart.value.second;
     if (first && second) {
       this.dataSourceFilter = this.dataViews.filter(
-        (value) => value.start === true && value.flag === true
+        (value) => value.star === true && value.flag === true
       );
     } else if (!first && !second) {
       this.dataSourceFilter = this.dataViews;
     } else {
       if (first && !second) {
         this.dataSourceFilter = this.dataViews.filter(
-          (value) => value.start === true
+          (value) => value.star === true
         );
       } else if (!first && second) {
         this.dataSourceFilter = this.dataViews.filter(
@@ -824,5 +881,9 @@ export class ViwerReadImportComponent
     }
 
     this.lpviLped.dataSources$.next(this.dataSourceFilter);
+  }
+
+  removeAppSearch($item) {
+    this.Columns_replace = undefined;
   }
 }

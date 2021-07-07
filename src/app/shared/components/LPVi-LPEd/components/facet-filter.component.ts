@@ -1,9 +1,11 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
@@ -31,6 +33,8 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
               ? searchTemplate
               : item.type === 'input'
               ? inputTemplate
+              : item.type === 'datefilter' 
+              ? dateTemplate
               : item.type === 'numeric'
               ? numericTemplate
               : timeLineTemplate;
@@ -62,6 +66,19 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             (minimize)="minimizeEmitter($event)"
             (itemsEmitter)="itemsEmitter($event)"
           ></app-input-filter>
+        </ng-template>
+
+        <ng-template #dateTemplate let-currentValue="value">
+          <app-date-filter
+          [items]="items"
+          [item]="item"
+          [index]="index"
+          [dataViews]="dataViews"
+          (formGroup)="formGroupEmitter($event)"
+          (removeFromItem)="removeFromItemEmitter($event, 'input')"
+          (minimize)="minimizeEmitter($event)"
+          (itemsEmitter)="itemsEmitter($event)"
+          ></app-date-filter>
         </ng-template>
 
         <ng-template #numericTemplate let-currentValue="value">
@@ -100,6 +117,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
         </p>
       </div>
     </ng-template>
+
   `,
   styleUrls: ['./facet-filter.component.scss'],
 })
@@ -107,7 +125,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   /* VARIABLES */
   public form = new FormGroup({});
   private queries = {};
-
+  public Columns = "";
   /* ALL QUERY FILTERS VALUES */
   private inputQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
@@ -123,6 +141,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input('dataSources') public dataSources: any[] = [];
   @Input('idProject') public idProject = undefined;
   @Input('items') public items: any[] = [];
+
+  search_replace: any[] = [];
 
   constructor(
     private readonly lpEditor: LpEditorService,

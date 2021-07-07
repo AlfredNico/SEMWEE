@@ -2,25 +2,64 @@
     margin-right: 75px!important;
 }
 
-.content-project {
-    padding: 10px 10px;
+.tab tr {
+    padding: 5px 10px!important;
 }
 
-.content-project:hover {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-}
-
-.txt-project-content:hover a {
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    color: #3699FF !important;
+.tab tr:hover {
+    background: rgba(167, 113, 113, 0.05)!important;
+    border-radius: 10px!important;
 }
 
 .txt-project-content:hover {
     cursor: pointer;
+    border-radius: 10px!important;
 }
 
-.txt-project-content {
-    border: none!important;
-    outline: none!important;
+// .txt-project-content {
+//     border: none!important;
+//     outline: none!important;
+// }
+
+.w-5 {
+    width: 70px;
+}
+.w-45 {
+    width: calc(60% - 270px);
+}
+.w-25 {
+    width: 25%;
+}
+.w-15 {
+    width: 15%;
+}
+.w-10 {
+    width: 200px;
+}
+
+.ft-style {
+    font-family: Poppins!important;
+    font-weight: 500!important;
+    font-size: 16px!important;
+    letter-spacing: -0.3px;
+}
+
+.ftp {
+    font-family: Poppins!important;
+}
+
+.fx {
+    display: flex;
+    margin-left: auto;
+    width: 110px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.text-del {
+    color: #3B85FE;
+    font-size: 16px;
+}
+
+.fx:hover .text-del {
+    color: #FFFFFF;
 }
