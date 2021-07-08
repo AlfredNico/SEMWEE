@@ -114,55 +114,13 @@ export class ViwerImportComponent {
   convertFile(event: any) {
     const file = event.target ? event.target.files[0] : event[0];
     if (file && (file?.name as string).includes('.csv')) {
-      this.lpviLped.isLoading$.next(true); // enable loading spinner
       this.sizeFile = file.size;
       this.file = file;
 
       this.ProjectName = file['name'].replace('.csv', '');
 
-      this.readFileContent(file)
-        .then((csvContent) => {
-          try {
-            const csv = [];
-            const lines = this.processCsv(csvContent);
-            const sep1 = lines[0].split(';').length;
-            const sep2 = lines[0].split(',').length;
-            const csvSeparator = sep1 > sep2 ? ';' : ',';
-            lines.forEach((element) => {
-              const cols: string[] = element.split(csvSeparator);
-              csv.push(cols);
-            });
-            this.parsedCsv = csv;
-            this.parsedCsv.pop();
-
-            const header = this.parsedCsv.shift().toString().split(',');
-
-            this.data.header = [...new Set([...header])].filter(
-              (item) => item != undefined && item != ''
-            );
-
-            this.data.header.unshift('all');
-            this.data.contentCsv = csv;
-            this.onSubmit();
-          } catch (e) {
-            console.log(e);
-          }
-        })
-        .catch((error) => console.log(error));
-    } else this.nofits.warn('This is no csv file !');
-  }
-
-  private processCsv(content) {
-    return content.split('\n');
-  }
-
-  private readFileContent(file) {
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onload = (event) => resolve(event.target.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsText(file);
-    });
+      this.onSubmit();
+    }
   }
 
   public onSubmit() {
@@ -171,15 +129,14 @@ export class ViwerImportComponent {
         idUser: this.user._id,
         ProjectName: this.ProjectName,
         sizefile: this.sizeFile,
-        headers: this.data.header,
+        headers: [],
       };
-      this.lpViewerService.sendProjectNames(value).subscribe((idProject) => {
-        if (idProject) {
+      this.lpViewerService.sendProjectNames(value).subscribe((data) => {
+        if (data)
           this.dataImported.emit({
-            idProject: idProject['idProject'],
-            data: this.data,
+            idProject: data['idProject'],
+            file: this.file,
           });
-        }
       });
     }
   }

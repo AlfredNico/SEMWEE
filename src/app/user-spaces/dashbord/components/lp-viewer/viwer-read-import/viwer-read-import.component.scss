@@ -2,12 +2,60 @@
     transform: scaleX(-1) !important;
 }
 
+.profilePic {
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+}
+.comment {
+  height: 10px;
+  background: #777;
+  margin: 20px;
+}
+
+.header {
+  height: 50px;
+  background: #777;
+  margin: 20px;
+}
+
+.wrapper {
+  width: 0px;
+  animation: fullView 0.5s forwards linear;
+}
+
+@keyframes fullView {
+  100% {
+    width: 100%;
+  }
+}
+
+.animate {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    to right,
+    #eff1f3 4%,
+    #e2e2e2 25%,
+    #eff1f3 36%
+  );
+  background-size: 1000px 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
 ::ng-deep {
     /* Styles for tab labels */
     // * {
     //     font-family: Poppins!important;
     // }
-    
+
     aside {
         min-height: calc(100vh - 17rem) !important;
     }
@@ -152,7 +200,7 @@
             padding: 0 10px;
         }
     }
-    
+
 }
 
 ::ng-deep .mat-sort-header-content {
@@ -452,8 +500,8 @@
             color: #3699FF;
         }
     }
-    
-  
+
+
 
   .hover-span:hover .bg-light {
     background-color: #3699FF!important;
@@ -507,7 +555,7 @@
     height: 7px !important;
     border-radius: 2rem!important;
   }
-   
+
   .ps__rail-y:hover > .ps__thumb-y,
   .ps__rail-y:focus > .ps__thumb-y,
   .ps__rail-y.ps--clicking .ps__thumb-y {

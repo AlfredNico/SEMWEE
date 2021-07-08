@@ -128,12 +128,17 @@ export class ViwerReadImportComponent
           this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
       } else {
-        this.items = []; //set items filters
-        this.displayedColumns = this.dataAfterUploaded['data']['header'];
+        // this.displayedColumns = this.dataAfterUploaded['data']['header'];
 
-        this.dataSourceFilter = this.dataViews = this.readCsvFile(
-          this.dataAfterUploaded['data']['contentCsv'],
-          this.dataAfterUploaded['data']['header'],
+        // this.dataSourceFilter = this.dataViews = this.readCsvFile(
+        //   this.dataAfterUploaded['data']['contentCsv'],
+        //   this.dataAfterUploaded['data']['header'],
+        //   this.dataAfterUploaded['idProject']
+        // );
+
+        this.items = []; //set items filters
+        this.readCsvFile(
+          this.dataAfterUploaded['file'],
           this.dataAfterUploaded['idProject']
         );
         this.listNameHistory = [
@@ -143,7 +148,8 @@ export class ViwerReadImportComponent
             idProject: this.dataAfterUploaded['idProject'],
           },
         ];
-        this.dataSource = this.dataSourceFilter.slice(0, 10);
+
+        // this.dataSource = this.dataSourceFilter.slice(0, 10);
       }
 
       this.paginator = {
@@ -157,35 +163,89 @@ export class ViwerReadImportComponent
     }
   }
 
-  private readCsvFile(
-    contentCsv: any[],
-    header: string[],
-    idProject: any
-  ): any[] {
-    this.lpviLped.isLoading$.next(true); // enable loading spinner
+  private processCsv(content) {
+    return content.split('\n');
+  }
 
-    const content = contentCsv.map((value, indexMap) =>
-      value.reduce(
-        (tdObj, td, index) => {
-          tdObj[header[index]] = td;
-          tdObj['index'] = indexMap + 1;
-          return tdObj;
-        },
-        { star: false, flag: false }
-      )
-    );
-    this.lpViewer
-      .sendFiles(
-        {
-          namehistory: 'Create project',
-          idProject: idProject,
-          fileData: content,
-          idHeader: 0,
-        },
-        0
-      )
-      .subscribe();
-    return content;
+  private readFileContent(file) {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsText(file);
+    });
+  }
+
+  private readCsvFile(file: File, idProject: any) {
+    this.readFileContent(file)
+      .then((csvContent) => {
+        try {
+          const csv = [];
+          const lines = this.processCsv(csvContent);
+          const sep1 = lines[0].split(';').length;
+          const sep2 = lines[0].split(',').length;
+          const csvSeparator = sep1 > sep2 ? ';' : ',';
+          lines.forEach((element) => {
+            const cols: string[] = element.split(csvSeparator);
+            csv.push(cols);
+          });
+          const parsedCsv = csv;
+          parsedCsv.pop();
+
+          setTimeout(() => {
+            const header = parsedCsv.shift().toString().split(',');
+
+            this.displayedColumns = [...new Set([...header])].filter(
+              (item) => item != undefined && item != ''
+            );
+
+            const content = parsedCsv.map((value, indexMap) =>
+              value.reduce(
+                (tdObj, td, index) => {
+                  tdObj[header[index]] = td;
+                  // tdObj['index'] = indexMap + 1;
+                  return tdObj;
+                },
+                { star: false, flag: false, index: indexMap + 1 }
+              )
+            );
+
+            this.displayedColumns.unshift('all');
+            this.dataViews = this.dataSourceFilter = content;
+            this.dataSource = this.dataSourceFilter.slice(0, 10);
+
+            this.lpViewer
+              .sendFiles(
+                {
+                  namehistory: 'Create project',
+                  idProject: idProject,
+                  fileData: this.dataViews,
+                  idHeader: 0,
+                  header: this.displayedColumns,
+                },
+                0
+              )
+              .subscribe();
+          }, 1000);
+        } catch (e) {
+          console.log(e);
+        }
+      })
+      .catch((error) => console.log(error));
+    // this.lpviLped.isLoading$.next(true); // enable loading spinner
+
+    // const content = contentCsv.map((value, indexMap) =>
+    //   value.reduce(
+    //     (tdObj, td, index) => {
+    //       tdObj[header[index]] = td;
+    //       tdObj['index'] = indexMap + 1;
+    //       return tdObj;
+    //     },
+    //     { star: false, flag: false }
+    //   )
+    // );
+
+    // return content;
   }
 
   public getServerData(event?: PageEvent): void {
@@ -253,7 +313,6 @@ export class ViwerReadImportComponent
     this.dialog
       .open(HeaderOptionsComponent, {
         data: {
-          // noHiddenRows: this.displayColumns,
           noHiddenRows: this.displayedColumns,
           hiddenRows: [],
         },
@@ -314,6 +373,7 @@ export class ViwerReadImportComponent
           idProject: this.idProject,
           fileData: this.dataViews,
           idHeader: this.idHeader,
+          header: this.displayedColumns,
         },
         actualydata
       )
@@ -581,6 +641,7 @@ export class ViwerReadImportComponent
             idProject: this.idProject,
             fileData: this.dataViews,
             idHeader: this.idHeader,
+            header: this.displayedColumns,
           },
           actualydata
         )
@@ -812,6 +873,7 @@ export class ViwerReadImportComponent
                   idProject: this.idProject,
                   fileData: this.dataSource,
                   idHeader: this.idHeader,
+                  header: this.displayedColumns,
                 },
                 actualy
               )

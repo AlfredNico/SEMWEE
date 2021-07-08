@@ -76,6 +76,7 @@ export class LpViwersService {
       fileData: any;
       namehistory: string;
       idHeader: number;
+      header: string[];
     },
     idname: any
   ) {
