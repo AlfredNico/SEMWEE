@@ -8,7 +8,7 @@
   border-radius: 50%;
 }
 .comment {
-  height: 10px;
+  height: 200px;
   background: #777;
   margin: 20px;
 }
@@ -19,8 +19,9 @@
   margin: 20px;
 }
 
-.wrapper {
+.wrapper-skeleton {
   width: 0px;
+  padding: 0;
   animation: fullView 0.5s forwards linear;
 }
 

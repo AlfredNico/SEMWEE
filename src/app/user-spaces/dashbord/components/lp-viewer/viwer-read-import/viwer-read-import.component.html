@@ -90,14 +90,11 @@
       [resizeEdges]="{ bottom: false, right: true, top: false, left: false }"
       (resizeEnd)="onResizeEnd($event)"
     >
-      <!-- <div class="card br">
-        <div class="wrapper">
-          <div class="profilePic animate"></div>
-          <div class="comment br animate w80"></div>
-          <div class="comment br animate"></div>
-          <div class="comment br animate"></div>
-        </div>
-    <div> -->
+    <div class="card br">
+      <div class="wrapper-skeleton">
+        <div class="comment br animate"></div>
+      </div>
+    </div>
       <mat-tab-group
         [(selectedIndex)]="selectedIndex"
         mat-align-tabs="start"
@@ -106,10 +103,13 @@
         class="mat-group scroll ps"
         perfectScrollbar
       >
-        <!-- <div *ngIf="dataViews.length == 0; else other_content">
-        </div> -->
+          <div class="card br" *ngIf="dataViews.length == 0; else other_content">
+            <div class="wrapper-skeleton">
+              <div class="comment br animate"></div>
+            </div>
+          </div>
 
-        <!-- <ng-template #other_content> -->
+        <ng-template #other_content>
           <mat-tab label="Facet/Filter">
             <app-facet-filter-target
               [idProject]="idProject"
@@ -145,7 +145,7 @@
               </ng-container>
             </div>
           </mat-tab>
-        <!-- </ng-template> -->
+        </ng-template>
       </mat-tab-group>
     </aside>
 
