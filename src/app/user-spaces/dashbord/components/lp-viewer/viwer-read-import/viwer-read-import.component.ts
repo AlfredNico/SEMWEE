@@ -181,6 +181,7 @@ export class ViwerReadImportComponent
           idProject: idProject,
           fileData: content,
           idHeader: 0,
+          header : this.displayedColumns
         },
         0
       )
@@ -314,6 +315,7 @@ export class ViwerReadImportComponent
           idProject: this.idProject,
           fileData: this.dataViews,
           idHeader: this.idHeader,
+          header : []
         },
         actualydata
       )
@@ -581,6 +583,7 @@ export class ViwerReadImportComponent
             idProject: this.idProject,
             fileData: this.dataViews,
             idHeader: this.idHeader,
+            header : []
           },
           actualydata
         )
@@ -812,6 +815,7 @@ export class ViwerReadImportComponent
                   idProject: this.idProject,
                   fileData: this.dataSource,
                   idHeader: this.idHeader,
+                  header : []
                 },
                 actualy
               )
