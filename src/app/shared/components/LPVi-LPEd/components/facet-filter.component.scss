@@ -1,0 +1,95 @@
+// We need to use ::ng-deep to overcome view encapsulati
+::ng-deep {
+  .custom-slider .ngx-slider{
+    top: -35px;
+
+    .ngx-slider-bar {
+      background: #7E849C;
+      height: 50px;
+    }
+    .ngx-slider-selection {
+      background: white;
+    }
+    .ngx-slider-pointer {
+      width: 5px;
+      height: 60px;
+      top: auto; /* to remove the default positioning */
+      bottom: -50px;
+      background-color: black;
+      cursor: col-resize;
+    }
+    .ngx-slider-pointer:after {
+      display: none;
+    }
+    .ngx-slider-bubble {
+      bottom: 14px;
+    }
+    .ngx-slider-limit {
+      font-weight: bold;
+      color: #F64E60;
+    }
+    .ngx-slider-tick {
+      width: 1px;
+      height: 50px;
+      margin-left: 4px;
+      border-radius: 0;
+      background: black;
+      top: -1px;
+    }
+    .ngx-slider-tick.ngx-slider-selected {
+      background: #4C99FF;
+    }
+  }
+
+  .btn-custom {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 10px;
+    color: #7E849C;
+    background-color: #ECF1F6;
+  }
+
+  .style-border {
+    border: 1px solid #F2F3F7;
+    color: #E4E6EF !important;
+  }
+
+  .level1 {
+    background: #F2F3F7;
+    color: #A7ABC3 !important;
+  }
+
+  .level2 {
+    background: #F3F6F9;
+    color: #A7ABC3 !important;
+  }
+
+  .black-color {
+    color: #3F4254;
+  }
+
+  .fw-600 {
+    font-weight: 600;
+  }
+
+  .bb {
+    border-bottom: 1px solid #E4E6EF;
+  }
+
+  .in-ex {
+    color: #959CBD!important;
+  }
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border: none;
+  background-color: #E2E3EA;
+  border-radius: 4px;
+}
+
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  margin-top: 1px;
+  margin-left: 1px;
+  width: 18px;
+  height: 18px;
+}

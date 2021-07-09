@@ -6,9 +6,11 @@ import {
   Self,
   ViewContainerRef,
   Input,
+  AfterViewInit,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatButton } from '@angular/material/button';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 interface PageObject {
   length: number;
@@ -21,7 +23,6 @@ interface PageObject {
   selector: '[appStylePaginator]',
 })
 export class StylePaginatorDirective {
-  private _pageGapTxt = '...';
   private _rangeStart: number;
   private _rangeEnd: number;
   private _buttons = [];
@@ -31,6 +32,7 @@ export class StylePaginatorDirective {
     pageSize: 0,
     previousPageIndex: 0,
   };
+  private _isFetchData = false;
 
   @Input()
   get showTotalPages(): number {
@@ -48,6 +50,9 @@ export class StylePaginatorDirective {
   }
 
   get numOfPages(): number {
+    // return this.matPag.getNumberOfPages() == 0
+    //   ? 3
+    //   : this.matPag.getNumberOfPages();
     return this.matPag.getNumberOfPages();
   }
 
@@ -58,7 +63,8 @@ export class StylePaginatorDirective {
   constructor(
     @Host() @Self() @Optional() private readonly matPag: MatPaginator,
     private vr: ViewContainerRef,
-    private ren: Renderer2
+    private ren: Renderer2,
+    private readonly lpviLped: LpdLpdService
   ) {
     //to rerender buttons on items per page change and first, last, next and prior buttons
     this.matPag.page.subscribe((e: PageObject) => {
@@ -73,6 +79,23 @@ export class StylePaginatorDirective {
       this._curPageObj = e;
 
       this.initPageRange();
+    });
+
+    this.lpviLped.dataPaginator$.subscribe((res) => {
+      if (res) {
+        this._curPageObj = {
+          length: 0,
+          pageIndex: 0,
+          pageSize: 0,
+          previousPageIndex: 0,
+        };
+        this._rangeStart = 0;
+        this._rangeEnd = 0;
+
+        this._isFetchData = true;
+        this.initPageRange();
+        //   this.createButton(0, 0);
+      }
     });
   }
 
@@ -90,26 +113,38 @@ export class StylePaginatorDirective {
       this._buttons.forEach((button) => {
         this.ren.removeChild(actionContainer, button);
       });
-      //Empty state array
+
       this._buttons.length = 0;
     }
 
     //initialize next page and last page buttons
-    if (this._buttons.length == 0) {
-      let nodeArray = this.vr.element.nativeElement.childNodes[0].childNodes[0]
-        .childNodes[2].childNodes;
+    if (this._buttons.length == 0 && this.ren) {
+      let nodeArray =
+        this.vr.element?.nativeElement?.childNodes[0]?.childNodes[0]
+          .childNodes[2].childNodes;
       setTimeout(() => {
         for (let i = 0; i < nodeArray.length; i++) {
+          if (this._isFetchData) {
+            if (i == 0 || i == 1) {
+              this.ren?.setAttribute(nodeArray[i], 'disabled', 'true');
+            } else if (i == 5 || i == 6)
+              this.ren?.setAttribute(nodeArray[i], 'disabled', 'false');
+          }
           if (nodeArray[i].nodeName === 'BUTTON') {
             if (nodeArray[i].innerHTML.length > 100 && nodeArray[i].disabled) {
               this.ren.setStyle(
                 nodeArray[i],
                 'background-color',
-                'rgba(202, 226, 249, 1)'
+                'rgba(236, 241, 246, 1)'
               );
-              // 'rgba(190, 130, 130, 1)'
-              this.ren.setStyle(nodeArray[i], 'color', 'white');
-              this.ren.setStyle(nodeArray[i], 'margin', '.5%');
+              this.ren.setStyle(
+                nodeArray[i],
+                'color',
+                'rgba(181, 181, 195, 1)'
+              );
+              this.ren?.setStyle(nodeArray[i], 'box-shadow', 'none');
+              this.ren?.setStyle(nodeArray[i], 'border-radius', '5px');
+              this.ren?.setStyle(nodeArray[i], 'margin', '.5%');
             } else if (
               nodeArray[i].innerHTML.length > 100 &&
               !nodeArray[i].disabled
@@ -117,13 +152,36 @@ export class StylePaginatorDirective {
               this.ren.setStyle(
                 nodeArray[i],
                 'background-color',
-                'rgba(147, 205, 255, 1)'
+                'rgba(236, 241, 246, 1)'
               );
-              // 'rgba(255, 0, 0, 1)'
-              this.ren.setStyle(nodeArray[i], 'color', 'white');
-              this.ren.setStyle(nodeArray[i], 'margin', '.5%');
+              this.ren.setStyle(
+                nodeArray[i],
+                'color',
+                'rgba(181, 181, 195, 1)'
+              );
+              this.ren?.setStyle(nodeArray[i], 'box-shadow', 'none');
+              this.ren?.setStyle(nodeArray[i], 'border-radius', '5px');
+              this.ren?.setStyle(nodeArray[i], 'margin', '.5%');
             } else if (nodeArray[i].disabled) {
-              this.ren.setStyle(nodeArray[i], 'background-color', 'lightgray');
+              // } else if (this._isFetchData) {
+              this.ren.setStyle(
+                nodeArray[i],
+                'background-color',
+                'rgba(54, 153, 255, 1)'
+              );
+              this.ren?.setStyle(nodeArray[i], 'color', 'white');
+            } else if (!nodeArray[i].disabled) {
+              // } else if (!this._isFetchData) {
+              this.ren?.setStyle(
+                nodeArray[i],
+                'background-color',
+                'transparent'
+              );
+              this.ren?.setStyle(
+                nodeArray[i],
+                'color',
+                'rgba(138, 140, 159, 1)'
+              );
             }
           }
         }
@@ -132,17 +190,13 @@ export class StylePaginatorDirective {
 
     for (let i = 0; i < this.numOfPages; i++) {
       if (i >= this._rangeStart && i <= this._rangeEnd) {
+        if (this._isFetchData) {
+          this._isFetchData = false;
+          this.matPag.pageIndex = 0;
+        }
         this.ren.insertBefore(
           actionContainer,
           this.createButton(i, this.matPag.pageIndex),
-          nextPageNode
-        );
-      }
-
-      if (i == this._rangeEnd) {
-        this.ren.insertBefore(
-          actionContainer,
-          this.createButton(this._pageGapTxt, this._rangeEnd),
           nextPageNode
         );
       }
@@ -155,29 +209,14 @@ export class StylePaginatorDirective {
     this.ren.setStyle(linkBtn, 'margin', '1%');
     this.ren.setStyle(linkBtn, 'background-color', 'white');
 
-    const pagingTxt = isNaN(i) ? this._pageGapTxt : +(i + 1);
+    const pagingTxt = isNaN(i) ? '...' : +(i + 1);
     const text = this.ren.createText(pagingTxt + '');
 
     this.ren.addClass(linkBtn, 'mat-custom-page');
+
     switch (i) {
       case pageIndex:
         this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
-        break;
-      case this._pageGapTxt:
-        let newIndex = this._curPageObj.pageIndex + this._showTotalPages;
-
-        if (newIndex >= this.numOfPages) newIndex = this.lastPageIndex;
-
-        if (pageIndex != this.lastPageIndex) {
-          this.ren.listen(linkBtn, 'click', () => {
-            console.log('working: ', pageIndex);
-            this.switchPage(newIndex);
-          });
-        }
-
-        if (pageIndex == this.lastPageIndex) {
-          this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
-        }
         break;
       default:
         this.ren.listen(linkBtn, 'click', () => {

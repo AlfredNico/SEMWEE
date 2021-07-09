@@ -1,15 +1,12 @@
-import { EditorDialogComponent } from './editor-dialog.component';
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-  Input,
-} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { MatHorizontalStepper } from '@angular/material/stepper';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@app/authentification/services/auth.service';
+import { User } from '@app/classes/users';
+import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
+import { CommonService } from '@app/shared/services/common.service';
+import { LpEditorService } from '../../services/lp-editor.service';
+import { LpViwersService } from '../../services/lp-viwers.service';
 
 @Component({
   selector: 'app-lp-editor',
@@ -17,65 +14,83 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./lp-editor.component.scss'],
 })
 export class LpEditorComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  // public event: any;
+  user: User = undefined;
 
-  constructor(public dialog: MatDialog) {}
+  @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
+  public dataAfterUploaded: any | undefined;
+  public idProject: any;
+  selectedStepperIndex: number = 0;
+  public inputFilters: any[] = [];
+  public filtersData: {
+    items: any;
+    facetQueries: any;
+    searchQueries: any;
+  } = undefined;
 
-  ngOnInit(): void {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private common: CommonService,
+    private lpVilpEdService: LpdLpdService
+  ) {
+    this.user = this.auth.currentUserSubject.value;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  public openEditorDialog(event: any, index: number, indexRow: number): void {
-    const { clientX, clientY } = event;
-    // const doc = document.getElementById(`${index + 1}_td_${indexRow}`);
-    // const doc = window.;
-    // const { offsetLeft } = doc;
-    // console.log(offsetLeft, '//node_modules', clientX, '//', doc);
-
-    const dialogRef = this.dialog.open(EditorDialogComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      width: '250px',
-      position: {
-        left: `${clientX}px`,
-        top: `${clientY + 5}px`,
-      },
-      hasBackdrop: true,
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        if (params['idProject']) {
+          this.idProject = params['idProject'];
+        }
+      }
     });
   }
-}
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Hydrogen', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Hydrogen', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Hydrogen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  { position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na' },
-  { position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg' },
-  { position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al' },
-  { position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si' },
-  { position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P' },
-  { position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S' },
-  { position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl' },
-  { position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar' },
-  { position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
-  { position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
-];
+  ngDoCheck(): void {
+    this.common.hideSpinner('table');
+  }
+
+  ngOnInit(): void { }
+
+  ngAfterViewInit() {
+    if (this.idProject !== undefined) {
+      this.lpVilpEdService.isLoading$.next(true);
+      this.lpVilpEdService
+        .getSavedProjects(this.idProject)
+        .subscribe((res: any) => {
+          if (res !== undefined) {
+            this.stepper.steps.forEach((step, index) => {
+              if (index < 1) {
+                step.completed = true;
+                step.editable = true;
+              } else {
+                step.completed = false;
+                step.editable = true;
+              }
+            });
+
+            this.lpVilpEdService.isLoading$.next(false);
+
+            this.selectedStepperIndex = 1;
+            this.dataAfterUploaded = res;
+          } else this.router.navigateByUrl('user-space/lp-editor');
+        });
+    }
+  }
+
+  public nextReadFile(value: { idProject: any; data: any }) {
+    this.dataAfterUploaded = value.data;
+
+    if (value[0] !== undefined) {
+      this.router.navigate(['user-space/lp-editor'], {
+        queryParams: { idProject: value[0][0]['_id'] },
+      });
+    } else {
+      this.router.navigate(['user-space/lp-editor'], {
+        queryParams: { idProject: value.idProject },
+      });
+    }
+    this.stepper.selected.completed = true;
+    this.stepper.selected.editable = true;
+    this.stepper.next();
+  }
+}

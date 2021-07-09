@@ -1,0 +1,45 @@
+
+mat-card{
+    width: 470px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 8px 8px 14px 13px;
+}
+mat-card-header {
+    margin-left: -15px; 
+    font-size: 17px;
+}
+mat-card-actions{
+    text-align: center;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px; 
+    padding: 0;
+}
+.arrow-right:after {
+    position:absolute;
+    content:"";
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid #aeaeae;
+    transform: rotate(90deg);
+    right: -18px;
+    top: 14px;
+}
+
+.arrow-left:before {
+    position:absolute;
+    content:"";
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid  #b5b4b4;
+    transform: rotate(-90deg);
+    left: -18px;
+    top: 14px;
+}

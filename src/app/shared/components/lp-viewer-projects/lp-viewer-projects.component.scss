@@ -1,0 +1,60 @@
+.symbol {
+    margin-right: 75px!important;
+}
+
+.tab tr {
+    padding: 5px 10px!important;
+}
+
+.tab tr:hover {
+    background: rgba(167, 113, 113, 0.05)!important;
+    border-radius: 10px!important;
+}
+
+.txt-project-content:hover {
+    cursor: pointer;
+    border-radius: 10px!important;
+}
+
+.w-5 {
+    width: 70px;
+}
+.w-45 {
+    width: calc(60% - 270px);
+}
+.w-25 {
+    width: 25%;
+}
+.w-15 {
+    width: 15%;
+}
+.w-10 {
+    width: 200px;
+}
+
+.ft-style {
+    font-family: Poppins!important;
+    font-weight: 500!important;
+    font-size: 16px!important;
+    letter-spacing: -0.3px;
+}
+
+.ftp {
+    font-family: Poppins!important;
+}
+
+.fx {
+    display: flex;
+    margin-left: auto;
+    width: 110px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.text-del {
+    color: #3B85FE;
+    font-size: 16px;
+}
+
+.fx:hover .text-del {
+    color: #FFFFFF;
+}

@@ -1,0 +1,64 @@
+.symbol {
+  margin-right: 75px!important;
+}
+
+.content-project {
+  padding: 10px 10px;
+}
+
+.content-project:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.txt-project-content:hover a {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  color: #3699FF !important;
+}
+
+.txt-project-content:hover {
+  cursor: pointer;
+}
+
+.txt-project-content {
+  border: none!important;
+  outline: none!important;
+}
+
+::ng-deep {
+  //align button mat-dialog-action
+  .mat-dialog-actions {
+      &[align='end'] {
+          justify-content: flex-end;
+      }
+      &[align='center'] {
+          justify-content: center;
+      }
+  }
+  .letter {
+      display: flex!important;
+      width: 50px!important;
+      height: 50px!important;
+      align-items: center!important;
+      font-size: 35px!important;
+      justify-content: center!important;
+      font-weight: bold!important;
+      border-radius: 15%!important;
+  }
+
+  .card-header {
+      padding: 0;
+  }
+
+  @media (min-width: 1400px){
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 100% !important;
+    }
+  }
+  @media (min-width: 1200px){
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 100%;
+    }
+  }
+}
+

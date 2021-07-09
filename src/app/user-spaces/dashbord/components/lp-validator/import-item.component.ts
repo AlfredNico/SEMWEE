@@ -57,7 +57,6 @@ import { LpValidatorService } from '../../services/lp-validator.service';
                 hidden
               />
             </div>
-            <!-- (change)="onFileChange($event)" -->
 
             <div
               *ngIf="
@@ -164,11 +163,12 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         fileName: file?.name,
       });
 
-      //Read CSV file
-      // const fileToRead = file;
-      // const fileReader = new FileReader();
-      // fileReader.onload = this.onFileLoad;
-      // fileReader.readAsText(fileToRead, 'UTF-8');
+      // Read CSV file
+      const fileToRead = file;
+      const fileReader = new FileReader();
+      fileReader.onload = this.onFileLoad;
+      fileReader.readAsText(fileToRead, 'UTF-8');
+      console.log(this.parsedCsv);
     }
     if (this.isExcelFile) {
       this.onSubmit();
@@ -244,6 +244,6 @@ export class ImportItemComponent implements OnInit, OnDestroy {
         colNo++;
       });
     });
-    console.log('output', csv);
+    // console.log('output', csv);
   }
 }
