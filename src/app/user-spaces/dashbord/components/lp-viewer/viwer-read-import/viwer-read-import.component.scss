@@ -7,14 +7,22 @@
   width: 65px;
   border-radius: 50%;
 }
-.comment {
+.tab-content {
   height: 200px;
   background: #777;
   margin: 20px;
 }
 
-.header {
-  height: 50px;
+.header-content{
+  height: 20px;
+  background: #777;
+  margin: 20px;
+  width: 150px;
+  float:left;
+}
+
+.table-content{
+  height: calc(100vh - 300px);
   background: #777;
   margin: 20px;
 }
