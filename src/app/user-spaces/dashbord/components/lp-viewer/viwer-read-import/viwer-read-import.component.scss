@@ -515,3 +515,11 @@
     border-radius: 2rem!important;
   }
 }
+::ng-deep {
+    .mat-tab-header-pagination-after {
+        display: none;
+    }
+    .mat-tab-header-pagination-before {
+        display: none;
+    }
+}

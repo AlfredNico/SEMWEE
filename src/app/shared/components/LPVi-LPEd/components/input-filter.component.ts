@@ -13,9 +13,9 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 @Component({
   selector: 'app-input-filter',
   template: `
-    <div class="mx-1 pb-2">
+    <div class="ml-5 pb-2">
       <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1" fxLayout="row">
+        <div class="py-2 px-2 level1" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -35,8 +35,8 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 black-color fw-600">invert</div>
-          <div class="pointer px-1 black-color fw-600">reset</div>
+          <div class="pointer px-1 white-color fw-600">invert</div>
+          <div class="pointer px-1 white-color fw-600">reset</div>
         </div>
         <div
           class="py-0"
@@ -44,7 +44,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           [formGroup]="form"
           fxLayout="row"
           fxLayoutAlign="space-around center"
-          style="background: rgb(54, 153, 255);"
+          style="background: #74788D"
         >
           <input
             autocomplete="off"

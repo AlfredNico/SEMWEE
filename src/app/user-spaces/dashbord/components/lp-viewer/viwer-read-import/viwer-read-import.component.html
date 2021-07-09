@@ -8,7 +8,7 @@
       >
     </h3>
   </div> -->
-    <div fxLayout="row" class="pt-0 py-3 px-0" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+    <div fxLayout="row" class="pt-0 py-3 px-0" fxLayoutAlign="space-between center" fxLayoutGap="5px" style="background: #F0F1F6!important;">
       <div>
         <h3 class="card-title align-items-start ftp m-0" fxLayout="column" >
           <span class="fw-500 text-dark ftp fs-18 pl-20px">DataTable View</span>
@@ -89,14 +89,14 @@
             [dataSources]='dataSource.data' [datasourceFilter]='dataSourceFilter' (sendData)="update_Search_Replace($event)"></app-facet-filter-target>
 
         </mat-tab>
-        <mat-tab label="Undo / Redo">
+        <mat-tab label="Undo/Redo">
           <!-- <h1>Mea</h1> -->
           <app-undo-redo [dataNameHistory]="listNameHistory" [indexRow]="indexRowdata"
             (callOtherData)="getAllDataByListName($event)"></app-undo-redo>
         </mat-tab>
 
       
-         <mat-tab label="Search / Replace">
+         <mat-tab label="Search/Replace">
            <div *ngIf="Columns_replace">
               <ng-template #searchReplace>
                 <app-search-replace 

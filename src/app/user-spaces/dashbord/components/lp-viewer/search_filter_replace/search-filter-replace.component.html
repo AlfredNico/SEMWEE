@@ -1,6 +1,6 @@
-<div class="mx-1 pb-2">
+<div class="ml-5 pb-2">
     <div class="p-0 w-100 rounded style-border">
-      <div class="py-2 px-2 rounded-top level1" fxLayout="row">
+      <div class="py-2 px-2 level1" fxLayout="row">
       
         <mat-icon style="cursor:pointer;" aria-label="close icon" (click)="removeFromItem.emit(nameColumn)">   <!-- (click)="removeFromItem.emit(item)" -->
           highlight_off
@@ -16,8 +16,8 @@
         </mat-icon>
         <span class="fw-600">{{nameColumn}}</span>
         <span fxFlex></span>
-        <div class="pointer px-1 black-color fw-600">invert</div>
-        <div class="pointer px-1 black-color fw-600">reset</div>
+        <div class="pointer px-1 white-color fw-600">invert</div>
+        <div class="pointer px-1 white-color fw-600">reset</div>
       </div>
       <div class="py-0" [formGroup]="formSearch" > <!-- *ngIf="item['isMinimize'] === false" [formGroup]="form" -->
         <input
@@ -39,7 +39,7 @@
           appearance="outline"
           class="form-control"
         /> <!--[formControlName]="item['head']" -->
-        <a style="width: 90px;margin-top: 5px; margin-bottom: 5px;" class="btn btn-light-primary font-weight-bold mr-2" (click)="searchReplace()">Ok</a>  
+        <a style="width: 90px;margin-top: 5px; margin-bottom: 5px;" class="btn btn-light-primary font-weight-bold mr-2" (click)="searchReplace()">Replace</a>  
     </div>
     </div>
   </div>

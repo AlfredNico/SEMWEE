@@ -13,13 +13,9 @@ import { DateAdapter } from '@angular/material/core';
 @Component({
   selector: 'app-time-line',
   template: `
-    <div class="mx-1 pb-2">
-      <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
-        <div
-          class="py-2 px-2 rounded-top"
-          style="background: #bbccff;"
-          fxLayout="row"
-        >
+    <div class="ml-5 pb-2">
+      <div class="p-0 w-100 rounded style-border">
+        <div class="py-2 px-2 level1" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -37,13 +33,13 @@ import { DateAdapter } from '@angular/material/core';
           >
             add_circle_outline
           </mat-icon>
-          <span style="font-weight: 600;">{{ item['head'] }}</span>
+          <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1">change</div>
-          <div class="pointer px-1">reset</div>
+          <div class="pointer px-1 white-color fw-600">change</div>
+          <div class="pointer px-1 white-color fw-600">reset</div>
         </div>
         <div
-          class="custom-slider w-100"
+          class="custom-slider w-100 level2"
           style.height.px="50"
           *ngIf="
             (item?.endDate !== undefined || item?.startDate !== undefined) &&
@@ -53,7 +49,6 @@ import { DateAdapter } from '@angular/material/core';
           fxLayout="row"
           fxLayoutAlign="space-between center"
           [formGroup]="FormRange"
-          style="background: rgb(227, 233, 255);"
         >
           <mat-form-field
             appearance="fill"

@@ -3,9 +3,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-search-filter',
   template: `
-    <div class="mx-1 pb-2" appFluidHeight>
+    <div class="ml-5 pb-2" appFluidHeight>
       <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1 bb" fxLayout="row" >
+        <div class="py-2 px-2 level1 bb" fxLayout="row" >
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -19,7 +19,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 black-color fw-600">change</div>
+          <div class="pointer px-1 white-color fw-600">change</div>
         </div>
          <div fxLayout="row" class="py-2 px-2 level2"
          *ngIf="item['isMinimize'] === false">
