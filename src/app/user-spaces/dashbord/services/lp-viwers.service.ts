@@ -76,7 +76,7 @@ export class LpViwersService {
       fileData: any;
       namehistory: string;
       idHeader: number;
-      header : string[];
+      header: string[];
     },
     idname: any
   ) {
@@ -130,6 +130,12 @@ export class LpViwersService {
     return this.http.get<any>(
       `${environment.baseUrl}/lpviewer/get-lpviewer-header/${idProject}/${idHeader}`
     );
+  }
+
+  public getTestApi(value : File){
+    const data = new FormData();
+    data.append('files', value);
+    return this.http.post<any>(`${environment.baseUrl}/lpviewer/get-test-lpviewer`, data);
   }
   // /get-One-data-history/:idProject/:idHistory
 }

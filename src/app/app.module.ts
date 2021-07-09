@@ -97,7 +97,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         loadChildren: () =>
           import('./user-spaces/dashbord.module').then((m) => m.DashbordModule),
         canActivate: [AuthGuard, IsLoggedInGuard],
-      }
+      },
     ]),
   ],
   exports: [RouterModule],
@@ -111,4 +111,4 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
