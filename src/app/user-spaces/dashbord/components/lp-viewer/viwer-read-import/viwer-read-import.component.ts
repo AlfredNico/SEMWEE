@@ -39,9 +39,6 @@ export class ViwerReadImportComponent
   displayedColumns: string[] = [];
   edidtableColumns: string[] = [];
   dataSource: any = [];
-  // dataSource = new MatTableDataSource<any>([]);
-  // // public items = [];
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
@@ -70,7 +67,6 @@ export class ViwerReadImportComponent
   public undoRedoLabel = 'Undo/Redo 0/0';
   public dataViews: any[] = [];
   public dataSourceFilter: any[] = [];
-  // public dataSource: any[] = [];
   public paginator: Paginator;
   private isFiltered = false;
   public formGroup = this.fb.group({});
@@ -95,7 +91,7 @@ export class ViwerReadImportComponent
 
   // ------------------
   pageEvent: PageEvent;
-  Columns_replace:String;
+  Columns_replace: String;
 
   constructor(
     public dialog: MatDialog,
@@ -149,7 +145,6 @@ export class ViwerReadImportComponent
         ];
         this.dataSource = this.dataSourceFilter.slice(0, 10);
       }
-      // console.log('data', this.dataSource);
 
       this.paginator = {
         pageIndex: 0,
@@ -158,7 +153,6 @@ export class ViwerReadImportComponent
         previousPageIndex: 1,
         pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
       };
-
       this.lpviLped.isLoading$.next(false);
     }
   }
@@ -222,12 +216,11 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
-    this.lpviLped.searchReplace$.subscribe((value)=>{
-    
+    this.lpviLped.searchReplace$.subscribe((value) => {
       if (value !== undefined) {
-        this.Columns_replace  = value["head"];
+        this.Columns_replace = value['head'];
       }
-    })
+    });
     this.lpviLped.dataSources$.subscribe((res: any[]) => {
       if (res) {
         this.paginator = {
@@ -238,7 +231,6 @@ export class ViwerReadImportComponent
         this.dataSourceFilter = res;
         this.dataSource = res.slice(0, this.paginator.pageSize);
         this.lpviLped.dataPaginator$.next(true);
-        // console.log("In read Componnent ",this.dataSourceFilter)
       }
     });
 
@@ -282,31 +274,30 @@ export class ViwerReadImportComponent
       )
       .subscribe();
   }
-  update_Search_Replace(name_dinamic){
-    // console.log(name_dinamic);
+  update_Search_Replace(name_dinamic) {
     this.savedata(name_dinamic);
   }
 
   updateStart(value, indice, nameUpdate) {
     let name_dinamic;
-   
-      if(nameUpdate === "Star"){
-  
-        value.star = value.star ? false : true;
-        name_dinamic = value.star ?  `${nameUpdate} row ${indice}`:`Un${nameUpdate} row ${indice}`;
-      
-        }else{
-        
-            value.flag = value.flag  ? false : true;
-            name_dinamic = value.flag ? `${nameUpdate} row ${indice}` :`Un${nameUpdate} row ${indice}`;
-        }
+
+    if (nameUpdate === 'Star') {
+      value.star = value.star ? false : true;
+      name_dinamic = value.star
+        ? `${nameUpdate} row ${indice}`
+        : `Un${nameUpdate} row ${indice}`;
+    } else {
+      value.flag = value.flag ? false : true;
+      name_dinamic = value.flag
+        ? `${nameUpdate} row ${indice}`
+        : `Un${nameUpdate} row ${indice}`;
+    }
     this.savedata(name_dinamic);
 
     this.selectedIndex = 1;
-    console.log(this.selectedIndex)
   }
 
-  savedata(name_dinamic){
+  savedata(name_dinamic) {
     let actualydata;
     if (this.ActualyData) {
       this.listNameHistory.splice(
@@ -317,20 +308,19 @@ export class ViwerReadImportComponent
       actualydata = this.listNameHistory.length;
     }
     this.lpViewer
-        .sendFiles(
-          {
-            namehistory: name_dinamic,
-            idProject: this.idProject,
-            fileData: this.dataViews,
-            idHeader: this.idHeader,
-          },
-          actualydata
-        )
-        .subscribe((res) => {
-          this.listNameHistory.push(res);
-          // console.log(res);
-        });
-      this.ActualyData = null;
+      .sendFiles(
+        {
+          namehistory: name_dinamic,
+          idProject: this.idProject,
+          fileData: this.dataViews,
+          idHeader: this.idHeader,
+        },
+        actualydata
+      )
+      .subscribe((res) => {
+        this.listNameHistory.push(res);
+      });
+    this.ActualyData = null;
   }
 
   public openEditColumn(columnName: string) {
@@ -412,13 +402,8 @@ export class ViwerReadImportComponent
       });
   }
 
-  public openButton() {
-    console.log('open button');
-  }
-
   public searchFacet(column: any) {
-    let distances = {},
-      isExist = false;
+    let distances = {};
     this.dataViews.map((item: any) => {
       distances[item[column]] = (distances[item[column]] || 0) + 1;
     });
@@ -432,8 +417,9 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
       content: value,
+      invert: true,
     });
-    this.selectedIndex = 0; 
+    this.selectedIndex = 0;
   }
 
   public inputFilter(column: any) {
@@ -442,6 +428,8 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
       value: '',
+      invert: true,
+      sensitive: false,
     });
     this.selectedIndex = 0;
   }
@@ -451,7 +439,7 @@ export class ViwerReadImportComponent
       isMinimize: false,
       head: column,
     });
-    this.selectedIndex = 3
+    this.selectedIndex = 3;
   }
 
   public dateFilter(column: any) {
@@ -488,8 +476,9 @@ export class ViwerReadImportComponent
       minValue: minValue,
       maxValue: maxValue,
       options: options,
+      invert: true,
     });
-    this.selectedIndex = 0
+    this.selectedIndex = 0;
   }
 
   public timeLineFacter(column: any): void {
@@ -511,6 +500,7 @@ export class ViwerReadImportComponent
       head: column,
       startDate: result?.minDate,
       endDate: result?.maxDate,
+      invert: true,
     });
 
     this.selectedIndex = 0;
@@ -601,7 +591,7 @@ export class ViwerReadImportComponent
     }
     this.CountCell = 0;
     this.testConverter = true;
-    this.selectedIndex = 1 ;
+    this.selectedIndex = 1;
   }
 
   ConverterToString(newValue) {
@@ -697,7 +687,6 @@ export class ViwerReadImportComponent
         }
       });
     } else if (regex3.exec(string_date)) {
-      // console.log("C'est un objet");
       const tab = string_date.split(regex2);
       const tab1 = tab[2].toString().split('T');
       this.dataViews.forEach((item) => {
@@ -759,15 +748,13 @@ export class ViwerReadImportComponent
   }
 
   updateDisplaycolumn(newHeader) {
-    // console.log(newHeader);
     this.nameHeader.forEach((value, index) => {
       let textValue = value['_elementRef'].nativeElement.innerText;
-      // console.log(textValue);
-      if (textValue !== newHeader[index].trim()) {
+      if (textValue !== newHeader[index].trim())
         value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
-      }
     });
   }
+
   getAllDataByListName(value) {
     this.ActualyData = value;
     this.idHeader = value.idHeader;
@@ -776,16 +763,15 @@ export class ViwerReadImportComponent
         JSON.stringify(response[1]['nameUpdate'].split('"').join(''))
       ).split(',');
 
-      console.log('before data');
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
       let min = this.paginator.pageIndex * this.paginator.pageSize;
       let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
       this.dataSource = response[0].slice(min, max);
-      console.log('after data');
       this.dataViews = response[0];
     });
   }
+
   updateHeader(value) {
     let updateHeader: any;
     let tabforUpdate: any[] = ['All'];
@@ -810,7 +796,6 @@ export class ViwerReadImportComponent
       .pipe(
         map((idHeader: any) => {
           if (idHeader) {
-            console.log('Actualy data : ', this.ActualyData);
             const actualy = this.ActualyData ? this.ActualyData['idName'] : -1;
             if (this.ActualyData) {
               this.listNameHistory.splice(
@@ -832,7 +817,6 @@ export class ViwerReadImportComponent
               )
               .subscribe((res) => {
                 this.listNameHistory.push(res);
-                console.log(res);
               });
           }
         })
@@ -841,7 +825,7 @@ export class ViwerReadImportComponent
   }
 
   private dataFilters(data: any[]) {
-    return data.filter((value, index) => this.checkFiltesData(index));
+    return data.filter((_, index) => this.checkFiltesData(index));
   }
 
   private checkFiltesData(index: number): boolean {
@@ -881,7 +865,7 @@ export class ViwerReadImportComponent
     this.lpviLped.dataSources$.next(this.dataSourceFilter);
   }
 
-  removeAppSearch($item){
+  removeAppSearch($item) {
     this.Columns_replace = undefined;
   }
 }

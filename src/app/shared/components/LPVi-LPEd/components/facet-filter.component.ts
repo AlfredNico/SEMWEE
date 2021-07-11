@@ -1,13 +1,10 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
 import { LpdLpdService } from '../services/lpd-lpd.service';
 
@@ -33,7 +30,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
               ? searchTemplate
               : item.type === 'input'
               ? inputTemplate
-              : item.type === 'datefilter' 
+              : item.type === 'datefilter'
               ? dateTemplate
               : item.type === 'numeric'
               ? numericTemplate
@@ -47,6 +44,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           <app-search-filter
             [items]="items"
             [item]="item"
+            [index]="index"
             [dataViews]="dataViews"
             (itemsEmitter)="itemsEmitter($event)"
             (removeFromItem)="removeFromItemEmitter($event, 'search')"
@@ -69,14 +67,14 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 
         <ng-template #dateTemplate let-currentValue="value">
           <app-date-filter
-          [items]="items"
-          [item]="item"
-          [index]="index"
-          [dataViews]="dataViews"
-          (formGroup)="formGroupEmitter($event)"
-          (removeFromItem)="removeFromItemEmitter($event, 'input')"
-          (minimize)="minimizeEmitter($event)"
-          (itemsEmitter)="itemsEmitter($event)"
+            [items]="items"
+            [item]="item"
+            [index]="index"
+            [dataViews]="dataViews"
+            (formGroup)="formGroupEmitter($event)"
+            (removeFromItem)="removeFromItemEmitter($event, 'input')"
+            (minimize)="minimizeEmitter($event)"
+            (itemsEmitter)="itemsEmitter($event)"
           ></app-date-filter>
         </ng-template>
 
@@ -116,15 +114,13 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
         </p>
       </div>
     </ng-template>
-
   `,
   styleUrls: ['./facet-filter.component.scss'],
 })
 export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   /* VARIABLES */
-  public form = new FormGroup({});
   private queries = {};
-  public Columns = "";
+  public Columns = '';
   /* ALL QUERY FILTERS VALUES */
   private inputQueries: boolean[] = [];
   private searchQueries: boolean[] = [];
@@ -191,7 +187,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
-    // this.queries = _.mapValues(this.queries, () => '');
     Object.keys(this.queries).forEach((v) => (this.queries[v] = ''));
     Object.keys(this.lpviLped.permaLink.queries).forEach(
       (v) => (this.lpviLped.permaLink.queries[v] = '')
@@ -234,6 +229,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   /* EMITTER FUNCTION AFTER FILTER FROM COMPONENTS */
   public callAfterNumericFilter(event: any) {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     let q = [],
       ss;
 
@@ -272,40 +268,37 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public callAfterTimeLineEmitter(event: any) {
-    if (event['end'] !== null && event['start'] !== null) {
-      let q = [],
-        ss = [];
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
 
-      this.dataSources = this.dataViews.filter((value, index) => {
-        const v = Date.parse(value[`${event['head']}`]);
-        if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+    let q = [],
+      ss = [];
+
+    this.dataSources = this.dataViews.filter((value, index) => {
+      const v = Date.parse(value[`${event['head']}`]);
+      if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+        if (v <= event['end'] && v >= event['start']) q[index] = true;
+        else q[index] = false;
+        this.timeLineQeury[index] = ss = q[index];
+        return this.filtersData(index);
+      } else {
+        return Object.keys(this.queriesTimeLineFilters).every((x) => {
+          const s = this.queriesTimeLineFilters[x];
+          // !isNaN(Date.parse(v))
           if (v <= event['end'] && v >= event['start']) q[index] = true;
           else q[index] = false;
-          this.timeLineQeury[index] = ss = q[index];
+          if (x === event['head']) ss = q;
+          this.timeLineQeury[index] = ss = s[index] && q[index];
           return this.filtersData(index);
-        } else {
-          return Object.keys(this.queriesTimeLineFilters).every((x) => {
-            const s = this.queriesTimeLineFilters[x];
-            // !isNaN(Date.parse(v))
-            if (v <= event['end'] && v >= event['start']) q[index] = true;
-            else q[index] = false;
-            if (x === event['head']) ss = q;
-            this.timeLineQeury[index] = ss = s[index] && q[index];
-            return this.filtersData(index);
-          });
-        }
-      });
+        });
+      }
+    });
 
-      this.lpviLped.dataSources$.next(this.dataSources);
-      this.savePermalink(); // SAVE PERMALINK
-    }
+    this.lpviLped.dataSources$.next(this.dataSources);
+    this.savePermalink(); // SAVE PERMALINK
   }
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
-    const value = Object.values(event.query).toString();
-    const keys = Object.keys(event.query).toString();
-
-    this.queries[keys] = value; //save querie from input filter
+    this.queries[event.item['head']] = event.query; //save querie from input filter
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
   }
@@ -364,6 +357,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public itemsEmitter(event?: any) {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     if (event !== undefined) this.items = event;
 
     let search: boolean;
@@ -425,15 +419,27 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       } else {
         let s = '',
           i2 = 0;
-        Object.keys(value).some((property) => {
+        Object.keys(this.queries).some((property) => {
           if (
             this.queries[property] != '' &&
             typeof value[property] === 'string' &&
             this.queries[property] !== undefined &&
+            this.queries[property]['value'] !== undefined &&
             value[property] !== undefined
           ) {
-            const lower = (this.queries[property] as any).toLowerCase();
-            const ss = `value["${property}"].toString().toLowerCase().includes("${lower}")`;
+            const lower = (
+              this.queries[property]['value'] as string
+            ).toString();
+            let ss = '';
+            if (!this.queries[property]['sensitive']) {
+              if (this.queries[property]['invert'])
+                ss = `value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
+              else
+                ss = `!value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
+            } else if (this.queries[property]['sensitive'])
+              // ss = `value[${property}]==${this.queries[property]['value']}`;
+              ss = `value["${property}"].toString().toLowerCase()=="${lower}".toLowerCase()`;
+
             if (i2 === 0) s = ss;
             else s = s + '&&' + ss;
             i2++;
@@ -448,7 +454,6 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
     this.lpviLped.dataSources$.next(this.dataSources);
-    this.lpviLped.isLoading$.next(false); // disable loading spinner
     this.savePermalink(); // SAVE PERMALINK
   }
 
@@ -465,6 +470,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       }),
     };
 
+    this.lpviLped.isLoading$.next(false); // desaable loading spinner
     this.lpEditor.addFilter(permalink).subscribe();
   }
 }

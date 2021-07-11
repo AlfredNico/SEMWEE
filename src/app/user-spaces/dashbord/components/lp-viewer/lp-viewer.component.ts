@@ -45,9 +45,9 @@ export class LpViewerComponent implements AfterViewInit {
     });
   }
 
-  ngDoCheck(): void {
-    this.common.hideSpinner('table');
-  }
+  // ngDoCheck(): void {
+  //   this.common.hideSpinner('table');
+  // }
 
   ngOnInit(): void {}
 
@@ -68,10 +68,9 @@ export class LpViewerComponent implements AfterViewInit {
               }
             });
 
-            this.lpVilpEdService.isLoading$.next(false);
-
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
+            this.lpVilpEdService.isLoading$.next(false);
           }
           //else this.router.navigateByUrl('user-space/lp-editor');
         });

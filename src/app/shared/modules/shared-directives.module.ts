@@ -24,4 +24,4 @@ import { ChabgeColumnNamePipe } from '@app/user-spaces/dashbord/pipe/chabge-colu
     StylePaginatorDirective,
   ],
 })
-export class SharedDirectivesModule { }
+export class SharedDirectivesModule {}

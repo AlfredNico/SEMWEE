@@ -16,8 +16,6 @@
                     </thead>
                     <tbody>
                         <!-- <div> -->
-
-                        
                         <tr *ngFor="let project of (allProjects$ | async)" class="content-project txt-project-content">
                         <!-- <a  class="d-flex flex-column flex-grow-1 font-weight-bold txt-project-content"> -->
                             <td (click)="navigateURL(project._id)">

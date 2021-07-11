@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, interval, Observable, Subject } from 'rxjs';
+import { map, startWith, take, takeUntil } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -37,11 +37,11 @@ export class LpdLpdService {
     private readonly common: CommonService
   ) {
     this.isLoading$.subscribe((res) => {
-      if (res === true) {
-        this.common.showSpinner('table', true, '');
-      } else {
-        this.common.hideSpinner('table');
-      }
+      if (res === true) this.common.showSpinner('table', true, '');
+      else
+        setTimeout(() => {
+          this.common.hideSpinner('table');
+        }, 500);
     });
   }
 

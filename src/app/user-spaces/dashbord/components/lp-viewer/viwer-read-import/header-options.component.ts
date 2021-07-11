@@ -1,4 +1,8 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -7,59 +11,107 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-header-options',
   template: `
     <div fxLayout="column" class="w-100">
-      <div mat-dialog-content cdkDropListGroupd fxLayout="row" fxLayoutAlign="space-evenly start">
-          <div class="container-box" class="w-50 h-100">
-              <h2>Avalable columns</h2>
-              <div class="table-columns">
-                  <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[noHiddenList]" (cdkDropListDropped)="drop($event) " class="containt-list">
-                      <div *ngFor="let item of hidden">
-                          <div *ngIf="!item?.includes('Value')" class="box" [ngClass]="{'setItem': selectedItems.includes(item)}" cdkDrag (click)="setClickedItem(item, hidden)">
-                              {{ item.split('_').join(' ') }}
-                          </div>
-                      </div>
-                  </div>
+      <div
+        mat-dialog-content
+        cdkDropListGroupd
+        fxLayout="row"
+        fxLayoutAlign="space-evenly start"
+      >
+        <div class="container-box" class="w-50 h-100">
+          <h2>Avalable columns</h2>
+          <div class="table-columns">
+            <div
+              cdkDropList
+              #hiddenList="cdkDropList"
+              [cdkDropListData]="hidden"
+              [cdkDropListConnectedTo]="[noHiddenList]"
+              (cdkDropListDropped)="drop($event)"
+              class="containt-list"
+            >
+              <div *ngFor="let item of hidden">
+                <div
+                  *ngIf="!item?.includes('Value')"
+                  class="box"
+                  [ngClass]="{ setItem: selectedItems.includes(item) }"
+                  cdkDrag
+                  (click)="setClickedItem(item, hidden)"
+                >
+                  {{ item.split('_').join(' ') }}
+                </div>
               </div>
+            </div>
           </div>
+        </div>
 
-          <div fxLayout="column" style="margin: auto 4em;">
-              <button [disabled]="btnToRigth" (click)="moveToRigth()" type="button" mat-raised-button class="m-1">
-                  Display
-                  <mat-icon>keyboard_arrow_right</mat-icon>
-              </button>
-              <button [disabled]="btnToLeft" (click)="moveToLeft()" type="button" mat-raised-button class="m-1">
-                  Hide
-                  <mat-icon>keyboard_arrow_left</mat-icon>
-              </button>
-              <mat-checkbox color="accent">
-                  But keep hiding properties labels
-              </mat-checkbox>
-          </div>
+        <div fxLayout="column" style="margin: auto 4em;">
+          <button
+            [disabled]="btnToRigth"
+            (click)="moveToRigth()"
+            type="button"
+            mat-raised-button
+            class="m-1"
+          >
+            Display
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+          <button
+            [disabled]="btnToLeft"
+            (click)="moveToLeft()"
+            type="button"
+            mat-raised-button
+            class="m-1"
+          >
+            Hide
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
+          <mat-checkbox color="accent">
+            But keep hiding properties labels
+          </mat-checkbox>
+        </div>
 
-          <div class="container-box" class="w-50 h-100">
-              <h2>Table columns</h2>
-            <!--  && !item.includes('ID') -->
-              <div class="table-columns">
-                  <div cdkDropList #noHiddenList="cdkDropList" [cdkDropListData]="noHidden" [cdkDropListConnectedTo]="[hiddenList]" [cdkDropListEnterPredicate]="canDrop" (cdkDropListDropped)="drop($event)" class="containt-list">
-                      <div *ngFor="let item of noHidden">
-                          <div *ngIf="!item?.includes('Value')" class="box" cdkDrag (click)="setClickedItem(item, noHidden)" [ngClass]="{'setItem': selectedItems.includes(item)}">
-                              {{ item.split('_').join(' ') }}
-                          </div>
-                      </div>
-                  </div>
+        <div class="container-box" class="w-50 h-100">
+          <h2>Table columns</h2>
+          <!--  && !item.includes('ID') -->
+          <div class="table-columns">
+            <div
+              cdkDropList
+              #noHiddenList="cdkDropList"
+              [cdkDropListData]="noHidden"
+              [cdkDropListConnectedTo]="[hiddenList]"
+              [cdkDropListEnterPredicate]="canDrop"
+              (cdkDropListDropped)="drop($event)"
+              class="containt-list"
+            >
+              <div *ngFor="let item of noHidden">
+                <div
+                  *ngIf="!item?.includes('Value')"
+                  class="box"
+                  cdkDrag
+                  (click)="setClickedItem(item, noHidden)"
+                  [ngClass]="{ setItem: selectedItems.includes(item) }"
+                >
+                  {{ item.split('_').join(' ') }}
+                </div>
               </div>
+            </div>
           </div>
+        </div>
       </div>
-      <div mat-dialog-actions align='center'>
-          <button (click)="onClick()" mat-raised-button
-          color="accent" tabindex="-1">CLOSE</button>
+      <div mat-dialog-actions align="center">
+        <button
+          (click)="onClick()"
+          mat-raised-button
+          color="accent"
+          tabindex="-1"
+        >
+          CLOSE
+        </button>
       </div>
-  </div>
-
+    </div>
   `,
-  styleUrls: ['./header-options.component.scss']
+  styleUrls: ['./header-options.component.scss'],
 })
 export class HeaderOptionsComponent implements OnInit {
-
   public hidden: string[] = [];
   public noHidden: string[] = [];
   // Generate form builder rows
@@ -79,15 +131,11 @@ export class HeaderOptionsComponent implements OnInit {
   ) {
     this.displayRows = this.data;
 
-    // if (this.data.noHiddenRows.includes('select')) {
-    //   const value = this.data.noHiddenRows.shift();
-    // }
-
     this.hidden = this.data.hiddenRows;
     this.noHidden = this.data.noHiddenRows;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   drop(event: CdkDragDrop<string[]>) {
     // const previousIndex = event.previousIndex;
@@ -113,14 +161,10 @@ export class HeaderOptionsComponent implements OnInit {
   }
 
   canDrop() {
-    // return this.data.length < 6;
     return true;
   }
 
   onClick(): void {
-    // if (!this.noHidden.includes('select')) {
-    //   const value = this.noHidden.unshift('select');
-    // }
     this.dialogRef.close(this.displayRows);
   }
 
@@ -146,10 +190,10 @@ export class HeaderOptionsComponent implements OnInit {
           this.hidden.length
         );
       }
-    })
+    });
     this.btnToRigth = true;
     this.btnToLeft = true;
-    this.selectedItems = [] //init items selecteds
+    this.selectedItems = []; //init items selecteds
     this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
@@ -174,10 +218,10 @@ export class HeaderOptionsComponent implements OnInit {
           this.noHidden.length
         );
       }
-    })
+    });
     this.btnToRigth = true;
     this.btnToLeft = true;
-    this.selectedItems = [] //init items selecteds
+    this.selectedItems = []; //init items selecteds
     this.infItems = { previewIndex: 0, currentIndex: 0, isFacet: false };
   }
 
@@ -226,21 +270,19 @@ export class HeaderOptionsComponent implements OnInit {
       if (this.selectedIndex > index) {
         items.forEach((val, i) => {
           if (this.selectedIndex >= i && i >= index) {
-            if (!this.selectedItems.includes(val))
-              this.selectedItems.push(val)
+            if (!this.selectedItems.includes(val)) this.selectedItems.push(val);
             // if (this.selectedItems.includes(item))
             //   this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
           }
-        })
+        });
       } else {
         items.forEach((val, i) => {
           if (this.selectedIndex <= i && i <= index) {
-            if (!this.selectedItems.includes(val))
-              this.selectedItems.push(val)
+            if (!this.selectedItems.includes(val)) this.selectedItems.push(val);
             // if (this.selectedItems.includes(item))
             //   this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
           }
-        })
+        });
       }
     } else {
       this.selectedItems = [];
@@ -251,15 +293,14 @@ export class HeaderOptionsComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    this.isKeyPressed = false
+    this.isKeyPressed = false;
   }
 
   @HostListener('window:keydown', ['$event']) onKeydownHandler(
     event: KeyboardEvent
   ) {
     if (event.keyCode === 17 || event.keyCode === 16 || event.ctrlKey) {
-      this.isKeyPressed = true
+      this.isKeyPressed = true;
     }
   }
-
 }

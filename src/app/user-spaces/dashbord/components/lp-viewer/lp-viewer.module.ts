@@ -30,7 +30,7 @@ import { ResizableModule } from 'angular-resizable-element';
     EditComponent,
     UndoRedoComponent,
     DragDroppDirective,
-    SearchReplaceComponent
+    SearchReplaceComponent,
   ],
   imports: [
     SharedComponentsModule,
@@ -42,7 +42,6 @@ import { ResizableModule } from 'angular-resizable-element';
   entryComponents: [
     ViwerImportComponent,
     ViwerReadImportComponent,
-    // FacetFilterComponent,
     HeaderOptionsComponent,
     UpdatesHeaderComponent,
   ],

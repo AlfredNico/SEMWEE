@@ -7,7 +7,6 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { LpEditorService } from '@app/user-spaces/dashbord/services/lp-editor.service';
 import { LpdLpdService } from '../services/lpd-lpd.service';
 
 @Component({
@@ -35,8 +34,8 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 white-color fw-600">invert</div>
-          <div class="pointer px-1 white-color fw-600">reset</div>
+          <div class="pointer px-1 white-color fw-600" (click)="invert()" [ngStyle]="{color: !item['invert'] ? '#74788D' : null}">invert</div>
+          <div class="pointer px-1 white-color fw-600" (click)="reset()">reset</div>
         </div>
         <div
           class="py-0"
@@ -58,14 +57,13 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             <mat-icon>search</mat-icon>
           </button>
         </div>
-        <div
-          fxLayout="row"
-          fxLayoutAlign="space-around center"
-          class="py-3 level2"
-          *ngIf="item['isMinimize'] === false"
-        >
-          <mat-checkbox>case sensitive</mat-checkbox>
-          <mat-checkbox>regular expression</mat-checkbox>
+        <div class="py-3 px-3 level2" *ngIf="item['isMinimize'] === false">
+          <mat-checkbox
+            [checked]="item['sensitive']"
+            (change)="changeStatus($event)"
+            >case sensitive</mat-checkbox
+          >
+          <!-- <mat-checkbox>regular expression</mat-checkbox> -->
         </div>
       </div>
     </div>
@@ -94,7 +92,8 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     if (this.lpVilpEd.permaLink.queries.hasOwnProperty(`${this.item['head']}`))
-      this.inputValue = this.lpVilpEd.permaLink.queries[`${this.item['head']}`];
+      this.inputValue =
+        this.lpVilpEd.permaLink.queries[`${this.item['head']}`]?.value;
     else this.inputValue = this.item['value'];
 
     this.form.addControl(this.item['head'], new FormControl(this.inputValue));
@@ -109,18 +108,61 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
           index: this.index,
         });
     });
-
-    // this.lpVilpEd.inputSubject.subscribe((_) => {
-    //   this.form.reset();
-    // });
   }
 
   public search(): void {
     if (this.form.value != '')
       this.formGroup.emit({
-        query: this.form.value,
+        query: {
+          value: this.form.value[this.item['head']],
+          invert: this.item['invert'],
+          sensitive: this.item['sensitive'],
+        },
         item: this.item,
         index: this.index,
       });
+  }
+
+  public invert() {
+    this.item = {
+      ...this.item,
+      invert: !this.item['invert'],
+    };
+
+    this.filter();
+  }
+
+  public changeStatus(e: any) {
+    this.item = {
+      ...this.item,
+      sensitive: e['checked'],
+    };
+
+    this.filter();
+  }
+
+  public reset(): void {
+    this.form.reset();
+    this.item = {
+      ...this.item,
+      invert: true,
+      sensitive: false,
+    };
+
+    this.filter();
+  }
+
+  private filter(): void {
+    this.formGroup.emit({
+      query: {
+        value: this.form.value[this.item['head']]
+          ? this.form.value[this.item['head']]
+          : '',
+        invert: this.item['invert'],
+        sensitive: this.item['sensitive'],
+      },
+      item: this.item,
+      index: this.index,
+    });
   }
 }
