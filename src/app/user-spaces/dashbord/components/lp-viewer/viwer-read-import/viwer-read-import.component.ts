@@ -13,7 +13,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -28,6 +28,11 @@ import {
 } from '@app/user-spaces/dashbord/interfaces/paginator';
 import { ResizeEvent } from 'angular-resizable-element';
 import { of } from 'rxjs';
+
+//filter data
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -380,13 +385,28 @@ export class ViwerReadImportComponent
     this.tabIndex = tabChangeEvent.index;
   }
 
-  sortData($e: any) {
+  public sortData($e: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
       ? (this.icon = 'desc')
       : (this.icon = '');
     this.active = $e.active;
+
+    const data = this.dataSource.slice();
+    if (!$e.active || $e.direction === '') {
+      this.dataSource = data;
+      return;
+    }
+    this.dataSource = data.sort((a, b) => {
+      const isAsc = $e.direction === 'asc';
+      switch ($e.active) {
+        case $e.active:
+          return compare(a[`${$e.active}`], b[`${$e.active}`], isAsc);
+        default:
+          return 0;
+      }
+    });
   }
 
   public isColumnDisplay(column: any): boolean {
