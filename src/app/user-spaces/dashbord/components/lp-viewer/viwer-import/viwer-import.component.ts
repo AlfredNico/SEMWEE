@@ -1,5 +1,12 @@
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  AfterViewInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
@@ -75,7 +82,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     `,
   ],
 })
-export class ViwerImportComponent {
+export class ViwerImportComponent implements AfterViewInit {
   public form = new FormGroup({
     fileSource: new FormControl('', [Validators.required]),
   });
@@ -105,6 +112,11 @@ export class ViwerImportComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  ngAfterViewInit() {
+    this.lpviLped.isLoading$.next(false);
+  }
+
   reload() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';

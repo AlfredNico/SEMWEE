@@ -90,8 +90,9 @@
       [resizeEdges]="{ bottom: false, right: true, top: false, left: false }"
       (resizeEnd)="onResizeEnd($event)"
     >
-    <div class="card br" *ngIf="isLooading == true; else filter_content">
-      <img src="assets/images/gif/skeleton.gif" width="100%">
+    <div class="card br mt-4" *ngIf="isLooading == true; else filter_content">
+      <img src="assets/images/gif/skeleton.gif" width="100%" height="50">
+      <img class="mt-10" src="assets/images/gif/skeleton.gif" width="100%" height="200">
     </div>
     <ng-template #filter_content>
       <mat-tab-group
@@ -154,16 +155,6 @@
         >
 
         <app-pulsing-skeleton *ngIf="isLooading == true; else table_content"></app-pulsing-skeleton>
-        <!-- <div class="br" *ngIf="isLooading == true; else table_content">
-          <div class="wrapper-skeleton">
-            <div class="header-content br animate"></div>
-            <div class="header-content br animate"></div>
-            <div class="header-content br animate"></div>
-          </div>
-          <div class="wrapper-skeleton">
-            <div class="table-content br animate"></div>
-          </div>
-        </div> -->
         <ng-template #table_content>
           <table
             mat-table

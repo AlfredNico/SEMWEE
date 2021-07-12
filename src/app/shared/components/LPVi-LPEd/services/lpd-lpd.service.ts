@@ -57,7 +57,7 @@ export class LpdLpdService {
             this.formInputQuery = { ...JSON.parse(res[2][0]['value']) };
 
           const header = JSON.parse(
-            JSON.stringify(res[0][0]['nameUpdate'].split('"').join(''))
+            JSON.stringify(res[0][0]?.nameUpdate.split('"').join(''))
           ).split(',');
 
           header.unshift('all');
