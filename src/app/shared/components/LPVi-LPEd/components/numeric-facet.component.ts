@@ -11,9 +11,9 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
 @Component({
   selector: 'app-numeric-facet',
   template: `
-    <div class="mx-1 pb-2">
+    <div class="ml-5 pb-2">
       <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1" fxLayout="row">
+        <div class="py-2 px-2 level1" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -33,8 +33,8 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 black-color fw-600">change</div>
-          <div class="pointer px-1 black-color fw-600">reset</div>
+          <div class="pointer px-1 white-color fw-600">change</div>
+          <div class="pointer px-1 white-color fw-600">reset</div>
         </div>
         <div
           class="custom-slider"
@@ -65,16 +65,16 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
         <div
           fxLayout="row"
           fxLayoutAlign="center center"
-          class="py-1 level2"
+          class="py-1 level2 rounded-bottom"
           *ngIf="
             isValidNumber() &&
             item?.maxValue !== 0 &&
             item['isMinimize'] === false
           "
         >
-          <p class="m-0">{{ item?.minValue }}</p>
-          <p class="mx-1 my-0">-</p>
-          <p class="m-0">{{ item?.maxValue }}</p>
+          <p class="m-0 ftp fw-600">{{ item?.minValue }}</p>
+          <p class="mx-1 my-0 ftp fw-600">-</p>
+          <p class="m-0 ftp fw-600">{{ item?.maxValue }}</p>
         </div>
       </div>
     </div>
