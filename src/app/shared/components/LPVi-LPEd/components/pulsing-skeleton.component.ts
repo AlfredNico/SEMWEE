@@ -3,121 +3,26 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-pulsing-skeleton',
   template: `
-    <!-- <div class="br">
-      <section>
-        <div class="comment br animate header"></div>
-        <div class="comment br animate"></div>
-        <div class="comment br animate"></div>
-      </section>
-
-      <aside>
-        <div class="comment br animate header"></div>
-      </aside>
-    </div> -->
     <table class="w-100 table-viewer">
       <tr>
-        <th>
+        <th class="border-bottom" *ngFor="let td of [0, 1, 2, 3, 4]">
           <img
             src="assets/images/gif/skeleton.gif"
-            width="70"
-            height="30"
-            class="mx-10"
-          />
-        </th>
-        <th>
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="70"
-            height="30"
-            class="mx-10"
-          />
-        </th>
-        <th>
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="70"
-            height="30"
-            class="mx-10"
-          />
-        </th>
-        <th>
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="70"
-            height="30"
-            class="mx-10"
-          />
-        </th>
-        <th>
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="70"
-            height="30"
-            class="mx-10"
-          />
-        </th>
-        <th>
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="70"
-            height="30"
-            class="mx-10"
+            width="150"
+            height="20"
+            class="mx-5 mt-3 my-3 rounded"
           />
         </th>
       </tr>
-      <tr>
-        <td>
+      <tr *ngFor="let tr of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+        <td class="border-bottom" *ngFor="let td of [0, 1, 2, 3, 4]">
           <img
             src="assets/images/gif/skeleton.gif"
-            width="40"
-            height="30"
-            class="mx-10"
-          />
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="40"
-            height="30"
-            class="mx-10"
-          />
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="40"
-            height="30"
-            class="mx-10"
+            width="150"
+            height="20"
+            class="mx-5 mt-3 my-3 rounded"
           />
         </td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-      </tr>
-      <tr>
-        <td>
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="40"
-            height="30"
-            class="mx-10"
-          />
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="40"
-            height="30"
-            class="mx-10"
-          />
-          <img
-            src="assets/images/gif/skeleton.gif"
-            width="40"
-            height="30"
-            class="mx-10"
-          />
-        </td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
-        <td class="nody"><div class="header-content br animate"></div></td>
       </tr>
     </table>
   `,

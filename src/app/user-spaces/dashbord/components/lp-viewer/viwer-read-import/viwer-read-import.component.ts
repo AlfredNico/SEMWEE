@@ -206,7 +206,7 @@ export class ViwerReadImportComponent
               this.displayedColumns.unshift('all');
               this.dataViews = this.dataSourceFilter = content;
               this.dataSource = this.dataSourceFilter.slice(0, 10);
-              // this.isLooading = false;
+              this.isLooading = false;
               this.lpViewer
                 .sendFiles(
                   {
