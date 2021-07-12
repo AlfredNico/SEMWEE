@@ -853,11 +853,7 @@ export class ViwerReadImportComponent
                   idProject: this.idProject,
                   fileData: this.dataSource,
                   idHeader: this.idHeader,
-<<<<<<< HEAD
                   header : []
-=======
-                  header: [],
->>>>>>> ffe3be6517daa521e3d6f82643f780d2c1b5999d
                 },
                 actualy
               )
