@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-pulsing-skeleton',
   template: `
-    <div class="br">
+    <!-- <div class="br">
       <section>
         <div class="comment br animate header"></div>
         <div class="comment br animate"></div>
@@ -13,10 +13,150 @@ import { Component, OnInit } from '@angular/core';
       <aside>
         <div class="comment br animate header"></div>
       </aside>
-    </div>
+    </div> -->
+    <table class="w-100 table-viewer">
+      <tr>
+        <th>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="70"
+            height="30"
+            class="mx-10"
+          />
+        </th>
+        <th>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="70"
+            height="30"
+            class="mx-10"
+          />
+        </th>
+        <th>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="70"
+            height="30"
+            class="mx-10"
+          />
+        </th>
+        <th>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="70"
+            height="30"
+            class="mx-10"
+          />
+        </th>
+        <th>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="70"
+            height="30"
+            class="mx-10"
+          />
+        </th>
+        <th>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="70"
+            height="30"
+            class="mx-10"
+          />
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="40"
+            height="30"
+            class="mx-10"
+          />
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="40"
+            height="30"
+            class="mx-10"
+          />
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="40"
+            height="30"
+            class="mx-10"
+          />
+        </td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+      </tr>
+      <tr>
+        <td>
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="40"
+            height="30"
+            class="mx-10"
+          />
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="40"
+            height="30"
+            class="mx-10"
+          />
+          <img
+            src="assets/images/gif/skeleton.gif"
+            width="40"
+            height="30"
+            class="mx-10"
+          />
+        </td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+        <td class="nody"><div class="header-content br animate"></div></td>
+      </tr>
+    </table>
   `,
   styles: [
     `
+      table {
+        th.head,
+        td.nody {
+          border-bottom: 2px solid #e0e0e0;
+        }
+      }
+
+      .tab-content {
+        height: 200px;
+        background: #777;
+        margin: 20px;
+      }
+
+      .header-content {
+        height: 20px;
+        background: #777;
+        margin: 10px 20px;
+        width: 150px;
+        float: left;
+      }
+
+      .header-start-content {
+        height: 20px;
+        background: #777;
+        margin: 10px 20px;
+        width: 20px;
+        float: left;
+      }
+
+      .table-content {
+        height: calc(100vh - 300px);
+        background: #777;
+        margin: 10px 20px;
+      }
       section {
         float: left;
         width: 30%;
@@ -31,13 +171,6 @@ import { Component, OnInit } from '@angular/core';
       .w80 {
         width: 80%;
       }
-      /* .card {
-        border: 2px solid #fff;
-        box-shadow: 0px 0px 10px 0 #a9a9a9;
-        padding: 30px 40px;
-        width: 80%;
-        margin: 50px auto;
-      } */
       .profilePic {
         height: 65px;
         width: 65px;

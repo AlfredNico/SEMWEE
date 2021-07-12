@@ -90,11 +90,10 @@
       [resizeEdges]="{ bottom: false, right: true, top: false, left: false }"
       (resizeEnd)="onResizeEnd($event)"
     >
-    <div class="card br">
-      <div class="wrapper-skeleton">
-        <div class="comment br animate"></div>
-      </div>
+    <div class="card br" *ngIf="isLooading == true; else filter_content">
+      <img src="assets/images/gif/skeleton.gif" width="100%">
     </div>
+    <ng-template #filter_content>
       <mat-tab-group
         [(selectedIndex)]="selectedIndex"
         mat-align-tabs="start"
@@ -103,13 +102,6 @@
         class="mat-group scroll ps"
         perfectScrollbar
       >
-          <div class="card br" *ngIf="dataViews.length == 0; else other_content">
-            <div class="wrapper-skeleton">
-              <div class="comment br animate"></div>
-            </div>
-          </div>
-
-        <ng-template #other_content>
           <mat-tab label="Facet/Filter">
             <app-facet-filter-target
               [idProject]="idProject"
@@ -145,8 +137,8 @@
               </ng-container>
             </div>
           </mat-tab>
-        </ng-template>
-      </mat-tab-group>
+        </mat-tab-group>
+      </ng-template>
     </aside>
 
     <aside class="p-0" [ngStyle]="{ width: 'calc(100% - ' + ws + 'px)' }">
@@ -160,6 +152,19 @@
           "
           perfectScrollbar
         >
+
+        <app-pulsing-skeleton *ngIf="isLooading == true; else table_content"></app-pulsing-skeleton>
+        <!-- <div class="br" *ngIf="isLooading == true; else table_content">
+          <div class="wrapper-skeleton">
+            <div class="header-content br animate"></div>
+            <div class="header-content br animate"></div>
+            <div class="header-content br animate"></div>
+          </div>
+          <div class="wrapper-skeleton">
+            <div class="table-content br animate"></div>
+          </div>
+        </div> -->
+        <ng-template #table_content>
           <table
             mat-table
             *ngIf="displayedColumns.length != 0"
@@ -480,6 +485,8 @@
               </td>
             </tr>
           </table>
+        </ng-template>
+
         </div>
         <mat-paginator
           *ngIf="dataViews.length != 0"

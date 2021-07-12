@@ -27,6 +27,7 @@ import {
   Paginator,
 } from '@app/user-spaces/dashbord/interfaces/paginator';
 import { ResizeEvent } from 'angular-resizable-element';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -42,7 +43,7 @@ export class ViwerReadImportComponent
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
-  selectedIndex = 1;
+  selectedIndex = 0;
 
   @Input('idProject') idProject = undefined;
   @Input('filtersData') filtersData: {
@@ -60,6 +61,8 @@ export class ViwerReadImportComponent
     first: new FormControl(false),
     second: new FormControl(false),
   });
+  public syncData$ = of(false);
+  public isLooading: boolean = true;
   public dataSourceFilterStart = [];
   public tabIndex = 0;
   public icon = '';
@@ -127,39 +130,23 @@ export class ViwerReadImportComponent
           this.dataSourceFilter = this.dataViews;
           this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
+        this.isLooading = false;
       } else {
-        // this.displayedColumns = this.dataAfterUploaded['data']['header'];
-
-        // this.dataSourceFilter = this.dataViews = this.readCsvFile(
-        //   this.dataAfterUploaded['data']['contentCsv'],
-        //   this.dataAfterUploaded['data']['header'],
-        //   this.dataAfterUploaded['idProject']
-        // );
-
-        this.lpViewer.getTestApi(this.dataAfterUploaded['file']).subscribe((result)=> {
-          if(result){
-            console.log(result);
-            
-            this.dataViews = this.dataSourceFilter = result;
-            this.dataSource = this.dataSourceFilter.slice(0, 10);
-            this.displayedColumns = Object.keys(result[0]);
-             this.displayedColumns.unshift('all');
-          }
-        })
-        // this.items = []; //set items filters
-        // this.readCsvFile(
-        //   this.dataAfterUploaded['file'],
-        //   this.dataAfterUploaded['idProject']
-        // );
-        // this.listNameHistory = [
-        //   {
-        //     idName: 0,
-        //     name: 'Create project',
-        //     idProject: this.dataAfterUploaded['idProject'],
-        //   },
-        // ];
-
-        // this.dataSource = this.dataSourceFilter.slice(0, 10);
+        this.items = []; //set items filters
+        // this.isLooading = false;
+        setTimeout(() => {
+          this.readCsvFile(
+            this.dataAfterUploaded['file'],
+            this.dataAfterUploaded['idProject']
+          );
+        }, 500);
+        this.listNameHistory = [
+          {
+            idName: 0,
+            name: 'Create project',
+            idProject: this.dataAfterUploaded['idProject'],
+          },
+        ];
       }
 
       this.paginator = {
@@ -201,61 +188,44 @@ export class ViwerReadImportComponent
           });
           const parsedCsv = csv;
           parsedCsv.pop();
-
           setTimeout(() => {
             const header = parsedCsv.shift().toString().split(',');
-
             this.displayedColumns = [...new Set([...header])].filter(
               (item) => item != undefined && item != ''
             );
-
-            const content = parsedCsv.map((value, indexMap) =>
-              value.reduce(
-                (tdObj, td, index) => {
-                  tdObj[header[index]] = td;
-                  // tdObj['index'] = indexMap + 1;
-                  return tdObj;
-                },
-                { star: false, flag: false, index: indexMap + 1 }
-              )
-            );
-
-            this.displayedColumns.unshift('all');
-            this.dataViews = this.dataSourceFilter = content;
-            this.dataSource = this.dataSourceFilter.slice(0, 10);
-
-            this.lpViewer
-              .sendFiles(
-                {
-                  namehistory: 'Create project',
-                  idProject: idProject,
-                  fileData: this.dataViews,
-                  idHeader: 0,
-                  header: this.displayedColumns,
-                },
-                0
-              )
-              .subscribe();
-          }, 1000);
+            setTimeout(() => {
+              const content = parsedCsv.map((value, indexMap) =>
+                value.reduce(
+                  (tdObj, td, index) => {
+                    tdObj[header[index]] = td;
+                    return tdObj;
+                  },
+                  { star: false, flag: false, index: indexMap + 1 }
+                )
+              );
+              this.displayedColumns.unshift('all');
+              this.dataViews = this.dataSourceFilter = content;
+              this.dataSource = this.dataSourceFilter.slice(0, 10);
+              // this.isLooading = false;
+              this.lpViewer
+                .sendFiles(
+                  {
+                    namehistory: 'Create project',
+                    idProject: idProject,
+                    fileData: this.dataViews,
+                    idHeader: 0,
+                    header: this.displayedColumns,
+                  },
+                  0
+                )
+                .subscribe();
+            }, 500);
+          }, 500);
         } catch (e) {
           console.log(e);
         }
       })
       .catch((error) => console.log(error));
-    // this.lpviLped.isLoading$.next(true); // enable loading spinner
-
-    // const content = contentCsv.map((value, indexMap) =>
-    //   value.reduce(
-    //     (tdObj, td, index) => {
-    //       tdObj[header[index]] = td;
-    //       tdObj['index'] = indexMap + 1;
-    //       return tdObj;
-    //     },
-    //     { star: false, flag: false }
-    //   )
-    // );
-
-    // return content;
   }
 
   public getServerData(event?: PageEvent): void {
@@ -883,7 +853,11 @@ export class ViwerReadImportComponent
                   idProject: this.idProject,
                   fileData: this.dataSource,
                   idHeader: this.idHeader,
+<<<<<<< HEAD
                   header : []
+=======
+                  header: [],
+>>>>>>> ffe3be6517daa521e3d6f82643f780d2c1b5999d
                 },
                 actualy
               )
