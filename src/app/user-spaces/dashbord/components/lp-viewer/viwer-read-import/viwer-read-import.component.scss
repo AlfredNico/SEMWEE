@@ -1,13 +1,7 @@
 .rotateimg180 {
     transform: scaleX(-1) !important;
 }
-
 ::ng-deep {
-    /* Styles for tab labels */
-    // * {
-    //     font-family: Poppins!important;
-    // }
-    
     aside {
         min-height: calc(100vh - 17rem) !important;
     }
@@ -161,7 +155,7 @@
             padding: 0 10px;
         }
     }
-    
+
 }
 
 ::ng-deep .mat-sort-header-content {
@@ -469,8 +463,8 @@
             color: white;
         }
     }
-    
-  
+
+
 
   .hover-span:hover .bg-light {
     background-color: transparent!important;
@@ -525,7 +519,7 @@
     height: 11px !important;
     border-radius: 2rem!important;
   }
-   
+
   .ps__rail-y:hover > .ps__thumb-y,
   .ps__rail-y:focus > .ps__thumb-y,
   .ps__rail-y.ps--clicking .ps__thumb-y {

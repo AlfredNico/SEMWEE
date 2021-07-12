@@ -1,5 +1,12 @@
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  AfterViewInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
@@ -75,7 +82,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     `,
   ],
 })
-export class ViwerImportComponent implements OnInit {
+export class ViwerImportComponent implements AfterViewInit {
   public form = new FormGroup({
     fileSource: new FormControl('', [Validators.required]),
   });
@@ -106,8 +113,8 @@ export class ViwerImportComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.lpviLped.isLoading$.next(false); // disable loading spinner
+  ngAfterViewInit() {
+    this.lpviLped.isLoading$.next(false);
   }
 
   reload() {
@@ -124,49 +131,8 @@ export class ViwerImportComponent implements OnInit {
 
       this.ProjectName = file['name'].replace('.csv', '');
 
-      this.readFileContent(file)
-        .then((csvContent) => {
-          try {
-            const csv = [];
-            const lines = this.processCsv(csvContent);
-            const sep1 = lines[0].split(';').length;
-            const sep2 = lines[0].split(',').length;
-            const csvSeparator = sep1 > sep2 ? ';' : ',';
-            lines.forEach((element) => {
-              const cols: string[] = element.split(csvSeparator);
-              csv.push(cols);
-            });
-            this.parsedCsv = csv;
-            this.parsedCsv.pop();
-
-            const header = this.parsedCsv.shift().toString().split(',');
-
-            this.data.header = [...new Set([...header])].filter(
-              (item) => item != undefined && item != ''
-            );
-
-            this.data.header.unshift('all');
-            this.data.contentCsv = csv;
-            this.onSubmit();
-          } catch (e) {
-            console.log(e);
-          }
-        })
-        .catch((error) => console.log(error));
-    } else this.nofits.warn('This is no csv file !');
-  }
-
-  private processCsv(content) {
-    return content.split('\n');
-  }
-
-  private readFileContent(file) {
-    const reader = new FileReader();
-    return new Promise((resolve, reject) => {
-      reader.onload = (event) => resolve(event.target.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsText(file);
-    });
+      this.onSubmit();
+    }
   }
 
   public onSubmit() {
@@ -175,15 +141,14 @@ export class ViwerImportComponent implements OnInit {
         idUser: this.user._id,
         ProjectName: this.ProjectName,
         sizefile: this.sizeFile,
-        headers: this.data.header,
+        headers: [],
       };
-      this.lpViewerService.sendProjectNames(value).subscribe((idProject) => {
-        if (idProject) {
+      this.lpViewerService.sendProjectNames(value).subscribe((data) => {
+        if (data)
           this.dataImported.emit({
-            idProject: idProject['idProject'],
-            data: this.data,
+            idProject: data['idProject'],
+            file: this.file,
           });
-        }
       });
     }
   }

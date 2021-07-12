@@ -69,7 +69,7 @@ export class ResetpasswordComponent {
       }
     } catch (error) {
       if (error instanceof HttpErrorResponse) {
-        console.log('error', error);
+        throw error;
       }
     }
   }

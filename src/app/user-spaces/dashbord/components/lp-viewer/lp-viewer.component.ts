@@ -1,12 +1,10 @@
 import { User } from '@app/classes/users';
 import { AuthService } from '@app/authentification/services/auth.service';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/shared/services/common.service';
-import { LpViwersService } from '../../services/lp-viwers.service';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
-// import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 
 @Component({
   selector: 'app-lp-viewer',
@@ -44,10 +42,6 @@ export class LpViewerComponent implements AfterViewInit {
       }
     });
   }
-
-  // ngDoCheck(): void {
-  //   this.common.hideSpinner('table');
-  // }
 
   ngOnInit(): void {}
 

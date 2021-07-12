@@ -1,3 +1,9 @@
+ //to remove the forth step
+//  :host ::ng-deep .mat-horizontal-content-container {
+//   min-height: calc(100vh - 250px);
+// }
+
+
 :host ::ng-deep {
   .ftp {
     font-family: Poppins!important;
