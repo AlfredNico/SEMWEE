@@ -43,10 +43,15 @@
 
   .btn-custom {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     padding: 7px 10px;
-    color: #7E849C;
-    background-color: #ECF1F6;
+    color: #2C374D;
+    background-color: transparent;
+    border: 1px solid #7F8FA4;
+  }
+
+  .btn-custom:hover {
+    background-color: #F2F3F5;
   }
 
   .style-border {
@@ -96,4 +101,26 @@
   margin-left: 1px;
   width: 18px;
   height: 18px;
+}
+
+::ng-deep {
+  .form-custom {
+    border: 1px solid #74788D!important;
+  }
+
+  .form-custom:focus {
+    border-color: #74788D!important;
+  }
+
+  .ftp {
+    font-family: Poppins!important;
+  }
+
+  .mat-checkbox-label {
+    font-weight: 600!important;
+  }
+
+  .fw-600 {
+    font-weight: 600 !important;
+  } 
 }

@@ -51,16 +51,17 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             placeholder="Filter ..."
             [formControlName]="item['head']"
             appearance="outline"
-            class="form-control w-100"
+            class="form-control w-100 form-custom"
           />
           <button mat-icon-button (click)="search()">
             <mat-icon>search</mat-icon>
           </button>
         </div>
-        <div class="py-3 px-3 level2" *ngIf="item['isMinimize'] === false">
+        <div class="py-3 px-3 level2 rounded-bottom" *ngIf="item['isMinimize'] === false">
           <mat-checkbox
             [checked]="item['sensitive']"
             (change)="changeStatus($event)"
+            style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
             >case sensitive</mat-checkbox
           >
           <!-- <mat-checkbox>regular expression</mat-checkbox> -->

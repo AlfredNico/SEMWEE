@@ -16,7 +16,7 @@
         </h3>
       </div>
       <div>
-        <button class="btn btn-primary mr-3 ftp">
+        <button class="btn btn-primary btn-open mr-3">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -33,7 +33,7 @@
       </span>
       Open
     </button>
-    <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle ftp"
+    <button type="button" class="btn btn-export font-weight-bolder dropdown-toggle"
       aria-expanded="false" [matMenuTriggerFor]="importMenu">
       <span class="svg-icon svg-icon-md">
         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
@@ -61,12 +61,6 @@
         Table options
       </button>
       <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
-      <button mat-menu-item [matMenuTriggerFor]="sousItem2">Item 1</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
-    <mat-menu #sousItem2="matMenu">
-      <button mat-menu-item>Sous item 1</button>
-      <button mat-menu-item>Soous item 2</button>
     </mat-menu>
       </div>
     <!-- <button class="rounded" color="primary">RefinePro dashbord</button> -->
@@ -134,7 +128,7 @@
                 <th mat-header-cell *matHeaderCellDef
                   [ngClass]="{ 'active-column': active === column, 'active-none': icon === '' && active === column }">
                   <span fxLayout fxLayoutGap="15px">
-                    <mat-icon style="color: #fff" [inline]="true" aria-hidden="false"
+                    <mat-icon style="color: #D8D8D8" [inline]="true" aria-hidden="false"
                       class="option-icon bg-light" [matMenuTriggerFor]="tableOptionMenu">
                       arrow_drop_down
                     </mat-icon>
@@ -180,10 +174,14 @@
                     let odd = odd
                   " [class.odd]="odd" [class.even]="even" #td class="th-content p-0">
                   <div fxLayout="row" fxLayoutAlign="space-around center">
-                    <i style="cursor: pointer; color: #dad151" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
+                    <i style="cursor: pointer;" class="rotateimg180 fa fa-flag fa-lg" *ngIf='element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
                     <i  style="cursor: pointer;" class="rotateimg180 far fa-flag fa-lg" *ngIf='!element["flag"]' (click)="updateStart(element,element['index'],'Flag')"></i>
-                    <i style="cursor: pointer; color: #dad151" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
+                    <!-- <i style="cursor: pointer;" class="fa fa-star fa-lg" aria-hidden="true" *ngIf='element["star"]' (click)="updateStart(element,element['index'],'Star')"></i> -->
                     <i style="cursor: pointer;" class="far fa-star fa-lg" *ngIf='!element["star"]' (click)="updateStart(element,element['index'],'Star')"></i>
+                    <fieldset class="starability-grow" *ngIf='element["star"]' (click)="updateStart(element,element['index'],'Star')">
+                        <input type="radio" id="rate0" name="rating" value="0"/>
+                        <label for="rate0" title="Star"></label>
+                    </fieldset>
                     <p class="text-center font-size-h4 m-0 ftp" >
                       {{ paginator.pageIndex * paginator.pageSize + indexRow + 1  }}.
                     </p>
@@ -195,16 +193,16 @@
                 <th mat-header-cell *matHeaderCellDef
                   [ngClass]="{ 'd-none': isColumnDisplay(column), 'active-column': active === column, 'active-none': icon === '' && active === column }">
                   <span fxLayout fxLayoutGap="15px">
-                    <mat-icon style="color: #fff" [inline]="true" aria-hidden="false"
+                    <mat-icon style="color: #D8D8D8" [inline]="true" aria-hidden="false"
                       class="option-icon bg-light" [matMenuTriggerFor]="tableOptionMenu">
                       arrow_drop_down
                     </mat-icon>
-                    <div #updateHeader mat-sort-header id={{index}}  style="font-family: Poppins!important;">
+                    <div #updateHeader mat-sort-header id={{index}}>
                       {{ column | removeUnderscore | capitalizeFirstPipe }}
                       <div class="pl-3 icon">
-                        <i *ngIf="icon === 'asc' && active === column" class="fa fa-arrow-up"></i>
+                        <i *ngIf="icon === 'asc' && active === column" class="fas fa-sort-amount-up"></i>
                         <i *ngIf="icon === 'desc' && active === column"
-                          class="fa fa-arrow-down"></i>
+                          class="fas fa-sort-amount-down"></i>
                       </div>
                     </div>
                   </span>
@@ -260,7 +258,7 @@
                       <p class="text-left text-truncate mat-body-p ftp">
                         {{currentValue}}
                         <button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
+                          class="rounded btn btn-custom only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                       <ng-template #templeteURL>
@@ -270,19 +268,19 @@
                             )
                           " target="_blank" class="text-truncate ftp">{{ currentValue }}</a>
                         <button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
+                          class="rounded btn btn-custom only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </ng-template>
                     </div>
                   </ng-template>
 
                   <ng-template #numberTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate"
+                    <div class="justify-content-between px-3 text-truncate"
                       >
-                      <p class="text-right ftp">
+                      <p class="text-center ftp cg">
                         {{ currentValue }}
                         <button mat-raised-button
-                          class="btn btn-light-primary only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
+                          class="rounded btn btn-custom only-show-on-hover font-weight-bold mr-2 otherStyle ftp"
                           (click)="action(element,column,indexRow, $event)">edit</button>
                       </p>
                     </div>

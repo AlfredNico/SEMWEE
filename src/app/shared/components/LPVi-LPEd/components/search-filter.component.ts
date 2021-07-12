@@ -40,23 +40,23 @@ import { Observable, of, Subject } from 'rxjs';
           class="py-2 px-2 level2"
           *ngIf="item['isMinimize'] === false"
         >
-          <div class="pr-3 pointer black-color fw-600">
+          <div class="pr-3 pointer black-color fw-600 ftp">
             {{ observable$ | async }} choices
           </div>
-          <div>
+          <div class="ftp">
             Sort by :
             <span
-              class="px-1 pointer black-color fw-600"
+              class="px-1 pointer black-color fw-600 ftp"
               [ngStyle]="{
-                color: isSortName ? 'rgb(27, 197, 189)' : null
+                color: isSortName ? '#74788D' : null
               }"
               (click)="sortByName()"
               >name</span
             >
             <span
-              class="px-1 pointer black-color fw-600"
+              class="px-1 pointer black-color fw-600 ftp"
               [ngStyle]="{
-                color: isSortCount ? 'rgb(27, 197, 189)' : null
+                color: isSortCount ? '#74788D' : null
               }"
               (click)="sortByCount()"
               >count</span
@@ -64,7 +64,7 @@ import { Observable, of, Subject } from 'rxjs';
           </div>
         </div>
         <div
-          class="py-2"
+          class="py-2 rounded-bottom"
           style="height: 150px; overflow: auto"
           *ngIf="item['isMinimize'] === false"
         >
@@ -76,24 +76,24 @@ import { Observable, of, Subject } from 'rxjs';
           >
             <div fxLayout="row">
               <p
-                class="font-weight-bold m-0 pr-2 pointer"
+                class="font-weight-bold m-0 pr-2 pointer ftp"
                 [ngStyle]="{
-                  color: content['include'] === false ? '#2464a4' : '#1BC5BD'
+                  color: content['include'] === false ? '#2464a4' : '#74788D'
                 }"
               >
                 {{ content[0] }}
               </p>
-              <span style="color: #7E849C"> {{ content[1] }} </span>
+              <span class="ftp" style="color: #7E849C"> {{ content[1] }} </span>
             </div>
             <span
-              class="only-show-on-hover pointer in-ex"
+              class="only-show-on-hover pointer in-ex ftp"
               *ngIf="content['include'] === false"
               (click)="include(item, content[0])"
             >
               include
             </span>
             <span
-              class="pointer in-ex"
+              class="pointer in-ex ftp"
               *ngIf="content['include'] === true"
               (click)="exclude(item, content[0])"
             >

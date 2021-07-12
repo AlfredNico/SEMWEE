@@ -1,12 +1,12 @@
 <mat-card #card>
   <div  [class]="{'arrow-left':arrow_left,'arrow-right':arrow_right}"></div>
     <mat-card-header>
-      <div class="w-100 my-5" fxLayout="row">
+      <div class="w-100 my-5 ftp" fxLayout="row">
         Edit Cell
       </div>
     </mat-card-header>
     <mat-card-content>
-      <div mat-form-field class="form-group w-50 mr-5">
+      <div mat-form-field class="form-group w-100 mr-5">
         <mat-select class="form-control" [(value)]="selected">
           <mat-option value="string">Text</mat-option>
           <mat-option value="number">Number</mat-option>
@@ -20,9 +20,9 @@
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <button type="button" class="btn btn-outline-secondary" (click)="convertOne()">Apply</button>
-        <button style="margin: 0px 13px;" type="button" class="btn btn-outline-secondary" (click)="sendObject()">Apply to All Identical Cells</button>
-        <button type="button" class="btn btn-outline-secondary" (click)="toggleEdit('ok')">Cancel</button>
+        <button type="button" class="btn btn-outline-secondary ftp" (click)="convertOne()">Apply</button>
+        <button style="margin: 0px 13px;" type="button" class="btn btn-outline-secondary ftp" (click)="sendObject()">Apply to All Identical Cells</button>
+        <button type="button" class="btn btn-outline-secondary ftp" (click)="toggleEdit('ok')">Cancel</button>
     </mat-card-actions>
 
 </mat-card>

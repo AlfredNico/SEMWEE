@@ -2,44 +2,58 @@
     <div class="p-0 w-100 rounded style-border">
       <div class="py-2 px-2 level1" fxLayout="row">
       
-        <mat-icon style="cursor:pointer;" aria-label="close icon" (click)="removeFromItem.emit(nameColumn)">   <!-- (click)="removeFromItem.emit(item)" -->
+        <mat-icon style="cursor:pointer;" aria-label="close icon" (click)="removeFromItem.emit(nameColumn)">
           highlight_off
         </mat-icon>
-        <mat-icon
+        <!-- <mat-icon
+          *ngIf="item['isMinimize'] === false"
           aria-label="close icon"
+          (click)="minimize.emit(item)"
         >
           remove_circle_outline
         </mat-icon>
-        <!-- *ngIf="item['isMinimize'] === true" -->
-        <mat-icon  aria-label="close icon"><!--(click)="minimize.emit(item)" -->
+        <mat-icon
+          *ngIf="item['isMinimize'] === true"
+          aria-label="close icon"
+          (click)="minimize.emit(item)"
+        >
           add_circle_outline
-        </mat-icon>
+        </mat-icon> -->
         <span class="fw-600">{{nameColumn}}</span>
-        <span fxFlex></span>
-        <div class="pointer px-1 white-color fw-600">invert</div>
-        <div class="pointer px-1 white-color fw-600">reset</div>
+        <!-- <span fxFlex></span>
+        <div class="pointer px-1 white-color fw-600" (click)="invert()" [ngStyle]="{color: !item['invert'] ? '#74788D' : null}">invert</div>
+        <div class="pointer px-1 white-color fw-600" (click)="reset()">reset</div> -->
       </div>
-      <div class="py-0" [formGroup]="formSearch" > <!-- *ngIf="item['isMinimize'] === false" [formGroup]="form" -->
-        <input
-            style="    margin-top: 5px;margin-bottom: 5px;"
-          autocomplete="off"
-          type="search"
-          class="w-100"
-          placeholder="Number default ..."
-          formControlName="char_value"
-          appearance="outline"
-          class="form-control"
-        /> <!--[formControlName]="item['head']" -->
-        <input
-          autocomplete="off"
-          type="search"
-          class="w-100"
-          placeholder=" Filter text..."
-          formControlName="new_value"
-          appearance="outline"
-          class="form-control"
-        /> <!--[formControlName]="item['head']" -->
-        <a style="width: 90px;margin-top: 5px; margin-bottom: 5px;" class="btn btn-light-primary font-weight-bold mr-2" (click)="searchReplace()">Replace</a> 
-    </div>
+
+      <div
+        class="py-0"
+        [formGroup]="formSearch"
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        style="background: #74788D"
+      >
+      <!-- *ngIf="item['isMinimize'] === false" -->
+      <input
+        autocomplete="off"
+        type="search"
+        class="w-100 mt-1 form-control form-custom"
+        placeholder="Value ..."
+        formControlName="char_value"
+        appearance="outline"
+      />
+      <input
+        autocomplete="off"
+        type="search"
+        class="w-100 mt-1 mb-1 form-control form-custom"
+        placeholder="Replace ..."
+        formControlName="new_value"
+        appearance="outline"
+      />
+      </div>
+      <div class="py-3 px-3 level2 rounded-bottom text-center">
+        <button class="rounded btn btn-custom" (click)="searchReplace()">
+          Apply
+        </button>
+      </div>
   </div>
 </div>

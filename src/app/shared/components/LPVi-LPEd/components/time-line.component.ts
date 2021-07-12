@@ -53,7 +53,7 @@ import { DateAdapter } from '@angular/material/core';
           <mat-form-field
             appearance="fill"
             class="w-50"
-            style="background: rgb(227, 233, 255);"
+            style="background: #F3F6F9;"
           >
             <mat-label>start date</mat-label>
             <input
@@ -88,7 +88,7 @@ import { DateAdapter } from '@angular/material/core';
         <ng-template #noDate>
           <div
             class="text-center"
-            [style.color]="'#F64E60'"
+            [style.color]="'#FC7B7B'"
             [style.height.px]="50"
             *ngIf="item['isMinimize'] === false"
           >
@@ -96,24 +96,38 @@ import { DateAdapter } from '@angular/material/core';
           </div>
         </ng-template>
         <div
-          [style.height.px]="50"
-          style="background: #e3e9ff;"
+          [style.height.px]="10"
+          style="background: white"
           *ngIf="item['isMinimize'] === false"
+          class="rounded-bottom"
         >
-          <div fxLayout="row" fxLayoutAlign="center center" class="py-1">
+          <!-- <div fxLayout="row" fxLayoutAlign="center center" class="py-1">
             <mat-checkbox class="mx-1">Time</mat-checkbox>
             <mat-checkbox class="mx-1">Non-Time</mat-checkbox>
             <mat-checkbox class="mx-1">Blank</mat-checkbox>
             <mat-checkbox class="mx-1">Error</mat-checkbox>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   `,
   styles: [
     `
-      div.mat-form-field-flex {
-        background: whitesmoke !important;
+      ::ng-deep .mat-form-field-wrapper {
+        background: white!important;
+      }
+
+      ::ng-deep .mat-label, .mat-datepicker-input {
+        font-family: Poppins!important;
+        font-weight: 600;
+      }
+
+      ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+          background-color: #F3F6F9;
+        border-radius: 0!important;
+      }
+
+      ::ng-deep .mat-form-field-appearance-fill {
       }
     `,
   ],
