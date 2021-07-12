@@ -148,6 +148,7 @@ export class ViwerImportComponent implements AfterViewInit {
           this.dataImported.emit({
             idProject: data['idProject'],
             file: this.file,
+            projectName: this.ProjectName,
           });
       });
     }

@@ -62,6 +62,8 @@ export class ViwerReadImportComponent
   @ViewChild('container') container: ElementRef;
   @Input() isFavorate: boolean = false;
 
+  public projectName: string = '';
+
   formfilterStart = new FormGroup({
     first: new FormControl(false),
     second: new FormControl(false),
@@ -107,18 +109,17 @@ export class ViwerReadImportComponent
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
     private readonly lpviLped: LpdLpdService
-  ) {
-    // this.selectedIndex = 1;
-  }
+  ) {}
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
       this.lpviLped.itemsObservables$.next(undefined);
 
-      if (Object.keys(this.dataAfterUploaded).length === 5) {
+      if (Object.keys(this.dataAfterUploaded).length === 6) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
+        this.projectName = this.dataAfterUploaded['projectName'];
 
         this.items = this.lpviLped.permaLink.items;
 
@@ -136,14 +137,16 @@ export class ViwerReadImportComponent
           this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
         this.isLooading = false;
+        this.projectName = this.dataAfterUploaded['projectName'];
       } else {
         this.items = []; //set items filters
-        // this.isLooading = false;
         setTimeout(() => {
           this.readCsvFile(
             this.dataAfterUploaded['file'],
             this.dataAfterUploaded['idProject']
           );
+
+          this.projectName = this.dataAfterUploaded['projectName'];
         }, 500);
         this.listNameHistory = [
           {

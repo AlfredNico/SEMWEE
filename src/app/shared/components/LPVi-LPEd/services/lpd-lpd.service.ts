@@ -67,6 +67,7 @@ export class LpdLpdService {
             formInputQuery: this.formInputQuery,
             permaLink: this.permaLink,
             name: res[4],
+            projectName: res[5],
           };
         })
       );
