@@ -9,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
           <img
             src="assets/images/gif/skeleton.gif"
             width="150"
-            height="20"
-            class="mx-5 mt-3 my-3 rounded"
+            height="30"
+            class="mx-5 mt-3 my-6 rounded"
           />
         </th>
       </tr>

@@ -85,6 +85,7 @@ export class LpViwersService {
       name: value.namehistory,
       idHeader: value.idHeader,
       idName: idname,
+      header: value.header,
     };
     return this.http.post(
       `${environment.baseUrl}/lpviewer/to-history/${value.idProject}`,
