@@ -1,518 +1,568 @@
 <main class="w-100 p-0" fxLayout="column">
-  <!-- *ngIf="dataViews.length != 0;else loading_content" -->
   <div
     fxLayout="row"
-    class="pt-0 py-3 px-0"
+    class="pt-0 pb-3 px-0"
     fxLayoutAlign="space-between center"
     fxLayoutGap="5px"
   >
-    <div>
-      <h3 class="card-title align-items-start ftp m-0" fxLayout="column">
-        <span class="fw-500 text-dark ftp fs-18 pl-20px">DataTable View</span>
-      </h3>
-    </div>
-    <div>
-      <button class="btn btn-primary mr-3 ftp">
-        <span class="svg-icon svg-icon-md">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="24px"
-            height="24px"
-            viewBox="0 0 24 24"
-            version="1.1"
-          >
-            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-              <rect x="0" y="0" width="24" height="24" />
-              <circle fill="#000000" cx="9" cy="15" r="6" />
-              <path
-                d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
-                fill="#000000"
-                opacity="0.3"
-              />
-            </g>
-          </svg>
-        </span>
-        Open
-      </button>
-      <button
-        type="button"
-        class="btn btn-light-primary font-weight-bolder dropdown-toggle ftp"
-        aria-expanded="false"
-        [matMenuTriggerFor]="importMenu"
-      >
-        <span class="svg-icon svg-icon-md">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="24px"
-            height="24px"
-            viewBox="0 0 24 24"
-            version="1.1"
-          >
-            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-              <rect x="0" y="0" width="24" height="24" />
-              <path
-                d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z"
-                fill="#000000"
-                opacity="0.3"
-              />
-              <path
-                d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z"
-                fill="#000000"
-              />
-            </g>
-          </svg>
-        </span>
-        Export
-        <mat-icon
-          aria-hidden="false"
-          aria-label="keyboard arrow down icon"
-          class="arrow-down"
+    <div
+      fxLayout="row"
+      class="py-3 px-0 w-100"
+      fxLayoutAlign="space-between center"
+      fxLayoutGap="5px"
+      style="background: #f0f1f6 !important"
+    >
+      <div>
+        <h3 class="card-title align-items-start ftp m-0" fxLayout="row">
+          <span class="fw-500 text-dark ftp fs-18 pl-20px mr-5 text-truncate" style="max-width: 350px;" [matTooltip]="projectName">{{ projectName }}</span>
+            <span class="fw-500 text-dark ftp fs-18 pl-20px border-left">
+              {{ dataSourceFilter?.length }} Rows
+            </span>
+        </h3>
+      </div>
+      <div>
+        <button class="btn btn-primary btn-open mr-3">
+          <span class="svg-icon svg-icon-md">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              width="24px"
+              height="24px"
+              viewBox="0 0 24 24"
+              version="1.1"
+            >
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <rect x="0" y="0" width="24" height="24" />
+                <circle fill="#000000" cx="9" cy="15" r="6" />
+                <path
+                  d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                  fill="#000000"
+                  opacity="0.3"
+                />
+              </g>
+            </svg>
+          </span>
+          Open
+        </button>
+        <button
+          type="button"
+          class="btn btn-export font-weight-bolder dropdown-toggle"
+          aria-expanded="false"
+          [matMenuTriggerFor]="importMenu"
         >
-          keyboard_arrow_down
-        </mat-icon>
-      </button>
-      <mat-menu #importMenu="matMenu">
-        <button mat-menu-item>Table options</button>
-        <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
-      </mat-menu>
+          <span class="svg-icon svg-icon-md">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              width="24px"
+              height="24px"
+              viewBox="0 0 24 24"
+              version="1.1"
+            >
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <rect x="0" y="0" width="24" height="24" />
+                <path
+                  d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z"
+                  fill="#000000"
+                  opacity="0.3"
+                />
+                <path
+                  d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z"
+                  fill="#000000"
+                />
+              </g>
+            </svg>
+          </span>
+          Export
+          <mat-icon
+            aria-hidden="false"
+            aria-label="keyboard arrow down icon"
+            class="arrow-down"
+          >
+            keyboard_arrow_down
+          </mat-icon>
+        </button>
+        <mat-menu #importMenu="matMenu">
+          <button mat-menu-item>Table options</button>
+          <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
+        </mat-menu>
+      </div>
     </div>
   </div>
-  <div class="row p-0" #container>
-    <aside
-      class="p-0"
-      [ngStyle]="{ width: ws + 'px' }"
-      style="border-right: 4px solid #ebedf3; resize: both; overflow: auto"
-      mwlResizable
-      [enableGhostResize]="true"
-      resizeCursorPrecision="10"
-      [resizeEdges]="{ bottom: false, right: true, top: false, left: false }"
-      (resizeEnd)="onResizeEnd($event)"
-    >
-    <div class="card br mt-4" *ngIf="isLooading == true; else filter_content">
-      <img src="assets/images/gif/skeleton.gif" width="100%" height="50">
-      <img class="mt-10" src="assets/images/gif/skeleton.gif" width="100%" height="200">
-    </div>
-    <ng-template #filter_content>
-      <mat-tab-group
-        [(selectedIndex)]="selectedIndex"
-        mat-align-tabs="start"
-        [color]="'#f0f1f6'"
-        [backgroundColor]="'#f0f1f6'"
-        class="mat-group scroll ps"
-        perfectScrollbar
+
+    <div class="row p-0" #container>
+      <aside
+        class="p-0"
+        [ngStyle]="{ width: ws + 'px' }"
+        style="border-right: 4px solid #ebedf3; resize: both; overflow: auto"
+        mwlResizable
+        [enableGhostResize]="true"
+        resizeCursorPrecision="10"
+        [resizeEdges]="{ bottom: false, right: true, top: false, left: false }"
+        (resizeEnd)="onResizeEnd($event)"
       >
-          <mat-tab label="Facet/Filter">
-            <app-facet-filter-target
-              [idProject]="idProject"
-              [items]="items"
-              [dataViews]="dataViews"
-              [dataSources]="dataSource.data"
-              [datasourceFilter]="dataSourceFilter"
-              (sendData)="update_Search_Replace($event)"
-            ></app-facet-filter-target>
-          </mat-tab>
-          <mat-tab label="Undo / Redo">
-            <app-undo-redo
-              [dataNameHistory]="listNameHistory"
-              [indexRow]="indexRowdata"
-              (callOtherData)="getAllDataByListName($event)"
-            ></app-undo-redo>
-          </mat-tab>
-
-          <mat-tab label="Search / Replace">
-            <div *ngIf="Columns_replace">
-              <ng-template #searchReplace>
-                <app-search-replace
-                  [nameColumn]="Columns_replace"
-                  [datasourceFilter]="dataSourceFilter"
-                  (sendData)="update_Search_Replace($event)"
-                  (removeFromItem)="removeAppSearch($event)"
-                >
-                </app-search-replace>
-              </ng-template>
-
-              <ng-container *ngTemplateOutlet="searchReplace">
-                This text is not displayed
-              </ng-container>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-      </ng-template>
-    </aside>
-
-    <aside class="p-0" [ngStyle]="{ width: 'calc(100% - ' + ws + 'px)' }">
-      <div class="p-0">
         <div
-          class="w-100 scroll ps"
-          style="
-            max-width: 100%;
-            overflow: auto;
-            max-height: calc(100vh - 300px);
-          "
-          perfectScrollbar
+          class="card br mt-4"
+          *ngIf="isLooading == true; else filter_content"
         >
-
-        <app-pulsing-skeleton *ngIf="isLooading == true; else table_content"></app-pulsing-skeleton>
-        <ng-template #table_content>
-          <table
-            mat-table
-            *ngIf="displayedColumns.length != 0"
-            [dataSource]="dataSource"
-            matSort
-            (matSortChange)="sortData($event)"
-            class="w-100 table-viewer"
+          <img src="assets/images/gif/skeleton.gif" width="100%" height="50" />
+          <img
+            class="mt-5"
+            src="assets/images/gif/skeleton.gif"
+            width="100%"
+            height="150"
+          />
+        </div>
+        <ng-template #filter_content>
+          <mat-tab-group
+            [(selectedIndex)]="selectedIndex"
+            mat-align-tabs="start"
+            [color]="'#f0f1f6'"
+            [backgroundColor]="'#f0f1f6'"
+            class="mat-group scroll ps"
+            *ngIf="dataViews.length !== 0"
+            perfectScrollbar
           >
-            <div
-              *ngFor="
-                let column of displayedColumns;
-                let index = index;
-                let last = last
-              "
-            >
-              <ng-container [matColumnDef]="column" *ngIf="column === 'all'">
-                <th
-                  mat-header-cell
-                  *matHeaderCellDef
-                  [ngClass]="{
-                    'active-column': active === column,
-                    'active-none': icon === '' && active === column
-                  }"
-                >
-                  <span fxLayout fxLayoutGap="15px">
-                    <mat-icon
-                      style="color: #fff"
-                      [inline]="true"
-                      aria-hidden="false"
-                      class="option-icon bg-light"
-                      [matMenuTriggerFor]="tableOptionMenu"
-                    >
-                      arrow_drop_down
-                    </mat-icon>
-                    <div
-                      mat-sort-header
-                      style="font-family: Poppins !important"
-                    >
-                      All
-                      <div class="pl-3 icon">
-                        <i
-                          *ngIf="icon === 'asc' && active === column"
-                          class="fa fa-arrow-up"
-                        ></i>
-                        <i
-                          *ngIf="icon === 'desc' && active === column"
-                          class="fa fa-arrow-down"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </th>
-                <mat-menu #tableOptionMenu="matMenu">
-                  <div>
-                    <form [formGroup]="formfilterStart">
-                      <section class="example-section">
-                        <mat-checkbox
-                          class="example-margin ftp"
-                          formControlName="first"
-                          (change)="onChangeEventFilterStartAndFlag()"
-                        >
-                          Filter Star
-                        </mat-checkbox>
-                      </section>
+            <mat-tab label="Facet/Filter">
+              <app-facet-filter-target
+                [idProject]="idProject"
+                [items]="items"
+                [dataViews]="dataViews"
+                [dataSources]="dataSource.data"
+                [datasourceFilter]="dataSourceFilter"
+                (sendData)="update_Search_Replace($event)"
+              ></app-facet-filter-target>
+            </mat-tab>
+            <mat-tab label="Undo/Redo">
+              <app-undo-redo
+                [dataNameHistory]="listNameHistory"
+                [indexRow]="indexRowdata"
+                (callOtherData)="getAllDataByListName($event)"
+              ></app-undo-redo>
+            </mat-tab>
 
-                      <section class="example-section">
-                        <mat-checkbox
-                          class="example-margin ftp"
-                          formControlName="second"
-                          (change)="onChangeEventFilterStartAndFlag()"
-                        >
-                          Filter Flag
-                        </mat-checkbox>
-                      </section>
-                    </form>
-                  </div>
-                </mat-menu>
-
-                <mat-menu #commonTransforms="matMenu">
-                  <app-edit-cell
-                    [dataSource]="dataSource.data"
-                    [columnName]="column"
-                    (toggleChanges)="toggleedit($event)"
+            <mat-tab label="Search/Replace">
+              <div *ngIf="Columns_replace">
+                <ng-template #searchReplace>
+                  <app-search-replace
+                    [nameColumn]="Columns_replace"
+                    [datasourceFilter]="dataSourceFilter"
+                    (sendData)="update_Search_Replace($event)"
+                    (removeFromItem)="removeAppSearch($event)"
                   >
-                  </app-edit-cell>
-                </mat-menu>
-                <td
-                  mat-cell
-                  *matCellDef="
-                    let indexRow = index;
-                    let element;
-                    let even = even;
-                    let odd = odd
-                  "
-                  [class.odd]="odd"
-                  [class.even]="even"
-                  #td
-                  class="th-content p-0"
-                >
-                  <div fxLayout="row" fxLayoutAlign="space-around center">
-                    <i
-                      style="cursor: pointer; color: #dad151"
-                      class="rotateimg180 fa fa-flag fa-lg"
-                      *ngIf="element['flag']"
-                      (click)="updateStart(element, element['index'], 'Flag')"
-                    ></i>
-                    <i
-                      style="cursor: pointer"
-                      class="rotateimg180 far fa-flag fa-lg"
-                      *ngIf="!element['flag']"
-                      (click)="updateStart(element, element['index'], 'Flag')"
-                    ></i>
-                    <i
-                      style="cursor: pointer; color: #dad151"
-                      class="fa fa-star fa-lg"
-                      aria-hidden="true"
-                      *ngIf="element['star']"
-                      (click)="updateStart(element, element['index'], 'Star')"
-                    ></i>
-                    <i
-                      style="cursor: pointer"
-                      class="far fa-star fa-lg"
-                      *ngIf="!element['star']"
-                      (click)="updateStart(element, element['index'], 'Star')"
-                    ></i>
-                    <p class="text-center font-size-h4 m-0 ftp">
-                      {{
-                        paginator.pageIndex * paginator.pageSize + indexRow + 1
-                      }}.
-                    </p>
-                  </div>
-                </td>
-              </ng-container>
+                  </app-search-replace>
+                </ng-template>
 
-              <ng-container [matColumnDef]="column" *ngIf="column !== 'all'">
-                <th
-                  mat-header-cell
-                  *matHeaderCellDef
-                  [ngClass]="{
-                    'd-none': isColumnDisplay(column),
-                    'active-column': active === column,
-                    'active-none': icon === '' && active === column
-                  }"
-                >
-                  <span fxLayout fxLayoutGap="15px">
-                    <mat-icon
-                      style="color: #fff"
-                      [inline]="true"
-                      aria-hidden="false"
-                      class="option-icon bg-light"
-                      [matMenuTriggerFor]="tableOptionMenu"
-                    >
-                      arrow_drop_down
-                    </mat-icon>
-                    <div
-                      #updateHeader
-                      mat-sort-header
-                      id="{{ index }}"
-                      style="font-family: Poppins !important"
-                    >
-                      {{ column | removeUnderscore | capitalizeFirstPipe }}
-                      <div class="pl-3 icon">
-                        <i
-                          *ngIf="icon === 'asc' && active === column"
-                          class="fa fa-arrow-up"
-                        ></i>
-                        <i
-                          *ngIf="icon === 'desc' && active === column"
-                          class="fa fa-arrow-down"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </th>
-                <mat-menu #tableOptionMenu="matMenu">
-                  <button mat-menu-item [matMenuTriggerFor]="sousItem1">
-                    Facet
-                  </button>
-                  <button mat-menu-item (click)="inputFilter(column)">
-                    Text filter
-                  </button>
-                  <button mat-menu-item (click)="searchReplace(column)">
-                    Search replace
-                  </button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item [matMenuTriggerFor]="editCells">
-                    Edit cells
-                  </button>
-                  <mat-divider></mat-divider>
-                  <button mat-menu-item (click)="updateHeader(index)">
-                    Update column
-                  </button>
-                </mat-menu>
-                <mat-menu #sousItem1="matMenu">
-                  <button mat-menu-item (click)="searchFacet(column)">
-                    Text facet
-                  </button>
-                  <button mat-menu-item (click)="numericFacter(column)">
-                    Numeric facet
-                  </button>
-                  <button mat-menu-item (click)="timeLineFacter(column)">
-                    Timeline facet
-                  </button>
-                </mat-menu>
-                <mat-menu #editCells="matMenu">
-                  <app-edit-cell
-                    [dataSource]="dataSource.data"
-                    [dataViews]="dataViews"
-                    [columnName]="column"
-                    (toggleChanges)="toggleedit($event)"
-                  >
-                  </app-edit-cell>
-                </mat-menu>
+                <ng-container *ngTemplateOutlet="searchReplace">
+                  This text is not displayed
+                </ng-container>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </ng-template>
+      </aside>
 
-                <td
-                  mat-cell
-                  *matCellDef="
-                    let element;
-                    let indexRow = index;
-                    let even = even;
-                    let odd = odd
+      <aside class="p-0" [ngStyle]="{ width: 'calc(100% - ' + ws + 'px)' }">
+        <div class="p-0">
+          <div
+            class="w-100 scroll ps"
+            style="
+              max-width: 100%;
+              overflow: auto;
+              max-height: calc(100vh - 300px);
+            "
+            perfectScrollbar
+          >
+            <app-pulsing-skeleton
+              *ngIf="isLooading == true; else table_content"
+            ></app-pulsing-skeleton>
+            <ng-template #table_content>
+              <table
+                mat-table
+                *ngIf="displayedColumns.length != 0"
+                [dataSource]="dataSource"
+                matSort
+                (matSortChange)="sortData($event)"
+                class="w-100 table-viewer"
+              >
+                <div
+                  *ngFor="
+                    let column of displayedColumns;
+                    let index = index;
+                    let last = last
                   "
-                  [class.odd]="odd"
-                  [class.even]="even"
-                  [ngClass]="{ 'd-none': isColumnDisplay(column) }"
-                  #td
-                  class="th-content text-truncate"
-                  style="position: relative"
                 >
                   <ng-container
-                    *ngTemplateOutlet="
-                      (element[column] | typeof) === 'string'
-                        ? stringTemplate
-                        : numberTemplate;
-                      context: { value: element[column] }
-                    "
+                    [matColumnDef]="column"
+                    *ngIf="column === 'all'"
                   >
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      [ngClass]="{
+                        'active-column': active === column,
+                        'active-none': icon === '' && active === column
+                      }"
+                    >
+                      <span fxLayout fxLayoutGap="15px">
+                        <mat-icon
+                          style="color: #d8d8d8"
+                          [inline]="true"
+                          aria-hidden="false"
+                          class="option-icon bg-light"
+                          [matMenuTriggerFor]="tableOptionMenu"
+                        >
+                          arrow_drop_down
+                        </mat-icon>
+                        <div
+                          mat-sort-header
+                          style="font-family: Poppins !important"
+                        >
+                          All
+                          <div class="pl-3 icon">
+                            <i
+                              *ngIf="icon === 'asc' && active === column"
+                              class="fa fa-arrow-up"
+                            ></i>
+                            <i
+                              *ngIf="icon === 'desc' && active === column"
+                              class="fa fa-arrow-down"
+                            ></i>
+                          </div>
+                        </div>
+                      </span>
+                    </th>
+                    <mat-menu #tableOptionMenu="matMenu">
+                      <div>
+                        <form [formGroup]="formfilterStart">
+                          <section class="example-section">
+                            <mat-checkbox
+                              class="example-margin ftp"
+                              formControlName="first"
+                              (change)="onChangeEventFilterStartAndFlag()"
+                            >
+                              Filter Star
+                            </mat-checkbox>
+                          </section>
+
+                          <section class="example-section">
+                            <mat-checkbox
+                              class="example-margin ftp"
+                              formControlName="second"
+                              (change)="onChangeEventFilterStartAndFlag()"
+                            >
+                              Filter Flag
+                            </mat-checkbox>
+                          </section>
+                        </form>
+                      </div>
+                    </mat-menu>
+
+                    <mat-menu #commonTransforms="matMenu">
+                      <app-edit-cell
+                        [dataSource]="dataSource.data"
+                        [columnName]="column"
+                        (toggleChanges)="toggleedit($event)"
+                      >
+                      </app-edit-cell>
+                    </mat-menu>
+                    <td
+                      mat-cell
+                      *matCellDef="
+                        let indexRow = index;
+                        let element;
+                        let even = even;
+                        let odd = odd
+                      "
+                      [class.odd]="odd"
+                      [class.even]="even"
+                      #td
+                      class="th-content p-0"
+                    >
+                      <div fxLayout="row" fxLayoutAlign="space-around center">
+                        <i
+                          style="cursor: pointer"
+                          class="rotateimg180 fa fa-flag fa-lg"
+                          *ngIf="element['flag']"
+                          (click)="
+                            updateStart(element, element['index'], 'Flag')
+                          "
+                        ></i>
+                        <i
+                          style="cursor: pointer"
+                          class="rotateimg180 far fa-flag fa-lg"
+                          *ngIf="!element['flag']"
+                          (click)="
+                            updateStart(element, element['index'], 'Flag')
+                          "
+                        ></i>
+                        <i
+                          style="cursor: pointer"
+                          class="far fa-star fa-lg"
+                          *ngIf="!element['star']"
+                          (click)="
+                            updateStart(element, element['index'], 'Star')
+                          "
+                        ></i>
+                        <fieldset
+                          class="starability-grow"
+                          *ngIf="element['star']"
+                          (click)="
+                            updateStart(element, element['index'], 'Star')
+                          "
+                        >
+                          <input
+                            type="radio"
+                            id="rate0"
+                            name="rating"
+                            value="0"
+                          />
+                          <label for="rate0" title="Star"></label>
+                        </fieldset>
+                        <p class="text-center font-size-h4 m-0 ftp">
+                          {{
+                            paginator.pageIndex * paginator.pageSize +
+                              indexRow +
+                              1
+                          }}.
+                        </p>
+                      </div>
+                    </td>
                   </ng-container>
 
-                  <ng-template #stringTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
-                      <p class="text-left text-truncate mat-body-p ftp">
-                        {{ currentValue }}
-                        <button
-                          class="
-                            btn btn-light-primary
-                            only-show-on-hover
-                            font-weight-bold
-                            mr-2
-                            otherStyle
-                            ftp
-                          "
-                          (click)="action(element, column, indexRow, $event)"
+                  <ng-container
+                    [matColumnDef]="column"
+                    *ngIf="column !== 'all'"
+                  >
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      [ngClass]="{
+                        'd-none': isColumnDisplay(column),
+                        'active-column': active === column,
+                        'active-none': icon === '' && active === column
+                      }"
+                    >
+                      <span fxLayout fxLayoutGap="15px">
+                        <mat-icon
+                          style="color: #d8d8d8"
+                          [inline]="true"
+                          aria-hidden="false"
+                          class="option-icon bg-light"
+                          [matMenuTriggerFor]="tableOptionMenu"
                         >
-                          edit
-                        </button>
-                      </p>
-                      <ng-template #templeteURL>
-                        <a
-                          #templeteURL
-                          [href]="
-                            senitizer.bypassSecurityTrustResourceUrl(
-                              currentValue
-                            )
-                          "
-                          target="_blank"
-                          class="text-truncate ftp"
-                          >{{ currentValue }}</a
+                          arrow_drop_down
+                        </mat-icon>
+                        <div #updateHeader mat-sort-header id="{{ index }}">
+                          {{ column | removeUnderscore | capitalizeFirstPipe }}
+                          <div class="pl-3 icon">
+                            <i
+                              *ngIf="icon === 'asc' && active === column"
+                              class="fas fa-sort-amount-up"
+                            ></i>
+                            <i
+                              *ngIf="icon === 'desc' && active === column"
+                              class="fas fa-sort-amount-down"
+                            ></i>
+                          </div>
+                        </div>
+                      </span>
+                    </th>
+                    <mat-menu #tableOptionMenu="matMenu">
+                      <button mat-menu-item [matMenuTriggerFor]="sousItem1">
+                        Facet
+                      </button>
+                      <button mat-menu-item (click)="inputFilter(column)">
+                        Text filter
+                      </button>
+                      <button mat-menu-item (click)="searchReplace(column)">
+                        Search replace
+                      </button>
+                      <mat-divider></mat-divider>
+                      <button mat-menu-item [matMenuTriggerFor]="editCells">
+                        Edit cells
+                      </button>
+                      <mat-divider></mat-divider>
+                      <button mat-menu-item (click)="updateHeader(index)">
+                        Update column
+                      </button>
+                    </mat-menu>
+                    <mat-menu #sousItem1="matMenu">
+                      <button mat-menu-item (click)="searchFacet(column)">
+                        Text facet
+                      </button>
+                      <button mat-menu-item (click)="numericFacter(column)">
+                        Numeric facet
+                      </button>
+                      <button mat-menu-item (click)="timeLineFacter(column)">
+                        Timeline facet
+                      </button>
+                    </mat-menu>
+                    <mat-menu #editCells="matMenu">
+                      <app-edit-cell
+                        [dataSource]="dataSource.data"
+                        [dataViews]="dataViews"
+                        [columnName]="column"
+                        (toggleChanges)="toggleedit($event)"
+                      >
+                      </app-edit-cell>
+                    </mat-menu>
+
+                    <td
+                      mat-cell
+                      *matCellDef="
+                        let element;
+                        let indexRow = index;
+                        let even = even;
+                        let odd = odd
+                      "
+                      [class.odd]="odd"
+                      [class.even]="even"
+                      [ngClass]="{ 'd-none': isColumnDisplay(column) }"
+                      #td
+                      class="th-content text-truncate"
+                      style="position: relative"
+                    >
+                      <ng-container
+                        *ngTemplateOutlet="
+                          (element[column] | typeof) === 'string'
+                            ? stringTemplate
+                            : numberTemplate;
+                          context: { value: element[column] }
+                        "
+                      >
+                      </ng-container>
+
+                      <ng-template #stringTemplate let-currentValue="value">
+                        <div
+                          class="row justify-content-between px-3 text-truncate"
                         >
-                        <button
-                          class="
-                            btn btn-light-primary
-                            only-show-on-hover
-                            font-weight-bold
-                            mr-2
-                            otherStyle
-                            ftp
-                          "
-                          (click)="action(element, column, indexRow, $event)"
-                        >
-                          edit
-                        </button>
+                          <p class="text-left text-truncate mat-body-p ftp">
+                            {{ currentValue }}
+                            <button
+                              class="
+                                rounded
+                                btn btn-custom
+                                only-show-on-hover
+                                font-weight-bold
+                                mr-2
+                                otherStyle
+                                ftp
+                              "
+                              (click)="
+                                action(element, column, indexRow, $event)
+                              "
+                            >
+                              edit
+                            </button>
+                          </p>
+                          <ng-template #templeteURL>
+                            <a
+                              #templeteURL
+                              [href]="
+                                senitizer.bypassSecurityTrustResourceUrl(
+                                  currentValue
+                                )
+                              "
+                              target="_blank"
+                              class="text-truncate ftp"
+                              >{{ currentValue }}</a
+                            >
+                            <button
+                              class="
+                                rounded
+                                btn btn-custom
+                                only-show-on-hover
+                                font-weight-bold
+                                mr-2
+                                otherStyle
+                                ftp
+                              "
+                              (click)="
+                                action(element, column, indexRow, $event)
+                              "
+                            >
+                              edit
+                            </button>
+                          </ng-template>
+                        </div>
                       </ng-template>
-                    </div>
-                  </ng-template>
 
-                  <ng-template #numberTemplate let-currentValue="value">
-                    <div class="row justify-content-between px-3 text-truncate">
-                      <p class="text-right ftp">
-                        {{ currentValue }}
-                        <button
-                          mat-raised-button
-                          class="
-                            btn btn-light-primary
-                            only-show-on-hover
-                            font-weight-bold
-                            mr-2
-                            otherStyle
-                            ftp
-                          "
-                          (click)="action(element, column, indexRow, $event)"
-                        >
-                          edit
-                        </button>
-                      </p>
-                    </div>
-                  </ng-template>
-                </td>
-              </ng-container>
-            </div>
+                      <ng-template #numberTemplate let-currentValue="value">
+                        <div class="justify-content-between px-3 text-truncate">
+                          <p class="text-center ftp cg">
+                            {{ currentValue }}
+                            <button
+                              mat-raised-button
+                              class="
+                                rounded
+                                btn btn-custom
+                                only-show-on-hover
+                                font-weight-bold
+                                mr-2
+                                otherStyle
+                                ftp
+                              "
+                              (click)="
+                                action(element, column, indexRow, $event)
+                              "
+                            >
+                              edit
+                            </button>
+                          </p>
+                        </div>
+                      </ng-template>
+                    </td>
+                  </ng-container>
+                </div>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
 
-            <tr class="mat-row" *matNoDataRow>
-              <td class="text-center ftp" [colSpan]="displayedColumns.length">
-                No data
-              </td>
-            </tr>
-          </table>
-        </ng-template>
-
+                <tr class="mat-row" *matNoDataRow>
+                  <td
+                    class="text-center ftp"
+                    [colSpan]="displayedColumns.length"
+                  >
+                    No data
+                  </td>
+                </tr>
+              </table>
+            </ng-template>
+          </div>
+          <mat-paginator
+            *ngIf="dataViews.length != 0"
+            #paginator
+            appStylePaginator
+            [showFirstLastButtons]="true"
+            [showTotalPages]="3"
+            [length]="this.dataSourceFilter.length"
+            [pageSize]="10"
+            [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
+            (page)="getServerData($event)"
+          >
+          </mat-paginator>
         </div>
-        <mat-paginator
-          *ngIf="dataViews.length != 0"
-          #paginator
-          appStylePaginator
-          [showFirstLastButtons]="true"
-          [showTotalPages]="3"
-          [length]="this.dataSourceFilter.length"
-          [pageSize]="10"
-          [pageSizeOptions]="[10, 25, 50, 100, 250, 500, 1000, 2500, 5000]"
-          (page)="getServerData($event)"
-        >
-        </mat-paginator>
-      </div>
-    </aside>
+      </aside>
 
-    <div *ngIf="vueEdit" class="containerCustomized">
-      <div class="sousdiv">
-        <div class="testbutton" [style.top.px]="top" [style.left.px]="left">
-          <app-edit
-            [(tab_arraw)]="tab_arraw"
-            [(vueedit)]="vueEdit"
-            [(eObject)]="objectOne"
-            [(selected)]="selected"
-            [(nameCells)]="nameCells"
-            (objectChange)="oneObjectfunc($event)"
-            (toggleChange)="toggleedit($event)"
-          ></app-edit>
-          <app-search-replace></app-search-replace>
+      <div *ngIf="vueEdit" class="containerCustomized">
+        <div class="sousdiv">
+          <div class="testbutton" [style.top.px]="top" [style.left.px]="left">
+            <app-edit
+              [(tab_arraw)]="tab_arraw"
+              [(vueedit)]="vueEdit"
+              [(eObject)]="objectOne"
+              [(selected)]="selected"
+              [(nameCells)]="nameCells"
+              (objectChange)="oneObjectfunc($event)"
+              (toggleChange)="toggleedit($event)"
+            ></app-edit>
+            <app-search-replace></app-search-replace>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </main>
-
-<!-- <ng-template #loading_content>
-  <app-pulsing-skeleton></app-pulsing-skeleton>
-</ng-template> -->

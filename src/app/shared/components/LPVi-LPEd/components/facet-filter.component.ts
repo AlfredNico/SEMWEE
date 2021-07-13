@@ -12,7 +12,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   selector: 'app-facet-filter-target',
   template: `
     <div *ngIf="items.length > 0; else noItems">
-      <div class="w-100 px-2 pb-3">
+      <div class="w-100 pl-4 pr-2 pb-3">
         <button class="rounded btn btn-custom">Refresh</button>
         <span fxFlex></span>
         <button class="rounded btn btn-custom mr-2" (click)="resetAll()">
@@ -159,6 +159,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngAfterViewInit(): void {
+    this.lpviLped.resetFacetFilter.subscribe((res :any) => {
+      console.log(res);
+    })
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
@@ -184,6 +187,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public resetAll() {
+    console.log("reset all")
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];

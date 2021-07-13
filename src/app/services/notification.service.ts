@@ -31,7 +31,7 @@ export class NotificationService {
     this.snackbar.open(message, 'Close', {
       ...this.config,
       panelClass: ['snack-bar-info'],
-      duration: undefined,
+      duration: 4000,
     });
   }
 

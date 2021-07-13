@@ -13,13 +13,9 @@ import { DateAdapter } from '@angular/material/core';
 @Component({
   selector: 'app-time-line',
   template: `
-    <div class="mx-1 pb-2">
-      <div class="p-0 w-100 rounded" style="border: 1px solid #bbccff;">
-        <div
-          class="py-2 px-2 rounded-top"
-          style="background: #bbccff;"
-          fxLayout="row"
-        >
+    <div class="ml-5 pb-2">
+      <div class="p-0 w-100 rounded style-border">
+        <div class="py-2 px-2 level1" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -37,13 +33,13 @@ import { DateAdapter } from '@angular/material/core';
           >
             add_circle_outline
           </mat-icon>
-          <span style="font-weight: 600;">{{ item['head'] }}</span>
+          <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1">change</div>
-          <div class="pointer px-1">reset</div>
+          <div class="pointer px-1 white-color fw-600">change</div>
+          <div class="pointer px-1 white-color fw-600">reset</div>
         </div>
         <div
-          class="custom-slider w-100"
+          class="custom-slider w-100 level2"
           style.height.px="50"
           *ngIf="
             (item?.endDate !== undefined || item?.startDate !== undefined) &&
@@ -53,12 +49,11 @@ import { DateAdapter } from '@angular/material/core';
           fxLayout="row"
           fxLayoutAlign="space-between center"
           [formGroup]="FormRange"
-          style="background: rgb(227, 233, 255);"
         >
           <mat-form-field
             appearance="fill"
             class="w-50"
-            style="background: rgb(227, 233, 255);"
+            style="background: #F3F6F9;"
           >
             <mat-label>start date</mat-label>
             <input
@@ -93,7 +88,7 @@ import { DateAdapter } from '@angular/material/core';
         <ng-template #noDate>
           <div
             class="text-center"
-            [style.color]="'#F64E60'"
+            [style.color]="'#FC7B7B'"
             [style.height.px]="50"
             *ngIf="item['isMinimize'] === false"
           >
@@ -101,24 +96,38 @@ import { DateAdapter } from '@angular/material/core';
           </div>
         </ng-template>
         <div
-          [style.height.px]="50"
-          style="background: #e3e9ff;"
+          [style.height.px]="10"
+          style="background: white"
           *ngIf="item['isMinimize'] === false"
+          class="rounded-bottom"
         >
-          <div fxLayout="row" fxLayoutAlign="center center" class="py-1">
+          <!-- <div fxLayout="row" fxLayoutAlign="center center" class="py-1">
             <mat-checkbox class="mx-1">Time</mat-checkbox>
             <mat-checkbox class="mx-1">Non-Time</mat-checkbox>
             <mat-checkbox class="mx-1">Blank</mat-checkbox>
             <mat-checkbox class="mx-1">Error</mat-checkbox>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   `,
   styles: [
     `
-      div.mat-form-field-flex {
-        background: whitesmoke !important;
+      ::ng-deep .mat-form-field-wrapper {
+        background: white!important;
+      }
+
+      ::ng-deep .mat-label, .mat-datepicker-input {
+        font-family: Poppins!important;
+        font-weight: 600;
+      }
+
+      ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+          background-color: #F3F6F9;
+        border-radius: 0!important;
+      }
+
+      ::ng-deep .mat-form-field-appearance-fill {
       }
     `,
   ],

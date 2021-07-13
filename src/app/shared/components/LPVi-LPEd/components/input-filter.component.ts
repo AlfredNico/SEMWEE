@@ -12,9 +12,9 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
 @Component({
   selector: 'app-input-filter',
   template: `
-    <div class="mx-1 pb-2">
+    <div class="ml-5 pb-2">
       <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1" fxLayout="row">
+        <div class="py-2 px-2 level1" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -34,18 +34,8 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div
-            class="pointer px-1 black-color fw-600"
-            (click)="invert()"
-            [ngStyle]="{
-              color: !item['invert'] ? 'rgb(27, 197, 189)' : null
-            }"
-          >
-            invert
-          </div>
-          <div class="pointer px-1 black-color fw-600" (click)="reset()">
-            reset
-          </div>
+          <div class="pointer px-1 white-color fw-600" (click)="invert()" [ngStyle]="{color: !item['invert'] ? '#74788D' : null}">invert</div>
+          <div class="pointer px-1 white-color fw-600" (click)="reset()">reset</div>
         </div>
         <div
           class="py-0"
@@ -53,7 +43,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           [formGroup]="form"
           fxLayout="row"
           fxLayoutAlign="space-around center"
-          style="background: rgb(54, 153, 255);"
+          style="background: #74788D"
         >
           <input
             autocomplete="off"
@@ -61,16 +51,17 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             placeholder="Filter ..."
             [formControlName]="item['head']"
             appearance="outline"
-            class="form-control w-100"
+            class="form-control w-100 form-custom"
           />
           <button mat-icon-button (click)="search()">
             <mat-icon>search</mat-icon>
           </button>
         </div>
-        <div class="py-3 px-3 level2" *ngIf="item['isMinimize'] === false">
+        <div class="py-3 px-3 level2 rounded-bottom" *ngIf="item['isMinimize'] === false">
           <mat-checkbox
             [checked]="item['sensitive']"
             (change)="changeStatus($event)"
+            style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
             >case sensitive</mat-checkbox
           >
           <!-- <mat-checkbox>regular expression</mat-checkbox> -->

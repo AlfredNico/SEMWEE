@@ -28,8 +28,6 @@ export class LpViewerComponent implements AfterViewInit {
     private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private common: CommonService,
-    //private lpviewer: LpViwersService,
     private lpVilpEdService: LpdLpdService
   ) {
     this.user = this.auth.currentUserSubject.value;
@@ -66,22 +64,19 @@ export class LpViewerComponent implements AfterViewInit {
             this.dataAfterUploaded = res;
             this.lpVilpEdService.isLoading$.next(false);
           }
-          //else this.router.navigateByUrl('user-space/lp-editor');
         });
     }
   }
 
-  public nextReadFile(value: { idProject: any; data: any }) {
+  public nextReadFile(value: {
+    idProject: any;
+    file: File;
+    projectName: string;
+  }) {
     this.dataAfterUploaded = value;
-    // if (value[0] !== undefined) {
-    //   this.router.navigate(['user-space/lp-viewer'], {
-    //     queryParams: { idProject: value[0][0]['_id'] },
-    //   });
-    // } else {
     this.router.navigate(['user-space/lp-viewer'], {
       queryParams: { idProject: value.idProject },
     });
-    // }
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
     this.stepper.next();
