@@ -32,4 +32,4 @@ import { FormatFileSizePipe } from '@app/user-spaces/dashbord/pipe/format-filesi
     LPViewerProjectsComponent,
   ],
 })
-export class AllLPViewerProjectsModule {}
+export class AllLPViewerProjectsModule { }

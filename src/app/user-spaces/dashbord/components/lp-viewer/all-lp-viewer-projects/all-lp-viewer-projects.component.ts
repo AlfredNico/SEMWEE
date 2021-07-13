@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
