@@ -286,12 +286,12 @@ export class ViwerReadImportComponent
     setTimeout(() => {
       let containt =
         (this.container.nativeElement as HTMLElement).offsetWidth / 4;
-      this.ws = containt > 400 ? containt : 400;
+      this.ws = containt > 450 ? containt : 450;
     }, 0);
   }
 
   onResizeEnd(e: ResizeEvent) {
-    this.ws = e.rectangle.width > 400 ? e.rectangle.width : 400;
+    this.ws = e.rectangle.width > 450 ? e.rectangle.width : 450;
   }
 
   onFavorite() {
