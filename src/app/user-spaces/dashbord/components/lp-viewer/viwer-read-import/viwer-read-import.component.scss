@@ -447,7 +447,7 @@
 }
 
 .cg {
-  color: #2464A4;
+  color: #26334B;
 //   font-weight: bold;
 //   font-style: italic;
   margin: 0;
@@ -558,6 +558,42 @@
 .btn-open {
     font-size: 15px;
     font-weight: 500;
+}
+
+::ng-deep {
+  .mat-tab-header {
+    margin-left: 15px;
+  }
+
+  // .mat-tab-label {
+  //   margin-top: 0;
+  // }
+  
+  .mat-tab-label.mat-tab-label-active {
+    background-color: #2C374D;
+    color: #D8D8D8;
+    opacity: 1;
+    margin-top: 0;
+  }
+
+  .mat-tab-label-content {
+    font-family: Poppins!important;
+  }
+
+  .mat-tab-labels div {
+    margin: 0 5px;
+  }
+
+  .mat-tab-labels {
+    justify-content: center;
+    // background-color: #2C374D;
+  }
+
+  // .mat-tab-label {
+  //   opacity: 1;
+  //   background-color: #F3F6F9;
+  //   color: #7A7A7A;
+  // }
 }
 
 /*** S T A R ***/
