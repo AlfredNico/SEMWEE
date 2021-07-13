@@ -832,8 +832,10 @@ export class ViwerReadImportComponent
       this.idHeader = response[1]['idHeader'];
       let min = this.paginator.pageIndex * this.paginator.pageSize;
       let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
-      this.dataSource = response[0].slice(min, max);
+      
       this.dataViews = response[0];
+      this.dataSourceFilter = this.dataFilters(this.dataViews)
+      this.dataSource = this.dataSourceFilter.slice(0, max);
     });
   }
 

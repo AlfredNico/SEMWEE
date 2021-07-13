@@ -159,9 +159,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngAfterViewInit(): void {
-    this.lpviLped.resetFacetFilter.subscribe((res :any) => {
-      console.log(res);
-    })
+   
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
@@ -187,7 +185,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public resetAll() {
-    console.log("reset all")
+    // console.log("reset all")
     this.inputQueries = [];
     this.searchQueries = [];
     this.numericQeury = [];
@@ -210,11 +208,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             include: false,
           };
         });
-      } else if (item['type'] === 'search') {
+      } else if (item['type'] === 'input') {
         this.items[index] = {
           ...item,
           value: '',
         };
+
       } else if (item['type'] === 'numeric') {
         this.items[index] = {
           ...item,
