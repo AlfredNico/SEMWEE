@@ -82,23 +82,37 @@ export class EditCellComponent implements OnInit {
     this.toggleEdit(names);
   }
 
+  allDataIsAnumber(value:any[],nameCells : string){
+    let test = true;
+    let i = 0;
+    while (test && value.length > i) {
+      
+       if (!(/^[0-9]+[\.,]?[0-9]*$/.test(value[i][nameCells]))) {
+       test = false; 
+        }
+      i++;  
+    }
+    return test;
+  }
   /* Convert To Number */
   public convertToNumber(nameCell: string) {
-    
-    this.dataViews.forEach((item) => {
-      const replace = typeof (item[nameCell]) === "string" ? item[nameCell].replace(',', '.') : item[nameCell];
-      const parsed = parseFloat(replace);
-      if (!isNaN(parsed)) {
-        item[nameCell] = parsed;
-        this.numberCount++;
-      } 
-      
-    });
-    // this.dataSource = this.dataViews.slice(0,10);
+    let test = this.allDataIsAnumber(this.dataViews, nameCell)
 
-    const names = `Update on ${this
-      .numberCount++} cells in column ${nameCell}: value.toNumber()`;
-    this.toggleEdit(names);
+    if (test){
+        this.dataViews.forEach((item) => {
+          const replace = typeof (item[nameCell]) === "string" ? item[nameCell].replace(',', '.') : item[nameCell];
+          const parsed = parseFloat(replace);
+            if (!isNaN(parsed)) {
+              item[nameCell] = parsed;
+              this.numberCount++;
+            } 
+        });
+        const names = `Update on ${this.numberCount++} cells in column ${nameCell}: value.toNumber()`;
+        this.toggleEdit(names);
+    }else{
+        alert("there is a value which is not valid number in the data")
+    }
+    
   }
 
   /* Convert To Date */

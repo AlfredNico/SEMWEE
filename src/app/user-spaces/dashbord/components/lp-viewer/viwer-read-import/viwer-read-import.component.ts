@@ -673,10 +673,10 @@ export class ViwerReadImportComponent
           item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
         ) {
           item[this.nameCells] = moment(
-            `${tab1[0]}-${tab[1]}-${tab[0]}`,
-            'DD-MM-YYYY',
-            true
-          ).format('DD/MM/YYYY');
+          `${tab[0]}-${tab[1]}-${tab1[0]}`,
+          'YYYY-MM-DD',
+          true
+        ).format('YYYY-MM-DD');
         }
         this.CountCell++;
       });
@@ -693,37 +693,50 @@ export class ViwerReadImportComponent
       });
     }
   }
-  ConverterToNumber(newValue) {
-    // const parsed = parseInt(newValue);
-    const replace =
-      typeof newValue === 'string' ? newValue.replace(',', '.') : newValue;
-    const parsed = parseFloat(replace);
-    if (isNaN(parsed)) {
-      alert('not a valid number');
-      this.testConverter = false;
+  filterInt(value) {
+    if (/^[0-9]+[\.,]?[0-9]*$/.test(value)) {
+      return true; 
     } else {
-      this.dataViews.forEach((item) => {
-        if (
-          item[this.nameCells] === this.lastValue.toString() ||
-          (parseInt(item[this.nameCells]) &&
-            parseInt(item[this.nameCells]) === this.lastValue) ||
-          item[this.nameCells] === this.lastValue
-        ) {
+      return false;
+    }
+  }
+  ConverterToNumber(newValue) {
+    
+     if(typeof(newValue) === "string" ){
+      if( !this.filterInt(newValue.trim()) ){
+        alert("Not a valid number !");
+        this.testConverter = false;
+      }else{
+        const replace =
+        typeof newValue === 'string' ? newValue.replace(',', '.') : newValue;
+        const parsed = parseFloat(replace);
+
+        this.dataViews.forEach((item) => {
+          if (
+              item[this.nameCells] === this.lastValue.toString() ||
+              (parseInt(item[this.nameCells]) &&
+              parseInt(item[this.nameCells]) === this.lastValue) ||
+               item[this.nameCells] === this.lastValue
+          ) {
           item[this.nameCells] = parsed;
           this.CountCell++;
         }
       });
+      }
+    }else if(typeof(newValue) ===  "object"){
+        alert("Not a valid number !");
+        this.testConverter = false;
     }
   }
   ConverterToDate(newValue) {
     const reg =
-      /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+      /^([0-2][0-9]|(3)[0-1])[-](((0)[0-9])|((1)[0-2]))[-]\d{4}$/;
     const reg1 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+      /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
     const regex3 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
-    let string_date = newValue;
-    const regex2 = new RegExp('[-\\/ ]');
+      /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    let string_date =  typeof(newValue) === "string"? newValue.trim() : newValue;
+    const regex2 = new RegExp('[-]');
 
     // .format('YYYY/MM/DD');
     if (reg1.exec(string_date)) {
@@ -740,17 +753,9 @@ export class ViwerReadImportComponent
       });
       // .format('DD'/MM/YYYY);
     } else if (reg.exec(string_date)) {
-      const tab = string_date.split(regex2);
-      this.dataViews.forEach((item) => {
-        if (item[this.nameCells] === this.lastValue.toString()) {
-          item[this.nameCells] = moment(
-            `${tab[0]}-${tab[1]}-${tab[2]}`,
-            'DD-MM-YYYY',
-            true
-          ).format();
-          this.CountCell++;
-        }
-      });
+    alert("Make the date in iso format");
+    this.testConverter = false;
+
     } else if (regex3.exec(string_date)) {
       const tab = string_date.split(regex2);
       const tab1 = tab[2].toString().split('T');

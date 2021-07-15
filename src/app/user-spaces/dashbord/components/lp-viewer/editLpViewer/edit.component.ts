@@ -31,11 +31,12 @@ export class EditComponent {
         const regex2 = new RegExp('[-\\/ ]');
         const tab = this.eObject[1][this.nameCells].split(regex2);
         const tab1 = tab[2].toString().split('T');
+  console.log(tab1)
         this.valueObject = moment(
-          `${tab1[0]}-${tab[1]}-${tab[0]}`,
-          'DD-MM-YYYY',
+          `${tab[0]}-${tab[1]}-${tab1[0]}`,
+          'YYYY-MM-DD',
           true
-        ).format('DD/MM/YYYY');
+        ).format('YYYY-MM-DD');
 
       } else {
         this.valueObject = this.eObject[1][this.nameCells];
@@ -48,40 +49,58 @@ export class EditComponent {
       /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     if (regex3.exec(this.valueObject)) {
       // const date = this.valueObject._i;
-      const regex2 = new RegExp('[-\\/ ]');
+      const regex2 = new RegExp('[-]');
       const tab = this.valueObject.split(regex2);
       const tab1 = tab[2].toString().split('T');
+    
       this.eObject[1][this.nameCells] = moment(
-        `${tab1[0]}-${tab[1]}-${tab[0]}`,
-        'DD-MM-YYYY',
-        true
-      ).format('DD/MM/YYYY');
+          `${tab[0]}-${tab[1]}-${tab1[0]}`,
+          'YYYY-MM-DD',
+          true
+        ).format('YYYY-MM-DD');
     } else {
       this.eObject[1][this.nameCells] = this.valueObject.toString();
     }
     this.toggleEdit();
   }
-  ConverterToNumber() {
-    const replace = typeof (this.valueObject) === "string" ? this.valueObject.replace(',', '.') : this.valueObject;
-    const parsed = parseFloat(replace);
-    // const parsed = parseInt(this.valueObject);
-    if (isNaN(parsed)) {
-      alert('not a valid number');
+  
+ filterInt(value) {
+    if (/^[0-9]+[\.,]?[0-9]*$/.test(value)) {
+      return true
     } else {
-      this.eObject[1][this.nameCells] = parsed;
+      return false
+    }
+  }
+  ConverterToNumber() {
+    
+    console.log(typeof(this.valueObject))
+    if(typeof(this.valueObject) === "string" ){
+       if( !this.filterInt(this.valueObject.trim()) ){
+        alert("Not a valid number !")
+      }else{
+        const replace = typeof (this.valueObject) === "string" ? this.valueObject.replace(',', '.') : this.valueObject;
+        const parsed = parseFloat(replace);
+        this.eObject[1][this.nameCells] = parsed;
+        this.toggleEdit();
+      }
+    }else if(typeof(this.valueObject) ===  "object"){
+        alert("Not a valid number !")
+    }else{
       this.toggleEdit();
     }
+   
   }
   ConverterToDate() {
     const reg =
       /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
     const reg1 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
+      /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
     const regex3 =
-      /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
-    let string_date = this.valueObject.trim();
-    console.log(string_date);
-    const regex2 = new RegExp('[-\\/ ]');
+      /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+    let string_date = typeof(this.valueObject) === "string"? this.valueObject.trim() : this.valueObject;
+   
+    const regex2 = new RegExp('[-]');
+    // yyyy-mm-dd
     if (reg1.exec(string_date)) {
       const tab = string_date.split(regex2);
       this.eObject[1][this.nameCells] = moment(
@@ -90,16 +109,13 @@ export class EditComponent {
         true
       ).format();
       this.toggleEdit();
-    } else if (reg.exec(string_date)) {
-      const tab = string_date.split(regex2);
-      this.eObject[1][this.nameCells] = moment(
-        `${tab[0]}-${tab[1]}-${tab[2]}`,
-        'DD-MM-YYYY',
-        true
-      ).format();
-      this.toggleEdit();
-      // .format('YYYY/MM/DD');
-    } else if (regex3.exec(string_date)) {
+    } 
+    //dd-mm-yyyy
+    else if (reg.exec(string_date)) {
+      alert("Make the date in iso format")
+     
+    } // .format('YYYY/MM/DD'); 
+    else if (regex3.exec(string_date)) {
       console.log("C'est un objet");
       const regex2 = new RegExp('[-\\/ ]');
       const tab = this.valueObject.split(regex2);
