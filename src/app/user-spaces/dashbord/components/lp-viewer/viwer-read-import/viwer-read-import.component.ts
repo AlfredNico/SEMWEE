@@ -835,7 +835,7 @@ export class ViwerReadImportComponent
 
       this.updateDisplaycolumn(header);
       this.idHeader = response[1]['idHeader'];
-      let min = this.paginator.pageIndex * this.paginator.pageSize;
+      // let min = this.paginator.pageIndex * this.paginator.pageSize;
       let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
       
       this.dataViews = response[0];
