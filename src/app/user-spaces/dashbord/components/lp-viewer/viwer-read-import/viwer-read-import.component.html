@@ -13,19 +13,20 @@
       style="background: #f0f1f6 !important"
     >
       <div fxLayout="row" class="mr-5">
-        <h3 class="card-title align-items-start ftp my-0 ml-0 mr-6 text-truncate" style="max-width: 350px;" >
-          <span class="fw-500 text-dark ftp fs-18 pl-0" [matTooltip]="projectName">
+        <h3 class="card-title align-items-start ftp my-0 ml-0">
+          <span class="fw-500 text-dark ftp fs-18 pl-0 mr-6 text-truncate" style="max-width: 350px;" [matTooltip]="projectName">
             {{ projectName }}
           </span>
-        </h3>
-        <h6 class="card-title align-items-start ftp m-0 border-left text-truncate" style="max-width: 350px">
-          <span class="fw-500 ftp fs-18 pl-20px mr-5" style="color: #727988;">
+          <span class="fw-500 ftp fs-18 pl-20px mr-5 border-left" style="color: #727988;">
             Total lines: {{ dataSourceFilter?.length }}
           </span>
-        </h6>
+        </h3>
+        <!-- <h6 class="card-title align-items-start ftp m-0 border-left text-truncate" style="max-width: 350px">
+          
+        </h6> -->
       </div>
       <div>
-        <button class="btn btn-primary btn-open mr-3">
+        <!-- <button class="btn btn-primary btn-open mr-3">
           <span class="svg-icon svg-icon-md">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -47,14 +48,15 @@
             </svg>
           </span>
           Open
-        </button>
+        </button> -->
         <button
           type="button"
-          class="btn btn-export font-weight-bolder dropdown-toggle"
+          class="btn btn-primary font-weight-bolder"
           aria-expanded="false"
-          [matMenuTriggerFor]="importMenu"
+          (click)="downloadCSV()"
+          style="font-size: 15px"
         >
-          <span class="svg-icon svg-icon-md">
+          <!-- <span class="svg-icon svg-icon-md">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -76,20 +78,20 @@
                 />
               </g>
             </svg>
-          </span>
-          Export
-          <mat-icon
+          </span> -->
+          Export To CSV
+          <!-- <mat-icon
             aria-hidden="false"
             aria-label="keyboard arrow down icon"
             class="arrow-down"
           >
             keyboard_arrow_down
-          </mat-icon>
+          </mat-icon> -->
         </button>
-        <mat-menu #importMenu="matMenu">
+        <!-- <mat-menu #importMenu="matMenu">
           <button mat-menu-item>Table options</button>
           <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
-        </mat-menu>
+        </mat-menu> -->
       </div>
     </div>
   </div>

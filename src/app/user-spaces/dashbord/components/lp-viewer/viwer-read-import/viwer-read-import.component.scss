@@ -589,11 +589,36 @@
     // background-color: #2C374D;
   }
 
+  .mat-tab-labels {
+    height: 56px!important;
+  }
+
   // .mat-tab-label {
   //   opacity: 1;
   //   background-color: #F3F6F9;
   //   color: #7A7A7A;
   // }
+
+  #mat-tab-label-0-0 {
+    width: 34%;
+    margin: 0;
+    padding: 0;
+    height: 56px!important;
+  }
+
+  #mat-tab-label-0-1 {
+    width: 31%;
+    margin: 0;
+    padding: 0;
+    height: 56px!important;
+  }
+
+  #mat-tab-label-0-2 {
+    width: 35%;
+    margin: 0;
+    padding: 0;
+    height: 56px!important;
+  }
 }
 
 /*** S T A R ***/
