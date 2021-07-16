@@ -1,3 +1,4 @@
+import { LpViwersService } from './../../../services/lp-viwers.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-undo-redo',
@@ -9,9 +10,10 @@ export class UndoRedoComponent implements OnInit {
   @Output() callOtherData = new EventEmitter<any>();
   @Input() indexRow: any = undefined;
 
-  constructor() {}
+  constructor(private lpviwer : LpViwersService) {}
   ngOnInit() {}
   linkHistory(value, i) {
+    this.lpviwer.isloadingHistory.next(true)
     this.indexRow = i;
     this.callOtherData.emit(value);
   }

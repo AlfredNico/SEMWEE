@@ -95,13 +95,14 @@ export class EditComponent {
       /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
     const reg1 =
       /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
+      
     const regex3 =
       /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
     let string_date = typeof(this.valueObject) === "string"? this.valueObject.trim() : this.valueObject;
    
     const regex2 = new RegExp('[-]');
     // yyyy-mm-dd
-    if (reg1.exec(string_date)) {
+    if (reg1.test(string_date)) {
       const tab = string_date.split(regex2);
       this.eObject[1][this.nameCells] = moment(
         `${tab[0]}-${tab[1]}-${tab[2]}`,
@@ -111,20 +112,12 @@ export class EditComponent {
       this.toggleEdit();
     } 
     //dd-mm-yyyy
-    else if (reg.exec(string_date)) {
+    else if (reg.test(string_date)) {
       alert("Make the date in iso format")
      
     } // .format('YYYY/MM/DD'); 
-    else if (regex3.exec(string_date)) {
-      console.log("C'est un objet");
-      const regex2 = new RegExp('[-\\/ ]');
-      const tab = this.valueObject.split(regex2);
-      const tab1 = tab[2].toString().split('T');
-      this.eObject[1][this.nameCells] = moment(
-        `${tab1[0]}-${tab[1]}-${tab[0]}`,
-        'DD-MM-YYYY',
-        true
-      ).format('DD/MM/YYYY');
+    else if (regex3.test(string_date)) {
+      console.log("regex 3 ")      
       this.toggleEdit();
     } else {
       alert('format date incorect');

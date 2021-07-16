@@ -12,12 +12,16 @@
       fxLayoutGap="5px"
       style="background: #f0f1f6 !important"
     >
-      <div>
-        <h6 class="card-title align-items-start ftp m-0" fxLayout="row">
-          <span class="fw-500 ftp fs-18 pl-20px mr-5 text-truncate" style="max-width: 350px; color: #727988;">Total lines: {{ dataSourceFilter?.length }}</span>
-            <!-- <span class="fw-500 text-dark ftp fs-18 pl-20px border-left">
-              {{ dataSourceFilter?.length }} Rows
-            </span> -->
+      <div fxLayout="row" class="mr-5">
+        <h3 class="card-title align-items-start ftp my-0 ml-0 mr-6 text-truncate" style="max-width: 350px;" >
+          <span class="fw-500 text-dark ftp fs-18 pl-0" [matTooltip]="projectName">
+            {{ projectName }}
+          </span>
+        </h3>
+        <h6 class="card-title align-items-start ftp m-0 border-left text-truncate" style="max-width: 350px">
+          <span *ngIf="dataViews.length != 0" class="fw-500 ftp fs-18 pl-20px mr-5" style="color: #727988;">
+            Total lines: {{ dataSourceFilter?.length }}
+          </span>
         </h6>
       </div>
       <div>
@@ -163,7 +167,11 @@
       </aside>
 
       <aside class="p-0" [ngStyle]="{ width: 'calc(100% - ' + ws + 'px)' }">
+        <div  class="section-loader" *ngIf="isloadingHistory" [ngStyle] = "{ width: 'calc(100% - ' + 779 + 'px)' }">
+          <span class="loadert loader-bars"><span></span></span>
+      </div>
         <div class="p-0">
+         
           <div
             class="w-100 scroll ps"
             style="
