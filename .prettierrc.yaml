@@ -1,0 +1,14 @@
+semi: true
+trailingComma: all
+printWidth: 120
+tabWidth: 4
+useTabs: false
+singleQuote: false
+arrowParens: avoid
+overrides:
+  - files: "*.component.html"
+    options:
+      parser: angular
+  - files: "*.html"
+    options:
+      parser: html
