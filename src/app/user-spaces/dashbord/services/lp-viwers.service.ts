@@ -16,6 +16,7 @@ export class LpViwersService {
   public data$ = new BehaviorSubject<any>(undefined);
   public isLoading$ = new BehaviorSubject<boolean>(true);
   public checkInfoSubject$ = new Subject();
+  public isloadingHistory = new Subject<boolean>();
 
   //Numriéque facet components
   public numeriqueFaceteBehavior$ = new BehaviorSubject<any>(undefined);

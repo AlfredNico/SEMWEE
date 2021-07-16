@@ -98,6 +98,7 @@ export class ViwerReadImportComponent
   left = null;
   public domTab: any;
   public ws: any;
+  public isloadingHistory = false;
 
   // ------------------
   pageEvent: PageEvent;
@@ -116,7 +117,7 @@ export class ViwerReadImportComponent
       this.lpviLped.itemsObservables$.next(undefined);
 
       if (Object.keys(this.dataAfterUploaded).length === 6) {
-        console.log(this.dataAfterUploaded)
+        // console.log(this.dataAfterUploaded)
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
@@ -166,6 +167,7 @@ export class ViwerReadImportComponent
         pageSizeOptions: [10, 25, 50, 100, 250, 500, 1000, 2500, 5000],
       };
       this.lpviLped.isLoading$.next(false);
+    
     }
   }
 
@@ -265,6 +267,10 @@ export class ViwerReadImportComponent
   }
 
   ngAfterViewInit() {
+    this.lpViewer.isloadingHistory.subscribe((res)=>{
+      console.log("test loading valeur : ", res)
+        this.isloadingHistory = res ? true : false
+    })
     this.lpviLped.searchReplace$.subscribe((value) => {
       if (value !== undefined) {
         this.Columns_replace = value['head'];
@@ -327,6 +333,7 @@ export class ViwerReadImportComponent
   }
 
   updateStart(value, indice, nameUpdate) {
+     this.lpViewer.isloadingHistory.next(true);
     let name_dinamic;
 
     if (nameUpdate === 'Star') {
@@ -368,6 +375,7 @@ export class ViwerReadImportComponent
       )
       .subscribe((res) => {
         this.listNameHistory.push(res);
+         this.lpViewer.isloadingHistory.next(false);
       });
     this.ActualyData = null;
   }
@@ -515,59 +523,151 @@ export class ViwerReadImportComponent
     });
   }
 
-  public numericFacter(column: any) {
-    let minValue = 100000,
-      maxValue = 0;
-    this.dataViews.map((item: any) => {
-      if (Number.isInteger(Number(item[column])) === true) {
-        if (Number(item[column]) >= maxValue) maxValue = Number(item[column]);
-        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
-      }
-    });
-    const options: Options = {
-      floor: minValue,
-      ceil: maxValue,
-      hidePointerLabels: true,
-      hideLimitLabels: true,
-      draggableRange: true,
-      showSelectionBar: true,
-    };
 
-    this.lpviLped.itemsObservables$.next({
-      type: 'numeric',
-      isMinimize: false,
-      head: column,
-      minValue: minValue,
-      maxValue: maxValue,
-      options: options,
-      invert: true,
-    });
-    this.selectedIndex = 0;
+  allDataIsAnumber(value:any[],nameCells : string, type : string){
+    let test = true;
+    let testType = "";
+    let i = 0;
+    if(type === "number"){
+      while (test && value.length > i) { 
+        
+         if (!(/^[0-9]+[\.,]?[0-9]*$/.test(value[i][nameCells]))) {
+         test = false; 
+          }
+          if (typeof(value[i][nameCells]) === "string") testType = "string";
+        i++;  
+      }
+    }else{
+        const regex1 =/^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
+        const regex3 =/^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+       while (test && value.length > i) { 
+         if (!regex1.test(value[i][nameCells]) && !regex3.test(value[i][nameCells])) {
+         test = false; 
+          }
+        if (regex1.test(value[i][nameCells])) testType = "string";
+        i++;  
+      }
+    }
+    return [test,testType, i];
   }
 
+  public numericFacter(column: any) {
+    let test = this.allDataIsAnumber(this.dataViews, column, "number");
+    // console.log(test)
+    if(!test[0]){
+            alert("there is a invalid number on row "+test[2]);
+    }else if(test[0] && test[1]==="string"){
+        console.log("Commencement de convertion.");
+          this.dataViews.forEach((item) => {
+          const replace = typeof (item[column]) === "string" ? item[column].replace(',', '.') : item[column];
+          const parsed = parseFloat(replace);
+          if(typeof (item[column]) === "string" ){
+            if (!isNaN(parsed)) {
+              item[column] = parsed;
+              this.CountCell++;
+            } 
+          }
+        });
+        const names = `Update on ${this.CountCell++} cells in column ${column}: value.toNumber()`;
+        const tab = [false, '', names];
+        this.toggleedit(tab);
+    } 
+    if(test[0]){
+      let minValue = 100000,
+      maxValue = 0;
+      this.dataViews.map((item: any) => {
+        if (Number.isInteger(Number(item[column])) === true) {
+          if (Number(item[column]) >= maxValue) maxValue = Number(item[column]);
+          if (Number(item[column]) <= minValue) minValue = Number(item[column]);
+        }
+      });
+        const options: Options = {
+          floor: minValue,
+          ceil: maxValue,
+          hidePointerLabels: true,
+          hideLimitLabels: true,
+          draggableRange: true,
+          showSelectionBar: true,
+        };
+
+        this.lpviLped.itemsObservables$.next({
+          type: 'numeric',
+          isMinimize: false,
+          head: column,
+          minValue: minValue,
+          maxValue: maxValue,
+          options: options,
+          invert: true,
+        });
+        this.selectedIndex = 0;
+    }
+    
+  }
+
+
   public timeLineFacter(column: any): void {
-    const result = this.dataViews.reduce(
-      (item, value) => {
-        if (item.minDate > value[column]) item.minDate = value[column];
-        if (item.maxDate < value[column]) item.maxDate = value[column];
-        return item;
-      },
-      {
-        maxDate: this.dataViews[0][column],
-        minDate: this.dataViews[0][column],
+    let test = this.allDataIsAnumber(this.dataViews, column, "date");
+    // console.log(test)
+    //--------convertion to date----------
+    if(!test[0]){
+        alert("There is a date that is not in iso format on row "+test[2])
+    }else if(test[0] &&test[1]==="string"){
+        console.log("commencement de convertion.")
+
+        const regex2 = new RegExp('[-]');
+          this.dataViews.forEach((item) => {
+                const tab = item[column].split(regex2);
+            if(/^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/.test(item[column])){
+                item[column] = moment(
+                  `${tab[0]}-${tab[1]}-${tab[2]}`,
+                  'YYYY-MM-DD',
+                  true
+                ).format();
+            this.CountCell++;
+            }else{
+                const tab1 = tab[2].toString().split('T');
+                item[column] = moment(
+                `${tab1[0]}-${tab[1]}-${tab[0]}`,
+                'DD-MM-YYYY',
+                true
+              ).format();
+              this.CountCell++;
+            }
+          });
+           const names = `Update on ${this.CountCell++} cells in column ${column}: value.toDate()`;
+           const tab = [false, '', names];
+           this.toggleedit(tab);
       }
-    );
+      //--------END CONVERTION-----
 
-    this.lpviLped.itemsObservables$.next({
-      type: 'timeLine',
-      isMinimize: false,
-      head: column,
-      startDate: result?.minDate,
-      endDate: result?.maxDate,
-      invert: true,
-    });
+      //--------FILTER DATE ----------
+      if(test[0]){
+          const result = this.dataViews.reduce(
+            (item, value) => {
+              if (item.minDate > value[column]) item.minDate = value[column];
+              if (item.maxDate < value[column]) item.maxDate = value[column];
+              return item;
+            },
+            {
+              maxDate: this.dataViews[0][column],
+              minDate: this.dataViews[0][column],
+            }
+          );
 
-    this.selectedIndex = 0;
+          this.lpviLped.itemsObservables$.next({
+            type: 'timeLine',
+            isMinimize: false,
+            head: column,
+            startDate: result?.minDate,
+            endDate: result?.maxDate,
+            invert: true,
+          });
+
+          this.selectedIndex = 0;
+      }
+
+    //------------END FILTER---------------
+
   }
   tooglevueEdit($event) {
     this.vueEdit = false;
@@ -611,6 +711,7 @@ export class ViwerReadImportComponent
   }
 
   toggleedit(value) {
+    // console.log(value)
     let numbercoll = '';
     if (value[2] === undefined) {
       this.domTab.style.fontWeight = 'initial';
@@ -651,6 +752,7 @@ export class ViwerReadImportComponent
         )
         .subscribe((res) => {
           this.listNameHistory.push(res);
+          this.lpViewer.isloadingHistory.next(false);
         });
       this.ActualyData = null;
     }
@@ -677,8 +779,9 @@ export class ViwerReadImportComponent
           'YYYY-MM-DD',
           true
         ).format('YYYY-MM-DD');
+         this.CountCell++;
         }
-        this.CountCell++;
+       
       });
     } else {
       this.dataViews.forEach((item) => {
@@ -756,26 +859,14 @@ export class ViwerReadImportComponent
     alert("Make the date in iso format");
     this.testConverter = false;
 
-    } else if (regex3.exec(string_date)) {
-      const tab = string_date.split(regex2);
-      const tab1 = tab[2].toString().split('T');
-      this.dataViews.forEach((item) => {
-        if (
-          regex3.exec(item[this.nameCells]) &&
-          item[this.nameCells].split('T')[0] === this.lastValue.split('T')[0]
-        ) {
-          item[this.nameCells] = moment(
-            `${tab1[0]}-${tab[1]}-${tab[0]}`,
-            'DD-MM-YYYY',
-            true
-          ).format();
-          this.CountCell++;
-        }
-      });
-    } else {
-      alert('format date incorrect');
+    } else if (!regex3.exec(string_date)) {
+     alert('format date incorrect');
       this.testConverter = false;
-    }
+    } 
+    // else {
+    //   // alert('format date incorrect');
+    //   // this.testConverter = false;
+    // }
   }
   ConverterToBooleen(newValue) {
     if (newValue != 'true' || !newValue) {
@@ -826,6 +917,7 @@ export class ViwerReadImportComponent
   }
 
   getAllDataByListName(value) {
+   
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -841,7 +933,9 @@ export class ViwerReadImportComponent
       this.dataViews = response[0];
       this.dataSourceFilter = this.dataFilters(this.dataViews)
       this.dataSource = this.dataSourceFilter.slice(0, max);
+      this.lpViewer.isloadingHistory.next(false);
     });
+   
   }
 
   updateHeader(value) {

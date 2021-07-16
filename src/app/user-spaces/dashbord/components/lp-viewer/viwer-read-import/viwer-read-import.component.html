@@ -173,6 +173,9 @@
             "
             perfectScrollbar
           >
+          <section *ngIf="isloadingHistory" class="section-loader">
+              <span class="loadert loader-bars"><span></span></span>
+          </section>
             <app-pulsing-skeleton
               *ngIf="isLooading == true; else table_content"
             ></app-pulsing-skeleton>
