@@ -10,7 +10,8 @@ import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd
 import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { RemoveComponent } from '../../projects/dialog/remove.component';
 
 @Component({
   selector: 'app-all-lp-viewer-projects',
@@ -29,7 +30,8 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
     private notifs: NotificationService,
     private auth: AuthService,
     private router: Router,
-    private readonly lpviLped: LpdLpdService
+    private readonly lpviLped: LpdLpdService,
+
   ) {
     this.user = this.auth.currentUserSubject.value;
   }
@@ -58,5 +60,34 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
         this.lpviLped.isLoading$.next(false); // disable loading spinner
       }
     );
+  }
+
+  public removeAllProjects(){
+    this.dialog
+      .open(RemoveComponent, {
+        data: {
+          message: 'Are you sure to delete all projects ?',
+        },
+        width: '600px',
+      })
+      .afterClosed()
+      .pipe(
+        map((result) => {
+          if (result === true) {
+            this.lpviLped.removeAllProjects(this.user._id)
+              .subscribe((result) => {
+                if (result && result.message) {
+                  console.log('res=', result.message);
+
+                  this.notifs.sucess(result.message);
+
+                  this.LPViewerProjectsService.refresh$.next(true);
+                  this.LPViewerProjectsService.trigrer$.next(true);
+                }
+              });
+          }
+        })
+      )
+      .subscribe();
   }
 }

@@ -43,7 +43,7 @@ export class LPViewerProjectsComponent implements OnChanges {
   ngOnChanges(): void {
     this.allProjects$.subscribe((resulat) => {
       this.dataSources = resulat;
-      this.allProjects = resulat;
+      this.allProjects = resulat.slice(0, 10);
     });
 
     this.paginator = {

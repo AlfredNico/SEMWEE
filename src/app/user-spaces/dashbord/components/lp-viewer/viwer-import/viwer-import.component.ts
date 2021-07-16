@@ -1,9 +1,7 @@
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
-import { NotificationService } from '@app/services/notification.service';
-import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -43,7 +41,7 @@ import { ActivatedRoute, Router } from '@angular/router';
               (click)="fileInput.click()"
             >
               {{ file ? file.name : 'Or Select File to Upload' }}
-            </button>  
+            </button>
             <input
               hidden
               type="file"
@@ -105,8 +103,6 @@ export class ViwerImportComponent {
 
   constructor(
     private lpViewerService: LpViwersService,
-    private readonly lpviLped: LpdLpdService,
-    private readonly nofits: NotificationService,
     private route: ActivatedRoute,
     private router: Router
   ) { }

@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
 import { BehaviorSubject, interval, Observable, Subject } from 'rxjs';
-import { map, startWith, take, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,9 @@ export class LpdLpdService {
 
   public isLoading$ = new BehaviorSubject<boolean>(true);
 
+  private readonly ROUTER_URL = `${environment.baseUrl}/lpviewer`;
+
+
   constructor(
     private http: HttpClient,
     private readonly common: CommonService
@@ -48,7 +52,7 @@ export class LpdLpdService {
 
   public getSavedProjects(idProject): Observable<any> {
     return this.http
-      .get<any>(`${environment.baseUrl}/lpviewer/get-permalink/${idProject}`)
+      .get<any>(`${this.ROUTER_URL}/get-permalink/${idProject}`)
       .pipe(
         map((res) => {
           if (res[3].length !== 0)
@@ -73,4 +77,11 @@ export class LpdLpdService {
         })
       );
   }
+
+  public removeAllProjects(idUser:string){
+    console.log(idUser)
+    return this.http.post<{message: string}>(`${this.ROUTER_URL}/remove-all-projects`,
+    {idUser: idUser});
+  }
+  //remove-all-projects
 }
