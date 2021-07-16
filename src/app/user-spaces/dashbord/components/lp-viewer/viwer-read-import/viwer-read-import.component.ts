@@ -13,7 +13,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -27,6 +27,13 @@ import {
   Paginator,
 } from '@app/user-spaces/dashbord/interfaces/paginator';
 import { ResizeEvent } from 'angular-resizable-element';
+import { of } from 'rxjs';
+import { NotificationService } from '@app/services/notification.service';
+
+//filter data
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
 
 @Component({
   selector: 'app-viwer-read-import',
@@ -42,7 +49,7 @@ export class ViwerReadImportComponent
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren('updateHeader') nameHeader: QueryList<ElementRef>;
   @ViewChild('btnbutton') MyDOMElement: ElementRef;
-  selectedIndex = 1;
+  selectedIndex = 0;
 
   @Input('idProject') idProject = undefined;
   @Input('filtersData') filtersData: {
@@ -56,10 +63,14 @@ export class ViwerReadImportComponent
   @ViewChild('container') container: ElementRef;
   @Input() isFavorate: boolean = false;
 
+  public projectName: string = '';
+
   formfilterStart = new FormGroup({
     first: new FormControl(false),
     second: new FormControl(false),
   });
+  public syncData$ = of(false);
+  public isLooading: boolean = true;
   public dataSourceFilterStart = [];
   public tabIndex = 0;
   public icon = '';
@@ -98,19 +109,19 @@ export class ViwerReadImportComponent
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    private readonly lpviLped: LpdLpdService
-  ) {
-    // this.selectedIndex = 1;
-  }
+    private readonly lpviLped: LpdLpdService,
+    private notifs: NotificationService
+  ) {}
 
   ngOnChanges(): void {
     if (this.dataAfterUploaded != undefined) {
       this.lpviLped.itemsObservables$.next(undefined);
 
-      if (Object.keys(this.dataAfterUploaded).length === 5) {
+      if (Object.keys(this.dataAfterUploaded).length === 6) {
         this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
         this.dataViews = this.dataAfterUploaded['data'];
         this.listNameHistory = this.dataAfterUploaded['name'];
+        this.projectName = this.dataAfterUploaded['projectName'];
 
         this.items = this.lpviLped.permaLink.items;
 
@@ -127,15 +138,18 @@ export class ViwerReadImportComponent
           this.dataSourceFilter = this.dataViews;
           this.dataSource = this.dataSourceFilter?.slice(0, 10);
         }
+        this.isLooading = false;
+        this.projectName = this.dataAfterUploaded['projectName'];
       } else {
         this.items = []; //set items filters
-        this.displayedColumns = this.dataAfterUploaded['data']['header'];
+        setTimeout(() => {
+          this.readCsvFile(
+            this.dataAfterUploaded['file'],
+            this.dataAfterUploaded['idProject']
+          );
 
-        this.dataSourceFilter = this.dataViews = this.readCsvFile(
-          this.dataAfterUploaded['data']['contentCsv'],
-          this.dataAfterUploaded['data']['header'],
-          this.dataAfterUploaded['idProject']
-        );
+          this.projectName = this.dataAfterUploaded['projectName'];
+        }, 500);
         this.listNameHistory = [
           {
             idName: 0,
@@ -143,7 +157,6 @@ export class ViwerReadImportComponent
             idProject: this.dataAfterUploaded['idProject'],
           },
         ];
-        this.dataSource = this.dataSourceFilter.slice(0, 10);
       }
 
       this.paginator = {
@@ -157,35 +170,72 @@ export class ViwerReadImportComponent
     }
   }
 
-  private readCsvFile(
-    contentCsv: any[],
-    header: string[],
-    idProject: any
-  ): any[] {
-    this.lpviLped.isLoading$.next(true); // enable loading spinner
+  private processCsv(content) {
+    return content.split('\n');
+  }
 
-    const content = contentCsv.map((value, indexMap) =>
-      value.reduce(
-        (tdObj, td, index) => {
-          tdObj[header[index]] = td;
-          tdObj['index'] = indexMap + 1;
-          return tdObj;
-        },
-        { star: false, flag: false }
-      )
-    );
-    this.lpViewer
-      .sendFiles(
-        {
-          namehistory: 'Create project',
-          idProject: idProject,
-          fileData: content,
-          idHeader: 0,
-        },
-        0
-      )
-      .subscribe();
-    return content;
+  private readFileContent(file) {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsText(file);
+    });
+  }
+
+  private readCsvFile(file: File, idProject: any) {
+    this.readFileContent(file)
+      .then((csvContent) => {
+        try {
+          const csv = [];
+          const lines = this.processCsv(csvContent);
+          const sep1 = lines[0].split(';').length;
+          const sep2 = lines[0].split(',').length;
+          const csvSeparator = sep1 > sep2 ? ';' : ',';
+          lines.forEach((element) => {
+            const cols: string[] = element.split(csvSeparator);
+            csv.push(cols);
+          });
+          const parsedCsv = csv;
+          parsedCsv.pop();
+          setTimeout(() => {
+            const header = parsedCsv.shift().toString().split(',');
+            this.displayedColumns = [...new Set([...header])].filter(
+              (item) => item != undefined && item != ''
+            );
+            setTimeout(() => {
+              const content = parsedCsv.map((value, indexMap) =>
+                value.reduce(
+                  (tdObj, td, index) => {
+                    tdObj[header[index]] = td;
+                    return tdObj;
+                  },
+                  { star: false, flag: false, index: indexMap + 1 }
+                )
+              );
+              this.displayedColumns.unshift('all');
+              this.dataViews = this.dataSourceFilter = content;
+              this.dataSource = this.dataSourceFilter.slice(0, 10);
+              this.isLooading = false;
+              this.lpViewer
+                .sendFiles(
+                  {
+                    namehistory: 'Create project',
+                    idProject: idProject,
+                    fileData: this.dataViews,
+                    idHeader: 0,
+                    header: this.displayedColumns,
+                  },
+                  0
+                )
+                .subscribe();
+            }, 500);
+          }, 500);
+        } catch (e) {
+          console.log(e);
+        }
+      })
+      .catch((error) => console.log(error));
   }
 
   public getServerData(event?: PageEvent): void {
@@ -237,12 +287,12 @@ export class ViwerReadImportComponent
     setTimeout(() => {
       let containt =
         (this.container.nativeElement as HTMLElement).offsetWidth / 4;
-      this.ws = containt > 300 ? containt : 300;
+      this.ws = containt > 450 ? containt : 450;
     }, 0);
   }
 
   onResizeEnd(e: ResizeEvent) {
-    this.ws = e.rectangle.width > 300 ? e.rectangle.width : 300;
+    this.ws = e.rectangle.width > 450 ? e.rectangle.width : 450;
   }
 
   onFavorite() {
@@ -253,7 +303,6 @@ export class ViwerReadImportComponent
     this.dialog
       .open(HeaderOptionsComponent, {
         data: {
-          // noHiddenRows: this.displayColumns,
           noHiddenRows: this.displayedColumns,
           hiddenRows: [],
         },
@@ -314,6 +363,7 @@ export class ViwerReadImportComponent
           idProject: this.idProject,
           fileData: this.dataViews,
           idHeader: this.idHeader,
+          header: [],
         },
         actualydata
       )
@@ -340,13 +390,28 @@ export class ViwerReadImportComponent
     this.tabIndex = tabChangeEvent.index;
   }
 
-  sortData($e: any) {
+  public sortData($e: any) {
     $e.direction === 'asc'
       ? (this.icon = 'asc')
       : $e.direction === 'desc'
       ? (this.icon = 'desc')
       : (this.icon = '');
     this.active = $e.active;
+
+    const data = this.dataSource.slice();
+    if (!$e.active || $e.direction === '') {
+      this.dataSource = data;
+      return;
+    }
+    this.dataSource = data.sort((a, b) => {
+      const isAsc = $e.direction === 'asc';
+      switch ($e.active) {
+        case $e.active:
+          return compare(a[`${$e.active}`], b[`${$e.active}`], isAsc);
+        default:
+          return 0;
+      }
+    });
   }
 
   public isColumnDisplay(column: any): boolean {
@@ -452,36 +517,52 @@ export class ViwerReadImportComponent
   }
 
   public numericFacter(column: any) {
-    let minValue = 100000,
-      maxValue = 0;
-    this.dataViews.map((item: any) => {
-      if (Number.isInteger(Number(item[column])) === true) {
-        if (Number(item[column]) >= maxValue) maxValue = Number(item[column]);
-        if (Number(item[column]) <= minValue) minValue = Number(item[column]);
-      }
-    });
-    const options: Options = {
-      floor: minValue,
-      ceil: maxValue,
-      hidePointerLabels: true,
-      hideLimitLabels: true,
-      draggableRange: true,
-      showSelectionBar: true,
-    };
-
-    this.lpviLped.itemsObservables$.next({
-      type: 'numeric',
-      isMinimize: false,
-      head: column,
-      minValue: minValue,
-      maxValue: maxValue,
-      options: options,
-      invert: true,
-    });
     this.selectedIndex = 0;
+
+    const result = this.dataViews.reduce(
+      (item, value) => {
+        if (Number.isInteger(Number(value[column])) === true) {
+          if (item.minNumber > value[column]) item.minNumber = value[column];
+          if (item.maxNumber < value[column]) item.maxNumber = value[column];
+        }
+        return item;
+      },
+      {
+        maxNumber: this.dataViews[0][column],
+        minNumber: this.dataViews[0][column],
+      }
+    );
+
+    if (
+      result.minNumber &&
+      result.maxNumber &&
+      typeof result.minNumber == 'number' &&
+      typeof result.maxNumber == 'number'
+    ) {
+      const options: Options = {
+        floor: Math.trunc(result.minNumber),
+        ceil: Math.trunc(result.maxNumber),
+        hidePointerLabels: true,
+        hideLimitLabels: true,
+        draggableRange: true,
+        showSelectionBar: true,
+      };
+
+      this.lpviLped.itemsObservables$.next({
+        type: 'numeric',
+        isMinimize: false,
+        head: column,
+        minValue: result.minNumber,
+        maxValue: result.maxNumber,
+        options: options,
+        invert: true,
+      });
+    } else this.notifs.info(`${column} is not a type Number`);
   }
 
   public timeLineFacter(column: any): void {
+    this.selectedIndex = 0;
+
     const result = this.dataViews.reduce(
       (item, value) => {
         if (item.minDate > value[column]) item.minDate = value[column];
@@ -494,17 +575,23 @@ export class ViwerReadImportComponent
       }
     );
 
-    this.lpviLped.itemsObservables$.next({
-      type: 'timeLine',
-      isMinimize: false,
-      head: column,
-      startDate: result?.minDate,
-      endDate: result?.maxDate,
-      invert: true,
-    });
-
-    this.selectedIndex = 0;
+    if (
+      result.maxDate &&
+      result.minDate &&
+      result?.maxDate.toString().length == 25 &&
+      result?.minDate.toString().length == 25
+    ) {
+      this.lpviLped.itemsObservables$.next({
+        type: 'timeLine',
+        isMinimize: false,
+        head: column,
+        startDate: result?.minDate,
+        endDate: result?.maxDate,
+        invert: true,
+      });
+    } else this.notifs.info(`${column} is not a type DateTime`);
   }
+
   tooglevueEdit($event) {
     this.vueEdit = false;
   }
@@ -581,6 +668,7 @@ export class ViwerReadImportComponent
             idProject: this.idProject,
             fileData: this.dataViews,
             idHeader: this.idHeader,
+            header: [],
           },
           actualydata
         )
@@ -756,6 +844,7 @@ export class ViwerReadImportComponent
   }
 
   getAllDataByListName(value) {
+    this.lpviLped.isLoading$.next(true); // enable loading spinner
     this.ActualyData = value;
     this.idHeader = value.idHeader;
     this.lpViewer.getOnedateHistory(value).subscribe((response) => {
@@ -767,9 +856,12 @@ export class ViwerReadImportComponent
       this.idHeader = response[1]['idHeader'];
       let min = this.paginator.pageIndex * this.paginator.pageSize;
       let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
-      this.dataSource = response[0].slice(min, max);
+
       this.dataViews = response[0];
+      this.dataSourceFilter = this.dataFilters(response[0]);
+      this.dataSource = this.dataSourceFilter.slice(min, max);
     });
+    this.lpviLped.isLoading$.next(false); // disable loading spinner
   }
 
   updateHeader(value) {
@@ -812,6 +904,7 @@ export class ViwerReadImportComponent
                   idProject: this.idProject,
                   fileData: this.dataSource,
                   idHeader: this.idHeader,
+                  header: [],
                 },
                 actualy
               )

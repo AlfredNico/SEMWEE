@@ -18,7 +18,7 @@ import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
-// import { SearchReplaceComponent } from '@app/user-spaces/dashbord/components/lp-viewer/search_filter_replace/search-filter-replace.component';
+import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pulsing-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     SearchFilterComponent,
     FacetFilterComponent,
     TimeLineComponent,
-    // SearchReplaceComponent
+    PulsingSkeletonComponent,
   ],
   imports: [
     MatStepperModule, // stepper module
@@ -57,10 +57,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     SearchFilterComponent,
     FacetFilterComponent,
     TimeLineComponent,
+    PulsingSkeletonComponent,
   ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
-    NO_ERRORS_SCHEMA
-  ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class SharedComponentsModule { }
+export class SharedComponentsModule {}

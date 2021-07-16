@@ -36,8 +36,6 @@ export class DragDroppDirective {
     evt.stopPropagation();
     this.background = '#ffffff';
     const files = evt.dataTransfer.files;
-    if (files.length > 0) {
-      this.fileDropped.emit(files);
-    }
+    if (files.length > 0) this.fileDropped.emit(files);
   }
 }

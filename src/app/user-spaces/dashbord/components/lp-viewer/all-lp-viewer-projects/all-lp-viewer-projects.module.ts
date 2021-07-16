@@ -1,5 +1,9 @@
 import { ProjectsModule } from './../../projects/projects.module';
-import { NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingModule } from '@app/shared/modules/landing.module';
 import { LandingPageModule } from '@app/shared/modules/landing-page.module';
@@ -24,12 +28,13 @@ import { FormatFileSizePipe } from '@app/user-spaces/dashbord/pipe/format-filesi
     LandingPageModule,
     ProjectsModule,
     AvatarModule,
-    RouterModule.forChild([{ path: '', component: AllLPViewerProjectsComponent }]),
+    RouterModule.forChild([
+      { path: '', component: AllLPViewerProjectsComponent },
+    ]),
   ],
   exports: [RouterModule],
   providers: [LPViewerProjectsService],
-  entryComponents: [
-    LPViewerProjectsComponent,
-  ],
+  entryComponents: [LPViewerProjectsComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class AllLPViewerProjectsModule { }
+export class AllLPViewerProjectsModule {}

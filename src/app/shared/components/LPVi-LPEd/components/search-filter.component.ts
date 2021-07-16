@@ -11,9 +11,9 @@ import { Observable, of, Subject } from 'rxjs';
 @Component({
   selector: 'app-search-filter',
   template: `
-    <div class="mx-1 pb-2" appFluidHeight>
+    <div class="ml-5 pb-2" appFluidHeight>
       <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1 bb" fxLayout="row">
+        <div class="py-2 px-2 level1 bb" fxLayout="row" >
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -33,30 +33,30 @@ import { Observable, of, Subject } from 'rxjs';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 black-color fw-600">change</div>
+          <div class="pointer px-1 white-color fw-600">change</div>
         </div>
         <div
           fxLayout="row"
           class="py-2 px-2 level2"
           *ngIf="item['isMinimize'] === false"
         >
-          <div class="pr-3 pointer black-color fw-600">
+          <div class="pr-3 pointer black-color fw-600 ftp">
             {{ observable$ | async }} choices
           </div>
-          <div>
+          <div class="ftp">
             Sort by :
             <span
-              class="px-1 pointer black-color fw-600"
+              class="px-1 pointer black-color fw-600 ftp"
               [ngStyle]="{
-                color: isSortName ? 'rgb(27, 197, 189)' : null
+                color: isSortName ? '#74788D' : null
               }"
               (click)="sortByName()"
               >name</span
             >
             <span
-              class="px-1 pointer black-color fw-600"
+              class="px-1 pointer black-color fw-600 ftp"
               [ngStyle]="{
-                color: isSortCount ? 'rgb(27, 197, 189)' : null
+                color: isSortCount ? '#74788D' : null
               }"
               (click)="sortByCount()"
               >count</span
@@ -64,7 +64,7 @@ import { Observable, of, Subject } from 'rxjs';
           </div>
         </div>
         <div
-          class="py-2"
+          class="py-2 rounded-bottom"
           style="height: 150px; overflow: auto"
           *ngIf="item['isMinimize'] === false"
         >
@@ -76,24 +76,24 @@ import { Observable, of, Subject } from 'rxjs';
           >
             <div fxLayout="row">
               <p
-                class="font-weight-bold m-0 pr-2 pointer"
+                class="font-weight-bold m-0 pr-2 pointer ftp"
                 [ngStyle]="{
-                  color: content['include'] === false ? '#2464a4' : '#1BC5BD'
+                  color: content['include'] === false ? '#2464a4' : '#74788D'
                 }"
               >
                 {{ content[0] }}
               </p>
-              <span style="color: #7E849C"> {{ content[1] }} </span>
+              <span class="ftp" style="color: #7E849C"> {{ content[1] }} </span>
             </div>
             <span
-              class="only-show-on-hover pointer in-ex"
+              class="only-show-on-hover pointer in-ex ftp"
               *ngIf="content['include'] === false"
               (click)="include(item, content[0])"
             >
               include
             </span>
             <span
-              class="pointer in-ex"
+              class="pointer in-ex ftp"
               *ngIf="content['include'] === true"
               (click)="exclude(item, content[0])"
             >
@@ -129,8 +129,6 @@ export class SearchFilterComponent implements AfterViewInit {
   constructor() {}
 
   ngAfterViewInit(): void {
-    // this.couter = this.couterInclude();
-    // this.observable$ = of(this.couterInclude());
     this.itemSubject.subscribe(
       (_) => (this.observable$ = of(this.couterInclude()))
     );
@@ -154,7 +152,6 @@ export class SearchFilterComponent implements AfterViewInit {
   }
 
   public include(headName: any, contentName: string) {
-    // this.couter = 1;
     const index = this.items.indexOf(headName);
     if (index !== -1) {
       this.items[index].content.map((val, i) => {

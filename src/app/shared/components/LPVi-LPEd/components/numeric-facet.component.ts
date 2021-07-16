@@ -11,9 +11,9 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
 @Component({
   selector: 'app-numeric-facet',
   template: `
-    <div class="mx-1 pb-2">
+    <div class="ml-5 pb-2">
       <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1" fxLayout="row">
+        <div class="py-2 px-2 level1" fxLayout="row">
           <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
             highlight_off
           </mat-icon>
@@ -33,17 +33,12 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 black-color fw-600">change</div>
-          <div class="pointer px-1 black-color fw-600">reset</div>
+          <div class="pointer px-1 white-color fw-600">change</div>
+          <div class="pointer px-1 white-color fw-600">reset</div>
         </div>
         <div
           class="custom-slider"
-          *ngIf="
-            isValidNumber() &&
-              item?.maxValue !== 0 &&
-              item['isMinimize'] === false;
-            else noNumber
-          "
+          *ngIf="item?.maxValue !== 0 && item['isMinimize'] === false"
         >
           <ngx-slider
             [(value)]="item.minValue"
@@ -52,29 +47,24 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
             (userChangeEnd)="userChangeEnd($event)"
           ></ngx-slider>
         </div>
-        <ng-template #noNumber>
+        <!-- <ng-template #noNumber>
           <div
             class="text-center"
-            [style.color]="'#F64E60'"
             [style.height.px]="50"
             *ngIf="item['isMinimize'] === false"
           >
-            No nunber
+            <p [style.color]="'#F64E60'">No nunber</p>
           </div>
-        </ng-template>
+        </ng-template> -->
         <div
           fxLayout="row"
           fxLayoutAlign="center center"
-          class="py-1 level2"
-          *ngIf="
-            isValidNumber() &&
-            item?.maxValue !== 0 &&
-            item['isMinimize'] === false
-          "
+          class="py-1 level2 rounded-bottom"
+          *ngIf="item?.maxValue !== 0 && item['isMinimize'] === false"
         >
-          <p class="m-0">{{ item?.minValue }}</p>
-          <p class="mx-1 my-0">-</p>
-          <p class="m-0">{{ item?.maxValue }}</p>
+          <p class="m-0 ftp fw-600">{{ item?.minValue }}</p>
+          <p class="mx-1 my-0 ftp fw-600">-</p>
+          <p class="m-0 ftp fw-600">{{ item?.maxValue }}</p>
         </div>
       </div>
     </div>
@@ -115,10 +105,10 @@ export class NumericFacetComponent implements AfterViewInit {
     this.numericQueriesEmitter.emit(valueFiltered);
   }
 
-  public isValidNumber(): boolean {
-    return (
-      Number.isFinite(this.item['minValue']) &&
-      Number.isFinite(this.item['maxValue'])
-    );
-  }
+  // public isValidNumber(): boolean {
+  //   return (
+  //     Number.isFinite(this.item['minValue']) &&
+  //     Number.isFinite(this.item['maxValue'])
+  //   );
+  // }
 }

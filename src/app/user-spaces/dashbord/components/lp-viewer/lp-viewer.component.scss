@@ -1,6 +1,16 @@
+ //to remove the forth step
+//  :host ::ng-deep .mat-horizontal-content-container {
+//   min-height: calc(100vh - 250px);
+// }
+
+
 :host ::ng-deep {
   .ftp {
     font-family: Poppins!important;
+  }
+
+  .fs-16 {
+    font-size: 16px;
   }
 
   .fs-18 {
@@ -19,8 +29,13 @@
     display: none !important;
   }
   .mat-horizontal-content-container{
-    padding: 0 15px 0 15px !important;
+    padding: 0 !important;
     background: white !important;
+    margin: 0 15px 0 15px!important;
+  }
+
+  .mat-stepper-horizontal, .mat-stepper-vertical {
+    background-color: #F0F1F6;
   }
 }
 
