@@ -28,7 +28,6 @@ import { ProjectsService } from '@app/user-spaces/dashbord/services/projects.ser
         padding: 0.5em 0 0.7em 0 !important;
       }
       .mat-form-field-infix {
-        // padding: 0.5em 0;
         border-top: 0.55em solid transparent !important;
       }
       .upload-button {
