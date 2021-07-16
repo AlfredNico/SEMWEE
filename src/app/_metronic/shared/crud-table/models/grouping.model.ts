@@ -3,7 +3,7 @@ export interface IGroupingState {
   itemIds: number[];
   checkAreAllRowsSelected(): boolean;
   selectRow(id: number): IGroupingState;
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle,id-blacklist,id-match
   clearRows(_itemIds: number[]): IGroupingState;
   isRowSelected(id: number): boolean;
   selectAllRows(): IGroupingState;
@@ -33,7 +33,7 @@ export class GroupingState implements IGroupingState {
     return this;
   }
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   clearRows(_itemIds: number[]): GroupingState {
     this.itemIds = _itemIds;
     this.selectedRowIds = new Set<number>();

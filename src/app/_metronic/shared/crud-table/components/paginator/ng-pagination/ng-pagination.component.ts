@@ -1,4 +1,4 @@
-// tslint:disable:max-line-length component-class-suffix directive-selector directive-class-suffix component-selector no-host-metadata-property object-literal-key-quotes prefer-const
+/* eslint-disable max-len, @angular-eslint/component-class-suffix, @angular-eslint/directive-selector, @angular-eslint/directive-class-suffix, @angular-eslint/component-selector, @angular-eslint/no-host-metadata-property, quote-props, prefer-const */
 // fork of https://github.com/ng-bootstrap/ng-bootstrap/blob/master/src/pagination/pagination.ts
 import {
   Component,

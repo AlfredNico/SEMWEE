@@ -1,4 +1,4 @@
-// tslint:disable:variable-name
+/* eslint-disable @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match */
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';

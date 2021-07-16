@@ -21,7 +21,7 @@ export class SafePipe implements PipeTransform {
    *
    * @param _sanitizer: DomSanitezer
    */
-  // tslint:disable-next-line
+  // eslint-disable-next-line
   constructor(protected _sanitizer: DomSanitizer) {}
 
   /**
