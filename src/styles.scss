@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@use '~@angular/material' as mat;
 
 @font-face {
     font-family: Raleway;
@@ -156,27 +157,26 @@
 
 // // Custom Theming for Angular Material
 // // For more information: https://material.angular.io/guide/theming
-// @import '~@angular/material/theming';
-// @import './styles/utils';
+// // @import './styles/utils';
 // // Plus imports for other components in your app.
 // // Include the common styles for Angular Material. We include this here so that you only
 // // have to load a single css file for Angular Material in your app.
 // // Be sure that you only ever include this mixin once!
-// @include mat-core();
+// @include mat.core();
 // // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // // hue. Available color palettes: https://material.io/design/color/
-// $SEMWEE-primary: mat-palette($mat-indigo, 900);
-// $SEMWEE-accent: mat-palette($mat-pink, A200, A100, A400);
+// $SEMWEE-primary: mat.define-palette(mat.$indigo-palette, 900);
+// $SEMWEE-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 // // The warn palette is optional (defaults to red).
-// $SEMWEE-warn: mat-palette($mat-red);
+// $SEMWEE-warn: mat.define-palette(mat.$red-palette);
 // // Create the theme object. A theme consists of configurations for individual
 // // theming systems such as "color" or "typography".
-// $SEMWEE-theme: mat-light-theme(( color: ( primary: $SEMWEE-primary, accent: $SEMWEE-accent, warn: $SEMWEE-warn, )));
+// $SEMWEE-theme: mat.define-light-theme(( color: ( primary: $SEMWEE-primary, accent: $SEMWEE-accent, warn: $SEMWEE-warn, )));
 // // Include theme styles for core and each component used in your app.
 // // Alternatively, you can import and @include the theme mixins for each component
 // // that you are using.
-// @include angular-material-theme($SEMWEE-theme);
+// @include mat.all-component-themes($SEMWEE-theme);
 // /* You can add global styles to this file, and also import other style files */
 // html,
 // body {
@@ -188,13 +188,12 @@
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-// @import '~@angular/material/theming';
-@import "./styles/utils";
+// @import "./styles/utils";
 // Plus imports for other components in your app.
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -301,18 +300,18 @@ $dark-warn-map: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$SEMWEE-primary: mat-palette($dark-primary-map, 500);
-// $SEMWEE-accent: mat-palette($dark-primary-map,A400);
+$SEMWEE-primary: mat.define-palette($dark-primary-map, 500);
+// $SEMWEE-accent: mat.define-palette($dark-primary-map,A400);
 // The warn palette is optional (defaults to red).
-$SEMWEE-warn: mat-palette($mat-red);
+$SEMWEE-warn: mat.define-palette(mat.$red-palette);
 
-// $SEMWEE-warn: mat-palette($dark-primary-map,
+// $SEMWEE-warn: mat.define-palette($dark-primary-map,
 // A700);
 
-$SEMWEE-accent: mat-palette($dark-primary-map, A700);
+$SEMWEE-accent: mat.define-palette($dark-primary-map, A700);
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$SEMWEE-theme: mat-light-theme(
+$SEMWEE-theme: mat.define-light-theme(
     (
         color: (
             primary: $SEMWEE-primary,
@@ -324,18 +323,18 @@ $SEMWEE-theme: mat-light-theme(
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($SEMWEE-theme);
+@include mat.all-component-themes($SEMWEE-theme);
 
 /* You can add global styles to this file, and also import other style files */
 
 .warn-color {
-    color: mat-color($SEMWEE-warn) !important;
+    color: mat.get-color-from-palette($SEMWEE-warn) !important;
 }
 // .primary-color {
-//   color: mat-color($accent) !important;
+//   color: mat.get-color-from-palette($accent) !important;
 // }
 .primary-color {
-    color: mat-color($SEMWEE-primary) !important;
+    color: mat.get-color-from-palette($SEMWEE-primary) !important;
 }
 
 html,

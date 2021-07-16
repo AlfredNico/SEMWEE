@@ -1,12 +1,12 @@
+@use '~@angular/material' as mat;
 //
 // Material Angular Config
 //
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@import "~@angular/material/theming";
 
-@include mat-core();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -17,9 +17,9 @@ $mat-primary: (
   500: $primary,
   700: darken($primary, 8%),
   contrast: (
-    100: $dark-primary-text,
-    500: $light-primary-text,
-    700: $light-primary-text
+    100: rgba(black, 0.87),
+    500: white,
+    700: white
   )
 );
 
@@ -28,9 +28,9 @@ $mat-accent: (
 	500: $success,
 	700: darken($success, 8%),
 	contrast: (
-		100: $dark-primary-text,
-		500: $light-primary-text,
-		700: $light-primary-text
+		100: rgba(black, 0.87),
+		500: white,
+		700: white
 	)
 );
 
@@ -39,18 +39,18 @@ $mat-warn: (
 	500: $danger,
 	700: darken($danger, 8%),
 	contrast: (
-		100: $dark-primary-text,
-		500: $light-primary-text,
-		700: $light-primary-text
+		100: rgba(black, 0.87),
+		500: white,
+		700: white
 	)
 );
 
 
-//mat-palette($base-palette, $default: 500, $lighter: 100, $darker: 700)
+//mat.define-palette($base-palette, $default: 500, $lighter: 100, $darker: 700)
 
-$angular-app-primary: mat-palette($mat-primary, 500, 100, 700);
-$angular-app-accent: mat-palette($mat-accent, 500, 100, 700);
-$angular-app-warn: mat-palette($mat-warn, 500, 100, 700); // The warn palette is optional (defaults to red).
+$angular-app-primary: mat.define-palette($mat-primary, 500, 100, 700);
+$angular-app-accent: mat.define-palette($mat-accent, 500, 100, 700);
+$angular-app-warn: mat.define-palette($mat-warn, 500, 100, 700); // The warn palette is optional (defaults to red).
 
 // Create the theme object (a Sass map containing all of the palettes).
 $angular-app-theme: (
@@ -61,12 +61,12 @@ $angular-app-theme: (
 	foreground: (
 		base: black,
 		divider: $gray-200,
-		dividers: $dark-dividers,
-		disabled: $dark-disabled-text,
+		dividers: rgba(black, 0.12),
+		disabled: rgba(black, 0.38),
 		disabled-button: rgba(black, 0.26),
-		disabled-text: $dark-disabled-text,
-		hint-text: $dark-disabled-text,
-		secondary-text: $dark-secondary-text,
+		disabled-text: rgba(black, 0.38),
+		hint-text: rgba(black, 0.38),
+		secondary-text: rgba(black, 0.54),
 		icon: rgba(black, 0.54),
 		icons: rgba(black, 0.54),
 		text: rgba(black, 0.87),
@@ -75,26 +75,26 @@ $angular-app-theme: (
 		slider-off-active: rgba(black, 0.38),
 	),
 	background: (
-		status-bar: map-get($mat-grey, 300),
-		app-bar: map-get($mat-grey, 100),
-		background: map-get($mat-grey, 50),
+		status-bar: map-get(mat.$grey-palette, 300),
+		app-bar: map-get(mat.$grey-palette, 100),
+		background: map-get(mat.$grey-palette, 50),
 		hover: rgba(black, 0.04), // TODO(kara): check style with Material Design UX
 		card: white,
 		dialog: white,
 		disabled-button: rgba(black, 0.12),
 		raised-button: white,
-		focused-button: $dark-focused,
-		selected-button: map-get($mat-grey, 300),
-		selected-disabled-button: map-get($mat-grey, 400),
-		disabled-button-toggle: map-get($mat-grey, 200),
-		unselected-chip: map-get($mat-grey, 300),
-		disabled-list-option: map-get($mat-grey, 200),
+		focused-button: rgba(black, 0.12),
+		selected-button: map-get(mat.$grey-palette, 300),
+		selected-disabled-button: map-get(mat.$grey-palette, 400),
+		disabled-button-toggle: map-get(mat.$grey-palette, 200),
+		unselected-chip: map-get(mat.$grey-palette, 300),
+		disabled-list-option: map-get(mat.$grey-palette, 200),
 	)
 );
 
-//mat-light-theme($angular-app-primary, $angular-app-accent, $angular-app-warn);
+//mat.define-light-theme($angular-app-primary, $angular-app-accent, $angular-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($angular-app-theme);
+@include mat.all-component-themes($angular-app-theme);
