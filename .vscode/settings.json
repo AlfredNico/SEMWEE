@@ -14,18 +14,28 @@
     "editor.autoClosingOvertype": "auto",
     "html.format.wrapAttributes": "auto",
     "files.hotExit": "onExit",
+    "git.autofetch": true,
     
     "html.format.wrapLineLength": 100,
     "editor.wordWrapColumn": 100,
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
     "[typescript]": {
         "editor.formatOnSave": true,
-        "editor.formatOnPaste": true
+        "editor.formatOnPaste": false,
+        "editor.formatOnType": false,
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
       },
       "[markdown]": {
         "editor.formatOnSave": true,
         "editor.wordWrap": "on",
         "editor.renderWhitespace": "all",
-        "editor.acceptSuggestionOnEnter": "on"
+        "editor.acceptSuggestionOnEnter": "on",
+        "editor.defaultFormatter": "vscode.json-language-features"
       },
       // TypeScript
       "javascript.format.insertSpaceAfterConstructor": false,
