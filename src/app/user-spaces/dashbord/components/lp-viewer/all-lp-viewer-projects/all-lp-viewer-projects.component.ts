@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table/table-data-source';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
@@ -11,8 +12,10 @@ import { CommonService } from '@app/shared/services/common.service';
 import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
 import { TriggerService } from '@app/user-spaces/services/trigger.service';
+import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { LPedAllProjectsComponent } from '../../lp-editor/lped-all-projects/lped-all-projects.component';
 
 @Component({
   selector: 'app-all-lp-viewer-projects',
@@ -22,6 +25,7 @@ import { switchMap, tap } from 'rxjs/operators';
 export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
   public allProjects$: Observable<LPAllProjects[]>;
   private user!: User;
+  pageOfItems: Array<any>;
 
   constructor(
     private LPViewerProjectsService: LPViewerProjectsService,
@@ -64,5 +68,9 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
         this.lpviLped.isLoading$.next(false); // disable loading spinner
       }
     );
+  }
+  onChangePage(pageOfItems: Array<any>) {
+    // update current page of items
+    this.pageOfItems = pageOfItems;
   }
 }
