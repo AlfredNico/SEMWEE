@@ -71,12 +71,14 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           *ngIf="item['isMinimize'] === false"
         >
           <mat-checkbox
-            [checked]="item['expression']"
-            (change)="changeStatus($event, 'expression')"
+            class="mr-1"
+            [checked]="item['complete_string']"
+            (change)="changeStatus($event, 'complete_string')"
             style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
-            >Regular expression</mat-checkbox
+            >Complete string</mat-checkbox
           >
           <mat-checkbox
+            class="ml-2"
             [checked]="item['sensitive']"
             (change)="changeStatus($event, 'sensitive')"
             style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
@@ -135,6 +137,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
           value: this.form.value[this.item['head']],
           invert: this.item['invert'],
           sensitive: this.item['sensitive'],
+          complete_string: this.item['complete_string'],
         },
         item: this.item,
         index: this.index,
@@ -159,7 +162,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
     else
       this.item = {
         ...this.item,
-        expression: e['checked'],
+        complete_string: e['checked'],
       };
 
     this.filter();
@@ -171,6 +174,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
       ...this.item,
       invert: true,
       sensitive: false,
+      complete_string: false,
     };
 
     this.filter();
@@ -184,6 +188,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
           : '',
         invert: this.item['invert'],
         sensitive: this.item['sensitive'],
+        complete_string: this.item['complete_string'],
       },
       item: this.item,
       index: this.index,

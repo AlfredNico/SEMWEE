@@ -50,9 +50,6 @@ export class StylePaginatorDirective {
   }
 
   get numOfPages(): number {
-    // return this.matPag.getNumberOfPages() == 0
-    //   ? 3
-    //   : this.matPag.getNumberOfPages();
     return this.matPag.getNumberOfPages();
   }
 
@@ -94,7 +91,6 @@ export class StylePaginatorDirective {
 
         this._isFetchData = true;
         this.initPageRange();
-        //   this.createButton(0, 0);
       }
     });
   }
@@ -117,7 +113,7 @@ export class StylePaginatorDirective {
     }
 
     //initialize next page and last page buttons
-    if (this._buttons?.length == 0 && this.ren) {
+    if (this._buttons?.length == 0) {
       let nodeArray =
         this.vr.element?.nativeElement?.childNodes[0]?.childNodes[0]
           .childNodes[2].childNodes;

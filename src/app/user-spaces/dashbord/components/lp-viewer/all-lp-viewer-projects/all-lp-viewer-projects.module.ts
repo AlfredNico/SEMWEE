@@ -14,6 +14,7 @@ import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-v
 import { LPViewerProjectsComponent } from '@app/shared/components/lp-viewer-projects/lp-viewer-projects.component';
 import { AvatarModule } from '@app/shared/modules/avatar.module';
 import { FormatFileSizePipe } from '@app/user-spaces/dashbord/pipe/format-filesize.pipe';
+import { SharedDirectivesModule } from '@app/shared/modules/shared-directives.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { FormatFileSizePipe } from '@app/user-spaces/dashbord/pipe/format-filesi
     FormatFileSizePipe,
   ],
   imports: [
+    SharedDirectivesModule,
     CommonModule,
     LandingModule,
     SharedModule,

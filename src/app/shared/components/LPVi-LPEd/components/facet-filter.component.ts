@@ -305,6 +305,10 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
     this.queries[event.item['head']] = event.query; //save querie from input filter
+    const index = this.items.findIndex((elem) => elem['head'] == event.item['head']);
+
+    if (index !== -1)
+       this.items[index] = {...event.item};
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
   }
@@ -364,13 +368,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public itemsEmitter(event?: any) {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
+
     if (event !== undefined) this.items = event;
-
-    let search: boolean;
-
-    // this.dataViews.filter((value, index) => {
-    //   console.log(value);
-    // });
 
     this.dataSources = this.dataViews.filter((value, index) => {
       let i1: number = 0;
@@ -386,9 +385,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             i2++;
           }
         });
-        // console.log(eval(str));
-        // search = str !== '' ? eval(str) : true;
-        // search = str !== '' ? eval(str) : true;
+
         if (i1 === 0) queries = eval(str);
         else queries = queries && eval(str);
         i1++;
@@ -445,14 +442,32 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
               this.queries[property]['value'] as string
             );
             let ss = '';
-            if (!this.queries[property]['sensitive']) {
-              if (this.queries[property]['invert'])
-                ss = `value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
-              else
-                ss = `!value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
-            } else if (this.queries[property]['sensitive'])
-              // ss = `value[${property}]==${this.queries[property]['value']}`;
-              ss = `value["${property}"].trim()=="${lower}".trim()`;
+
+            if (!this.queries[property]['complete_string']) { //true
+              if (!this.queries[property]['sensitive']) {  //true
+                if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim().includes("${lower}".trim())`;
+                else
+                  ss = `!value["${property}"].trim().includes("${lower}".trim())`;
+              } else {
+                 if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
+                else
+                  ss = `!value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
+              }
+            } else {
+              if (!this.queries[property]['sensitive']) {
+                if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim()=="${lower}".trim()`;
+                else
+                  ss = `value["${property}"].trim()!="${lower}".trim()`;
+              }else{
+                 if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim().toLowerCase()=="${lower}".trim().toLowerCase()`;
+                else
+                  ss = `value["${property}"].trim().toLowerCase()!="${lower}".trim().toLowerCase()`;
+              }
+            }
 
             if (i2 === 0) s = ss;
             else s = s + '&&' + ss;
