@@ -50,9 +50,6 @@ export class StylePaginatorDirective {
   }
 
   get numOfPages(): number {
-    // return this.matPag.getNumberOfPages() == 0
-    //   ? 3
-    //   : this.matPag.getNumberOfPages();
     return this.matPag.getNumberOfPages();
   }
 
@@ -94,7 +91,6 @@ export class StylePaginatorDirective {
 
         this._isFetchData = true;
         this.initPageRange();
-        //   this.createButton(0, 0);
       }
     });
   }
@@ -106,10 +102,9 @@ export class StylePaginatorDirective {
     const nextPageNode = this.vr.element.nativeElement.querySelector(
       'button.mat-paginator-navigation-next'
     );
-    const prevButtonCount = this._buttons.length;
 
     // remove buttons before creating new ones
-    if (this._buttons.length > 0) {
+    if (this._buttons?.length > 0) {
       this._buttons.forEach((button) => {
         this.ren.removeChild(actionContainer, button);
       });
@@ -118,12 +113,12 @@ export class StylePaginatorDirective {
     }
 
     //initialize next page and last page buttons
-    if (this._buttons.length == 0 && this.ren) {
+    if (this._buttons?.length == 0) {
       let nodeArray =
         this.vr.element?.nativeElement?.childNodes[0]?.childNodes[0]
           .childNodes[2].childNodes;
       setTimeout(() => {
-        for (let i = 0; i < nodeArray.length; i++) {
+        for (let i = 0; i < nodeArray?.length; i++) {
           if (this._isFetchData) {
             if (i == 0 || i == 1) {
               this.ren?.setAttribute(nodeArray[i], 'disabled', 'true');

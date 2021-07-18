@@ -12,7 +12,7 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
   selector: 'app-facet-filter-target',
   template: `
     <div *ngIf="items.length > 0; else noItems">
-      <div class="w-100 pl-4 pr-2 pb-3">
+      <div class="w-100 pl-4 pr-2 pb-3" style="margin-top:5px">
         <button class="rounded btn btn-custom">Refresh</button>
         <span fxFlex></span>
         <button class="rounded btn btn-custom mr-2" (click)="resetAll()">
@@ -159,7 +159,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngAfterViewInit(): void {
-   
+    this.lpviLped.resetfilter.subscribe((res: any) => {
+      this.resetAll();
+    });
     this.lpviLped.itemsObservables$.subscribe((res: any) => {
       if (res !== undefined) {
         this.items.push(res);
@@ -246,7 +248,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         )
           q[index] = true;
         else q[index] = false;
-        return (ss = q[index]);
+
+        this.numericQeury[index] = ss = q[index];
+        return this.filtersData(index);
       } else {
         return Object.keys(this.queriesNumerisFilters).every((x) => {
           const s = this.queriesNumerisFilters[x];
@@ -260,7 +264,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
           if (x === event['head']) ss = q;
 
-          return (ss = s[index] && q[index]);
+          this.numericQeury[index] = ss = s[index] && q[index];
+          return this.filtersData(index);
         });
       }
     });
@@ -302,12 +307,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
     this.queries[event.item['head']] = event.query; //save querie from input filter
+    const index = this.items.findIndex((elem) => elem['head'] == event.item['head']);
+
+    if (index !== -1)
+       this.items[index] = {...event.item};
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
   }
 
   public minimizeEmitter(item: any): void {
-    const index = this.items.indexOf(item);
+    const index = this.items.findIndex((elem) => elem['head'] == item['head']);
 
     if (index !== -1) {
       this.items[index] = {
@@ -361,9 +370,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public itemsEmitter(event?: any) {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
-    if (event !== undefined) this.items = event;
 
-    let search: boolean;
+    if (event !== undefined) this.items = event;
 
     this.dataSources = this.dataViews.filter((value, index) => {
       let i1: number = 0;
@@ -372,22 +380,24 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         let i2: number = 0;
         let str = '';
         item['content']?.map((element: any) => {
-          if (element['include'] === true) {
-            const q = `value["${item['head']}"].toString()==="${element[0]}"`;
+          if (element['include'] == true) {
+            const q = `value["${item['head']}"].trim()==="${element[0]}".trim()`;
             if (i2 === 0) str = q;
             else str = `${str}||${q}`;
             i2++;
           }
         });
-        search = str !== '' ? eval(str) : true;
-        if (i1 === 0) queries = search;
-        else queries = queries && search;
+
+        if (i1 === 0) queries = eval(str);
+        else queries = queries && eval(str);
         i1++;
       });
       this.searchQueries[index] = queries;
 
       return this.filtersData(index);
     });
+
+    console.log(this.dataSources);
 
     this.lpviLped.dataSources$.next(this.dataSources);
 
@@ -432,16 +442,34 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
           ) {
             const lower = (
               this.queries[property]['value'] as string
-            ).toString();
+            );
             let ss = '';
-            if (!this.queries[property]['sensitive']) {
-              if (this.queries[property]['invert'])
-                ss = `value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
-              else
-                ss = `!value["${property}"].toString().toLowerCase().includes("${lower}".toLowerCase())`;
-            } else if (this.queries[property]['sensitive'])
-              // ss = `value[${property}]==${this.queries[property]['value']}`;
-              ss = `value["${property}"].toString().toLowerCase()=="${lower}".toLowerCase()`;
+
+            if (!this.queries[property]['complete_string']) { //true
+              if (!this.queries[property]['sensitive']) {  //true
+                if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim().includes("${lower}".trim())`;
+                else
+                  ss = `!value["${property}"].trim().includes("${lower}".trim())`;
+              } else {
+                 if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
+                else
+                  ss = `!value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
+              }
+            } else {
+              if (!this.queries[property]['sensitive']) {
+                if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim()=="${lower}".trim()`;
+                else
+                  ss = `value["${property}"].trim()!="${lower}".trim()`;
+              }else{
+                 if (this.queries[property]['invert'])
+                  ss = `value["${property}"].trim().toLowerCase()=="${lower}".trim().toLowerCase()`;
+                else
+                  ss = `value["${property}"].trim().toLowerCase()!="${lower}".trim().toLowerCase()`;
+              }
+            }
 
             if (i2 === 0) s = ss;
             else s = s + '&&' + ss;
@@ -471,6 +499,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         queries: this.queries,
         queriesNumerisFilters: this.queriesNumerisFilters,
       }),
+    };
+
+    this.lpviLped.permaLink = {
+      ...this.lpviLped.permaLink,
+      input: this.inputQueries,
+      search: this.searchQueries,
+      numeric: this.numericQeury,
+      items: this.items,
+      queries: this.queries,
+      queriesNumerisFilters: this.queriesNumerisFilters,
     };
 
     this.lpviLped.isLoading$.next(false); // desaable loading spinner

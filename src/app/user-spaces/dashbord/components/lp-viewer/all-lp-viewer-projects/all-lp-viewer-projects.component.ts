@@ -1,17 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
-import { CommonService } from '@app/shared/services/common.service';
 import { LPAllProjects } from '@app/user-spaces/dashbord/interfaces/lp-viewer-projects';
 import { LPViewerProjectsService } from '@app/user-spaces/dashbord/services/lp-viewer.service';
-import { TriggerService } from '@app/user-spaces/services/trigger.service';
 import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { RemoveComponent } from '../../projects/dialog/remove.component';
 
 @Component({
   selector: 'app-all-lp-viewer-projects',
@@ -22,24 +22,22 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
   public allProjects$: Observable<LPAllProjects[]>;
   private user!: User;
 
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   constructor(
     private LPViewerProjectsService: LPViewerProjectsService,
     public dialog: MatDialog,
-    private common: CommonService,
     private notifs: NotificationService,
     private auth: AuthService,
     private router: Router,
-    private readonly lpviLped: LpdLpdService
+    private readonly lpviLped: LpdLpdService,
+
   ) {
     this.user = this.auth.currentUserSubject.value;
   }
 
   ngOnInit(): void {
     this.allProjects$ = this.LPViewerProjectsService.refresh$.pipe(
-      // tap(() => {
-      //   // this.triggerServices.trigrer$.next(true);
-      //   this.lpviLped.isLoading$.next(false); // disable loading spinner
-      // }),
       switchMap((_) =>
         this.LPViewerProjectsService.getAllProjects(this.user._id)
       )
@@ -47,7 +45,6 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.common.showSpinner('root');
     this.allProjects$.subscribe(
       (result: any[]) => {
         if (result && result.length == 0) {
@@ -63,5 +60,34 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
         this.lpviLped.isLoading$.next(false); // disable loading spinner
       }
     );
+  }
+
+  public removeAllProjects(){
+    this.dialog
+      .open(RemoveComponent, {
+        data: {
+          message: 'Are you sure to delete all projects ?',
+        },
+        width: '600px',
+      })
+      .afterClosed()
+      .pipe(
+        map((result) => {
+          if (result === true) {
+            this.lpviLped.removeAllProjects(this.user._id)
+              .subscribe((result) => {
+                if (result && result.message) {
+                  console.log('res=', result.message);
+
+                  this.notifs.sucess(result.message);
+
+                  this.LPViewerProjectsService.refresh$.next(true);
+                  this.LPViewerProjectsService.trigrer$.next(true);
+                }
+              });
+          }
+        })
+      )
+      .subscribe();
   }
 }

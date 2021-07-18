@@ -19,7 +19,6 @@ import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
 import { DragDroppDirective } from '../../directives/drag-dropp.directive';
 import { SearchReplaceComponent } from './search_filter_replace/search-filter-replace.component';
 import { ResizableModule } from 'angular-resizable-element';
-
 @NgModule({
   declarations: [
     LpViewerComponent,
@@ -48,4 +47,4 @@ import { ResizableModule } from 'angular-resizable-element';
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [LpViwersService, tokenInterceptor, errorInterceptor],
 })
-export class LpViewerModule {}
+export class LpViewerModule { }

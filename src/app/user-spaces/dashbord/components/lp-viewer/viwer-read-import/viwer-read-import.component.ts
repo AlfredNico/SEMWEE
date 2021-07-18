@@ -28,6 +28,7 @@ import {
 } from '@app/user-spaces/dashbord/interfaces/paginator';
 import { ResizeEvent } from 'angular-resizable-element';
 import { of } from 'rxjs';
+import { NotificationService } from '@app/services/notification.service';
 
 //filter data
 function compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -109,7 +110,8 @@ export class ViwerReadImportComponent
     private fb: FormBuilder,
     private lpViewer: LpViwersService,
     public senitizer: DomSanitizer,
-    private readonly lpviLped: LpdLpdService
+    private readonly lpviLped: LpdLpdService,
+    private notifs: NotificationService
   ) {}
 
   ngOnChanges(): void {
@@ -502,6 +504,7 @@ export class ViwerReadImportComponent
       value: '',
       invert: true,
       sensitive: false,
+      complete_string: false,
     });
     this.selectedIndex = 0;
   }
@@ -669,6 +672,7 @@ export class ViwerReadImportComponent
     //------------END FILTER---------------
 
   }
+
   tooglevueEdit($event) {
     this.vueEdit = false;
   }
