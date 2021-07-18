@@ -34,8 +34,16 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
           </mat-icon>
           <span class="fw-600">{{ item['head'] }}</span>
           <span fxFlex></span>
-          <div class="pointer px-1 white-color fw-600" (click)="invert()" [ngStyle]="{color: !item['invert'] ? '#74788D' : null}">invert</div>
-          <div class="pointer px-1 white-color fw-600" (click)="reset()">reset</div>
+          <div
+            class="pointer px-1 white-color fw-600"
+            (click)="invert()"
+            [ngStyle]="{ color: !item['invert'] ? '#74788D' : null }"
+          >
+            invert
+          </div>
+          <div class="pointer px-1 white-color fw-600" (click)="reset()">
+            reset
+          </div>
         </div>
         <div
           class="py-0"
@@ -57,14 +65,25 @@ import { LpdLpdService } from '../services/lpd-lpd.service';
             <mat-icon>search</mat-icon>
           </button>
         </div>
-        <div class="py-3 px-3 level2 rounded-bottom" *ngIf="item['isMinimize'] === false">
+        <div
+          fxLayout="row"
+          class="py-3 px-3 level2 rounded-bottom"
+          *ngIf="item['isMinimize'] === false"
+        >
           <mat-checkbox
-            [checked]="item['sensitive']"
-            (change)="changeStatus($event)"
+            class="mr-1"
+            [checked]="item['complete_string']"
+            (change)="changeStatus($event, 'complete_string')"
             style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
-            >case sensitive</mat-checkbox
+            >Complete string</mat-checkbox
           >
-          <!-- <mat-checkbox>regular expression</mat-checkbox> -->
+          <mat-checkbox
+            class="ml-2"
+            [checked]="item['sensitive']"
+            (change)="changeStatus($event, 'sensitive')"
+            style="font-family: Poppins!important; display: flex; justify-content: center; align-items: center;"
+            >Case sensitive</mat-checkbox
+          >
         </div>
       </div>
     </div>
@@ -118,6 +137,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
           value: this.form.value[this.item['head']],
           invert: this.item['invert'],
           sensitive: this.item['sensitive'],
+          complete_string: this.item['complete_string'],
         },
         item: this.item,
         index: this.index,
@@ -133,11 +153,17 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
     this.filter();
   }
 
-  public changeStatus(e: any) {
-    this.item = {
-      ...this.item,
-      sensitive: e['checked'],
-    };
+  public changeStatus(e: any, nameStatus: string) {
+    if (nameStatus == 'sensitive')
+      this.item = {
+        ...this.item,
+        sensitive: e['checked'],
+      };
+    else
+      this.item = {
+        ...this.item,
+        complete_string: e['checked'],
+      };
 
     this.filter();
   }
@@ -148,6 +174,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
       ...this.item,
       invert: true,
       sensitive: false,
+      complete_string: false,
     };
 
     this.filter();
@@ -161,6 +188,7 @@ export class InputFilterComponent implements AfterViewInit, OnInit {
           : '',
         invert: this.item['invert'],
         sensitive: this.item['sensitive'],
+        complete_string: this.item['complete_string'],
       },
       item: this.item,
       index: this.index,

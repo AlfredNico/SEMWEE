@@ -43,8 +43,7 @@ import { DateAdapter } from '@angular/material/core';
           style.height.px="50"
           *ngIf="
             (item?.endDate !== undefined || item?.startDate !== undefined) &&
-              item['isMinimize'] === false;
-            else noDate
+            item['isMinimize'] === false
           "
           fxLayout="row"
           fxLayoutAlign="space-between center"
@@ -83,48 +82,31 @@ import { DateAdapter } from '@angular/material/core';
             ></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
-          <!-- </div> -->
         </div>
-        <ng-template #noDate>
-          <div
-            class="text-center"
-            [style.color]="'#FC7B7B'"
-            [style.height.px]="50"
-            *ngIf="item['isMinimize'] === false"
-          >
-            No Date
-          </div>
-        </ng-template>
         <div
           [style.height.px]="10"
           style="background: white"
           *ngIf="item['isMinimize'] === false"
           class="rounded-bottom"
-        >
-          <!-- <div fxLayout="row" fxLayoutAlign="center center" class="py-1">
-            <mat-checkbox class="mx-1">Time</mat-checkbox>
-            <mat-checkbox class="mx-1">Non-Time</mat-checkbox>
-            <mat-checkbox class="mx-1">Blank</mat-checkbox>
-            <mat-checkbox class="mx-1">Error</mat-checkbox>
-          </div> -->
-        </div>
+        ></div>
       </div>
     </div>
   `,
   styles: [
     `
       ::ng-deep .mat-form-field-wrapper {
-        background: white!important;
+        background: white !important;
       }
 
-      ::ng-deep .mat-label, .mat-datepicker-input {
-        font-family: Poppins!important;
+      ::ng-deep .mat-label,
+      .mat-datepicker-input {
+        font-family: Poppins !important;
         font-weight: 600;
       }
 
       ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-          background-color: #F3F6F9;
-        border-radius: 0!important;
+        background-color: #f3f6f9;
+        border-radius: 0 !important;
       }
 
       ::ng-deep .mat-form-field-appearance-fill {
@@ -158,6 +140,7 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.isValidDate());
     this.FormRange.patchValue({
       start: this.item['startDate'],
       end: this.item['endDate'],
@@ -180,5 +163,11 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
         end: Date.parse(query['end']),
       });
     });
+  }
+
+  public isValidDate() {
+    return !(
+      this.item['startDate'].length == 25 && this.item['endDate'].length == 25
+    );
   }
 }
