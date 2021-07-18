@@ -72,8 +72,8 @@ import { LpValidatorService } from '../../services/lp-validator.service';
 
           <div>
             If you don't know what to upload, you can read documentation in your
-            <a href="google.com">Help Center</a>, or you can
-            <a href="google.com">donwload our items list sample</a>
+            <a href="google.com" style="color:red !important">Help Center</a>, or you can
+            <a download href="../assets/csv/sémwee.csv" style="color:red !important">donwload our items list sample</a>
           </div>
         </div>
 
@@ -109,6 +109,10 @@ import { LpValidatorService } from '../../services/lp-validator.service';
     `,
   ],
 })
+//download .csv
+
+
+
 export class ImportItemComponent implements OnInit, OnDestroy {
   public form = new FormGroup({
     fileName: new FormControl('', [

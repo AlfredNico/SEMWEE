@@ -15,10 +15,13 @@
       </div>
       <div class="col-md-3">
         <div style="float: right; padding-right: 30px">
+          <button mat-raised-button color="warn" class="mr-2" (click)="removeAllProjects()">
+            Delete all
+          </button>
           <a
             routerLinkActive="active"
             [routerLink]="['/user-space/lp-viewer']"
-            style="color: white !important"
+            style="color: white !important" class="ml-2"
             ><button mat-raised-button color="primary">
               <span class="menu-text ftp">Import</span>
             </button>

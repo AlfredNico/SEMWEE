@@ -38,12 +38,7 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
         </div>
         <div
           class="custom-slider"
-          *ngIf="
-            isValidNumber() &&
-              item?.maxValue !== 0 &&
-              item['isMinimize'] === false;
-            else noNumber
-          "
+          *ngIf="item?.maxValue !== 0 && item['isMinimize'] === false"
         >
           <ngx-slider
             [(value)]="item.minValue"
@@ -52,25 +47,11 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
             (userChangeEnd)="userChangeEnd($event)"
           ></ngx-slider>
         </div>
-        <ng-template #noNumber>
-          <div
-            class="text-center"
-            [style.color]="'#F64E60'"
-            [style.height.px]="50"
-            *ngIf="item['isMinimize'] === false"
-          >
-            No nunber
-          </div>
-        </ng-template>
         <div
           fxLayout="row"
           fxLayoutAlign="center center"
           class="py-1 level2 rounded-bottom"
-          *ngIf="
-            isValidNumber() &&
-            item?.maxValue !== 0 &&
-            item['isMinimize'] === false
-          "
+          *ngIf="item?.maxValue !== 0 && item['isMinimize'] === false"
         >
           <p class="m-0 ftp fw-600">{{ item?.minValue }}</p>
           <p class="mx-1 my-0 ftp fw-600">-</p>
@@ -79,17 +60,12 @@ import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.se
       </div>
     </div>
   `,
-  // styleUrls: ['./numeric-facet.component.scss']
 })
 export class NumericFacetComponent implements AfterViewInit {
   /* INPUT */
   @Input('items') items: any[] = [];
   @Input('item') item: any = undefined;
   @Input('dataViews') public dataViews: any[] = [];
-  // @Input('dataSources') public dataSources: any[] = [];
-  // @Input('minValue') minValue: number = 0;
-  // @Input('maxValue') maxValue: number = 2000;
-  // @Input('options') options: Options = undefined;
 
   /* OUTPUT */
   @Output('numericQueriesEmitter') numericQueriesEmitter =
@@ -115,10 +91,10 @@ export class NumericFacetComponent implements AfterViewInit {
     this.numericQueriesEmitter.emit(valueFiltered);
   }
 
-  public isValidNumber(): boolean {
-    return (
-      Number.isFinite(this.item['minValue']) &&
-      Number.isFinite(this.item['maxValue'])
-    );
-  }
+  // public isValidNumber(): boolean {
+  //   return (
+  //     Number.isFinite(this.item['minValue']) &&
+  //     Number.isFinite(this.item['maxValue'])
+  //   );
+  // }
 }

@@ -19,7 +19,6 @@ import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.
 import { HttpClientModule } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pulsing-skeleton.component';
-// import { SearchReplaceComponent } from '@app/user-spaces/dashbord/components/lp-viewer/search_filter_replace/search-filter-replace.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pul
     FacetFilterComponent,
     TimeLineComponent,
     PulsingSkeletonComponent,
-    // SearchReplaceComponent
   ],
   imports: [
     MatStepperModule, // stepper module

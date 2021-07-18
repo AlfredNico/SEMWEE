@@ -1,16 +1,7 @@
 import { LpViwersService } from './../../../services/lp-viwers.service';
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  Input,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/classes/users';
-import { NotificationService } from '@app/services/notification.service';
-import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -49,7 +40,7 @@ import { ActivatedRoute, Router } from '@angular/router';
               color="accent"
               (click)="fileInput.click()"
             >
-              {{ file ? file.name : 'Select' }}
+              {{ file ? file.name : 'Or Select File to Upload' }}
             </button>
             <input
               hidden
@@ -63,6 +54,11 @@ import { ActivatedRoute, Router } from '@angular/router';
             />
           </div>
         </div>
+          <div>
+            If you don't know what to upload, you can read documentation in your
+            <a href="google.com" style="color:red !important">Help Center</a>, or you can
+            <a download href="../assets/csv/sémwee.csv" style="color:red !important">donwload our items list sample</a>
+          </div>
       </div>
     </div>
   `,
@@ -82,7 +78,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     `,
   ],
 })
-export class ViwerImportComponent implements AfterViewInit {
+export class ViwerImportComponent {
   public form = new FormGroup({
     fileSource: new FormControl('', [Validators.required]),
   });
@@ -95,9 +91,9 @@ export class ViwerImportComponent implements AfterViewInit {
     header: string[];
     contentCsv: any[];
   } = {
-    header: [],
-    contentCsv: [],
-  };
+      header: [],
+      contentCsv: [],
+    };
   @Input() user: User = undefined;
   private ProjectName: string = '';
 
@@ -107,15 +103,9 @@ export class ViwerImportComponent implements AfterViewInit {
 
   constructor(
     private lpViewerService: LpViwersService,
-    private readonly lpviLped: LpdLpdService,
-    private readonly nofits: NotificationService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
-
-  ngAfterViewInit() {
-    this.lpviLped.isLoading$.next(false);
-  }
+  ) { }
 
   reload() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
