@@ -140,7 +140,6 @@ export class TimeLineComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.isValidDate());
     this.FormRange.patchValue({
       start: this.item['startDate'],
       end: this.item['endDate'],
