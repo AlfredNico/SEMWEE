@@ -53,6 +53,7 @@
           class="btn btn-export font-weight-bolder dropdown-toggle"
           aria-expanded="false"
           [matMenuTriggerFor]="importMenu"
+          (click)="downloadCSV()"
         >
           <span class="svg-icon svg-icon-md">
             <svg
@@ -77,18 +78,11 @@
               </g>
             </svg>
           </span>
-          Export
-          <mat-icon
-            aria-hidden="false"
-            aria-label="keyboard arrow down icon"
-            class="arrow-down"
-          >
-            keyboard_arrow_down
-          </mat-icon>
+          Export to csv
         </button>
         <mat-menu #importMenu="matMenu">
           <button mat-menu-item>Table options</button>
-          <button mat-menu-item (click)="downloadCSV()">Export to csv</button>
+          <button mat-menu-item >Export to csv</button>
         </mat-menu>
       </div>
     </div>
