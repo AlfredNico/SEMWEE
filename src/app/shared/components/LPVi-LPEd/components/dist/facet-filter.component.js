@@ -50,6 +50,7 @@ var FacetFilterComponent = /** @class */ (function () {
             this.queries = this.lpviLped.permaLink['queries'];
             this.queriesNumerisFilters =
                 this.lpviLped.permaLink['queriesNumerisFilters'];
+            this.queriesTimeLineFilters = this.lpviLped.permaLink['queriesTimeLineFilters'];
         }
     };
     FacetFilterComponent.prototype.ngOnDestroy = function () { };
@@ -110,7 +111,7 @@ var FacetFilterComponent = /** @class */ (function () {
     FacetFilterComponent.prototype.callAfterNumericFilter = function (event) {
         var _this = this;
         this.lpviLped.isLoading$.next(true); // enable loading spinner
-        var q = [], ss;
+        var q = [], ss = undefined;
         this.dataSources = this.dataViews.filter(function (value, index) {
             var v = value["" + event['head']];
             if (Object.keys(_this.queriesNumerisFilters).length === 0) {
@@ -120,33 +121,42 @@ var FacetFilterComponent = /** @class */ (function () {
                     q[index] = true;
                 else
                     q[index] = false;
-                _this.numericQeury[index] = ss = q[index];
+                _this.numericQeury[index] = q[index];
                 return _this.filtersData(index);
             }
             else {
-                return Object.keys(_this.queriesNumerisFilters).every(function (x) {
-                    var s = _this.queriesNumerisFilters[x];
-                    if (v >= event['minValue'] &&
-                        v <= event['maxValue'] &&
-                        Number.isFinite(v) === true)
-                        q[index] = true;
-                    else
-                        q[index] = false;
-                    if (x === event['head'])
-                        ss = q;
-                    _this.numericQeury[index] = ss = s[index] && q[index];
-                    return _this.filtersData(index);
+                var queryIndex_1 = 0;
+                if (v >= event['minValue'] &&
+                    v <= event['maxValue'] &&
+                    Number.isFinite(v) === true)
+                    q[index] = true;
+                else
+                    q[index] = false;
+                Object.keys(_this.queriesNumerisFilters).every(function (x) {
+                    if (x != "" + event['head']) {
+                        var s = _this.queriesNumerisFilters[x];
+                        if (queryIndex_1 === 0)
+                            ss = s[index];
+                        else
+                            ss = s[index] && ss;
+                        queryIndex_1++;
+                    }
                 });
+                if (ss != undefined)
+                    _this.numericQeury[index] = q[index] && ss;
+                else
+                    _this.numericQeury[index] = q[index];
+                return _this.filtersData(index);
             }
         });
-        this.queriesNumerisFilters["" + event['head']] = this.numericQeury = q;
+        this.queriesNumerisFilters["" + event['head']] = q;
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.callAfterTimeLineEmitter = function (event) {
         var _this = this;
         this.lpviLped.isLoading$.next(true); // enable loading spinner
-        var q = [], ss = [];
+        var q = [], ss = undefined;
         this.dataSources = this.dataViews.filter(function (value, index) {
             var v = Date.parse(value["" + event['head']]);
             if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
@@ -158,20 +168,29 @@ var FacetFilterComponent = /** @class */ (function () {
                 return _this.filtersData(index);
             }
             else {
-                return Object.keys(_this.queriesTimeLineFilters).every(function (x) {
-                    var s = _this.queriesTimeLineFilters[x];
-                    // !isNaN(Date.parse(v))
-                    if (v <= event['end'] && v >= event['start'])
-                        q[index] = true;
-                    else
-                        q[index] = false;
-                    if (x === event['head'])
-                        ss = q;
-                    _this.timeLineQeury[index] = ss = s[index] && q[index];
-                    return _this.filtersData(index);
+                var queryIndex_2 = 0;
+                if (v <= event['end'] && v >= event['start'])
+                    q[index] = true;
+                else
+                    q[index] = false;
+                Object.keys(_this.queriesTimeLineFilters).every(function (x) {
+                    if (x != "" + event['head']) {
+                        var s = _this.queriesTimeLineFilters[x];
+                        if (queryIndex_2 === 0)
+                            ss = s[index];
+                        else
+                            ss = s[index] && ss;
+                        queryIndex_2++;
+                    }
                 });
+                if (ss != undefined)
+                    _this.timeLineQeury[index] = q[index] && ss;
+                else
+                    _this.timeLineQeury[index] = q[index];
+                return _this.filtersData(index);
             }
         });
+        this.queriesTimeLineFilters["" + event['head']] = q;
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
@@ -207,9 +226,26 @@ var FacetFilterComponent = /** @class */ (function () {
                 this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
             }
             else if (removeName === 'number') {
-                this.numericQeury = [];
+                var q = [], ss_1 = undefined;
+                delete this.queriesNumerisFilters[item['head']];
                 this.dataSources = this.dataViews.filter(function (value, index) {
-                    return _this.filtersData(index);
+                    if (Object.keys(_this.queriesNumerisFilters).length === 0) {
+                        _this.numericQeury[index] = true;
+                        return _this.filtersData(index);
+                    }
+                    else {
+                        var queryIndex_3 = 0;
+                        Object.keys(_this.queriesNumerisFilters).every(function (x) {
+                            var s = _this.queriesNumerisFilters[x];
+                            if (queryIndex_3 === 0)
+                                ss_1 = s[index];
+                            else
+                                ss_1 = s[index] && ss_1;
+                            queryIndex_3++;
+                        });
+                        _this.numericQeury[index] = ss_1;
+                        return _this.filtersData(index);
+                    }
                 });
                 this.lpviLped.dataSources$.next(this.dataSources);
             }
@@ -217,6 +253,30 @@ var FacetFilterComponent = /** @class */ (function () {
                 this.searchQueries = [];
                 this.dataSources = this.dataViews.filter(function (value, index) {
                     return _this.filtersData(index);
+                });
+                this.lpviLped.dataSources$.next(this.dataSources);
+            }
+            else if (removeName === 'timeLine') {
+                var q = [], ss_2 = undefined;
+                delete this.queriesTimeLineFilters[item['head']];
+                this.dataSources = this.dataViews.filter(function (value, index) {
+                    if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
+                        _this.timeLineQeury[index] = true;
+                        return _this.filtersData(index);
+                    }
+                    else {
+                        var queryIndex_4 = 0;
+                        Object.keys(_this.queriesTimeLineFilters).every(function (x) {
+                            var s = _this.queriesTimeLineFilters[x];
+                            if (queryIndex_4 === 0)
+                                ss_2 = s[index];
+                            else
+                                ss_2 = s[index] && ss_2;
+                            queryIndex_4++;
+                        });
+                        _this.timeLineQeury[index] = ss_2;
+                        return _this.filtersData(index);
+                    }
                 });
                 this.lpviLped.dataSources$.next(this.dataSources);
             }
@@ -349,7 +409,7 @@ var FacetFilterComponent = /** @class */ (function () {
                 queriesNumerisFilters: this.queriesNumerisFilters
             })
         };
-        this.lpviLped.permaLink = __assign(__assign({}, this.lpviLped.permaLink), { input: this.inputQueries, search: this.searchQueries, numeric: this.numericQeury, items: this.items, queries: this.queries, queriesNumerisFilters: this.queriesNumerisFilters });
+        this.lpviLped.permaLink = __assign(__assign({}, this.lpviLped.permaLink), { input: this.inputQueries, search: this.searchQueries, numeric: this.numericQeury, items: this.items, queries: this.queries, queriesNumerisFilters: this.queriesNumerisFilters, queriesTimeLineFilters: this.queriesTimeLineFilters });
         this.lpviLped.isLoading$.next(false); // desaable loading spinner
         this.lpEditor.addFilter(permalink).subscribe();
     };

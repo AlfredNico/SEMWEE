@@ -262,6 +262,7 @@ export class ViwerReadImportComponent
       name: [],
       queries: {},
       queriesNumerisFilters: {},
+      queriesTimeLineFilters: {}
     };
   }
 

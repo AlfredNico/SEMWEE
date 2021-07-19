@@ -153,6 +153,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       this.queries = this.lpviLped.permaLink['queries'];
       this.queriesNumerisFilters =
         this.lpviLped.permaLink['queriesNumerisFilters'];
+      this.queriesTimeLineFilters = this.lpviLped.permaLink['queriesTimeLineFilters'];
     }
   }
 
@@ -234,7 +235,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   public callAfterNumericFilter(event: any) {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
     let q = [],
-      ss;
+      ss=undefined;
 
     this.dataSources = this.dataViews.filter((value, index) => {
       const v = value[`${event['head']}`];
@@ -247,28 +248,34 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
           q[index] = true;
         else q[index] = false;
 
-        this.numericQeury[index] = ss = q[index];
+        this.numericQeury[index] = q[index];
         return this.filtersData(index);
       } else {
-        return Object.keys(this.queriesNumerisFilters).every((x) => {
-          const s = this.queriesNumerisFilters[x];
-          if (
-            v >= event['minValue'] &&
-            v <= event['maxValue'] &&
-            Number.isFinite(v) === true
-          )
-            q[index] = true;
-          else q[index] = false;
+        let queryIndex = 0;
 
-          if (x === event['head']) ss = q;
+        if (
+          v >= event['minValue'] &&
+          v <= event['maxValue'] &&
+          Number.isFinite(v) === true
+        )
+          q[index] = true;
+        else q[index] = false;
 
-          this.numericQeury[index] = ss = s[index] && q[index];
-          return this.filtersData(index);
+        Object.keys(this.queriesNumerisFilters).every((x) => {
+          if(x != `${event['head']}`){
+            const s = this.queriesNumerisFilters[x];
+            if (queryIndex === 0) ss = s[index];
+            else ss = s[index] && ss;
+            queryIndex++;
+          }
         });
+        if(ss!=undefined) this.numericQeury[index] = q[index] && ss;
+        else this.numericQeury[index] = q[index];
+        return this.filtersData(index);
       }
     });
+    this.queriesNumerisFilters[`${event['head']}`] = q;
 
-    this.queriesNumerisFilters[`${event['head']}`] = this.numericQeury = q;
     this.lpviLped.dataSources$.next(this.dataSources);
     this.savePermalink(); // SAVE PERMALINK
   }
@@ -277,7 +284,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
 
     let q = [],
-      ss = [];
+      ss=undefined;
 
     this.dataSources = this.dataViews.filter((value, index) => {
       const v = Date.parse(value[`${event['head']}`]);
@@ -287,17 +294,26 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         this.timeLineQeury[index] = ss = q[index];
         return this.filtersData(index);
       } else {
-        return Object.keys(this.queriesTimeLineFilters).every((x) => {
-          const s = this.queriesTimeLineFilters[x];
-          // !isNaN(Date.parse(v))
-          if (v <= event['end'] && v >= event['start']) q[index] = true;
-          else q[index] = false;
-          if (x === event['head']) ss = q;
-          this.timeLineQeury[index] = ss = s[index] && q[index];
-          return this.filtersData(index);
+        let queryIndex=0;
+        if (v <= event['end'] && v >= event['start']) q[index] = true;
+        else q[index] = false;
+
+        Object.keys(this.queriesTimeLineFilters).every((x) => {
+          if(x != `${event['head']}`){
+            const s = this.queriesTimeLineFilters[x];
+            if (queryIndex === 0) ss = s[index];
+            else ss = s[index] && ss;
+            queryIndex++;
+          }
         });
+
+        if(ss!=undefined) this.timeLineQeury[index] = q[index] && ss;
+        else this.timeLineQeury[index] = q[index];
+        return this.filtersData(index);
       }
     });
+
+    this.queriesTimeLineFilters[`${event['head']}`] = q;
 
     this.lpviLped.dataSources$.next(this.dataSources);
     this.savePermalink(); // SAVE PERMALINK
@@ -348,9 +364,23 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
       } else if (removeName === 'number') {
-        this.numericQeury = [];
+        let q = [], ss=undefined;
+        delete this.queriesNumerisFilters[item['head']];
         this.dataSources = this.dataViews.filter((value, index) => {
-          return this.filtersData(index);
+          if (Object.keys(this.queriesNumerisFilters).length === 0) {
+            this.numericQeury[index] = true;
+            return this.filtersData(index);
+          } else {
+            let queryIndex = 0;
+            Object.keys(this.queriesNumerisFilters).every((x) => {
+              const s = this.queriesNumerisFilters[x];
+              if (queryIndex === 0) ss = s[index];
+              else ss = s[index] && ss;
+              queryIndex++;
+            });
+            this.numericQeury[index] = ss;
+            return this.filtersData(index);
+          }
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
@@ -358,6 +388,27 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         this.searchQueries = [];
         this.dataSources = this.dataViews.filter((value, index) => {
           return this.filtersData(index);
+        });
+
+        this.lpviLped.dataSources$.next(this.dataSources);
+      } else if(removeName === 'timeLine'){
+         let q = [], ss=undefined;
+        delete this.queriesTimeLineFilters[item['head']];
+        this.dataSources = this.dataViews.filter((value, index) => {
+          if (Object.keys(this.queriesTimeLineFilters).length === 0) {
+            this.timeLineQeury[index] = true;
+            return this.filtersData(index);
+          } else {
+            let queryIndex = 0;
+            Object.keys(this.queriesTimeLineFilters).every((x) => {
+              const s = this.queriesTimeLineFilters[x];
+              if (queryIndex === 0) ss = s[index];
+              else ss = s[index] && ss;
+              queryIndex++;
+            });
+            this.timeLineQeury[index] = ss;
+            return this.filtersData(index);
+          }
         });
 
         this.lpviLped.dataSources$.next(this.dataSources);
@@ -507,6 +558,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       items: this.items,
       queries: this.queries,
       queriesNumerisFilters: this.queriesNumerisFilters,
+      queriesTimeLineFilters: this.queriesTimeLineFilters
     };
 
     this.lpviLped.isLoading$.next(false); // desaable loading spinner

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommonService } from '@app/shared/services/common.service';
 import { environment } from '@environments/environment';
-import { BehaviorSubject, interval, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
@@ -28,6 +28,7 @@ export class LpdLpdService {
     name: [],
     queries: {},
     queriesNumerisFilters: {},
+    queriesTimeLineFilters: {},
   };
 
   public formInputQuery = {};
