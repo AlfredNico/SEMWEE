@@ -50,7 +50,8 @@ var FacetFilterComponent = /** @class */ (function () {
             this.queries = this.lpviLped.permaLink['queries'];
             this.queriesNumerisFilters =
                 this.lpviLped.permaLink['queriesNumerisFilters'];
-            this.queriesTimeLineFilters = this.lpviLped.permaLink['queriesTimeLineFilters'];
+            this.queriesTimeLineFilters =
+                this.lpviLped.permaLink['queriesTimeLineFilters'];
         }
     };
     FacetFilterComponent.prototype.ngOnDestroy = function () { };
@@ -157,6 +158,8 @@ var FacetFilterComponent = /** @class */ (function () {
         var _this = this;
         this.lpviLped.isLoading$.next(true); // enable loading spinner
         var q = [], ss = undefined;
+        if (this.queriesTimeLineFilters == undefined)
+            this.queriesTimeLineFilters = {};
         this.dataSources = this.dataViews.filter(function (value, index) {
             var v = Date.parse(value["" + event['head']]);
             if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
@@ -190,7 +193,7 @@ var FacetFilterComponent = /** @class */ (function () {
                 return _this.filtersData(index);
             }
         });
-        this.queriesTimeLineFilters["" + event['head']] = q;
+        this.queriesTimeLineFilters["" + event['head']] = this.timeLineQeury;
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
@@ -250,11 +253,12 @@ var FacetFilterComponent = /** @class */ (function () {
                 this.lpviLped.dataSources$.next(this.dataSources);
             }
             else if (removeName === 'search') {
-                this.searchQueries = [];
-                this.dataSources = this.dataViews.filter(function (value, index) {
-                    return _this.filtersData(index);
-                });
-                this.lpviLped.dataSources$.next(this.dataSources);
+                // this.searchQueries = [];
+                // this.dataSources = this.dataViews.filter((value, index) => {
+                //   return this.filtersData(index);
+                // });
+                this.itemsEmitter(); // Call search filter Item after delete item
+                // this.lpviLped.dataSources$.next(this.dataSources);
             }
             else if (removeName === 'timeLine') {
                 var q = [], ss_2 = undefined;
@@ -298,23 +302,25 @@ var FacetFilterComponent = /** @class */ (function () {
                 (_a = item['content']) === null || _a === void 0 ? void 0 : _a.map(function (element) {
                     if (element['include'] == true) {
                         var q_1 = "value[\"" + item['head'] + "\"].trim()===\"" + element[0] + "\".trim()";
-                        if (i2 === 0)
+                        if (i2 == 0)
                             str = q_1;
                         else
                             str = str + "||" + q_1;
                         i2++;
                     }
                 });
-                if (i1 === 0)
-                    queries = eval(str);
-                else
-                    queries = queries && eval(str);
-                i1++;
+                if (eval(str) != (undefined || null)) {
+                    if (i1 == 0)
+                        queries = eval(str);
+                    else
+                        queries = queries && eval(str);
+                    i1++;
+                }
             });
-            _this.searchQueries[index] = queries;
+            _this.searchQueries[index] =
+                queries != (undefined || null) ? queries : true;
             return _this.filtersData(index);
         });
-        console.log(this.dataSources);
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
@@ -333,7 +339,7 @@ var FacetFilterComponent = /** @class */ (function () {
     };
     FacetFilterComponent.prototype.inputFilterFonciont = function () {
         var _this = this;
-        var qqq = '', i1 = 0;
+        var qqq = false, i1 = 0;
         this.lpviLped.isLoading$.next(true); // disable loading spinner
         this.dataSources = this.dataViews.filter(function (value, index) {
             if (Object.values(_this.queries).every(function (x) { return x === null || x === ''; })) {
@@ -341,56 +347,70 @@ var FacetFilterComponent = /** @class */ (function () {
                 return _this.filtersData(index);
             }
             else {
-                var s_1 = '', i2_1 = 0;
+                var s_1 = true, i2_1 = 0;
                 Object.keys(_this.queries).some(function (property) {
                     if (_this.queries[property] != '' &&
                         typeof value[property] === 'string' &&
                         _this.queries[property] !== undefined &&
                         _this.queries[property]['value'] !== undefined &&
                         value[property] !== undefined) {
-                        var lower = _this.queries[property]['value'];
-                        var ss = '';
-                        if (!_this.queries[property]['complete_string']) { //true
-                            if (!_this.queries[property]['sensitive']) { //true
-                                if (_this.queries[property]['invert'])
-                                    ss = "value[\"" + property + "\"].trim().includes(\"" + lower + "\".trim())";
-                                else
-                                    ss = "!value[\"" + property + "\"].trim().includes(\"" + lower + "\".trim())";
+                        var lower = _this.queries[property].value.trim();
+                        var tabQuer = value[property];
+                        var ss = true;
+                        if (!_this.queries[property].complete_string) {
+                            //true
+                            if (!_this.queries[property].sensitive) {
+                                //true
+                                if (_this.queries[property].invert) {
+                                    ss = tabQuer.includes(lower);
+                                }
+                                else {
+                                    ss = !tabQuer.includes(lower);
+                                }
                             }
                             else {
-                                if (_this.queries[property]['invert'])
-                                    ss = "value[\"" + property + "\"].trim().toLowerCase().includes(\"" + lower + "\".trim().toLowerCase())";
-                                else
-                                    ss = "!value[\"" + property + "\"].trim().toLowerCase().includes(\"" + lower + "\".trim().toLowerCase())";
+                                if (_this.queries[property].invert) {
+                                    ss = tabQuer.toLowerCase().includes(lower.toLowerCase());
+                                }
+                                else {
+                                    ss = !tabQuer.toLowerCase().includes(lower.toLowerCase());
+                                }
                             }
                         }
                         else {
-                            if (!_this.queries[property]['sensitive']) {
-                                if (_this.queries[property]['invert'])
-                                    ss = "value[\"" + property + "\"].trim()==\"" + lower + "\".trim()";
+                            if (!_this.queries[property].sensitive) {
+                                if (_this.queries[property].invert) {
+                                    ss = tabQuer == lower;
+                                }
                                 else
-                                    ss = "value[\"" + property + "\"].trim()!=\"" + lower + "\".trim()";
+                                    ss = tabQuer != lower;
                             }
                             else {
-                                if (_this.queries[property]['invert'])
-                                    ss = "value[\"" + property + "\"].trim().toLowerCase()==\"" + lower + "\".trim().toLowerCase()";
-                                else
-                                    ss = "value[\"" + property + "\"].trim().toLowerCase()!=\"" + lower + "\".trim().toLowerCase()";
+                                if (_this.queries[property].invert) {
+                                    ss = tabQuer.toLowerCase() == lower.toLowerCase();
+                                }
+                                else {
+                                    ss = tabQuer.toLowerCase() != lower.toLowerCase();
+                                }
                             }
                         }
-                        if (i2_1 === 0)
+                        if (i2_1 === 0) {
                             s_1 = ss;
-                        else
-                            s_1 = s_1 + '&&' + ss;
+                        }
+                        else {
+                            s_1 = s_1 && ss;
+                        }
                         i2_1++;
                     }
                 });
-                if (i1 === 0)
-                    qqq = eval(s_1);
-                else
-                    qqq = qqq + '&&' + eval(s_1);
+                if (i1 === 0) {
+                    qqq = s_1;
+                }
+                else {
+                    qqq = qqq && s_1;
+                }
                 i2_1++;
-                _this.inputQueries[index] = eval(qqq) !== undefined ? eval(qqq) : true;
+                _this.inputQueries[index] = qqq !== undefined ? qqq : true;
                 return _this.filtersData(index);
             }
         });

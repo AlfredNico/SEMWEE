@@ -153,7 +153,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       this.queries = this.lpviLped.permaLink['queries'];
       this.queriesNumerisFilters =
         this.lpviLped.permaLink['queriesNumerisFilters'];
-      this.queriesTimeLineFilters = this.lpviLped.permaLink['queriesTimeLineFilters'];
+      this.queriesTimeLineFilters =
+        this.lpviLped.permaLink['queriesTimeLineFilters'];
     }
   }
 
@@ -235,7 +236,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   public callAfterNumericFilter(event: any) {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
     let q = [],
-      ss=undefined;
+      ss = undefined;
 
     this.dataSources = this.dataViews.filter((value, index) => {
       const v = value[`${event['head']}`];
@@ -262,14 +263,14 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         else q[index] = false;
 
         Object.keys(this.queriesNumerisFilters).every((x) => {
-          if(x != `${event['head']}`){
+          if (x != `${event['head']}`) {
             const s = this.queriesNumerisFilters[x];
             if (queryIndex === 0) ss = s[index];
             else ss = s[index] && ss;
             queryIndex++;
           }
         });
-        if(ss!=undefined) this.numericQeury[index] = q[index] && ss;
+        if (ss != undefined) this.numericQeury[index] = q[index] && ss;
         else this.numericQeury[index] = q[index];
         return this.filtersData(index);
       }
@@ -284,7 +285,9 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     this.lpviLped.isLoading$.next(true); // enable loading spinner
 
     let q = [],
-      ss=undefined;
+      ss = undefined;
+    if (this.queriesTimeLineFilters == undefined)
+      this.queriesTimeLineFilters = {};
 
     this.dataSources = this.dataViews.filter((value, index) => {
       const v = Date.parse(value[`${event['head']}`]);
@@ -294,12 +297,12 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         this.timeLineQeury[index] = ss = q[index];
         return this.filtersData(index);
       } else {
-        let queryIndex=0;
+        let queryIndex = 0;
         if (v <= event['end'] && v >= event['start']) q[index] = true;
         else q[index] = false;
 
         Object.keys(this.queriesTimeLineFilters).every((x) => {
-          if(x != `${event['head']}`){
+          if (x != `${event['head']}`) {
             const s = this.queriesTimeLineFilters[x];
             if (queryIndex === 0) ss = s[index];
             else ss = s[index] && ss;
@@ -307,13 +310,13 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
           }
         });
 
-        if(ss!=undefined) this.timeLineQeury[index] = q[index] && ss;
+        if (ss != undefined) this.timeLineQeury[index] = q[index] && ss;
         else this.timeLineQeury[index] = q[index];
         return this.filtersData(index);
       }
     });
 
-    this.queriesTimeLineFilters[`${event['head']}`] = q;
+    this.queriesTimeLineFilters[`${event['head']}`] = this.timeLineQeury;
 
     this.lpviLped.dataSources$.next(this.dataSources);
     this.savePermalink(); // SAVE PERMALINK
@@ -321,10 +324,11 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public formGroupEmitter(event: { query: any; item: any; index: number }) {
     this.queries[event.item['head']] = event.query; //save querie from input filter
-    const index = this.items.findIndex((elem) => elem['head'] == event.item['head']);
+    const index = this.items.findIndex(
+      (elem) => elem['head'] == event.item['head']
+    );
 
-    if (index !== -1)
-       this.items[index] = {...event.item};
+    if (index !== -1) this.items[index] = { ...event.item };
 
     this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
   }
@@ -364,7 +368,8 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
       } else if (removeName === 'number') {
-        let q = [], ss=undefined;
+        let q = [],
+          ss = undefined;
         delete this.queriesNumerisFilters[item['head']];
         this.dataSources = this.dataViews.filter((value, index) => {
           if (Object.keys(this.queriesNumerisFilters).length === 0) {
@@ -385,14 +390,15 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.lpviLped.dataSources$.next(this.dataSources);
       } else if (removeName === 'search') {
-        this.searchQueries = [];
-        this.dataSources = this.dataViews.filter((value, index) => {
-          return this.filtersData(index);
-        });
-
-        this.lpviLped.dataSources$.next(this.dataSources);
-      } else if(removeName === 'timeLine'){
-         let q = [], ss=undefined;
+        // this.searchQueries = [];
+        // this.dataSources = this.dataViews.filter((value, index) => {
+        //   return this.filtersData(index);
+        // });
+        this.itemsEmitter(); // Call search filter Item after delete item
+        // this.lpviLped.dataSources$.next(this.dataSources);
+      } else if (removeName === 'timeLine') {
+        let q = [],
+          ss = undefined;
         delete this.queriesTimeLineFilters[item['head']];
         this.dataSources = this.dataViews.filter((value, index) => {
           if (Object.keys(this.queriesTimeLineFilters).length === 0) {
@@ -431,22 +437,22 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         item['content']?.map((element: any) => {
           if (element['include'] == true) {
             const q = `value["${item['head']}"].trim()==="${element[0]}".trim()`;
-            if (i2 === 0) str = q;
+            if (i2 == 0) str = q;
             else str = `${str}||${q}`;
             i2++;
           }
         });
-
-        if (i1 === 0) queries = eval(str);
-        else queries = queries && eval(str);
-        i1++;
+        if (eval(str) != (undefined || null)) {
+          if (i1 == 0) queries = eval(str);
+          else queries = queries && eval(str);
+          i1++;
+        }
       });
-      this.searchQueries[index] = queries;
+      this.searchQueries[index] =
+        queries != (undefined || null) ? queries : true;
 
       return this.filtersData(index);
     });
-
-    console.log(this.dataSources);
 
     this.lpviLped.dataSources$.next(this.dataSources);
 
@@ -469,7 +475,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private inputFilterFonciont() {
-    let qqq = '',
+    let qqq = false,
       i1 = 0;
     this.lpviLped.isLoading$.next(true); // disable loading spinner
 
@@ -479,7 +485,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         return this.filtersData(index);
       } else {
-        let s = '',
+        let s = true,
           i2 = 0;
         Object.keys(this.queries).some((property) => {
           if (
@@ -489,47 +495,55 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             this.queries[property]['value'] !== undefined &&
             value[property] !== undefined
           ) {
-            const lower = (
-              this.queries[property]['value'] as string
-            );
-            let ss = '';
+            const lower = this.queries[property].value.trim() as string;
+            const tabQuer = value[property] as string;
+            let ss = true;
 
-            if (!this.queries[property]['complete_string']) { //true
-              if (!this.queries[property]['sensitive']) {  //true
-                if (this.queries[property]['invert'])
-                  ss = `value["${property}"].trim().includes("${lower}".trim())`;
-                else
-                  ss = `!value["${property}"].trim().includes("${lower}".trim())`;
+            if (!this.queries[property].complete_string) {
+              //true
+              if (!this.queries[property].sensitive) {
+                //true
+                if (this.queries[property].invert) {
+                  ss = tabQuer.includes(lower);
+                } else {
+                  ss = !tabQuer.includes(lower);
+                }
               } else {
-                 if (this.queries[property]['invert'])
-                  ss = `value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
-                else
-                  ss = `!value["${property}"].trim().toLowerCase().includes("${lower}".trim().toLowerCase())`;
+                if (this.queries[property].invert) {
+                  ss = tabQuer.toLowerCase().includes(lower.toLowerCase());
+                } else {
+                  ss = !tabQuer.toLowerCase().includes(lower.toLowerCase());
+                }
               }
             } else {
-              if (!this.queries[property]['sensitive']) {
-                if (this.queries[property]['invert'])
-                  ss = `value["${property}"].trim()=="${lower}".trim()`;
-                else
-                  ss = `value["${property}"].trim()!="${lower}".trim()`;
-              }else{
-                 if (this.queries[property]['invert'])
-                  ss = `value["${property}"].trim().toLowerCase()=="${lower}".trim().toLowerCase()`;
-                else
-                  ss = `value["${property}"].trim().toLowerCase()!="${lower}".trim().toLowerCase()`;
+              if (!this.queries[property].sensitive) {
+                if (this.queries[property].invert) {
+                  ss = tabQuer == lower;
+                } else ss = tabQuer != lower;
+              } else {
+                if (this.queries[property].invert) {
+                  ss = tabQuer.toLowerCase() == lower.toLowerCase();
+                } else {
+                  ss = tabQuer.toLowerCase() != lower.toLowerCase();
+                }
               }
             }
 
-            if (i2 === 0) s = ss;
-            else s = s + '&&' + ss;
+            if (i2 === 0) {
+              s = ss;
+            } else {
+              s = s && ss;
+            }
             i2++;
           }
         });
-        if (i1 === 0) qqq = eval(s);
-        else qqq = qqq + '&&' + eval(s);
+        if (i1 === 0) {
+          qqq = s;
+        } else {
+          qqq = qqq && s;
+        }
         i2++;
-        this.inputQueries[index] = eval(qqq) !== undefined ? eval(qqq) : true;
-
+        this.inputQueries[index] = qqq !== undefined ? qqq : true;
         return this.filtersData(index);
       }
     });
@@ -558,7 +572,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
       items: this.items,
       queries: this.queries,
       queriesNumerisFilters: this.queriesNumerisFilters,
-      queriesTimeLineFilters: this.queriesTimeLineFilters
+      queriesTimeLineFilters: this.queriesTimeLineFilters,
     };
 
     this.lpviLped.isLoading$.next(false); // desaable loading spinner
