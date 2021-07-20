@@ -51,10 +51,10 @@ var LpdLpdService = /** @class */ (function () {
         this.ROUTER_URL = environment_1.environment.baseUrl + "/lpviewer";
         this.isLoading$.subscribe(function (res) {
             if (res === true)
-                _this.common.showSpinner('table', true, '');
+                _this.common.showSpinner("table", true, "");
             else
                 setTimeout(function () {
-                    _this.common.hideSpinner('table');
+                    _this.common.hideSpinner("table");
                 }, 500);
         });
     }
@@ -65,11 +65,11 @@ var LpdLpdService = /** @class */ (function () {
             .pipe(operators_1.map(function (res) {
             var _a;
             if (res[3].length !== 0)
-                _this.permaLink = __assign({}, JSON.parse(res[3][0]['value']));
+                _this.permaLink = __assign({}, JSON.parse(res[3][0]["value"]));
             if (res[2].length !== 0)
-                _this.formInputQuery = __assign({}, JSON.parse(res[2][0]['value']));
-            var header = JSON.parse(JSON.stringify((_a = res[0][0]) === null || _a === void 0 ? void 0 : _a.nameUpdate.split('"').join(''))).split(',');
-            header.unshift('all');
+                _this.formInputQuery = __assign({}, JSON.parse(res[2][0]["value"]));
+            var header = JSON.parse(JSON.stringify((_a = res[0][0]) === null || _a === void 0 ? void 0 : _a.nameUpdate.split('"').join(""))).split(",");
+            header.unshift("all");
             return {
                 headerOrigin: header,
                 data: res[1],
@@ -80,13 +80,13 @@ var LpdLpdService = /** @class */ (function () {
             };
         }));
     };
+    //remove-all-projects
     LpdLpdService.prototype.removeAllProjects = function (idUser) {
-        console.log(idUser);
         return this.http.post(this.ROUTER_URL + "/remove-all-projects", { idUser: idUser });
     };
     LpdLpdService = __decorate([
         core_1.Injectable({
-            providedIn: 'root'
+            providedIn: "root"
         })
     ], LpdLpdService);
     return LpdLpdService;
