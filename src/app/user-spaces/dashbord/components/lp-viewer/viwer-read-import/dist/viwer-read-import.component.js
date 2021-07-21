@@ -55,7 +55,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
         this.dataAfterUploaded = undefined;
         this.inputFilters = undefined;
         this.isFavorate = false;
-        this.projectName = '';
+        this.projectName = "";
         this.formfilterStart = new forms_1.FormGroup({
             first: new forms_1.FormControl(false),
             second: new forms_1.FormControl(false)
@@ -64,16 +64,16 @@ var ViwerReadImportComponent = /** @class */ (function () {
         this.isLooading = true;
         this.dataSourceFilterStart = [];
         this.tabIndex = 0;
-        this.icon = '';
-        this.active = '';
-        this.undoRedoLabel = 'Undo/Redo 0/0';
+        this.icon = "";
+        this.active = "";
+        this.undoRedoLabel = "Undo/Redo 0/0";
         this.dataViews = [];
         this.dataSourceFilter = [];
         this.isFiltered = false;
         this.formGroup = this.fb.group({});
         this.items = [];
         this.vueEdit = false;
-        this.selected = 'string';
+        this.selected = "string";
         this.listNameHistory = [];
         this.ActualyData = null;
         this.indexRowdata = undefined;
@@ -83,6 +83,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
         this.CountCell = 0;
         this.top = 0;
         this.left = null;
+        this.isloadingHistory = false;
     }
     ViwerReadImportComponent.prototype.ngOnChanges = function () {
         var _this = this;
@@ -90,10 +91,11 @@ var ViwerReadImportComponent = /** @class */ (function () {
         if (this.dataAfterUploaded != undefined) {
             this.lpviLped.itemsObservables$.next(undefined);
             if (Object.keys(this.dataAfterUploaded).length === 6) {
-                this.displayedColumns = this.dataAfterUploaded['headerOrigin'];
-                this.dataViews = this.dataAfterUploaded['data'];
-                this.listNameHistory = this.dataAfterUploaded['name'];
-                this.projectName = this.dataAfterUploaded['projectName'];
+                // console.log(this.dataAfterUploaded)
+                this.displayedColumns = this.dataAfterUploaded["headerOrigin"];
+                this.dataViews = this.dataAfterUploaded["data"];
+                this.listNameHistory = this.dataAfterUploaded["name"];
+                this.projectName = this.dataAfterUploaded["projectName"];
                 this.items = this.lpviLped.permaLink.items;
                 Object.values(this.lpviLped.permaLink).map(function (x) {
                     if (Array.isArray(x) === true)
@@ -111,19 +113,19 @@ var ViwerReadImportComponent = /** @class */ (function () {
                     this.dataSource = (_b = this.dataSourceFilter) === null || _b === void 0 ? void 0 : _b.slice(0, 10);
                 }
                 this.isLooading = false;
-                this.projectName = this.dataAfterUploaded['projectName'];
+                this.projectName = this.dataAfterUploaded["projectName"];
             }
             else {
                 this.items = []; //set items filters
                 setTimeout(function () {
-                    _this.readCsvFile(_this.dataAfterUploaded['file'], _this.dataAfterUploaded['idProject']);
-                    _this.projectName = _this.dataAfterUploaded['projectName'];
+                    _this.readCsvFile(_this.dataAfterUploaded["file"], _this.dataAfterUploaded["idProject"]);
+                    _this.projectName = _this.dataAfterUploaded["projectName"];
                 }, 500);
                 this.listNameHistory = [
                     {
                         idName: 0,
-                        name: 'Create project',
-                        idProject: this.dataAfterUploaded['idProject']
+                        name: "Create project",
+                        idProject: this.dataAfterUploaded["idProject"]
                     },
                 ];
             }
@@ -138,7 +140,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
         }
     };
     ViwerReadImportComponent.prototype.processCsv = function (content) {
-        return content.split('\n');
+        return content.split("\n");
     };
     ViwerReadImportComponent.prototype.readFileContent = function (file) {
         var reader = new FileReader();
@@ -155,9 +157,9 @@ var ViwerReadImportComponent = /** @class */ (function () {
             try {
                 var csv_1 = [];
                 var lines = _this.processCsv(csvContent);
-                var sep1 = lines[0].split(';').length;
-                var sep2 = lines[0].split(',').length;
-                var csvSeparator_1 = sep1 > sep2 ? ';' : ',';
+                var sep1 = lines[0].split(";").length;
+                var sep2 = lines[0].split(",").length;
+                var csvSeparator_1 = sep1 > sep2 ? ";" : ",";
                 lines.forEach(function (element) {
                     var cols = element.split(csvSeparator_1);
                     csv_1.push(cols);
@@ -165,22 +167,26 @@ var ViwerReadImportComponent = /** @class */ (function () {
                 var parsedCsv_1 = csv_1;
                 parsedCsv_1.pop();
                 setTimeout(function () {
-                    var header = parsedCsv_1.shift().toString().split(',');
-                    _this.displayedColumns = __spreadArrays(new Set(__spreadArrays(header))).filter(function (item) { return item != undefined && item != ''; });
+                    var header = parsedCsv_1.shift().toString().split(",");
+                    _this.displayedColumns = __spreadArrays(new Set(__spreadArrays(header))).filter(function (item) { return item != undefined && item != ""; });
                     setTimeout(function () {
                         var content = parsedCsv_1.map(function (value, indexMap) {
                             return value.reduce(function (tdObj, td, index) {
                                 tdObj[header[index]] = td;
                                 return tdObj;
-                            }, { star: false, flag: false, index: indexMap + 1 });
+                            }, {
+                                star: false,
+                                flag: false,
+                                index: indexMap + 1
+                            });
                         });
-                        _this.displayedColumns.unshift('all');
+                        _this.displayedColumns.unshift("all");
                         _this.dataViews = _this.dataSourceFilter = content;
                         _this.dataSource = _this.dataSourceFilter.slice(0, 10);
                         _this.isLooading = false;
                         _this.lpViewer
                             .sendFiles({
-                            namehistory: 'Create project',
+                            namehistory: "Create project",
                             idProject: idProject,
                             fileData: _this.dataViews,
                             idHeader: 0,
@@ -218,9 +224,13 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
+        this.lpViewer.isloadingHistory.subscribe(function (res) {
+            console.log("test loading valeur : ", res);
+            _this.isloadingHistory = res ? true : false;
+        });
         this.lpviLped.searchReplace$.subscribe(function (value) {
             if (value !== undefined) {
-                _this.Columns_replace = value['head'];
+                _this.Columns_replace = value["head"];
             }
         });
         this.lpviLped.dataSources$.subscribe(function (res) {
@@ -250,7 +260,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
                 noHiddenRows: this.displayedColumns,
                 hiddenRows: []
             },
-            width: '70%'
+            width: "70%"
         })
             .afterClosed()
             .pipe(operators_1.map(function (result) {
@@ -265,8 +275,9 @@ var ViwerReadImportComponent = /** @class */ (function () {
         this.savedata(name_dinamic);
     };
     ViwerReadImportComponent.prototype.updateStart = function (value, indice, nameUpdate) {
+        this.lpViewer.isloadingHistory.next(true);
         var name_dinamic;
-        if (nameUpdate === 'Star') {
+        if (nameUpdate === "Star") {
             value.star = value.star ? false : true;
             name_dinamic = value.star
                 ? nameUpdate + " row " + indice
@@ -301,6 +312,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
         }, actualydata)
             .subscribe(function (res) {
             _this.listNameHistory.push(res);
+            _this.lpViewer.isloadingHistory.next(false);
         });
         this.ActualyData = null;
     };
@@ -310,7 +322,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
             .open(updates_header_component_1.UpdatesHeaderComponent, {
             data: {
                 index: index,
-                idHeader: this.dataAfterUploaded[0][0]['_id'],
+                idHeader: this.dataAfterUploaded[0][0]["_id"],
                 edidtableColumns: this.edidtableColumns
             }
         })
@@ -320,19 +332,19 @@ var ViwerReadImportComponent = /** @class */ (function () {
         this.tabIndex = tabChangeEvent.index;
     };
     ViwerReadImportComponent.prototype.sortData = function ($e) {
-        $e.direction === 'asc'
-            ? (this.icon = 'asc')
-            : $e.direction === 'desc'
-                ? (this.icon = 'desc')
-                : (this.icon = '');
+        $e.direction === "asc"
+            ? (this.icon = "asc")
+            : $e.direction === "desc"
+                ? (this.icon = "desc")
+                : (this.icon = "");
         this.active = $e.active;
         var data = this.dataSource.slice();
-        if (!$e.active || $e.direction === '') {
+        if (!$e.active || $e.direction === "") {
             this.dataSource = data;
             return;
         }
         this.dataSource = data.sort(function (a, b) {
-            var isAsc = $e.direction === 'asc';
+            var isAsc = $e.direction === "asc";
             switch ($e.active) {
                 case $e.active:
                     return compare(a["" + $e.active], b["" + $e.active], isAsc);
@@ -343,9 +355,9 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.isColumnDisplay = function (column) {
         switch (true) {
-            case column.toLowerCase().includes('idproject'):
-            case column.toLowerCase().includes('_id'):
-            case column.toLowerCase().includes('_v'):
+            case column.toLowerCase().includes("idproject"):
+            case column.toLowerCase().includes("_id"):
+            case column.toLowerCase().includes("_v"):
                 return true;
             default:
                 return false;
@@ -360,9 +372,9 @@ var ViwerReadImportComponent = /** @class */ (function () {
     ViwerReadImportComponent.prototype.downloadCSV = function () {
         var _this = this;
         var csvOptions = {
-            fieldSeparator: ';',
+            fieldSeparator: ";",
             quoteStrings: '"',
-            decimalseparator: '.',
+            decimalseparator: ".",
             showLabels: true,
             showTitle: false,
             useBom: false,
@@ -374,7 +386,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
             .getHeaderExport(this.idProject, this.idHeader)
             .subscribe(function (res) {
             if (res) {
-                header_now = res[0]['nameUpdate'].split(',');
+                header_now = res[0]["nameUpdate"].split(",");
                 var tabnewObject_1 = [];
                 _this.dataViews.forEach(function (valueObject) {
                     var object = {};
@@ -384,7 +396,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
                     tabnewObject_1.push(object);
                 });
                 csvOptions.headers = header_now;
-                new Angular_csv_1.AngularCsv(tabnewObject_1, res[1]['nameProject'], csvOptions);
+                new Angular_csv_1.AngularCsv(tabnewObject_1, res[1]["nameProject"], csvOptions);
             }
         });
     };
@@ -397,7 +409,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
             return __assign(__assign({}, val), { include: false });
         });
         this.lpviLped.itemsObservables$.next({
-            type: 'search',
+            type: "search",
             isMinimize: false,
             head: column,
             content: value,
@@ -407,10 +419,10 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.inputFilter = function (column) {
         this.lpviLped.itemsObservables$.next({
-            type: 'input',
+            type: "input",
             isMinimize: false,
             head: column,
-            value: '',
+            value: "",
             invert: true,
             sensitive: false,
             complete_string: false
@@ -419,7 +431,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.searchReplace = function (column) {
         this.lpviLped.searchReplace$.next({
-            type: 'search_replace',
+            type: "search_replace",
             isMinimize: false,
             head: column
         });
@@ -427,78 +439,148 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.dateFilter = function (column) {
         this.lpviLped.itemsObservables$.next({
-            type: 'datefilter',
+            type: "datefilter",
             isMinimize: false,
             head: column,
-            value: ''
+            value: ""
         });
     };
-    ViwerReadImportComponent.prototype.numericFacter = function (column) {
-        this.selectedIndex = 0;
-        var result = this.dataViews.reduce(function (item, value) {
-            if (Number.isInteger(Number(value[column])) === true) {
-                if (item.minNumber > value[column])
-                    item.minNumber = value[column];
-                if (item.maxNumber < value[column])
-                    item.maxNumber = value[column];
+    ViwerReadImportComponent.prototype.allDataIsAnumber = function (value, nameCells, type) {
+        var test = true;
+        var testType = "";
+        var i = 0;
+        if (type === "number") {
+            while (test && value.length > i) {
+                if (!/^[0-9]+[\.,]?[0-9]*$/.test(value[i][nameCells])) {
+                    test = false;
+                }
+                if (typeof value[i][nameCells] === "string")
+                    testType = "string";
+                i++;
             }
-            return item;
-        }, {
-            maxNumber: this.dataViews[0][column],
-            minNumber: this.dataViews[0][column]
-        });
-        if (result.minNumber &&
-            result.maxNumber &&
-            typeof result.minNumber == 'number' &&
-            typeof result.maxNumber == 'number') {
+        }
+        else {
+            var regex1 = /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
+            var regex3 = /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+            while (test && value.length > i) {
+                if (!regex1.test(value[i][nameCells]) &&
+                    !regex3.test(value[i][nameCells])) {
+                    test = false;
+                }
+                if (regex1.test(value[i][nameCells]))
+                    testType = "string";
+                i++;
+            }
+        }
+        return [test, testType, i];
+    };
+    ViwerReadImportComponent.prototype.numericFacter = function (column) {
+        var _this = this;
+        var test = this.allDataIsAnumber(this.dataViews, column, "number");
+        if (!test[0]) {
+            alert("there is a invalid number on row " + test[2]);
+        }
+        else if (test[0] && test[1] === "string") {
+            this.dataViews.forEach(function (item) {
+                var replace = typeof item[column] === "string"
+                    ? item[column].replace(",", ".")
+                    : item[column];
+                var parsed = parseFloat(replace);
+                if (typeof item[column] === "string") {
+                    if (!isNaN(parsed)) {
+                        item[column] = parsed;
+                        _this.CountCell++;
+                    }
+                }
+            });
+            var names = "Update on " + this
+                .CountCell++ + " cells in column " + column + ": value.toNumber()";
+            var tab = [false, "", names];
+        }
+        if (test[0]) {
+            var minValue_1 = 100000, maxValue_1 = 0;
+            this.dataViews.map(function (item) {
+                if (Number.isInteger(Number(item[column])) === true) {
+                    if (Number(item[column]) >= maxValue_1)
+                        maxValue_1 = Number(item[column]);
+                    if (Number(item[column]) <= minValue_1)
+                        minValue_1 = Number(item[column]);
+                }
+            });
             var options = {
-                floor: Math.trunc(result.minNumber),
-                ceil: Math.trunc(result.maxNumber),
+                floor: minValue_1,
+                ceil: maxValue_1,
                 hidePointerLabels: true,
                 hideLimitLabels: true,
                 draggableRange: true,
                 showSelectionBar: true
             };
             this.lpviLped.itemsObservables$.next({
-                type: 'numeric',
+                type: "numeric",
                 isMinimize: false,
                 head: column,
-                minValue: result.minNumber,
-                maxValue: result.maxNumber,
+                minValue: minValue_1,
+                maxValue: maxValue_1,
+                min: minValue_1,
+                max: maxValue_1,
                 options: options,
                 invert: true
             });
+            this.selectedIndex = 0;
         }
-        else
-            this.notifs.info(column + " is not a type Number");
     };
     ViwerReadImportComponent.prototype.timeLineFacter = function (column) {
-        this.selectedIndex = 0;
-        var result = this.dataViews.reduce(function (item, value) {
-            if (item.minDate > value[column])
-                item.minDate = value[column];
-            if (item.maxDate < value[column])
-                item.maxDate = value[column];
-            return item;
-        }, {
-            maxDate: this.dataViews[0][column],
-            minDate: this.dataViews[0][column]
-        });
-        if (result.maxDate &&
-            result.minDate &&
-            (result === null || result === void 0 ? void 0 : result.maxDate.toString().length) == 25 &&
-            (result === null || result === void 0 ? void 0 : result.minDate.toString().length) == 25) {
+        var _this = this;
+        var test = this.allDataIsAnumber(this.dataViews, column, "date");
+        if (!test[0]) {
+            alert("There is a date that is not in iso format on row " + test[2]);
+        }
+        else if (test[0] && test[1] === "string") {
+            console.log("commencement de convertion.");
+            var regex2_1 = new RegExp("[-]");
+            this.dataViews.forEach(function (item) {
+                var tab = item[column].split(regex2_1);
+                if (/^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/.test(item[column])) {
+                    item[column] = moment(tab[0] + "-" + tab[1] + "-" + tab[2], "YYYY-MM-DD", true).format();
+                    _this.CountCell++;
+                }
+                else {
+                    var tab1 = tab[2].toString().split("T");
+                    item[column] = moment(tab1[0] + "-" + tab[1] + "-" + tab[0], "DD-MM-YYYY", true).format();
+                    _this.CountCell++;
+                }
+            });
+            var names = "Update on " + this
+                .CountCell++ + " cells in column " + column + ": value.toDate()";
+            var tab = [false, "", names];
+            this.toggleedit(tab);
+        }
+        //--------END CONVERTION-----
+        //--------FILTER DATE ----------
+        if (test[0]) {
+            var result = this.dataViews.reduce(function (item, value) {
+                if (item.minDate > value[column])
+                    item.minDate = value[column];
+                if (item.maxDate < value[column])
+                    item.maxDate = value[column];
+                return item;
+            }, {
+                maxDate: this.dataViews[0][column],
+                minDate: this.dataViews[0][column]
+            });
             this.lpviLped.itemsObservables$.next({
-                type: 'timeLine',
+                type: "timeLine",
                 isMinimize: false,
                 head: column,
                 startDate: result === null || result === void 0 ? void 0 : result.minDate,
                 endDate: result === null || result === void 0 ? void 0 : result.maxDate,
+                min: result === null || result === void 0 ? void 0 : result.minDate,
+                max: result === null || result === void 0 ? void 0 : result.maxDate,
                 invert: true
             });
+            this.selectedIndex = 0;
         }
-        else
-            this.notifs.info(column + " is not a type DateTime");
+        //------------END FILTER---------------
     };
     ViwerReadImportComponent.prototype.tooglevueEdit = function ($event) {
         this.vueEdit = false;
@@ -506,13 +588,13 @@ var ViwerReadImportComponent = /** @class */ (function () {
     ViwerReadImportComponent.prototype.positionPopup = function ($event) {
         var i = 0;
         while (true) {
-            if ($event.path[i].nodeName === 'TD') {
+            if ($event.path[i].nodeName === "TD") {
                 this.domTab = $event.path[i];
                 break;
             }
             i++;
         }
-        this.domTab.style.fontWeight = 'bold';
+        this.domTab.style.fontWeight = "bold";
         var totaleleft = 41 - $event.offsetX;
         var totaletop = $event.clientY - 6 - ($event.offsetY + 2);
         this.top = totaletop;
@@ -530,7 +612,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
         this.positionPopup($event);
         var regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
         if (regex3.exec(value[namecells])) {
-            this.selected = 'object';
+            this.selected = "object";
         }
         else {
             this.selected = typeof value[namecells];
@@ -542,16 +624,17 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.toggleedit = function (value) {
         var _this = this;
-        var numbercoll = '';
+        // console.log(value)
+        var numbercoll = "";
         if (value[2] === undefined) {
-            this.domTab.style.fontWeight = 'initial';
+            this.domTab.style.fontWeight = "initial";
             numbercoll =
                 this.CountCell === 0
                     ? "Edit single cell on row " + (this.objectOne[0] + 1) + ","
                     : "Mass edit " + this.CountCell + " cells in ";
         }
         this.vueEdit = value[0];
-        if (value[1] === '' && this.testConverter) {
+        if (value[1] === "" && this.testConverter) {
             this.indexRowdata = undefined;
             var name_dinamic = value[2] === undefined
                 ? numbercoll + " column " + this.nameCells
@@ -574,6 +657,7 @@ var ViwerReadImportComponent = /** @class */ (function () {
             }, actualydata)
                 .subscribe(function (res) {
                 _this.listNameHistory.push(res);
+                _this.lpViewer.isloadingHistory.next(false);
             });
             this.ActualyData = null;
         }
@@ -585,21 +669,23 @@ var ViwerReadImportComponent = /** @class */ (function () {
         var _this = this;
         var regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
         if (regex3.exec(newValue) || regex3.exec(this.lastValue)) {
-            var regex2 = new RegExp('[-\\/ ]');
+            var regex2 = new RegExp("[-\\/ ]");
             var tab_1 = newValue.split(regex2);
-            var tab1_1 = tab_1[2].toString().split('T');
+            var tab1_1 = tab_1[2].toString().split("T");
             this.dataViews.forEach(function (item) {
                 if (regex3.exec(item[_this.nameCells]) &&
-                    item[_this.nameCells].split('T')[0] === _this.lastValue.split('T')[0]) {
-                    item[_this.nameCells] = moment(tab1_1[0] + "-" + tab_1[1] + "-" + tab_1[0], 'DD-MM-YYYY', true).format('DD/MM/YYYY');
+                    item[_this.nameCells].split("T")[0] ===
+                        _this.lastValue.split("T")[0]) {
+                    item[_this.nameCells] = moment(tab_1[0] + "-" + tab_1[1] + "-" + tab1_1[0], "YYYY-MM-DD", true).format("YYYY-MM-DD");
+                    _this.CountCell++;
                 }
-                _this.CountCell++;
             });
         }
         else {
             this.dataViews.forEach(function (item) {
                 if (item[_this.nameCells] === _this.lastValue.toString() ||
-                    parseInt(item[_this.nameCells]) === parseInt(_this.lastValue) ||
+                    parseInt(item[_this.nameCells]) ===
+                        parseInt(_this.lastValue) ||
                     item[_this.nameCells] === _this.lastValue) {
                     item[_this.nameCells] = newValue.toString();
                     _this.CountCell++;
@@ -607,73 +693,77 @@ var ViwerReadImportComponent = /** @class */ (function () {
             });
         }
     };
-    ViwerReadImportComponent.prototype.ConverterToNumber = function (newValue) {
-        var _this = this;
-        // const parsed = parseInt(newValue);
-        var replace = typeof newValue === 'string' ? newValue.replace(',', '.') : newValue;
-        var parsed = parseFloat(replace);
-        if (isNaN(parsed)) {
-            alert('not a valid number');
-            this.testConverter = false;
+    ViwerReadImportComponent.prototype.filterInt = function (value) {
+        if (/^[0-9]+[\.,]?[0-9]*$/.test(value)) {
+            return true;
         }
         else {
-            this.dataViews.forEach(function (item) {
-                if (item[_this.nameCells] === _this.lastValue.toString() ||
-                    (parseInt(item[_this.nameCells]) &&
-                        parseInt(item[_this.nameCells]) === _this.lastValue) ||
-                    item[_this.nameCells] === _this.lastValue) {
-                    item[_this.nameCells] = parsed;
-                    _this.CountCell++;
-                }
-            });
+            return false;
+        }
+    };
+    ViwerReadImportComponent.prototype.ConverterToNumber = function (newValue) {
+        var _this = this;
+        if (typeof newValue === "string") {
+            if (!this.filterInt(newValue.trim())) {
+                alert("Not a valid number !");
+                this.testConverter = false;
+            }
+            else {
+                var replace = typeof newValue === "string"
+                    ? newValue.replace(",", ".")
+                    : newValue;
+                var parsed_1 = parseFloat(replace);
+                this.dataViews.forEach(function (item) {
+                    if (item[_this.nameCells] === _this.lastValue.toString() ||
+                        (parseInt(item[_this.nameCells]) &&
+                            parseInt(item[_this.nameCells]) ===
+                                _this.lastValue) ||
+                        item[_this.nameCells] === _this.lastValue) {
+                        item[_this.nameCells] = parsed_1;
+                        _this.CountCell++;
+                    }
+                });
+            }
+        }
+        else if (typeof newValue === "object") {
+            alert("Not a valid number !");
+            this.testConverter = false;
         }
     };
     ViwerReadImportComponent.prototype.ConverterToDate = function (newValue) {
         var _this = this;
-        var reg = /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
-        var reg1 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])$/;
-        var regex3 = /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
-        var string_date = newValue;
-        var regex2 = new RegExp('[-\\/ ]');
+        var reg = /^([0-2][0-9]|(3)[0-1])[-](((0)[0-9])|((1)[0-2]))[-]\d{4}$/;
+        var reg1 = /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
+        var regex3 = /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+        var string_date = typeof newValue === "string" ? newValue.trim() : newValue;
+        var regex2 = new RegExp("[-]");
         // .format('YYYY/MM/DD');
         if (reg1.exec(string_date)) {
             var tab_2 = string_date.split(regex2);
             this.dataViews.forEach(function (item) {
                 if (item[_this.nameCells] === _this.lastValue.toString()) {
-                    item[_this.nameCells] = moment(tab_2[0] + "-" + tab_2[1] + "-" + tab_2[2], 'YYYY-MM-DD', true).format();
+                    item[_this.nameCells] = moment(tab_2[0] + "-" + tab_2[1] + "-" + tab_2[2], "YYYY-MM-DD", true).format();
                     _this.CountCell++;
                 }
             });
             // .format('DD'/MM/YYYY);
         }
         else if (reg.exec(string_date)) {
-            var tab_3 = string_date.split(regex2);
-            this.dataViews.forEach(function (item) {
-                if (item[_this.nameCells] === _this.lastValue.toString()) {
-                    item[_this.nameCells] = moment(tab_3[0] + "-" + tab_3[1] + "-" + tab_3[2], 'DD-MM-YYYY', true).format();
-                    _this.CountCell++;
-                }
-            });
-        }
-        else if (regex3.exec(string_date)) {
-            var tab_4 = string_date.split(regex2);
-            var tab1_2 = tab_4[2].toString().split('T');
-            this.dataViews.forEach(function (item) {
-                if (regex3.exec(item[_this.nameCells]) &&
-                    item[_this.nameCells].split('T')[0] === _this.lastValue.split('T')[0]) {
-                    item[_this.nameCells] = moment(tab1_2[0] + "-" + tab_4[1] + "-" + tab_4[0], 'DD-MM-YYYY', true).format();
-                    _this.CountCell++;
-                }
-            });
-        }
-        else {
-            alert('format date incorrect');
+            alert("Make the date in iso format");
             this.testConverter = false;
         }
+        else if (!regex3.exec(string_date)) {
+            alert("format date incorrect");
+            this.testConverter = false;
+        }
+        // else {
+        //   // alert('format date incorrect');
+        //   // this.testConverter = false;
+        // }
     };
     ViwerReadImportComponent.prototype.ConverterToBooleen = function (newValue) {
         var _this = this;
-        if (newValue != 'true' || !newValue) {
+        if (newValue != "true" || !newValue) {
             this.dataViews.forEach(function (item) {
                 if (item[_this.nameCells] === _this.lastValue.toString() ||
                     (parseInt(item[_this.nameCells]) &&
@@ -697,51 +787,51 @@ var ViwerReadImportComponent = /** @class */ (function () {
         }
     };
     ViwerReadImportComponent.prototype.oneObjectfunc = function (updateObject) {
-        if (updateObject[1] === 'string') {
+        if (updateObject[1] === "string") {
             this.ConverterToString(updateObject[0]);
         }
-        else if (updateObject[1] === 'number') {
+        else if (updateObject[1] === "number") {
             this.ConverterToNumber(updateObject[0]);
         }
-        else if (updateObject[1] === 'boolean') {
+        else if (updateObject[1] === "boolean") {
             this.ConverterToBooleen(updateObject[0]);
         }
-        else if (updateObject[1] === 'object') {
+        else if (updateObject[1] === "object") {
             this.ConverterToDate(updateObject[0]);
         }
     };
     ViwerReadImportComponent.prototype.updateDisplaycolumn = function (newHeader) {
         this.nameHeader.forEach(function (value, index) {
-            var textValue = value['_elementRef'].nativeElement.innerText;
+            var textValue = value["_elementRef"].nativeElement.innerText;
             if (textValue !== newHeader[index].trim())
-                value['_elementRef'].nativeElement.innerText = newHeader[index].trim();
+                value["_elementRef"].nativeElement.innerText =
+                    newHeader[index].trim();
         });
     };
     ViwerReadImportComponent.prototype.getAllDataByListName = function (value) {
         var _this = this;
-        this.lpviLped.isLoading$.next(true); // enable loading spinner
         this.ActualyData = value;
         this.idHeader = value.idHeader;
         this.lpViewer.getOnedateHistory(value).subscribe(function (response) {
-            var header = JSON.parse(JSON.stringify(response[1]['nameUpdate'].split('"').join(''))).split(',');
+            var header = JSON.parse(JSON.stringify(response[1]["nameUpdate"].split('"').join(""))).split(",");
             _this.updateDisplaycolumn(header);
-            _this.idHeader = response[1]['idHeader'];
-            var min = _this.paginator.pageIndex * _this.paginator.pageSize;
+            _this.idHeader = response[1]["idHeader"];
+            // let min = this.paginator.pageIndex * this.paginator.pageSize;
             var max = (_this.paginator.pageIndex + 1) * _this.paginator.pageSize;
             _this.dataViews = response[0];
-            _this.dataSourceFilter = _this.dataFilters(response[0]);
-            _this.dataSource = _this.dataSourceFilter.slice(min, max);
+            _this.dataSourceFilter = _this.dataFilters(_this.dataViews);
+            _this.dataSource = _this.dataSourceFilter.slice(0, max);
+            _this.lpViewer.isloadingHistory.next(false);
         });
-        this.lpviLped.isLoading$.next(false); // disable loading spinner
     };
     ViwerReadImportComponent.prototype.updateHeader = function (value) {
         var _this = this;
         var updateHeader;
-        var tabforUpdate = ['All'];
+        var tabforUpdate = ["All"];
         this.nameHeader.forEach(function (el, index) {
-            tabforUpdate.push(el['_elementRef'].nativeElement.innerText);
+            tabforUpdate.push(el["_elementRef"].nativeElement.innerText);
             if (index === value - 1) {
-                updateHeader = el['_elementRef'].nativeElement;
+                updateHeader = el["_elementRef"].nativeElement;
             }
         });
         this.dialog
@@ -757,9 +847,12 @@ var ViwerReadImportComponent = /** @class */ (function () {
             .afterClosed()
             .pipe(operators_1.map(function (idHeader) {
             if (idHeader) {
-                var actualy = _this.ActualyData ? _this.ActualyData['idName'] : -1;
+                var actualy = _this.ActualyData
+                    ? _this.ActualyData["idName"]
+                    : -1;
                 if (_this.ActualyData) {
-                    _this.listNameHistory.splice(_this.listNameHistory.indexOf(_this.ActualyData) + 1);
+                    _this.listNameHistory.splice(_this.listNameHistory.indexOf(_this.ActualyData) +
+                        1);
                 }
                 _this.idHeader = idHeader;
                 // Rename column RANK(2013) to RANK(2013)24
@@ -784,9 +877,9 @@ var ViwerReadImportComponent = /** @class */ (function () {
         return data.filter(function (_, index) { return _this.checkFiltesData(index); });
     };
     ViwerReadImportComponent.prototype.checkFiltesData = function (index) {
-        var q1 = this.chechQueryFilter(index, this.lpviLped.permaLink['numeric']);
-        var q2 = this.chechQueryFilter(index, this.lpviLped.permaLink['input']);
-        var q3 = this.chechQueryFilter(index, this.lpviLped.permaLink['search']);
+        var q1 = this.chechQueryFilter(index, this.lpviLped.permaLink["numeric"]);
+        var q2 = this.chechQueryFilter(index, this.lpviLped.permaLink["input"]);
+        var q3 = this.chechQueryFilter(index, this.lpviLped.permaLink["search"]);
         return q1 && q2 && q3;
     };
     ViwerReadImportComponent.prototype.chechQueryFilter = function (index, queries) {
@@ -820,34 +913,34 @@ var ViwerReadImportComponent = /** @class */ (function () {
         core_1.ViewChild(sort_1.MatSort)
     ], ViwerReadImportComponent.prototype, "sort");
     __decorate([
-        core_1.ViewChildren('updateHeader')
+        core_1.ViewChildren("updateHeader")
     ], ViwerReadImportComponent.prototype, "nameHeader");
     __decorate([
-        core_1.ViewChild('btnbutton')
+        core_1.ViewChild("btnbutton")
     ], ViwerReadImportComponent.prototype, "MyDOMElement");
     __decorate([
-        core_1.Input('idProject')
+        core_1.Input("idProject")
     ], ViwerReadImportComponent.prototype, "idProject");
     __decorate([
-        core_1.Input('filtersData')
+        core_1.Input("filtersData")
     ], ViwerReadImportComponent.prototype, "filtersData");
     __decorate([
-        core_1.Input('dataAfterUploaded')
+        core_1.Input("dataAfterUploaded")
     ], ViwerReadImportComponent.prototype, "dataAfterUploaded");
     __decorate([
-        core_1.Input('inputFilters')
+        core_1.Input("inputFilters")
     ], ViwerReadImportComponent.prototype, "inputFilters");
     __decorate([
-        core_1.ViewChild('container')
+        core_1.ViewChild("container")
     ], ViwerReadImportComponent.prototype, "container");
     __decorate([
         core_1.Input()
     ], ViwerReadImportComponent.prototype, "isFavorate");
     ViwerReadImportComponent = __decorate([
         core_1.Component({
-            selector: 'app-viwer-read-import',
-            templateUrl: './viwer-read-import.component.html',
-            styleUrls: ['./viwer-read-import.component.scss']
+            selector: "app-viwer-read-import",
+            templateUrl: "./viwer-read-import.component.html",
+            styleUrls: ["./viwer-read-import.component.scss"]
         })
     ], ViwerReadImportComponent);
     return ViwerReadImportComponent;

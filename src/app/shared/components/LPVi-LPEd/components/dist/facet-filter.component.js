@@ -25,7 +25,7 @@ var FacetFilterComponent = /** @class */ (function () {
         this.lpviLped = lpviLped;
         /* VARIABLES */
         this.queries = {};
-        this.Columns = '';
+        this.Columns = "";
         /* ALL QUERY FILTERS VALUES */
         this.inputQueries = [];
         this.searchQueries = [];
@@ -43,15 +43,15 @@ var FacetFilterComponent = /** @class */ (function () {
     }
     FacetFilterComponent.prototype.ngOnInit = function () {
         if (Object.keys(this.lpviLped.permaLink).length !== 0) {
-            this.inputQueries = this.lpviLped.permaLink['input'];
-            this.searchQueries = this.lpviLped.permaLink['search'];
-            this.numericQeury = this.lpviLped.permaLink['numeric'];
-            this.items = this.lpviLped.permaLink['items'];
-            this.queries = this.lpviLped.permaLink['queries'];
+            this.inputQueries = this.lpviLped.permaLink["input"];
+            this.searchQueries = this.lpviLped.permaLink["search"];
+            this.numericQeury = this.lpviLped.permaLink["numeric"];
+            this.items = this.lpviLped.permaLink["items"];
+            this.queries = this.lpviLped.permaLink["queries"];
             this.queriesNumerisFilters =
-                this.lpviLped.permaLink['queriesNumerisFilters'];
+                this.lpviLped.permaLink["queriesNumerisFilters"];
             this.queriesTimeLineFilters =
-                this.lpviLped.permaLink['queriesTimeLineFilters'];
+                this.lpviLped.permaLink["queriesTimeLineFilters"];
         }
     };
     FacetFilterComponent.prototype.ngOnDestroy = function () { };
@@ -77,32 +77,33 @@ var FacetFilterComponent = /** @class */ (function () {
         this.dataSources = this.dataViews;
         this.queries = {};
         this.queriesNumerisFilters = {};
-        Object.keys(this.lpviLped.permaLink.queries).forEach(function (v) { return (_this.lpviLped.permaLink.queries[v] = ''); });
+        Object.keys(this.lpviLped.permaLink.queries).forEach(function (v) { return (_this.lpviLped.permaLink.queries[v] = ""); });
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.resetAll = function () {
         var _this = this;
+        // console.log("reset all")
         this.inputQueries = [];
         this.searchQueries = [];
         this.numericQeury = [];
-        Object.keys(this.queries).forEach(function (v) { return (_this.queries[v] = ''); });
-        Object.keys(this.lpviLped.permaLink.queries).forEach(function (v) { return (_this.lpviLped.permaLink.queries[v] = ''); });
+        Object.keys(this.queries).forEach(function (v) { return (_this.queries[v] = ""); });
+        Object.keys(this.lpviLped.permaLink.queries).forEach(function (v) { return (_this.lpviLped.permaLink.queries[v] = ""); });
         this.lpviLped.inputSubject.next();
         this.queriesNumerisFilters = {};
         this.lpviLped.dataSources$.next(this.dataViews);
         this.dataSources = this.dataViews;
         this.items.map(function (item, index) {
             var _a;
-            if (item['type'] === 'search') {
-                (_a = item['content']) === null || _a === void 0 ? void 0 : _a.map(function (value, i) {
-                    item['content'][i] = __assign(__assign({}, value), { include: false });
+            if (item["type"] === "search") {
+                (_a = item["content"]) === null || _a === void 0 ? void 0 : _a.map(function (value, i) {
+                    item["content"][i] = __assign(__assign({}, value), { include: false });
                 });
             }
-            else if (item['type'] === 'input') {
-                _this.items[index] = __assign(__assign({}, item), { value: '' });
+            else if (item["type"] === "input") {
+                _this.items[index] = __assign(__assign({}, item), { value: "" });
             }
-            else if (item['type'] === 'numeric') {
-                _this.items[index] = __assign(__assign({}, item), { options: __assign(__assign({}, item['options']), { floor: item['minValue'], ceil: item['maxValue'] }) });
+            else if (item["type"] === "numeric") {
+                _this.items[index] = __assign(__assign({}, item), { options: __assign(__assign({}, item["options"]), { floor: item["minValue"], ceil: item["maxValue"] }) });
             }
         });
         this.items = this.items;
@@ -114,10 +115,10 @@ var FacetFilterComponent = /** @class */ (function () {
         this.lpviLped.isLoading$.next(true); // enable loading spinner
         var q = [], ss = undefined;
         this.dataSources = this.dataViews.filter(function (value, index) {
-            var v = value["" + event['head']];
+            var v = value["" + event["head"]];
             if (Object.keys(_this.queriesNumerisFilters).length === 0) {
-                if (v >= event['minValue'] &&
-                    v <= event['maxValue'] &&
+                if (v >= event["minValue"] &&
+                    v <= event["maxValue"] &&
                     Number.isFinite(v) === true)
                     q[index] = true;
                 else
@@ -127,14 +128,14 @@ var FacetFilterComponent = /** @class */ (function () {
             }
             else {
                 var queryIndex_1 = 0;
-                if (v >= event['minValue'] &&
-                    v <= event['maxValue'] &&
+                if (v >= event["minValue"] &&
+                    v <= event["maxValue"] &&
                     Number.isFinite(v) === true)
                     q[index] = true;
                 else
                     q[index] = false;
                 Object.keys(_this.queriesNumerisFilters).every(function (x) {
-                    if (x != "" + event['head']) {
+                    if (x != "" + event["head"]) {
                         var s = _this.queriesNumerisFilters[x];
                         if (queryIndex_1 === 0)
                             ss = s[index];
@@ -150,7 +151,7 @@ var FacetFilterComponent = /** @class */ (function () {
                 return _this.filtersData(index);
             }
         });
-        this.queriesNumerisFilters["" + event['head']] = q;
+        this.queriesNumerisFilters["" + event["head"]] = q;
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
@@ -161,9 +162,9 @@ var FacetFilterComponent = /** @class */ (function () {
         if (this.queriesTimeLineFilters == undefined)
             this.queriesTimeLineFilters = {};
         this.dataSources = this.dataViews.filter(function (value, index) {
-            var v = Date.parse(value["" + event['head']]);
+            var v = Date.parse(value["" + event["head"]]);
             if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
-                if (v <= event['end'] && v >= event['start'])
+                if (v <= event["end"] && v >= event["start"])
                     q[index] = true;
                 else
                     q[index] = false;
@@ -172,12 +173,12 @@ var FacetFilterComponent = /** @class */ (function () {
             }
             else {
                 var queryIndex_2 = 0;
-                if (v <= event['end'] && v >= event['start'])
+                if (v <= event["end"] && v >= event["start"])
                     q[index] = true;
                 else
                     q[index] = false;
                 Object.keys(_this.queriesTimeLineFilters).every(function (x) {
-                    if (x != "" + event['head']) {
+                    if (x != "" + event["head"]) {
                         var s = _this.queriesTimeLineFilters[x];
                         if (queryIndex_2 === 0)
                             ss = s[index];
@@ -193,21 +194,21 @@ var FacetFilterComponent = /** @class */ (function () {
                 return _this.filtersData(index);
             }
         });
-        this.queriesTimeLineFilters["" + event['head']] = this.timeLineQeury;
+        this.queriesTimeLineFilters["" + event["head"]] = this.timeLineQeury;
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.formGroupEmitter = function (event) {
-        this.queries[event.item['head']] = event.query; //save querie from input filter
-        var index = this.items.findIndex(function (elem) { return elem['head'] == event.item['head']; });
+        this.queries[event.item["head"]] = event.query; //save querie from input filter
+        var index = this.items.findIndex(function (elem) { return elem["head"] == event.item["head"]; });
         if (index !== -1)
             this.items[index] = __assign({}, event.item);
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
     };
     FacetFilterComponent.prototype.minimizeEmitter = function (item) {
-        var index = this.items.findIndex(function (elem) { return elem['head'] == item['head']; });
+        var index = this.items.findIndex(function (elem) { return elem["head"] == item["head"]; });
         if (index !== -1) {
-            this.items[index] = __assign(__assign({}, this.items[index]), { isMinimize: !this.items[index]['isMinimize'] });
+            this.items[index] = __assign(__assign({}, this.items[index]), { isMinimize: !this.items[index]["isMinimize"] });
         }
         this.items = this.items;
         this.savePermalink(); // SAVE PERMALINK
@@ -219,18 +220,18 @@ var FacetFilterComponent = /** @class */ (function () {
         }
         this.items = this.items;
         if (removeName !== undefined) {
-            if (removeName === 'input') {
+            if (removeName === "input") {
                 var newObject = Object.keys(this.queries).reduce(function (accumulator, key) {
-                    if (key !== item['head'])
+                    if (key !== item["head"])
                         accumulator[key] = _this.queries[key];
                     return accumulator;
                 }, {});
                 this.queries = newObject;
                 this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
             }
-            else if (removeName === 'number') {
+            else if (removeName === "numeric") {
                 var q = [], ss_1 = undefined;
-                delete this.queriesNumerisFilters[item['head']];
+                delete this.queriesNumerisFilters[item["head"]];
                 this.dataSources = this.dataViews.filter(function (value, index) {
                     if (Object.keys(_this.queriesNumerisFilters).length === 0) {
                         _this.numericQeury[index] = true;
@@ -252,7 +253,7 @@ var FacetFilterComponent = /** @class */ (function () {
                 });
                 this.lpviLped.dataSources$.next(this.dataSources);
             }
-            else if (removeName === 'search') {
+            else if (removeName === "search") {
                 // this.searchQueries = [];
                 // this.dataSources = this.dataViews.filter((value, index) => {
                 //   return this.filtersData(index);
@@ -260,9 +261,9 @@ var FacetFilterComponent = /** @class */ (function () {
                 this.itemsEmitter(); // Call search filter Item after delete item
                 // this.lpviLped.dataSources$.next(this.dataSources);
             }
-            else if (removeName === 'timeLine') {
+            else if (removeName === "timeLine") {
                 var q = [], ss_2 = undefined;
-                delete this.queriesTimeLineFilters[item['head']];
+                delete this.queriesTimeLineFilters[item["head"]];
                 this.dataSources = this.dataViews.filter(function (value, index) {
                     if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
                         _this.timeLineQeury[index] = true;
@@ -298,10 +299,10 @@ var FacetFilterComponent = /** @class */ (function () {
             var q = _this.items.map(function (item) {
                 var _a;
                 var i2 = 0;
-                var str = '';
-                (_a = item['content']) === null || _a === void 0 ? void 0 : _a.map(function (element) {
-                    if (element['include'] == true) {
-                        var q_1 = "value[\"" + item['head'] + "\"].trim()===\"" + element[0] + "\".trim()";
+                var str = "";
+                (_a = item["content"]) === null || _a === void 0 ? void 0 : _a.map(function (element) {
+                    if (element["include"] == true) {
+                        var q_1 = "value[\"" + item["head"] + "\"].trim()===\"" + element[0] + "\".trim()";
                         if (i2 == 0)
                             str = q_1;
                         else
@@ -324,6 +325,22 @@ var FacetFilterComponent = /** @class */ (function () {
         this.lpviLped.dataSources$.next(this.dataSources);
         this.savePermalink(); // SAVE PERMALINK
     };
+    FacetFilterComponent.prototype.resetTimeLineAndNumber = function (item, resetName) {
+        var index = this.items.findIndex(function (elem) { return elem["head"] == item["head"]; });
+        if (index != -1) {
+            this.items[index] = item;
+            if (resetName == "numeric") {
+                this.callAfterNumericFilter(item);
+            }
+            else {
+                this.callAfterTimeLineEmitter({
+                    head: this.items[index].head,
+                    start: Date.parse(this.items[index].min),
+                    end: Date.parse(this.items[index].max)
+                });
+            }
+        }
+    };
     /* VERIFY ALL QUERY FILTERS */
     FacetFilterComponent.prototype.chechQueryFilter = function (index, queries) {
         if (queries.length !== 0)
@@ -342,55 +359,63 @@ var FacetFilterComponent = /** @class */ (function () {
         var qqq = false, i1 = 0;
         this.lpviLped.isLoading$.next(true); // disable loading spinner
         this.dataSources = this.dataViews.filter(function (value, index) {
-            if (Object.values(_this.queries).every(function (x) { return x === null || x === ''; })) {
+            if (Object.values(_this.queries).every(function (x) { return x === null || x === ""; })) {
                 _this.inputQueries[index] = true;
                 return _this.filtersData(index);
             }
             else {
                 var s_1 = true, i2_1 = 0;
                 Object.keys(_this.queries).some(function (property) {
-                    if (_this.queries[property] != '' &&
-                        typeof value[property] === 'string' &&
+                    if (_this.queries[property] != "" &&
+                        typeof value[property] === "string" &&
                         _this.queries[property] !== undefined &&
-                        _this.queries[property]['value'] !== undefined &&
+                        _this.queries[property]["value"] !== undefined &&
                         value[property] !== undefined) {
                         var lower = _this.queries[property].value.trim();
                         var tabQuer = value[property];
                         var ss = true;
-                        if (!_this.queries[property].complete_string) {
+                        if (_this.queries[property].complete_string) {
                             //true
-                            if (!_this.queries[property].sensitive) {
+                            if (_this.queries[property].sensitive) {
                                 //true
                                 if (_this.queries[property].invert) {
-                                    ss = tabQuer.includes(lower);
+                                    ss = tabQuer == lower;
                                 }
                                 else {
-                                    ss = !tabQuer.includes(lower);
+                                    ss = !(tabQuer.toLowerCase() ==
+                                        lower.toLowerCase());
                                 }
                             }
                             else {
                                 if (_this.queries[property].invert) {
-                                    ss = tabQuer.toLowerCase().includes(lower.toLowerCase());
+                                    ss =
+                                        tabQuer.toLowerCase() ==
+                                            lower.toLowerCase();
                                 }
                                 else {
-                                    ss = !tabQuer.toLowerCase().includes(lower.toLowerCase());
+                                    ss = !(tabQuer.toLowerCase() ==
+                                        lower.toLowerCase());
                                 }
                             }
                         }
                         else {
                             if (!_this.queries[property].sensitive) {
                                 if (_this.queries[property].invert) {
-                                    ss = tabQuer == lower;
+                                    ss = tabQuer
+                                        .toLowerCase()
+                                        .includes(lower.toLowerCase());
                                 }
                                 else
-                                    ss = tabQuer != lower;
+                                    ss = !tabQuer
+                                        .toLowerCase()
+                                        .includes(lower.toLowerCase());
                             }
                             else {
                                 if (_this.queries[property].invert) {
-                                    ss = tabQuer.toLowerCase() == lower.toLowerCase();
+                                    ss = tabQuer.includes(lower);
                                 }
                                 else {
-                                    ss = tabQuer.toLowerCase() != lower.toLowerCase();
+                                    ss = !tabQuer.includes(lower);
                                 }
                             }
                         }
@@ -434,22 +459,22 @@ var FacetFilterComponent = /** @class */ (function () {
         this.lpEditor.addFilter(permalink).subscribe();
     };
     __decorate([
-        core_1.Input('dataViews')
+        core_1.Input("dataViews")
     ], FacetFilterComponent.prototype, "dataViews");
     __decorate([
-        core_1.Input('dataSources')
+        core_1.Input("dataSources")
     ], FacetFilterComponent.prototype, "dataSources");
     __decorate([
-        core_1.Input('idProject')
+        core_1.Input("idProject")
     ], FacetFilterComponent.prototype, "idProject");
     __decorate([
-        core_1.Input('items')
+        core_1.Input("items")
     ], FacetFilterComponent.prototype, "items");
     FacetFilterComponent = __decorate([
         core_1.Component({
-            selector: 'app-facet-filter-target',
-            template: "\n    <div *ngIf=\"items.length > 0; else noItems\">\n      <div class=\"w-100 pl-4 pr-2 pb-3\">\n        <button class=\"rounded btn btn-custom\">Refresh</button>\n        <span fxFlex></span>\n        <button class=\"rounded btn btn-custom mr-2\" (click)=\"resetAll()\">\n          Reset All\n        </button>\n        <button class=\"rounded btn btn-custom\" (click)=\"removeAll()\">\n          Remove All\n        </button>\n      </div>\n\n      <div *ngFor=\"let item of items; let index = index\">\n        <ng-container\n          *ngTemplateOutlet=\"\n            item.type === 'search'\n              ? searchTemplate\n              : item.type === 'input'\n              ? inputTemplate\n              : item.type === 'datefilter'\n              ? dateTemplate\n              : item.type === 'numeric'\n              ? numericTemplate\n              : timeLineTemplate;\n            context: { value: item }\n          \"\n        >\n        </ng-container>\n\n        <ng-template #searchTemplate let-currentValue=\"value\">\n          <app-search-filter\n            [items]=\"items\"\n            [item]=\"item\"\n            [index]=\"index\"\n            [dataViews]=\"dataViews\"\n            (itemsEmitter)=\"itemsEmitter($event)\"\n            (removeFromItem)=\"removeFromItemEmitter($event, 'search')\"\n            (minimize)=\"minimizeEmitter($event)\"\n          ></app-search-filter>\n        </ng-template>\n\n        <ng-template #inputTemplate let-currentValue=\"value\">\n          <app-input-filter\n            [items]=\"items\"\n            [item]=\"item\"\n            [index]=\"index\"\n            [dataViews]=\"dataViews\"\n            (formGroup)=\"formGroupEmitter($event)\"\n            (removeFromItem)=\"removeFromItemEmitter($event, 'input')\"\n            (minimize)=\"minimizeEmitter($event)\"\n            (itemsEmitter)=\"itemsEmitter($event)\"\n          ></app-input-filter>\n        </ng-template>\n\n        <ng-template #dateTemplate let-currentValue=\"value\">\n          <app-date-filter\n            [items]=\"items\"\n            [item]=\"item\"\n            [index]=\"index\"\n            [dataViews]=\"dataViews\"\n            (formGroup)=\"formGroupEmitter($event)\"\n            (removeFromItem)=\"removeFromItemEmitter($event, 'input')\"\n            (minimize)=\"minimizeEmitter($event)\"\n            (itemsEmitter)=\"itemsEmitter($event)\"\n          ></app-date-filter>\n        </ng-template>\n\n        <ng-template #numericTemplate let-currentValue=\"value\">\n          <app-numeric-facet\n            [items]=\"items\"\n            [item]=\"item\"\n            [dataViews]=\"dataViews\"\n            [dataSources]=\"dataSources\"\n            (numericQueriesEmitter)=\"callAfterNumericFilter($event)\"\n            (removeFromItem)=\"removeFromItemEmitter($event, 'number')\"\n            (minimize)=\"minimizeEmitter($event)\"\n          ></app-numeric-facet>\n        </ng-template>\n\n        <ng-template #timeLineTemplate let-currentValue=\"value\">\n          <app-time-line\n            [items]=\"items\"\n            [item]=\"item\"\n            [dataViews]=\"dataViews\"\n            [dataSources]=\"dataSources\"\n            (timeLineQueriesEmitter)=\"callAfterTimeLineEmitter($event)\"\n            (removeFromItem)=\"removeFromItemEmitter($event, 'timeLine')\"\n            (minimize)=\"minimizeEmitter($event)\"\n          ></app-time-line>\n        </ng-template>\n      </div>\n    </div>\n\n    <ng-template #noItems>\n      <div style=\"background: #F5F6FA;\" class=\"w-100 ml-4 px-3 py-5\">\n        <h1 class=\"ftp\">Using facets and filters</h1>\n        <p class=\"m-0 ftp\">\n          Use facets and filters to select subsets of your data to act on.\n          Choose facet and filter methods from the menus at the top of each data\n          column.\n        </p>\n      </div>\n    </ng-template>\n  ",
-            styleUrls: ['./facet-filter.component.scss']
+            selector: "app-facet-filter-target",
+            template: "\n        <div *ngIf=\"items.length > 0; else noItems\">\n            <div class=\"w-100 pl-4 pr-2 pb-3\" style=\"margin-top:5px\">\n                <button class=\"rounded btn btn-custom\">Refresh</button>\n                <span fxFlex></span>\n                <button\n                    class=\"rounded btn btn-custom mr-2\"\n                    (click)=\"resetAll()\"\n                >\n                    Reset All\n                </button>\n                <button class=\"rounded btn btn-custom\" (click)=\"removeAll()\">\n                    Remove All\n                </button>\n            </div>\n\n            <div *ngFor=\"let item of items; let index = index\">\n                <ng-container\n                    *ngTemplateOutlet=\"\n                        item.type === 'search'\n                            ? searchTemplate\n                            : item.type === 'input'\n                            ? inputTemplate\n                            : item.type === 'datefilter'\n                            ? dateTemplate\n                            : item.type === 'numeric'\n                            ? numericTemplate\n                            : timeLineTemplate;\n                        context: { value: item }\n                    \"\n                >\n                </ng-container>\n\n                <ng-template #searchTemplate let-currentValue=\"value\">\n                    <app-search-filter\n                        [items]=\"items\"\n                        [item]=\"item\"\n                        [index]=\"index\"\n                        [dataViews]=\"dataViews\"\n                        (itemsEmitter)=\"itemsEmitter($event)\"\n                        (removeFromItem)=\"\n                            removeFromItemEmitter($event, 'search')\n                        \"\n                        (minimize)=\"minimizeEmitter($event)\"\n                    ></app-search-filter>\n                </ng-template>\n\n                <ng-template #inputTemplate let-currentValue=\"value\">\n                    <app-input-filter\n                        [items]=\"items\"\n                        [item]=\"item\"\n                        [index]=\"index\"\n                        [dataViews]=\"dataViews\"\n                        (formGroup)=\"formGroupEmitter($event)\"\n                        (removeFromItem)=\"\n                            removeFromItemEmitter($event, 'input')\n                        \"\n                        (minimize)=\"minimizeEmitter($event)\"\n                        (itemsEmitter)=\"itemsEmitter($event)\"\n                    ></app-input-filter>\n                </ng-template>\n\n                <ng-template #dateTemplate let-currentValue=\"value\">\n                    <app-date-filter\n                        [items]=\"items\"\n                        [item]=\"item\"\n                        [index]=\"index\"\n                        [dataViews]=\"dataViews\"\n                        (formGroup)=\"formGroupEmitter($event)\"\n                        (removeFromItem)=\"\n                            removeFromItemEmitter($event, 'input')\n                        \"\n                        (minimize)=\"minimizeEmitter($event)\"\n                        (itemsEmitter)=\"itemsEmitter($event)\"\n                    ></app-date-filter>\n                </ng-template>\n\n                <ng-template #numericTemplate let-currentValue=\"value\">\n                    <app-numeric-facet\n                        [items]=\"items\"\n                        [item]=\"item\"\n                        [dataViews]=\"dataViews\"\n                        [dataSources]=\"dataSources\"\n                        (numericQueriesEmitter)=\"callAfterNumericFilter($event)\"\n                        (removeFromItem)=\"\n                            removeFromItemEmitter($event, 'numeric')\n                        \"\n                        (minimize)=\"minimizeEmitter($event)\"\n                        (resetFacet)=\"resetTimeLineAndNumber($event, 'numeric')\"\n                    ></app-numeric-facet>\n                </ng-template>\n\n                <ng-template #timeLineTemplate let-currentValue=\"value\">\n                    <app-time-line\n                        [items]=\"items\"\n                        [item]=\"item\"\n                        [dataViews]=\"dataViews\"\n                        [dataSources]=\"dataSources\"\n                        (timeLineQueriesEmitter)=\"\n                            callAfterTimeLineEmitter($event)\n                        \"\n                        (removeFromItem)=\"\n                            removeFromItemEmitter($event, 'timeLine')\n                        \"\n                        (minimize)=\"minimizeEmitter($event)\"\n                        (resetFacet)=\"\n                            resetTimeLineAndNumber($event, 'timeLine')\n                        \"\n                    ></app-time-line>\n                </ng-template>\n            </div>\n        </div>\n\n        <ng-template #noItems>\n            <div style=\"background: #F5F6FA;\" class=\"w-100 ml-4 px-3 py-5\">\n                <h1 class=\"ftp\">Using facets and filters</h1>\n                <p class=\"m-0 ftp\">\n                    Use facets and filters to select subsets of your data to act\n                    on. Choose facet and filter methods from the menus at the\n                    top of each data column.\n                </p>\n            </div>\n        </ng-template>\n    ",
+            styleUrls: ["./facet-filter.component.scss"]
         })
     ], FacetFilterComponent);
     return FacetFilterComponent;
