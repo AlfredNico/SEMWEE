@@ -42,6 +42,7 @@ var AllLPViewerProjectsComponent = /** @class */ (function () {
             _this.lpviLped.isLoading$.next(false); // disable loading spinner
             _this.router.navigateByUrl("/user-space/lp-viewer");
         });
+        this.lpviLped.isLoading$.next(false); // disable loading spinner
     };
     AllLPViewerProjectsComponent.prototype.removeAllProjects = function () {
         var _this = this;

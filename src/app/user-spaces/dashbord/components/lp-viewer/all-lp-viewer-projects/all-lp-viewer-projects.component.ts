@@ -59,6 +59,7 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
                 this.router.navigateByUrl("/user-space/lp-viewer");
             }
         );
+        this.lpviLped.isLoading$.next(false); // disable loading spinner
     }
 
     public removeAllProjects() {
