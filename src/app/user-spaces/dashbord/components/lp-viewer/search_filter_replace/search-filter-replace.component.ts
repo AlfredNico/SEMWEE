@@ -17,14 +17,14 @@ export class SearchReplaceComponent implements OnInit {
     new_value: new FormControl(''),
   });
 
-  constructor( private readonly nofits: NotificationService ) {}
-  ngOnInit() {}
+  constructor(private readonly nofits: NotificationService) { }
+  ngOnInit() { }
   searchReplace() {
     const first_value = this.formSearch.value.char_value;
-    const second_value = this.formSearch.value.new_value;
+    let second_value = this.formSearch.value.new_value;
     let found = false;
 
-    if (first_value !== '' && second_value !== '') {
+    if (first_value !== '') {
       for (let i = 0; i < this.datasourceFilter.length; i++) {
         if (
           typeof this.datasourceFilter[i][this.nameColumn] === 'string' &&
@@ -38,6 +38,7 @@ export class SearchReplaceComponent implements OnInit {
         }
       }
       if (found) {
+        second_value = second_value === "" ? "empty" : second_value;
         const name_dinamic = `Replace "${first_value}" to "${second_value}" on column "${this.nameColumn}".`;
         this.sendData.emit(name_dinamic);
       } else
