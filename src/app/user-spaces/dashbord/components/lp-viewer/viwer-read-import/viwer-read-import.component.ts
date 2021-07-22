@@ -119,7 +119,6 @@ export class ViwerReadImportComponent
             this.lpviLped.itemsObservables$.next(undefined);
 
             if (Object.keys(this.dataAfterUploaded).length === 6) {
-                // console.log(this.dataAfterUploaded)
                 this.displayedColumns = this.dataAfterUploaded["headerOrigin"];
                 this.dataViews = this.dataAfterUploaded["data"];
                 this.listNameHistory = this.dataAfterUploaded["name"];
@@ -278,7 +277,6 @@ export class ViwerReadImportComponent
 
     ngAfterViewInit() {
         this.lpViewer.isloadingHistory.subscribe((res) => {
-            console.log("test loading valeur : ", res);
             this.isloadingHistory = res ? true : false;
         });
         this.lpviLped.searchReplace$.subscribe((value) => {
@@ -635,8 +633,6 @@ export class ViwerReadImportComponent
                 "There is a date that is not in iso format on row " + test[2]
             );
         } else if (test[0] && test[1] === "string") {
-            console.log("commencement de convertion.");
-
             const regex2 = new RegExp("[-]");
             this.dataViews.forEach((item) => {
                 const tab = item[column].split(regex2);
@@ -743,7 +739,6 @@ export class ViwerReadImportComponent
     }
 
     toggleedit(value) {
-        // console.log(value)
         let numbercoll = "";
         if (value[2] === undefined) {
             this.domTab.style.fontWeight = "initial";

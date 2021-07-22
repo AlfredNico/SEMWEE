@@ -103,7 +103,10 @@ var FacetFilterComponent = /** @class */ (function () {
                 _this.items[index] = __assign(__assign({}, item), { value: "" });
             }
             else if (item["type"] === "numeric") {
-                _this.items[index] = __assign(__assign({}, item), { options: __assign(__assign({}, item["options"]), { floor: item["minValue"], ceil: item["maxValue"] }) });
+                _this.items[index] = __assign(__assign({}, item), { options: __assign(__assign({}, item["options"]), { floor: item.min, ceil: item.max }), minValue: item.min, maxValue: item.max });
+            }
+            else if (item["type"] === "timeLine") {
+                _this.items[index] = __assign(__assign({}, item), { startDate: item.min, endDate: item.max });
             }
         });
         this.items = this.items;

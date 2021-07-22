@@ -91,7 +91,6 @@ var ViwerReadImportComponent = /** @class */ (function () {
         if (this.dataAfterUploaded != undefined) {
             this.lpviLped.itemsObservables$.next(undefined);
             if (Object.keys(this.dataAfterUploaded).length === 6) {
-                // console.log(this.dataAfterUploaded)
                 this.displayedColumns = this.dataAfterUploaded["headerOrigin"];
                 this.dataViews = this.dataAfterUploaded["data"];
                 this.listNameHistory = this.dataAfterUploaded["name"];
@@ -225,7 +224,6 @@ var ViwerReadImportComponent = /** @class */ (function () {
     ViwerReadImportComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
         this.lpViewer.isloadingHistory.subscribe(function (res) {
-            console.log("test loading valeur : ", res);
             _this.isloadingHistory = res ? true : false;
         });
         this.lpviLped.searchReplace$.subscribe(function (value) {
@@ -536,7 +534,6 @@ var ViwerReadImportComponent = /** @class */ (function () {
             alert("There is a date that is not in iso format on row " + test[2]);
         }
         else if (test[0] && test[1] === "string") {
-            console.log("commencement de convertion.");
             var regex2_1 = new RegExp("[-]");
             this.dataViews.forEach(function (item) {
                 var tab = item[column].split(regex2_1);
@@ -624,7 +621,6 @@ var ViwerReadImportComponent = /** @class */ (function () {
     };
     ViwerReadImportComponent.prototype.toggleedit = function (value) {
         var _this = this;
-        // console.log(value)
         var numbercoll = "";
         if (value[2] === undefined) {
             this.domTab.style.fontWeight = "initial";

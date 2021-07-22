@@ -241,9 +241,17 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                     ...item,
                     options: {
                         ...item["options"],
-                        floor: item["minValue"],
-                        ceil: item["maxValue"],
+                        floor: item.min,
+                        ceil: item.max,
                     },
+                    minValue: item.min,
+                    maxValue: item.max,
+                };
+            } else if (item["type"] === "timeLine") {
+                this.items[index] = {
+                    ...item,
+                    startDate: item.min,
+                    endDate: item.max,
                 };
             }
         });
