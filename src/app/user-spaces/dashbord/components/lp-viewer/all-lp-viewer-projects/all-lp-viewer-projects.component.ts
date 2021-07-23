@@ -24,7 +24,6 @@ import { LPedAllProjectsComponent } from '../../lp-editor/lped-all-projects/lped
 export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
   public allProjects$: Observable<LPAllProjects[]>;
   private user!: User;
-  pageOfItems: Array<any>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 

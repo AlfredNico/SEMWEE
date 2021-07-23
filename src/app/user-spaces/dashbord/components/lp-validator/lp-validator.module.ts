@@ -28,6 +28,8 @@ import { HttpCancelService } from '@app/shared/services/http-cancel.service';
 import { tokenInterceptor } from '@app/token.interceptor';
 import { errorInterceptor } from '@app/error.interceptor';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogImportItemComponent } from '../dialog-import-item/dialog-import-item.component'
 @NgModule({
   declarations: [
     /* COMPONENT DECLARATORS */
@@ -54,6 +56,7 @@ import { errorInterceptor } from '@app/error.interceptor';
     LandingPageModule,
     RouterModule.forChild([{ path: '', component: LpValidatorComponent }]),
     SharedDirectivesModule,
+    MatDialogModule
   ],
   exports: [RouterModule],
   providers: [
@@ -73,6 +76,7 @@ import { errorInterceptor } from '@app/error.interceptor';
     // InferListComponent,
     GoogleMachingComponent,
     TuneItComponent,
+    DialogImportItemComponent
   ],
 })
 export class LpValidatorModule { }

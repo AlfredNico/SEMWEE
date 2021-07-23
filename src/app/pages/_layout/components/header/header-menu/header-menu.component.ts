@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { LayoutService } from '../../../../../_metronic/core';
 import { AuthService } from '@app/authentification/services/auth.service';
 import { User } from '@app/classes/users';
-import { map, switchMap } from 'rxjs/operators';
+import { isEmpty, map, switchMap } from 'rxjs/operators';
 import { userProject, Users } from '@app/models/users';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Projects } from '@app/user-spaces/dashbord/interfaces/projects';
@@ -40,7 +40,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
   user: Users;
   idProjet: any = '';
   selectedProject: Projects;
-  ProjectName!: string;
+  ProjectName!: String;
 
   constructor(
     private layout: LayoutService,
@@ -102,7 +102,7 @@ export class HeaderMenuComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  public selectedItemProjects(): string {
+  public selectedItemProjects(): String {
     return this.ProjectName ? this.ProjectName : 'Project';
   }
 

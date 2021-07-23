@@ -1,5 +1,7 @@
+import { Options } from '@angular-slider/ngx-slider';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -9,8 +11,13 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '@app/services/notification.service';
 import { CommonService } from '@app/shared/services/common.service';
+import { element } from 'protractor';
 import { Subscription } from 'rxjs';
 import { LpValidatorService } from '../../services/lp-validator.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogImportItemComponent } from '../dialog-import-item/dialog-import-item.component';
+import { Console } from 'console';
+//download .csv
 
 @Component({
   selector: 'app-import-item',
@@ -73,10 +80,10 @@ import { LpValidatorService } from '../../services/lp-validator.service';
           <div>
             If you don't know what to upload, you can read documentation in your
             <a href="google.com" style="color:red !important">Help Center</a>, or you can
-            <a download href="../assets/csv/sémwee.csv" style="color:red !important">donwload our items list sample</a>
+            <button mat-raised-button (click)="openDialog()">donwload our items list sample</button>
           </div>
         </div>
-
+        
         <button
           mat-raised-button
           style="margin: 25px 10px 0 0;"
@@ -93,6 +100,7 @@ import { LpValidatorService } from '../../services/lp-validator.service';
        
       </form>
     </div>
+    
   `,
   styles: [
     `
@@ -109,9 +117,6 @@ import { LpValidatorService } from '../../services/lp-validator.service';
     `,
   ],
 })
-//download .csv
-
-
 
 export class ImportItemComponent implements OnInit, OnDestroy {
   public form = new FormGroup({
@@ -145,10 +150,19 @@ export class ImportItemComponent implements OnInit, OnDestroy {
   constructor(
     private lpValidatorServices: LpValidatorService,
     private common: CommonService,
-    private notifs: NotificationService
+    private notifs: NotificationService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void { }
+
+  public openDialog() {
+    let dialogRef = this.dialog.open(DialogImportItemComponent);
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(`Dialog res: ${res}`)
+    })
+
+  }
 
   public onFileChange(event: any) {
     const target: DataTransfer = event.target
