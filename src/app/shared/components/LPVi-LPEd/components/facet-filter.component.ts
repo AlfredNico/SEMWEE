@@ -221,7 +221,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.queriesNumerisFilters = {};
         this.lpviLped.dataSources$.next(this.dataViews);
-        this.dataSources = this.dataViews;
+        // this.dataSources = this.dataViews;
 
         this.items.map((item, index) => {
             if (item["type"] === "search") {
@@ -266,7 +266,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         let q = [],
             ss = undefined;
 
-        this.dataSources = this.dataViews.filter((value, index) => {
+        const data = this.dataViews.filter((value, index) => {
             const v = value[`${event["head"]}`];
             if (Object.keys(this.queriesNumerisFilters).length === 0) {
                 if (
@@ -305,7 +305,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         });
         this.queriesNumerisFilters[`${event["head"]}`] = q;
 
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     }
 
@@ -317,7 +317,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         if (this.queriesTimeLineFilters == undefined)
             this.queriesTimeLineFilters = {};
 
-        this.dataSources = this.dataViews.filter((value, index) => {
+        const data = this.dataViews.filter((value, index) => {
             const v = Date.parse(value[`${event["head"]}`]);
             if (Object.keys(this.queriesTimeLineFilters).length === 0) {
                 if (v <= event["end"] && v >= event["start"]) q[index] = true;
@@ -346,7 +346,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.queriesTimeLineFilters[`${event["head"]}`] = this.timeLineQeury;
 
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     }
 
@@ -402,7 +402,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                 let q = [],
                     ss = undefined;
                 delete this.queriesNumerisFilters[item["head"]];
-                this.dataSources = this.dataViews.filter((value, index) => {
+                const data = this.dataViews.filter((value, index) => {
                     if (Object.keys(this.queriesNumerisFilters).length === 0) {
                         this.numericQeury[index] = true;
                         return this.filtersData(index);
@@ -419,19 +419,18 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                     }
                 });
 
-                this.lpviLped.dataSources$.next(this.dataSources);
+                this.lpviLped.dataSources$.next(data);
             } else if (removeName === "search") {
                 // this.searchQueries = [];
                 // this.dataSources = this.dataViews.filter((value, index) => {
                 //   return this.filtersData(index);
                 // });
                 this.itemsEmitter(); // Call search filter Item after delete item
-                // this.lpviLped.dataSources$.next(this.dataSources);
             } else if (removeName === "timeLine") {
                 let q = [],
                     ss = undefined;
                 delete this.queriesTimeLineFilters[item["head"]];
-                this.dataSources = this.dataViews.filter((value, index) => {
+                const data = this.dataViews.filter((value, index) => {
                     if (Object.keys(this.queriesTimeLineFilters).length === 0) {
                         this.timeLineQeury[index] = true;
                         return this.filtersData(index);
@@ -448,7 +447,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                     }
                 });
 
-                this.lpviLped.dataSources$.next(this.dataSources);
+                this.lpviLped.dataSources$.next(data);
             }
         }
         this.savePermalink(); // SAVE PERMALINK
@@ -459,7 +458,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         if (event !== undefined) this.items = event;
 
-        this.dataSources = this.dataViews.filter((value, index) => {
+        const data = this.dataViews.filter((value, index) => {
             let i1: number = 0;
             let queries: boolean;
             const q = this.items.map((item: any): void => {
@@ -485,7 +484,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             return this.filtersData(index);
         });
 
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
 
         this.savePermalink(); // SAVE PERMALINK
     }
@@ -528,7 +527,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             i1 = 0;
         this.lpviLped.isLoading$.next(true); // disable loading spinner
 
-        this.dataSources = this.dataViews.filter((value, index) => {
+        const data = this.dataViews.filter((value, index) => {
             if (
                 Object.values(this.queries).every((x) => x === null || x === "")
             ) {
@@ -613,7 +612,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                 return this.filtersData(index);
             }
         });
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     }
 

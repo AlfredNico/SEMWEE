@@ -1,198 +1,227 @@
 import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+} from "@angular/core";
+import { Observable, of, Subject } from "rxjs";
 
 @Component({
-  selector: 'app-search-filter',
-  template: `
-    <div class="mx-1 pb-2 pl-3" appFluidHeight>
-      <div class="p-0 w-100 rounded style-border">
-        <div class="py-2 px-2 rounded-top level1 bb" fxLayout="row">
-          <mat-icon aria-label="close icon" (click)="removeFromItem.emit(item)">
-            highlight_off
-          </mat-icon>
-          <mat-icon
-            *ngIf="item['isMinimize'] === false"
-            aria-label="close icon"
-            (click)="minimize.emit(item)"
-          >
-            remove_circle_outline
-          </mat-icon>
-          <mat-icon
-            *ngIf="item['isMinimize'] === true"
-            aria-label="close icon"
-            (click)="minimize.emit(item)"
-          >
-            add_circle_outline
-          </mat-icon>
-          <span class="fw-600">{{ item['head'] }}</span>
-          <span fxFlex></span>
-          <div class="pointer px-1 black-color fw-600">change</div>
-        </div>
-        <div
-          fxLayout="row"
-          class="py-2 px-2 level2"
-          *ngIf="item['isMinimize'] === false"
-        >
-          <div class="pr-3 pointer black-color fw-600">
-            {{ observable$ | async }} choices
-          </div>
-          <div>
-            Sort by :
-            <span
-              class="px-1 pointer black-color fw-600"
-              [ngStyle]="{
-                color: isSortName ? 'rgb(27, 197, 189)' : null
-              }"
-              (click)="sortByName()"
-              >name</span
-            >
-            <span
-              class="px-1 pointer black-color fw-600"
-              [ngStyle]="{
-                color: isSortCount ? 'rgb(27, 197, 189)' : null
-              }"
-              (click)="sortByCount()"
-              >count</span
-            >
-          </div>
-        </div>
-        <div
-          class="py-2"
-          style="height: 150px; overflow: auto"
-          *ngIf="item['isMinimize'] === false"
-        >
-          <div
-            fxLayout="row"
-            class="py-0 px-2 list-content"
-            fxLayoutAlign="space-between center"
-            *ngFor="let content of item?.content"
-          >
-            <div fxLayout="row">
-              <p
-                class="font-weight-bold m-0 pr-2 pointer"
-                [ngStyle]="{
-                  color: content['include'] === false ? '#2464a4' : '#1BC5BD'
-                }"
-              >
-                {{ content[0] }}
-              </p>
-              <span style="color: #7E849C"> {{ content[1] }} </span>
+    selector: "app-search-filter",
+    template: `
+        <div class="mx-1 pb-2 pl-3" appFluidHeight>
+            <div class="p-0 w-100 rounded style-border">
+                <div class="py-2 px-2 rounded-top level1 bb" fxLayout="row">
+                    <mat-icon
+                        aria-label="close icon"
+                        (click)="removeFromItem.emit(item)"
+                    >
+                        highlight_off
+                    </mat-icon>
+                    <mat-icon
+                        *ngIf="item['isMinimize'] === false"
+                        aria-label="close icon"
+                        (click)="minimize.emit(item)"
+                    >
+                        remove_circle_outline
+                    </mat-icon>
+                    <mat-icon
+                        *ngIf="item['isMinimize'] === true"
+                        aria-label="close icon"
+                        (click)="minimize.emit(item)"
+                    >
+                        add_circle_outline
+                    </mat-icon>
+                    <span class="fw-600">{{ item["head"] }}</span>
+                    <span fxFlex></span>
+                    <div
+                        class="pointer px-1 white-color fw-600"
+                        (click)="reset()"
+                    >
+                        reset
+                    </div>
+                </div>
+                <div
+                    fxLayout="row"
+                    class="py-2 px-2 level2"
+                    *ngIf="item['isMinimize'] === false"
+                >
+                    <div class="pr-3 pointer black-color fw-600">
+                        {{ observable$ | async }} choices
+                    </div>
+                    <div>
+                        Sort by :
+                        <span
+                            class="px-1 pointer black-color fw-600"
+                            [ngStyle]="{
+                                color: isSortName ? 'rgb(27, 197, 189)' : null
+                            }"
+                            (click)="sortByName()"
+                            >name</span
+                        >
+                        <span
+                            class="px-1 pointer black-color fw-600"
+                            [ngStyle]="{
+                                color: isSortCount ? 'rgb(27, 197, 189)' : null
+                            }"
+                            (click)="sortByCount()"
+                            >count</span
+                        >
+                    </div>
+                </div>
+                <div
+                    class="py-2"
+                    style="height: 150px; overflow: auto"
+                    *ngIf="item['isMinimize'] === false"
+                >
+                    <div
+                        fxLayout="row"
+                        class="py-0 px-2 list-content"
+                        fxLayoutAlign="space-between center"
+                        *ngFor="let content of item?.content"
+                    >
+                        <div fxLayout="row">
+                            <p
+                                class="font-weight-bold m-0 pr-2 pointer"
+                                [ngStyle]="{
+                                    color:
+                                        content['include'] === false
+                                            ? '#2464a4'
+                                            : '#1BC5BD'
+                                }"
+                            >
+                                {{ content[0] }}
+                            </p>
+                            <span style="color: #7E849C">
+                                {{ content[1] }}
+                            </span>
+                        </div>
+                        <span
+                            class="only-show-on-hover pointer in-ex"
+                            *ngIf="content['include'] === false"
+                            (click)="include(item, content[0])"
+                        >
+                            include
+                        </span>
+                        <span
+                            class="pointer in-ex"
+                            *ngIf="content['include'] === true"
+                            (click)="exclude(item, content[0])"
+                        >
+                            exclude
+                        </span>
+                    </div>
+                </div>
             </div>
-            <span
-              class="only-show-on-hover pointer in-ex"
-              *ngIf="content['include'] === false"
-              (click)="include(item, content[0])"
-            >
-              include
-            </span>
-            <span
-              class="pointer in-ex"
-              *ngIf="content['include'] === true"
-              (click)="exclude(item, content[0])"
-            >
-              exclude
-            </span>
-          </div>
+            <div class="w-100 resizable"></div>
         </div>
-      </div>
-      <div class="w-100 resizable"></div>
-    </div>
-  `,
-  styles: [],
+    `,
+    styles: [],
 })
 export class SearchFilterComponent implements AfterViewInit {
-  /* INPUT */
-  @Input('items') items: any[] = [];
-  @Input('dataViews') dataViews: any[] = [];
-  @Input('item') item: any = undefined;
-  @Input('index') index: any = undefined;
+    /* INPUT */
+    @Input("items") items: any[] = [];
+    @Input("dataViews") dataViews: any[] = [];
+    @Input("item") item: any = undefined;
+    @Input("index") index: any = undefined;
 
-  /* OUTPUT */
-  @Output('minimize') minimize: any = new EventEmitter();
-  @Output('removeFromItem') removeFromItem: any = new EventEmitter();
-  @Output('itemsEmitter') itemsEmitter: any = new EventEmitter();
+    /* OUTPUT */
+    @Output("minimize") minimize: any = new EventEmitter();
+    @Output("removeFromItem") removeFromItem: any = new EventEmitter();
+    @Output("itemsEmitter") itemsEmitter: any = new EventEmitter();
 
-  //VARIABLE
-  public couter: number;
-  public isSortName: boolean = false;
-  public isSortCount: boolean = false;
-  private itemSubject = new Subject();
-  public observable$: Observable<number>;
+    //VARIABLE
+    public couter: number;
+    public isSortName: boolean = false;
+    public isSortCount: boolean = false;
+    private itemSubject = new Subject();
+    public observable$: Observable<number>;
 
-  constructor() {}
+    constructor() {}
 
-  ngAfterViewInit(): void {
-    this.itemSubject.subscribe(
-      (_) => (this.observable$ = of(this.couterInclude()))
-    );
-  }
-
-  public exclude(headName: any, contentName: string) {
-    const index = this.items.indexOf(headName);
-    if (index !== -1) {
-      this.items[index].content.map((val: any, i: number) => {
-        if (val[0] === contentName) {
-          this.items[index].content[i] = {
-            ...this.items[index].content[i],
-            include: !this.items[index].content[i]['include'],
-          };
-        }
-      });
+    ngAfterViewInit(): void {
+        this.itemSubject.subscribe(
+            (_) => (this.observable$ = of(this.couterInclude()))
+        );
     }
-    this.itemSubject.next();
 
-    this.itemsEmitter.emit(this.items);
-  }
-
-  public include(headName: any, contentName: string) {
-    const index = this.items.indexOf(headName);
-    if (index !== -1) {
-      this.items[index].content.map((val, i) => {
-        if (val[0] === contentName) {
-          this.items[index].content[i] = {
-            ...this.items[index].content[i],
-            include: !this.items[index].content[i]['include'],
-          };
+    public exclude(headName: any, contentName: string) {
+        const index = this.items.indexOf(headName);
+        if (index !== -1) {
+            this.items[index].content.map((val: any, i: number) => {
+                if (val[0] === contentName) {
+                    this.items[index].content[i] = {
+                        ...this.items[index].content[i],
+                        include: !this.items[index].content[i]["include"],
+                    };
+                }
+            });
         }
-      });
+        this.itemSubject.next();
+
+        this.itemsEmitter.emit(this.items);
     }
-    this.itemSubject.next();
-    this.itemsEmitter.emit(this.items);
-  }
 
-  public sortByName(): void {
-    this.isSortName = !this.isSortName;
-    this.items[this.index].content.sort((prev, next) =>
-      this.isSortName ? this.ASC(prev, next, 0) : this.DESC(prev, next, 0)
-    );
-  }
-  public sortByCount(): void {
-    this.isSortCount = !this.isSortCount;
-    this.items[this.index].content.sort((prev, next) =>
-      this.isSortCount ? this.ASC(prev, next, 1) : this.DESC(prev, next, 1)
-    );
-  }
+    public include(headName: any, contentName: string) {
+        const index = this.items.indexOf(headName);
+        if (index !== -1) {
+            this.items[index].content.map((val, i) => {
+                if (val[0] === contentName) {
+                    this.items[index].content[i] = {
+                        ...this.items[index].content[i],
+                        include: !this.items[index].content[i]["include"],
+                    };
+                }
+            });
+        }
+        this.itemSubject.next();
+        this.itemsEmitter.emit(this.items);
+    }
 
-  private DESC(i, ii, key) {
-    return i[key] > ii[key] ? -1 : i[key] < ii[key] ? 1 : 0;
-  }
+    public sortByName(): void {
+        this.isSortName = !this.isSortName;
+        this.items[this.index].content.sort((prev, next) =>
+            this.isSortName ? this.ASC(prev, next, 0) : this.DESC(prev, next, 0)
+        );
+    }
+    public sortByCount(): void {
+        this.isSortCount = !this.isSortCount;
+        this.items[this.index].content.sort((prev, next) =>
+            this.isSortCount
+                ? this.ASC(prev, next, 1)
+                : this.DESC(prev, next, 1)
+        );
+    }
 
-  private ASC(i, ii, key) {
-    return i[key] > ii[key] ? 1 : i[key] < ii[key] ? -1 : 0;
-  }
+    private DESC(i, ii, key): number {
+        return i[key] > ii[key] ? -1 : i[key] < ii[key] ? 1 : 0;
+    }
 
-  private couterInclude(): number {
-    this.couter = 0;
-    this.items[this.index].content.forEach((element) => {
-      if (element['include']) this.couter++;
-    });
-    return this.couter;
-  }
+    private ASC(i, ii, key): number {
+        return i[key] > ii[key] ? 1 : i[key] < ii[key] ? -1 : 0;
+    }
+
+    private couterInclude(): number {
+        this.couter = 0;
+        this.items[this.index].content.forEach((element) => {
+            if (element.include) {
+                this.couter++;
+            }
+        });
+        return this.couter;
+    }
+
+    public reset(): void {
+        this.item.content.forEach((element) => {
+            element.include = false;
+        });
+        const index = this.items.indexOf(this.item.head);
+        if (index != -1) {
+            this.items[index] = this.item;
+        }
+        this.itemSubject.next();
+        this.itemsEmitter.emit(this.items);
+    }
 }

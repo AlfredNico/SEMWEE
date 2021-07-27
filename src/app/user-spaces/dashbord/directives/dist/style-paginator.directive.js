@@ -89,8 +89,8 @@ var StylePaginatorDirective = /** @class */ (function () {
     StylePaginatorDirective.prototype.buildPageNumbers = function () {
         var _this = this;
         var _a, _b, _c, _d, _e;
-        var actionContainer = this.vr.element.nativeElement.querySelector('div.mat-paginator-range-actions');
-        var nextPageNode = this.vr.element.nativeElement.querySelector('button.mat-paginator-navigation-next');
+        var actionContainer = this.vr.element.nativeElement.querySelector("div.mat-paginator-range-actions");
+        var nextPageNode = this.vr.element.nativeElement.querySelector("button.mat-paginator-navigation-next");
         // remove buttons before creating new ones
         if (((_a = this._buttons) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             this._buttons.forEach(function (button) {
@@ -99,43 +99,56 @@ var StylePaginatorDirective = /** @class */ (function () {
             this._buttons.length = 0;
         }
         //initialize next page and last page buttons
-        if (((_b = this._buttons) === null || _b === void 0 ? void 0 : _b.length) == 0) {
+        if (((_b = this._buttons) === null || _b === void 0 ? void 0 : _b.length) === 0) {
             var nodeArray_1 = (_e = (_d = (_c = this.vr.element) === null || _c === void 0 ? void 0 : _c.nativeElement) === null || _d === void 0 ? void 0 : _d.childNodes[0]) === null || _e === void 0 ? void 0 : _e.childNodes[0].childNodes[2].childNodes;
             setTimeout(function () {
                 var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
                 for (var i = 0; i < (nodeArray_1 === null || nodeArray_1 === void 0 ? void 0 : nodeArray_1.length); i++) {
-                    if (_this._isFetchData) {
+                    if (_this._isFetchData && _this.matPag.length !== 0) {
                         if (i == 0 || i == 1) {
-                            (_a = _this.ren) === null || _a === void 0 ? void 0 : _a.setAttribute(nodeArray_1[i], 'disabled', 'true');
+                            try {
+                                (_a = _this.ren) === null || _a === void 0 ? void 0 : _a.setAttribute(nodeArray_1[i], "disabled", "true");
+                            }
+                            catch (error) {
+                                console.log("erro 1");
+                            }
+                            // } else if (i == 5 || i == 6) {
                         }
-                        else if (i == 5 || i == 6)
-                            (_b = _this.ren) === null || _b === void 0 ? void 0 : _b.setAttribute(nodeArray_1[i], 'disabled', 'false');
+                        else if (i == 6) {
+                            try {
+                                (_b = _this.ren) === null || _b === void 0 ? void 0 : _b.setAttribute(nodeArray_1[i], "disabled", "false");
+                            }
+                            catch (error) {
+                                console.log("erro 2");
+                            }
+                        }
                     }
-                    if (nodeArray_1[i].nodeName === 'BUTTON') {
-                        if (nodeArray_1[i].innerHTML.length > 100 && nodeArray_1[i].disabled) {
-                            _this.ren.setStyle(nodeArray_1[i], 'background-color', 'rgba(236, 241, 246, 1)');
-                            _this.ren.setStyle(nodeArray_1[i], 'color', 'rgba(181, 181, 195, 1)');
-                            (_c = _this.ren) === null || _c === void 0 ? void 0 : _c.setStyle(nodeArray_1[i], 'box-shadow', 'none');
-                            (_d = _this.ren) === null || _d === void 0 ? void 0 : _d.setStyle(nodeArray_1[i], 'border-radius', '5px');
-                            (_e = _this.ren) === null || _e === void 0 ? void 0 : _e.setStyle(nodeArray_1[i], 'margin', '.5%');
+                    if (nodeArray_1[i].nodeName === "BUTTON") {
+                        if (nodeArray_1[i].innerHTML.length > 100 &&
+                            nodeArray_1[i].disabled) {
+                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(236, 241, 246, 1)");
+                            _this.ren.setStyle(nodeArray_1[i], "color", "rgba(181, 181, 195, 1)");
+                            (_c = _this.ren) === null || _c === void 0 ? void 0 : _c.setStyle(nodeArray_1[i], "box-shadow", "none");
+                            (_d = _this.ren) === null || _d === void 0 ? void 0 : _d.setStyle(nodeArray_1[i], "border-radius", "5px");
+                            (_e = _this.ren) === null || _e === void 0 ? void 0 : _e.setStyle(nodeArray_1[i], "margin", ".5%");
                         }
                         else if (nodeArray_1[i].innerHTML.length > 100 &&
                             !nodeArray_1[i].disabled) {
-                            _this.ren.setStyle(nodeArray_1[i], 'background-color', 'rgba(236, 241, 246, 1)');
-                            _this.ren.setStyle(nodeArray_1[i], 'color', 'rgba(181, 181, 195, 1)');
-                            (_f = _this.ren) === null || _f === void 0 ? void 0 : _f.setStyle(nodeArray_1[i], 'box-shadow', 'none');
-                            (_g = _this.ren) === null || _g === void 0 ? void 0 : _g.setStyle(nodeArray_1[i], 'border-radius', '5px');
-                            (_h = _this.ren) === null || _h === void 0 ? void 0 : _h.setStyle(nodeArray_1[i], 'margin', '.5%');
+                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(236, 241, 246, 1)");
+                            _this.ren.setStyle(nodeArray_1[i], "color", "rgba(181, 181, 195, 1)");
+                            (_f = _this.ren) === null || _f === void 0 ? void 0 : _f.setStyle(nodeArray_1[i], "box-shadow", "none");
+                            (_g = _this.ren) === null || _g === void 0 ? void 0 : _g.setStyle(nodeArray_1[i], "border-radius", "5px");
+                            (_h = _this.ren) === null || _h === void 0 ? void 0 : _h.setStyle(nodeArray_1[i], "margin", ".5%");
                         }
                         else if (nodeArray_1[i].disabled) {
                             // } else if (this._isFetchData) {
-                            _this.ren.setStyle(nodeArray_1[i], 'background-color', 'rgba(54, 153, 255, 1)');
-                            (_j = _this.ren) === null || _j === void 0 ? void 0 : _j.setStyle(nodeArray_1[i], 'color', 'white');
+                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(54, 153, 255, 1)");
+                            (_j = _this.ren) === null || _j === void 0 ? void 0 : _j.setStyle(nodeArray_1[i], "color", "white");
                         }
                         else if (!nodeArray_1[i].disabled) {
                             // } else if (!this._isFetchData) {
-                            (_k = _this.ren) === null || _k === void 0 ? void 0 : _k.setStyle(nodeArray_1[i], 'background-color', 'transparent');
-                            (_l = _this.ren) === null || _l === void 0 ? void 0 : _l.setStyle(nodeArray_1[i], 'color', 'rgba(138, 140, 159, 1)');
+                            (_k = _this.ren) === null || _k === void 0 ? void 0 : _k.setStyle(nodeArray_1[i], "background-color", "transparent");
+                            (_l = _this.ren) === null || _l === void 0 ? void 0 : _l.setStyle(nodeArray_1[i], "color", "rgba(138, 140, 159, 1)");
                         }
                     }
                 }
@@ -153,19 +166,19 @@ var StylePaginatorDirective = /** @class */ (function () {
     };
     StylePaginatorDirective.prototype.createButton = function (i, pageIndex) {
         var _this = this;
-        var linkBtn = this.ren.createElement('button');
-        this.ren.addClass(linkBtn, 'mat-mini-fab');
-        this.ren.setStyle(linkBtn, 'margin', '1%');
-        this.ren.setStyle(linkBtn, 'background-color', 'white');
-        var pagingTxt = isNaN(i) ? '...' : +(i + 1);
-        var text = this.ren.createText(pagingTxt + '');
-        this.ren.addClass(linkBtn, 'mat-custom-page');
+        var linkBtn = this.ren.createElement("button");
+        this.ren.addClass(linkBtn, "mat-mini-fab");
+        this.ren.setStyle(linkBtn, "margin", "1%");
+        this.ren.setStyle(linkBtn, "background-color", "white");
+        var pagingTxt = isNaN(i) ? "..." : +(i + 1);
+        var text = this.ren.createText(pagingTxt + "");
+        this.ren.addClass(linkBtn, "mat-custom-page");
         switch (i) {
             case pageIndex:
-                this.ren.setAttribute(linkBtn, 'disabled', 'disabled');
+                this.ren.setAttribute(linkBtn, "disabled", "disabled");
                 break;
             default:
-                this.ren.listen(linkBtn, 'click', function () {
+                this.ren.listen(linkBtn, "click", function () {
                     _this.switchPage(i);
                 });
                 break;
@@ -188,14 +201,17 @@ var StylePaginatorDirective = /** @class */ (function () {
             case this._curPageObj.pageIndex == 0 && this._rangeStart != 0:
                 return 0;
             case this._curPageObj.pageIndex > this._rangeEnd:
-                return this._curPageObj.pageIndex + this.inc > this.lastPageIndex
+                return this._curPageObj.pageIndex + this.inc >
+                    this.lastPageIndex
                     ? this.lastPageIndex - this.inc * 2
                     : this._curPageObj.pageIndex - this.inc;
-            case this._curPageObj.pageIndex > this._curPageObj.previousPageIndex &&
+            case this._curPageObj.pageIndex >
+                this._curPageObj.previousPageIndex &&
                 this._curPageObj.pageIndex > middleIndex &&
                 this._rangeEnd < this.lastPageIndex:
                 return this._rangeStart + 1;
-            case this._curPageObj.pageIndex < this._curPageObj.previousPageIndex &&
+            case this._curPageObj.pageIndex <
+                this._curPageObj.previousPageIndex &&
                 this._curPageObj.pageIndex < middleIndex &&
                 this._rangeStart > 0:
                 return this._rangeStart - 1;
@@ -210,14 +226,17 @@ var StylePaginatorDirective = /** @class */ (function () {
                 this._rangeEnd != this._showTotalPages:
                 return this._showTotalPages - 1;
             case this._curPageObj.pageIndex > this._rangeEnd:
-                return this._curPageObj.pageIndex + this.inc > this.lastPageIndex
+                return this._curPageObj.pageIndex + this.inc >
+                    this.lastPageIndex
                     ? this.lastPageIndex
                     : this._curPageObj.pageIndex + 1;
-            case this._curPageObj.pageIndex > this._curPageObj.previousPageIndex &&
+            case this._curPageObj.pageIndex >
+                this._curPageObj.previousPageIndex &&
                 this._curPageObj.pageIndex > middleIndex &&
                 this._rangeEnd < this.lastPageIndex:
                 return this._rangeEnd + 1;
-            case this._curPageObj.pageIndex < this._curPageObj.previousPageIndex &&
+            case this._curPageObj.pageIndex <
+                this._curPageObj.previousPageIndex &&
                 this._curPageObj.pageIndex < middleIndex &&
                 this._rangeStart >= 0 &&
                 this._rangeEnd > this._showTotalPages - 1:
@@ -231,7 +250,7 @@ var StylePaginatorDirective = /** @class */ (function () {
         // console.log('switch', i);
         var previousPageIndex = this.matPag.pageIndex;
         this.matPag.pageIndex = i;
-        this.matPag['_emitPageEvent'](previousPageIndex);
+        this.matPag["_emitPageEvent"](previousPageIndex);
         this.initPageRange();
     };
     //Initialize default state after view init
@@ -245,7 +264,7 @@ var StylePaginatorDirective = /** @class */ (function () {
     ], StylePaginatorDirective.prototype, "showTotalPages");
     StylePaginatorDirective = __decorate([
         core_1.Directive({
-            selector: '[appStylePaginator]'
+            selector: "[appStylePaginator]"
         }),
         __param(0, core_1.Host()), __param(0, core_1.Self()), __param(0, core_1.Optional())
     ], StylePaginatorDirective);

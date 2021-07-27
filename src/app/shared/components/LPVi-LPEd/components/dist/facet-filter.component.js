@@ -91,7 +91,7 @@ var FacetFilterComponent = /** @class */ (function () {
         this.lpviLped.inputSubject.next();
         this.queriesNumerisFilters = {};
         this.lpviLped.dataSources$.next(this.dataViews);
-        this.dataSources = this.dataViews;
+        // this.dataSources = this.dataViews;
         this.items.map(function (item, index) {
             var _a;
             if (item["type"] === "search") {
@@ -117,7 +117,7 @@ var FacetFilterComponent = /** @class */ (function () {
         var _this = this;
         this.lpviLped.isLoading$.next(true); // enable loading spinner
         var q = [], ss = undefined;
-        this.dataSources = this.dataViews.filter(function (value, index) {
+        var data = this.dataViews.filter(function (value, index) {
             var v = value["" + event["head"]];
             if (Object.keys(_this.queriesNumerisFilters).length === 0) {
                 if (v >= event["minValue"] &&
@@ -155,7 +155,7 @@ var FacetFilterComponent = /** @class */ (function () {
             }
         });
         this.queriesNumerisFilters["" + event["head"]] = q;
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.callAfterTimeLineEmitter = function (event) {
@@ -164,7 +164,7 @@ var FacetFilterComponent = /** @class */ (function () {
         var q = [], ss = undefined;
         if (this.queriesTimeLineFilters == undefined)
             this.queriesTimeLineFilters = {};
-        this.dataSources = this.dataViews.filter(function (value, index) {
+        var data = this.dataViews.filter(function (value, index) {
             var v = Date.parse(value["" + event["head"]]);
             if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
                 if (v <= event["end"] && v >= event["start"])
@@ -198,7 +198,7 @@ var FacetFilterComponent = /** @class */ (function () {
             }
         });
         this.queriesTimeLineFilters["" + event["head"]] = this.timeLineQeury;
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.formGroupEmitter = function (event) {
@@ -235,7 +235,7 @@ var FacetFilterComponent = /** @class */ (function () {
             else if (removeName === "numeric") {
                 var q = [], ss_1 = undefined;
                 delete this.queriesNumerisFilters[item["head"]];
-                this.dataSources = this.dataViews.filter(function (value, index) {
+                var data = this.dataViews.filter(function (value, index) {
                     if (Object.keys(_this.queriesNumerisFilters).length === 0) {
                         _this.numericQeury[index] = true;
                         return _this.filtersData(index);
@@ -254,7 +254,7 @@ var FacetFilterComponent = /** @class */ (function () {
                         return _this.filtersData(index);
                     }
                 });
-                this.lpviLped.dataSources$.next(this.dataSources);
+                this.lpviLped.dataSources$.next(data);
             }
             else if (removeName === "search") {
                 // this.searchQueries = [];
@@ -262,12 +262,11 @@ var FacetFilterComponent = /** @class */ (function () {
                 //   return this.filtersData(index);
                 // });
                 this.itemsEmitter(); // Call search filter Item after delete item
-                // this.lpviLped.dataSources$.next(this.dataSources);
             }
             else if (removeName === "timeLine") {
                 var q = [], ss_2 = undefined;
                 delete this.queriesTimeLineFilters[item["head"]];
-                this.dataSources = this.dataViews.filter(function (value, index) {
+                var data = this.dataViews.filter(function (value, index) {
                     if (Object.keys(_this.queriesTimeLineFilters).length === 0) {
                         _this.timeLineQeury[index] = true;
                         return _this.filtersData(index);
@@ -286,7 +285,7 @@ var FacetFilterComponent = /** @class */ (function () {
                         return _this.filtersData(index);
                     }
                 });
-                this.lpviLped.dataSources$.next(this.dataSources);
+                this.lpviLped.dataSources$.next(data);
             }
         }
         this.savePermalink(); // SAVE PERMALINK
@@ -296,7 +295,7 @@ var FacetFilterComponent = /** @class */ (function () {
         this.lpviLped.isLoading$.next(true); // enable loading spinner
         if (event !== undefined)
             this.items = event;
-        this.dataSources = this.dataViews.filter(function (value, index) {
+        var data = this.dataViews.filter(function (value, index) {
             var i1 = 0;
             var queries;
             var q = _this.items.map(function (item) {
@@ -325,7 +324,7 @@ var FacetFilterComponent = /** @class */ (function () {
                 queries != (undefined || null) ? queries : true;
             return _this.filtersData(index);
         });
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.resetTimeLineAndNumber = function (item, resetName) {
@@ -361,7 +360,7 @@ var FacetFilterComponent = /** @class */ (function () {
         var _this = this;
         var qqq = false, i1 = 0;
         this.lpviLped.isLoading$.next(true); // disable loading spinner
-        this.dataSources = this.dataViews.filter(function (value, index) {
+        var data = this.dataViews.filter(function (value, index) {
             if (Object.values(_this.queries).every(function (x) { return x === null || x === ""; })) {
                 _this.inputQueries[index] = true;
                 return _this.filtersData(index);
@@ -442,7 +441,7 @@ var FacetFilterComponent = /** @class */ (function () {
                 return _this.filtersData(index);
             }
         });
-        this.lpviLped.dataSources$.next(this.dataSources);
+        this.lpviLped.dataSources$.next(data);
         this.savePermalink(); // SAVE PERMALINK
     };
     FacetFilterComponent.prototype.savePermalink = function () {
