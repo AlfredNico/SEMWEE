@@ -80,7 +80,7 @@ import { Console } from 'console';
           <div>
             If you don't know what to upload, you can read documentation in your
             <a href="google.com" style="color:red !important">Help Center</a>, or you can
-            <button mat-raised-button (click)="openDialog()">donwload our items list sample</button>
+            <button mat-raised-button (click)="openDialog()" style="color:red !important">donwload our items list sample</button>
           </div>
         </div>
         
@@ -151,7 +151,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
     private lpValidatorServices: LpValidatorService,
     private common: CommonService,
     private notifs: NotificationService,
-    private dialog: MatDialog
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void { }
@@ -161,9 +161,7 @@ export class ImportItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(res => {
       console.log(`Dialog res: ${res}`)
     })
-
   }
-
   public onFileChange(event: any) {
     const target: DataTransfer = event.target
       ? <DataTransfer>event.target

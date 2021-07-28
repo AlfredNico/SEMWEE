@@ -19,6 +19,8 @@ import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
 import { DragDroppDirective } from '../../directives/drag-dropp.directive';
 import { SearchReplaceComponent } from './search_filter_replace/search-filter-replace.component';
 import { ResizableModule } from 'angular-resizable-element';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogImportItemComponent } from '../dialog-import-item/dialog-import-item.component'
 @NgModule({
   declarations: [
     LpViewerComponent,
@@ -36,6 +38,7 @@ import { ResizableModule } from 'angular-resizable-element';
     PerfectScrollbarModule,
     ResizableModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }]),
+    MatDialogModule,
   ],
   exports: [RouterModule],
   entryComponents: [
@@ -43,6 +46,7 @@ import { ResizableModule } from 'angular-resizable-element';
     ViwerReadImportComponent,
     HeaderOptionsComponent,
     UpdatesHeaderComponent,
+    DialogImportItemComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [LpViwersService, tokenInterceptor, errorInterceptor],

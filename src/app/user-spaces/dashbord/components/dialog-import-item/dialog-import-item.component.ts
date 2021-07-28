@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'app-dialog-import-item',
   templateUrl: './dialog-import-item.component.html',
@@ -8,8 +7,5 @@ import { Component, OnInit } from '@angular/core';
 export class DialogImportItemComponent implements OnInit {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit() { }
 }

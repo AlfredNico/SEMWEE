@@ -41,6 +41,7 @@ import { DialogImportItemComponent } from '../dialog-import-item/dialog-import-i
     InferListComponent,
     GoogleMachingComponent,
     TuneItComponent,
+    DialogImportItemComponent,
 
     /* DIRECTIRES DECLARATORS */
     DragDropDirective,

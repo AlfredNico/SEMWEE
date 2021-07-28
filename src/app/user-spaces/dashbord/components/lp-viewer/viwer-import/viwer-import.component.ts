@@ -5,7 +5,8 @@ import { User } from '@app/classes/users';
 import { NotificationService } from '@app/services/notification.service';
 import { LpdLpdService } from '@app/shared/components/LPVi-LPEd/services/lpd-lpd.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { MatDialog } from '@angular/material/dialog';
+import { DialogImportItemComponent } from '../../dialog-import-item/dialog-import-item.component';
 @Component({
   selector: 'app-viwer-import',
   template: `
@@ -59,7 +60,7 @@ import { ActivatedRoute, Router } from '@angular/router';
           <div>
             If you don't know what to upload, you can read documentation in your
             <a href="google.com" style="color:red !important">Help Center</a>, or you can
-            <a download href="../assets/csv/sémwee.csv" style="color:red !important">donwload our items list sample</a>
+             <button mat-raised-button (click)="openDialog()" style="color:red !important">donwload our items list sample</button>
           </div>
       </div>
     </div>
@@ -108,8 +109,16 @@ export class ViwerImportComponent {
     private readonly lpviLped: LpdLpdService,
     private readonly nofits: NotificationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
+
+  public openDialog() {
+    let dialogRef = this.dialog.open(DialogImportItemComponent);
+    dialogRef.afterClosed().subscribe(res => {
+      console.log(`Dialog res: ${res}`)
+    })
+  }
 
   reload() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

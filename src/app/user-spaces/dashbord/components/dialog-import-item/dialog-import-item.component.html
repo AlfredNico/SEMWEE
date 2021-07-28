@@ -1,6 +1,10 @@
 <h1 mat-dialog-title>Do you want to download file?</h1>
-<mat-dialog-content>Download  </mat-dialog-content>
-<mat-dialog-action>
-    <button mat-button [mat-dialog-close]="true">YES</button>
-    <button mat-button [mat-dialog-close]="false">NO</button>
-</mat-dialog-action>
+<mat-dialog-content></mat-dialog-content>
+<mat-dialog-actions>
+    <div id="dialog-button">
+        <button mat-button [mat-dialog-close] mat-dialog-close="true">
+            <a download href="../../../../../assets/csv/sémwee.csv" style="color:blue">YES</a>
+        </button>
+        <button mat-button [mat-dialog-close] mat-dialog-close="false">NO</button>
+    </div>
+</mat-dialog-actions>
