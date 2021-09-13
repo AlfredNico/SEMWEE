@@ -41,6 +41,7 @@ export class AllLPViewerProjectsComponent implements OnInit, AfterViewInit {
                 this.LPViewerProjectsService.getAllProjects(this.user._id)
             )
         );
+        this.lpviLped.isLoading$.next(false);
     }
 
     ngAfterViewInit() {

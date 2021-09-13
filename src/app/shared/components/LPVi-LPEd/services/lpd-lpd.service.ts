@@ -49,11 +49,15 @@ export class LpdLpdService {
         });
     }
 
-    public getSavedProjects(idProject): Observable<any> {
+    public getSavedProjects(idProject, idFilter,id): Observable<any> {
+        let url =  !idFilter ? `${this.ROUTER_URL}/get-permalink/${idProject}`:
+                                            `${this.ROUTER_URL}/get-permalink/${idProject}/${idFilter}/${id}` 
         return this.http
-            .get<any>(`${this.ROUTER_URL}/get-permalink/${idProject}`)
+            .get<any>(url)
             .pipe(
                 map((res) => {
+                    //console.log("test permalink : ",res )
+                    // console.log("test permalink : ",res[3][0]["_id"])
                     if (res[3].length !== 0)
                         this.permaLink = { ...JSON.parse(res[3][0]["value"]) };
 
@@ -69,13 +73,18 @@ export class LpdLpdService {
                     ).split(",");
 
                     header.unshift("all");
+                    let namehistory :any [] = res[4];
+                    namehistory.push(res[3][0]["idProject"]);
+                    namehistory.push(res[3][0]["_id"]);
+
                     return {
                         headerOrigin: header,
                         data: res[1],
                         formInputQuery: this.formInputQuery,
                         permaLink: this.permaLink,
-                        name: res[4],
+                        name: namehistory,
                         projectName: res[5],
+                        idname  : res[6]
                     };
                 })
             );

@@ -1,21 +1,20 @@
 app-layout {
-  opacity: 0;
-  height: 100%;
-
-  .grid-root {
+    opacity: 0;
     height: 100%;
-  }
+    .grid-root {
+        height: 100%;
+    }
 }
 
 .page-loaded {
-  app-layout {
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
-  }
+    app-layout {
+        opacity: 1;
+        transition: opacity 1s ease-in-out;
+    }
 }
 
 ::ng-deep .top-position {
-  padding: 0!important;
-  margin-top: -38px!important;
-  margin-bottom: 60px!important;
+    padding: 0 !important;
+    margin-top: -35px !important;
+    margin-bottom: 17px !important;
 }

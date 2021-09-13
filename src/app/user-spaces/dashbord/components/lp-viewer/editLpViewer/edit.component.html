@@ -1,13 +1,14 @@
-<mat-card #card>
+<mat-card #card class="mat-card-space">
   <div  [class]="{'arrow-left':arrow_left,'arrow-right':arrow_right}"></div>
     <mat-card-header>
-      <div class="w-100 my-5 ftp" fxLayout="row">
+      <div class="w-100 edit-text">
         Edit Cell
       </div>
     </mat-card-header>
     <mat-card-content>
       <div mat-form-field class="form-group w-100 mr-5">
-        <mat-select class="form-control" [(value)]="selected">
+        <label class="data-text">Data type</label>
+        <mat-select class="form-control form-custom-select" [(value)]="selected">
           <mat-option value="string">Text</mat-option>
           <mat-option value="number">Number</mat-option>
           <mat-option value="object">Date</mat-option>
@@ -15,14 +16,14 @@
         </mat-select>
       </div>
         <div mat-form-field class="form-group my-3">
-          <label>Leave a value<span class="text-danger">*</span></label>
-          <input [(ngModel)]="valueObject" autocomplete="off" class="form-control" placeholder="Leave a value">
+          
+          <input matInput [(ngModel)]="valueObject" autocomplete="off" class="form-control form-custom pdl-5" placeholder="Leave a value" style="width: 98%!important;">
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <button type="button" class="btn btn-outline-secondary ftp" (click)="convertOne()">Apply</button>
-        <button style="margin: 0px 13px;" type="button" class="btn btn-outline-secondary ftp" (click)="sendObject()">Apply to All Identical Cells</button>
-        <button type="button" class="btn btn-outline-secondary ftp" (click)="toggleEdit('ok')">Cancel</button>
+        <button type="button" class="rounded btn btn-custom ftp" (click)="convertOne()">Apply</button>
+        <button style="margin: 0px 13px;" type="button" class="rounded btn btn-custom ftp" (click)="sendObject()">Apply to All Identical Cells</button>
+        <button type="button" class="rounded btn btn-custom ftp" (click)="toggleEdit('ok')">Cancel</button>
     </mat-card-actions>
 
 </mat-card>

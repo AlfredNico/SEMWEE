@@ -19,6 +19,7 @@ import { TimeLineComponent } from '../components/LPVi-LPEd/components/time-line.
 import { HttpClientModule } from '@angular/common/http';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pulsing-skeleton.component';
+import { ResizableModule } from 'angular-resizable-element';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pul
     SharedDirectivesModule,
     CommonModule,
     NgxSliderModule,
+    ResizableModule,
   ],
   exports: [
     MatStepperModule, // stepper module
@@ -49,6 +51,7 @@ import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pul
     LandingPageModule,
     SharedDirectivesModule,
     NgxSliderModule,
+    ResizableModule,
 
     /* Shared components */
     NumericFacetComponent,
@@ -61,4 +64,4 @@ import { PulsingSkeletonComponent } from '../components/LPVi-LPEd/components/pul
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class SharedComponentsModule {}
+export class SharedComponentsModule { }

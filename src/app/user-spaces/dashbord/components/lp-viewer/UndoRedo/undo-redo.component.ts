@@ -10,17 +10,24 @@ import { LpdLpdService } from "@app/shared/components/LPVi-LPEd/services/lpd-lpd
 export class UndoRedoComponent {
     @Input() dataNameHistory: string[];
     @Output() callOtherData = new EventEmitter<any>();
-    @Input() indexRow: any = undefined;
+    @Input() indexRow: any;
+    public linkId :any;
 
     constructor(
         private lpviwer: LpViwersService,
         private readonly lpviLped: LpdLpdService
     ) {}
 
-    public linkHistory(value, i) {
+    public linkHistory(event,value, i) {
+        //console.log(event)
+      
         this.lpviwer.isloadingHistory.next(true);
-        this.lpviLped.resetfilter.next("true");
         this.indexRow = i;
         this.callOtherData.emit(value);
+        this.linkId = i ;
+    }
+
+    clearTooltip(){
+        this.linkId = undefined;
     }
 }

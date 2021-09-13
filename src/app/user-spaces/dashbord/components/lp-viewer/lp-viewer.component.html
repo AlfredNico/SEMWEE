@@ -1,22 +1,25 @@
-<div class="text-label">LP Viewer</div>
-<mat-horizontal-stepper
-  [linear]="true"
-  #stepper
-  [selectedIndex]="selectedStepperIndex"
->
-  <mat-step completed="false" editable="false" label="Fill out your address">
-    <app-viwer-import
-      [user]="user"
-      (dataImported)="nextReadFile($event)"
-    ></app-viwer-import>
-  </mat-step>
-  <mat-step completed="false" editable="false">
-    <ng-template matStepLabel>Done</ng-template>
-    <app-viwer-read-import
-      [inputFilters]="inputFilters"
-      [filtersData]="filtersData"
-      [idProject]="idProject"
-      [dataAfterUploaded]="dataAfterUploaded"
-    ></app-viwer-read-import>
-  </mat-step>
+<div class="text-label">
+    <div style="font-size: 20px;
+    font-weight: 600;
+    font-family: 'Open Sans'!important;
+    color: #000000;">List Page Viewer</div>
+    <div style="font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    margin-top: 3px;
+    font-family: 'Source Sans Pro'!important;
+    color: #979797;
+">Greatly inspired by <a href="https://openrefine.org/" style="font-size: 18px;
+font-weight: 400;
+font-style: italic;
+font-family: 'Source Sans Pro'!important;">OpenRefine</a></div>
+</div>
+<mat-horizontal-stepper [linear]="true" #stepper [selectedIndex]="selectedStepperIndex">
+    <mat-step completed="false" editable="false" label="Fill out your address">
+        <app-viwer-import [user]="user" [idProject]='idProject' (dataImported)="nextReadFile($event)"></app-viwer-import>
+    </mat-step>
+    <mat-step completed="false" editable="false">
+        <ng-template matStepLabel>Done</ng-template>
+        <app-viwer-read-import [inputFilters]="inputFilters" [filtersData]="filtersData" [idProject]="idProject" [dataAfterUploaded]="dataAfterUploaded"></app-viwer-read-import>
+    </mat-step>
 </mat-horizontal-stepper>

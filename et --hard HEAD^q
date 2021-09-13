@@ -1,0 +1,832 @@
+[33m45891ac[m[33m ([m[1;36mHEAD -> [m[1;32mlp-viewer-filter-journale[m[33m, [m[1;32mlpviewer-link-journale[m[33m)[m lpviewer-journale-link
+[33m59d7360[m[33m ([m[1;31morigin/lp-viewer-filter-journale[m[33m)[m update import
+[33m89785b0[m commit for filter, journale , search-replce with regex
+[33m1b0bf53[m filter ande journale finish
+[33m624030b[m last change
+[33me9b03a2[m last update
+[33md08c33b[m last modif for lp-viewer-filter-journale
+[33m7c3c1d9[m modif last
+[33m0e45953[m Correction pagination + reset number facet
+[33mb4bc379[m Correction reset timeLine + Numiric
+[33m652a8fc[m update for search replace
+[33ma2a6dea[m Correction reset + text facet
+[33mb8db3f3[m Correction loading
+[33m93f3146[m Correction dessing loading table + remove all lp-viewer project
+[33mc5385cc[m Merge branch 'correction-lp-viewer' into checkout_Mamy
+[33mcfd0a80[m Update viwer-read-import.component.html
+[33m193f910[m Merge branch 'correction-lp-viewer' into checkout_Mamy
+[33m3ed1efb[m Correction + Modification facet filter
+[33mbb30f0e[m Correction timeLine facet & numiric facet
+[33m8437120[m Merge branch 'modif-lpviewer' of https://github.com/AlfredNico/SEMWEE into modif-lpviewer
+[33m19fb3d0[m finished combinaision de Nico et Mamy
+[33m2fca734[m finished combinaision de Nico et Mamy
+[33m4219b81[m Merge branch 'modif-lpviewer' of https://github.com/AlfredNico/SEMWEE into modif-lpviewer
+[33mb01fa84[m finish modif lpviwer via mamy
+[33m59730fc[m finish modif lpviwer via mamy
+[33m81e1b18[m finish modif lpviwer via mamy
+[33mdb455de[m correction finit concernant numeric et timeline facet, modification du convertion number and date, format iso
+[33mc395bbb[m Correctio project viewers
+[33md30f9d5[m Correction lp-viewer
+[33m146d5e3[m Correction
+[33m6a39aa4[m update convertion number finished
+[33m28aac2d[m correction des conversions finit
+[33m1ee8588[m Merge branch 'lp-viewer-tabs' of https://github.com/AlfredNico/SEMWEE into lp-viewer
+[33m40eed0d[m merge branch Mika lp-viewer-tabs
+[33m1e017c5[m Tabs Update
+[33m5fdfa43[m Merge branch Nico
+[33mfce6dd5[m Correction OK
+[33mc1ca419[m Merge branch 'lpvi-design-version' of https://github.com/AlfredNico/SEMWEE into checkout-mika
+[33m434aafc[m Merge Skeleton
+[33me90c142[m updates filte datetime + sort
+[33m992505c[m Correction header send to back
+[33mf3cca12[m merge branch Nico
+[33mbe2babe[m merge branch Nico
+[33m68f70f3[m Design v2107
+[33m1b2a17e[m correction loading table
+[33maaa73f9[m merge branch Nico
+[33ma199a67[m Merge Lp-Viewer
+[33m403336a[m Updated
+[33m7e8ca69[m test loading with api
+[33mf4a6ed9[m test de loading
+[33mc7af55c[m merge branch
+[33mb3dcfaa[m test
+[33m936517c[m updates filtes
+[33m70c8ced[m updates ok
+[33m6cbd7e4[m Correction + mise a jour code
+[33ma13d61e[m Correction et Modification lp-viewe
+[33m6f53515[m Correction + Modification lp-viwer
+[33mda7bb58[m Merge branch 'lpvi-next-design' of https://github.com/AlfredNico/SEMWEE into merge_mika_nico
+[33mf3b9f17[m Correctio facet filter
+[33m13a99b1[m Change Design
+[33m6036802[m updates filtes
+[33m173973a[m facet filter OK
+[33mbd53237[m Merge
+[33m3719b47[m Mise a jour + correction
+[33m1ae5ca7[m updates dessing skeleton
+[33m48c039d[m Correctin pagination
+[33m630bfca[m Correctin pagination
+[33m1bc3fcd[m Correctio OK
+[33md1544d6[m Correction youan + filter number
+[33m8d50968[m Correction youan + filter number
+[33mcbfe835[m pagination-viewer
+[33mb732d80[m Correction avant test
+[33me2de4be[m Miandry Test avy @nareo sisa
+[33m25c7a3d[m Correction facet-filter
+[33m79c31a9[m updates loading
+[33mffe3be6[m update skeleton git
+[33m21318ec[m Correction loading table
+[33m398e766[m Fix
+[33m008fd88[m updates import
+[33m27a512b[m Nico Mamy lpviwer finished
+[33m76cc373[m Integration Nico Mea
+[33med5ce63[m Integration Nico Mea
+[33m69acf85[m finish update tab-group
+[33m291ab9e[m updates import file csv
+[33m059ed49[m commencement de déplacement du component search replace
+[33m5f39955[m updates OK
+[33m7002bb9[m Conflict Mamy + Nico OK
+[33m1a2ca1e[m updates
+[33mc658f27[m Merge branch 'checkoout-test-import' of https://github.com/AlfredNico/SEMWEE into checkoout-test-import
+[33m68910f5[m add flag and start in the table and filtre with that
+[33mf1ff1bf[m Solve Problem
+[33ma9be136[m Problem Last Header
+[33m2681cb1[m add flag and start in the table and filtre with that
+[33m3fcff91[m filter Start and Flag finished
+[33m3f98359[m filter Start and Flag finished
+[33m144aeba[m conflit resolut de la part de Nico
+[33mb13ae86[m Update settings.json
+[33m0ad0fcd[m Update .editorconfig
+[33m8f6c4d0[m Update README.md
+[33m82e810d[m Merge branch 'checkoout-test-import' of https://github.com/AlfredNico/SEMWEE into checkoout-test-import
+[33m7819cda[m updates
+[33mb7a0e5c[m conflit resolut de la part de Nico
+[33m791a31e[m Modif Regex Csv
+[33m0f5036b[m test
+[33me0794d6[m modif paginator sizeNumber
+[33m4bb3542[m UPDATES Ok
+[33m8394b87[m Regex Import
+[33m07c00ca[m journale update ok lpviewer
+[33m7988e56[m pagination okk
+[33mf6d87cc[m conflict OK
+[33m4dfd3b5[m journale update ok lpviewer
+[33mbeb7e8f[m updates
+[33m2a389e1[m paginator by page ok, conversion ok, jouranle ok, design not ok
+[33ma6a6c8c[m Font Style
+[33m6f9a6d8[m Merge branch 'checkoout-test-import' of https://github.com/AlfredNico/SEMWEE into checkoout-test-import
+[33m994d666[m updates
+[33m4816f33[m merge Nico Mamy in paginator journale
+[33md71220b[m conflic resolu avec Nico
+[33m59efb2e[m test mamy
+[33m4954685[m test mamy
+[33m6478f1d[m test mamy
+[33m78b0e6c[m conversion modifier sur le this.dataview
+[33ma005099[m updates import 2.0
+[33m8e81ebd[m updates import 2.0
+[33m6fd433b[m conflit resolue
+[33m548a10f[m mise à jour import csv
+[33m31a6ad5[m test import front
+[33m0706728[m test import front
+[33m436a83b[m test import front
+[33m21e0277[m LP Viewer All Projects
+[33m81556f0[m Merge branche Debut_v02A_Mika
+[33m5692c18[m Resizable + Scroll Bar
+[33m07cb24f[m après demo
+[33m0d01adc[m Merge Last Updated
+[33m9ab2d56[m Hover Button CSS
+[33m1af4ce1[m datepicker finished
+[33m2c03206[m Merge branch 'DebutBranch_Mika_Nico_Mamy_v02' of https://github.com/AlfredNico/SEMWEE into Debut_v02A
+[33mebd7f03[m merge nico mamy
+[33mb801bb9[m updates filtes OK
+[33m3ea905a[m button edit en lp-viewer-read-component resolut
+[33m3c8f835[m updates filtes
+[33m8e8f569[m Merge branch 'lp-viewer-datefilter' of https://github.com/AlfredNico/SEMWEE into Debut_v02A
+[33m0956254[m commit mika
+[33m90942e3[m Merge v02
+[33m1d48a58[m updates OK
+[33m1c9a824[m updates
+[33m8265538[m Corrections
+[33m9f4844f[m Merge branch 'DebutBranch_Mika_Nico_Mamy_v02' of https://github.com/AlfredNico/SEMWEE into DebutBranch_Mika_Nico_Mamy_v02
+[33m468e5b8[m Merge branch 'DebutBranch_Mika_Nico_Mamy_v02' of https://github.com/AlfredNico/SEMWEE into DebutBranch_Mika_Nico_Mamy_v02
+[33me83c17f[m Merge branch 'DebutBranch_Mika_Nico_Mamy_v02' of https://github.com/AlfredNico/SEMWEE into DebutBranch_Mika_Nico_Mamy_v02
+[33m4cb57cd[m assemblage code 3
+[33m7c403c1[m assemblage code 3
+[33m667f122[m correction
+[33mcede939[m Merge branch 'design_import' of https://github.com/AlfredNico/SEMWEE into DebutBranch_Mika_Nico_Mamy_v01
+[33m631ba28[m Modification des conversions fait par Mika et liaison à la base de donnes
+[33mfcb4d21[m Design Import
+[33m0351fe6[m dernier modif de Nico sur le filter
+[33m0affbf3[m Create Component DateFilter
+[33m01e2dca[m DebutNico_Mika_Ma
+[33mdbcd3a5[m essai filtre
+[33m8ee92fe[m Merge branch 'lp-viewer-popup-design' of https://github.com/AlfredNico/SEMWEE into newbranchNico_Mamy
+[33ma54b0e8[m commit modif integration Nico_Mamy
+[33m893c5a8[m Merge branch 'Integretion_Mika_Nico_Mamy' of https://github.com/AlfredNico/SEMWEE into newbranchNico_Mamy
+[33m8ed914e[m Merge branch 'Integretion_Mika_Nico_Mamy' of https://github.com/AlfredNico/SEMWEE into Integretion_Mika_Nico_Mamy
+[33m1fc378b[m Fix Design Popup
+[33mc5eca39[m updates filters
+[33m5d1afed[m updates OK
+[33m86d6721[m updates
+[33mda90d79[m updates
+[33md2a5a64[m Merge branch 'Integretion_Mika_Nico_Mamy' of https://github.com/AlfredNico/SEMWEE into Integretion_Mika_Nico_Mamy
+[33m84c5740[m conflit resolu dans lpviewer front
+[33m80cd5a4[m Merge branch 'Integretion_Mika_Nico_Mamy' of https://github.com/AlfredNico/SEMWEE into Integretion_Mika_Nico_Mamy
+[33m8c40837[m updates
+[33m45290c9[m dernier clommit
+[33m07da9f0[m resolution conflict Mika, Nico, Mamy
+[33md034e0f[m Conflict resolu dans le fichier viwer-read-import.component.html concernant le ngif
+[33m0fdab5d[m commit dernier modification integration
+[33mfe3bed6[m commit dernier modification integration
+[33me4d0dd4[m Design Filter
+[33m8441dd0[m Filter Design
+[33md1304d4[m modification de position d'edition
+[33m80436aa[m Design Facet
+[33m0f9607b[m Update lp-editor.component.ts
+[33m62bef3c[m updates table + import lp-viewer
+[33m1b9058c[m Merge branch 'lp-viewer-design' of https://github.com/AlfredNico/SEMWEE into marge-mika
+[33m15976ca[m updates modules lp-editor
+[33me9cd0d1[m Assemblage Lpvi+Lped
+[33m61e3b44[m Confit resolu apres l'integration du design de Mika et la fonctionnaliter de journalisation et edition
+[33md34e784[m Merge branch 'lp-editor' of https://github.com/AlfredNico/SEMWEE into lp-viewer-design
+[33m5b19cb6[m Updated Design LPVi
+[33m9dfe5ca[m journale and edition was finished
+[33m097ffec[m delete facet-filter lp-editor
+[33m36cda8f[m filter editor OK
+[33m3c2b0b0[m Packages Deleted
+[33m89c6b1f[m Pull LPEd v2
+[33mf5f8848[m Pull LPEd v1
+[33m5f29832[m updates lp-editor
+[33mf1eaf5f[m Design Table LPVi
+[33m800b8af[m Updates lp-validator
+[33m2da18d6[m Updats filter lp-editor
+[33m31b6f1e[m Updates lp-viewers
+[33md3d4a84[m Updates modules lp-editor
+[33me08a1a4[m OKdates OK
+[33m6b2abfa[m updates OK
+[33m8d416f6[m switch to lp-editor
+[33ma605df4[m switch to lp-editor
+[33m0023960[m merge MIKA + NICO ok
+[33md753a9c[m Convertion Null & Empty
+[33m0fba868[m updates facet filter numric
+[33m5d79c59[m updates packages.lock.json
+[33m6ce1a7d[m correction + merge MAMY & NICO
+[33m1f256b1[m Recherche nombre ok
+[33m1e48f50[m edition lpviewer
+[33mcd0c712[m adaptation du model historique des données avec le backend
+[33m878c6ca[m Updated Convertion
+[33m5cd1e7a[m ok conflict 1 after pull data to check-viewer
+[33m998b9e8[m Convertion
+[33m3a2b32d[m Updates moduls
+[33md8fb312[m Updates OK
+[33m75490af[m Merge branch 'rilah.2' into semwee
+[33m4f9ab36[m conflict OK
+[33m7825142[m UPdates
+[33m01e87bf[m Convert LPVi
+[33ma67c168[m Updates colomns
+[33m5c413c7[m Add List Projects LPVi Size & Date
+[33m6debaa6[m convert cell columns
+[33m55397ff[m convert cell columns
+[33m8c55a1a[m Conflicct OK
+[33me10274c[m Updaes ok
+[33m10bf40e[m git updates
+[33m8c93478[m LPEditor
+[33m4e28715[m Updates facet filters
+[33m23d1812[m Updates facet filters
+[33m50ea884[m View LPViewer
+[33m5bbf4f0[m OKOK
+[33mc98bf68[m Updates OK
+[33m82b949e[m Confliect OK
+[33mc5103e5[m Updates facet filters
+[33m6ce48f0[m Updates tables
+[33maf86308[m UPdates
+[33mb200e58[m Updates checkout Mika
+[33mf8742ba[m Merge branch 'checkout-mika' into checkout-tables
+[33mef20230[m Updates checkout Mika
+[33mf708cc5[m conflict OK
+[33mf93b167[m conflict OK
+[33m5ec1ac2[m Merge branch 'check-viewer' of https://github.com/AlfredNico/SEMWEE into checkout-mika
+[33mf06c862[m conflict OK
+[33m166c8ab[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into check-viewer
+[33mb722899[m conflict OK
+[33md5aebda[m Correction facet/filter
+[33me5ee45c[m conflict
+[33m5c22c9c[m Correction facet/filter
+[33md5f12af[m Update no
+[33mc8b1195[m Updates
+[33mbfd23f7[m essai
+[33m0c0ab9e[m facet filter
+[33m0801d45[m Url lp-viwer
+[33m7ae05ee[m Conflict no
+[33m0efa922[m URL OK
+[33m686c4eb[m Change Environment
+[33mbbb799f[m Contrainte Upload File LPVi
+[33m6e70ab0[m Filter lp-viwer ok
+[33m9f4fac5[m facet filter OK
+[33md1b3c7e[m verification include exclude facet filter
+[33m92d01c4[m demo Anthony
+[33m5cf81b8[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into check-viewer
+[33m987e109[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into check-viewer
+[33mc12fe91[m env
+[33mc1ca427[m Add Delete Project LPVi
+[33m24c7b61[m Checkout Fah OK
+[33mfc4d5e3[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into checkout-fah
+[33m23c8996[m Updates facet filter includes exludes
+[33mc19fcdb[m Listing + Import LPViewer
+[33m7e2c441[m LPViewer Project's List
+[33m9f6d107[m Update viwer-read-import.component.ts
+[33mba90a90[m lp-viewer projects
+[33mb49fddc[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into checkout-tables
+[33ma290969[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into checkout-tables
+[33m4a302d5[m env
+[33mfbcb279[m fix header parse
+[33m7c2f182[m Updates tables
+[33m537ff55[m OKOK
+[33m067a46b[m lp-viwer OK
+[33md6e3c3b[m import csv
+[33m0da6ef3[m Updates lp-viwers
+[33me9f3ca2[m updates check info
+[33mb02f45f[m Tables opetions lp-viewer
+[33m01a2458[m remove button refinePro
+[33m5b01759[m Merge branch 'checkout-tables' of https://github.com/AlfredNico/SEMWEE into lp-viewer
+[33m4447f8c[m remove button refine
+[33m84747d7[m export finished
+[33mdeadfc0[m Merge branch 'checkout-tables' into lp-viewer
+[33m4067622[m Merge branch 'lp-viewer' of https://github.com/AlfredNico/SEMWEE into lp-viewer
+[33m7ec4a20[m lp-validator
+[33me600ffb[m updates tables lp-editor
+[33m8c1a35f[m factet / filter lp-viewer
+[33m601b98c[m lp-veiwer
+[33m394fdaa[m Updates tables
+[33m398f3d8[m Upadtes tables
+[33mb11e546[m updates tables
+[33m2ae12cd[m Merge branch 'rilah.2' into semwee
+[33m6a3c723[m idcsv like ID, multiselectionavec ctrl
+[33md8f26a3[m updates test info echap
+[33m980b9ce[m Check-out
+[33m84b498b[m resizables div
+[33m6291fb5[m Merge branch 'lp-viewer' into rilah.2
+[33m7a8440b[m remove console log
+[33m240389c[m Merge branch 'semwee' into lp-viewer
+[33m8e86189[m updattes OK
+[33mde1ee3e[m [inferlist]make id to ID + hide idProject
+[33m1dad893[m [importCSV] basculement directe vers InferList
+[33m527f689[m Updates multi-select lp-validator
+[33m02da902[m Merge branch 'lp-viewer' into rilah.2
+[33ma48dbab[m hide ID(datababase) + rename "Idcsv" to "ID"
+[33m29a65ab[m Correction filter tableau
+[33m95f11f2[m Correction filter data
+[33m186c7cb[m filter location to the border
+[33m252a26a[m loading...
+[33m95dc0dd[m add tables lp-viewers
+[33m57e117d[m speed fix font size or weight selected row
+[33m8aad7f5[m checkout-viewers
+[33m0237de5[m Update idb.service.ts
+[33mb822536[m Update .gitignore
+[33mb34d8a1[m remove unnecessary lines code
+[33m9589604[m tuneIt ok
+[33m21c36ad[m Correction loading OK
+[33m217c73e[m conflict OK
+[33m06d8f5c[m errors
+[33m62b436a[m Correction case à cocher OK
+[33m6d660f1[m Correction bug case à cocher
+[33m2b889b4[m Correction checked
+[33m3a6c04a[m loading error no resolu
+[33m07789c9[m conflit from fandresena OK
+[33mf4ac51d[m correction projet +  desing table inferlist
+[33mc2ed721[m Merge pull request #16 from Fahtialalaina/prod
+[33m35f87fe[m Create deploiement-production.yml
+[33mb7f7e97[m Merge pull request #29 from Fahtialalaina/master
+[33m0cdb01f[m correction bug affichages
+[33m0789faa[m fix https
+[33maae6efe[m delete package.json
+[33mc48add1[m update package lock
+[33mcd693fd[m Merge branch 'master' of https://github.com/Fahtialalaina/Front_SEMWEE_APP_Angular_Fork_Nico
+[33mbc26124[m Merge branch 'AlfredNico-semwee'
+[33m55b9852[m Merge pull request #28 from Fahtialalaina/AlfredNico-semwee
+[33me2ca780[m Merge pull request #15 from Fahtialalaina/AlfredNico-semwee
+[33m8564406[m Merge branch 'semwee' of https://github.com/AlfredNico/SEMWEE into AlfredNico-semwee
+[33m3b08f68[m modif CTRL/SHIFT
+[33m6685496[m updates tables + correction loading
+[33m55919d2[m loading spinner + info message ok
+[33m64779b9[m loading spinner + info message ok
+[33m2b6d3f3[m A TESTES POST INFERLIST
+[33ma74da0b[m updates filte tables +  fix class
+[33m13b3f29[m updates and correction
+[33m62639d8[m Merge branch 'semwee' of https://github.com/AlfredNico/SEMWEE into merge-fah
+[33m60128c3[m updates butons
+[33m7a7399d[m Merge branch 'checkout-viewer' into semwee
+[33ma53e0ed[m Merge branch 'semwee' of https://github.com/AlfredNico/SEMWEE into semwee
+[33m32ab60f[m merge form fah
+[33m350db18[m updats
+[33m7ed17c1[m Merge branch 'datastore' into merge-fah
+[33mf63a5f0[m checkout fah
+[33mc588c45[m fix tune it back-front
+[33m7dd08c8[m Bug Front
+[33m0a78626[m Merge branch 'datastore' of https://github.com/AlfredNico/SEMWEE into checkout-viewer
+[33m4b92cc4[m set change localy
+[33me96d572[m get change datastore
+[33mdbe5a59[m Updates tuneIt and Property value
+[33mc626638[m get change updates tables
+[33m046b144[m Merge branch 'datastore' of https://github.com/AlfredNico/SEMWEE into checkout-viewer
+[33mf61d7a4[m updates tabbes
+[33m9d4e0e4[m updates tabmes
+[33m4223a04[m change env to pre-prod back
+[33m60da83d[m add number table row
+[33m47a28e0[m Merge pull request #14 from AlfredNico/datastore
+[33m96e490c[m interropt echap kye + updates strore data
+[33m72bc49b[m Merge branch 'datastore' of https://github.com/AlfredNico/SEMWEE into checkout-viewer
+[33mce20963[m updates search query
+[33m20f682a[m updates search query
+[33m04368be[m Merge branch 'datastore' of https://github.com/AlfredNico/SEMWEE into checkout-viewer
+[33mc80bb3c[m List Projets
+[33mf0b6144[m updates loading + tuneIt
+[33ma6075a8[m updates loading + tuneIt
+[33m601c6a6[m Merge branch 'semwee' of https://github.com/AlfredNico/SEMWEE into merge-fah
+[33mdfd0f5e[m store data + loading spinners
+[33m3b88f50[m config loading projects
+[33m85551d2[m navigation project to topbar OKOK
+[33m106da73[m Merge pull request #13 from Fahtialalaina/prod
+[33m805e690[m Merge branch 'semwee' into prod
+[33m4ed6256[m fix tablex heigth
+[33m4fc1ec3[m updates
+[33m5650998[m Update deploiement-production.yml
+[33mf71cfb3[m Delete deploiement-prod.yml
+[33mef2ed8f[m Delete deploiement-production.yml
+[33m3b33320[m Update deploiement-production.yml
+[33m71a4086[m Update deploiement-production.yml
+[33m0f6c4f7[m Update deploiement-production.yml
+[33m6107a6e[m Update add-or-edit.component.html
+[33m50c811c[m Update add-or-edit.component.html
+[33m2a50416[m Update deploiement-production.yml
+[33m0ae3b3f[m Update deploiement-production.yml
+[33m49b2f09[m Merge branch 'master' into prod
+[33mc985e44[m Merge branch 'semwee'
+[33mc198cc3[m front fix
+[33m721f3e1[m Fonctionnement des pastilles d'étape + pull Fandresena
+[33mc97a9f9[m Fonctionnement des pastilles d'étape + pull Fandresena
+[33mcf27ab7[m Fonctionnement des pastilles d'étape
+[33mc8bcc14[m Merge pull request #12 from AlfredNico/correction-alignement-tri-select
+[33m68973cc[m fix align tri & select datatable
+[33m3fa00e5[m updates scroll table + stepper icon
+[33m35e7de5[m updates scroll table + stepper icon
+[33m9a0d01a[m updates tuneIt and inferList
+[33mf4de660[m updatas tables
+[33m9a68e39[m updates google patchin
+[33m540f0a0[m updates tune it*
+[33m1cf9cab[m updates tune it
+[33m4738c68[m Merge branch 'deploy'
+[33m4adcddc[m updates tuniie
+[33m42ee6b6[m Merge branch 'checkout-table' into deploy
+[33m94765ae[m upload paysage text
+[33mf33f243[m error 400 uploads files
+[33m771cd7c[m add btn delete catalogue project
+[33mb97cc65[m updates projects
+[33mee12ce3[m Query valid url
+[33mccc7407[m Correctio LPVa + Project
+[33m09dbbb2[m upadates projects
+[33md7d6595[m upload or remove profiles users
+[33m832b3f8[m upload or remove profiles users
+[33m661d356[m upload profiles pictures user
+[33md92eb51[m updares mock + checkName projects
+[33mba46937[m check name project OK
+[33m19c252f[m Porfiles OK
+[33meec9c26[m prorils ok - check name project error
+[33m1db3037[m user profile + updates sort tables + check unique project names
+[33m2c08d45[m Merge branch 'viewer' of https://github.com/AlfredNico/SEMWEE into checkout-dessign
+[33m961b76d[m updates tables + tune it
+[33m8e605de[m Merge branch 'master' of https://github.com/AlfredNico/SEMWEE into viewer
+[33maf82c04[m Profile User
+[33m74d9ffe[m Update README.md
+[33m96b11dd[m updates tables by trello
+[33ma45f126[m Merge pull request #26 from Fahtialalaina/master
+[33m240c24b[m Create deploiement-production.yml
+[33m005d514[m Delete workflow.yml
+[33mb331750[m Delete deploiement-prod.yml
+[33ma2aca11[m Update deploiement-prod.yml
+[33m8e5d4d5[m upadtas table options + checktables
+[33md2df36a[m updates tables + double click resizable OK
+[33m2614679[m updates tables + double click resizable OK
+[33m3a740e2[m Merge pull request #25 from Fahtialalaina/master
+[33m5dcbea9[m Create deploiement-prod.yml
+[33mb8ca6d4[m Merge pull request #24 from AlfredNico/master
+[33ma30dd8d[m Merge design MIKA
+[33m44d47d7[m Merge branch 'viewer' of https://github.com/AlfredNico/SEMWEE into viewers
+[33mb99045e[m updates tables
+[33m630604a[m Modif New Project
+[33m62b1666[m TopBar + All Projects
+[33m659c6d4[m Merge branch 'master' of https://github.com/AlfredNico/SEMWEE into viewer
+[33ma2d6eeb[m add CRTL key + check selector lpValidator
+[33m540e0c5[m Fix Letter thumbnails
+[33m8f41046[m correction projet
+[33m9694727[m Merge branch 'AlfredNico-master'
+[33meb5176f[m ok
+[33m06aeb1c[m correction + tune it
+[33m0a0fe4c[m correction + tune it
+[33mdce8d94[m add label in projects
+[33me42b993[m correction + tune it
+[33me5f586d[m correction + tune it
+[33m4eb31d6[m Mise a jour projet + Correction recherche
+[33md54f6de[m refactoring projects
+[33m4391c71[m Merge pull request #21 from AlfredNico/master
+[33m072e64e[m updates tunit buttons
+[33m2b2406e[m adjust drag and drop
+[33m6cdd47f[m review project + toopbar + logo responsive
+[33m657b1c8[m check deploy
+[33m4898bd8[m Merge pull request #20 from AlfredNico/master
+[33m74f3913[m ajust theme + table header
+[33m23daafe[m Merge pull request #19 from AlfredNico/master
+[33m58d8e6b[m Merge pull request #18 from AlfredNico/master
+[33mdfa7afa[m ajust table
+[33m5d26c6a[m ajust table
+[33m183c696[m Merge pull request #17 from AlfredNico/master
+[33m5e6fcb7[m ajust add project
+[33ma905b7b[m Merge pull request #16 from AlfredNico/master
+[33m0d2f23c[m ajust add project
+[33m86bc77b[m Merge pull request #15 from AlfredNico/master
+[33med7c0d9[m Merge branch 'master' into master
+[33m1fa25bc[m ajust add project
+[33m59beecb[m ajust add project
+[33ma894a8f[m updates tables +  project
+[33m34264c9[m Table resizable + check revelancy
+[33m1718fd1[m Update angular.json
+[33m8bc77f3[m Table resizable + check revelancy
+[33m7061993[m Table resizable + check revelancy
+[33m3802f17[m Update package.json
+[33m34c5152[m Update package.json
+[33m9e3e6e9[m Update package.json
+[33m4a2d08e[m Update package.json
+[33m8b988e1[m Update package.json
+[33m3360304[m Update package.json
+[33m09a9491[m updates mock
+[33m64ee9cd[m updates tables
+[33mfe8bd79[m updates tables
+[33m8eb0819[m Update node.js.yml
+[33m7247e9d[m Merge pull request #11 from Fahtialalaina/deploy
+[33meca4b29[m Merge pull request #14 from AlfredNico/deploy
+[33mdea3d9d[m updates + tables
+[33m302b0ba[m Update environment.prod.ts
+[33me1f3bcf[m Update environment.ts
+[33m99e091b[m Update mock.interceptor.ts
+[33m93a6743[m Merge branch 'master' into deploy
+[33m63b826e[m Update new-projects.component.ts
+[33m974c56c[m Update new-projects.component.scss
+[33m6e47963[m Update new-projects.component.scss
+[33m1bff231[m Update new-projects.component.html
+[33m9f036c9[m Merge pull request #13 from AlfredNico/deploy
+[33m9c2f61c[m updates
+[33m22bf26d[m Merge pull request #12 from AlfredNico/deploy
+[33m1dffe67[m updates
+[33m478dbd8[m Merge pull request #10 from AlfredNico/deploy
+[33m25dab6b[m switch to resisable
+[33m2b85535[m updates styles validators
+[33m7da7971[m resazable NICO + merge MIKA
+[33mcc32e37[m resazable NICO + merge MIKA
+[33m3987955[m tables okok
+[33mcc0b055[m resizable columns okok
+[33m38db5f2[m Dropdown Project
+[33m6af8658[m resizable
+[33mad0f0c2[m Update environment.prod.ts
+[33m60ba575[m Update environment.ts
+[33mba78542[m tables
+[33m3259242[m Merge pull request #9 from AlfredNico/design-project
+[33mfcf7f77[m Fix Dropdown
+[33m2d99404[m Project + TopBar
+[33mccaf65c[m Update environment.prod.ts
+[33m4f96564[m Update environment.ts
+[33m248aef8[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into design-project
+[33mf35d4c9[m Projects
+[33m8ba46e3[m updates env.ts
+[33m60800da[m Merge pull request #8 from AlfredNico/deploy
+[33m3b3366b[m updates env.ts
+[33m668529b[m updates env.ts
+[33m0e665b0[m Update node.js.yml
+[33m25e2c45[m Merge pull request #7 from AlfredNico/deploy
+[33mbca685d[m Merge branch 'master' into deploy
+[33m2c4ea82[m Merge New Project
+[33m3d8a820[m updates env.prod.ts
+[33m8a28c7e[m Design New Project
+[33m2249694[m Update environment.prod.ts
+[33mddfd1af[m Update environment.ts
+[33m21bb84c[m switch project by selected options
+[33m4de0ddf[m switch project by selected options
+[33madcc35b[m switch project by drop-down selected
+[33m9d4550b[m uptaes projects templates
+[33m1f711ff[m Template for tune it
+[33m3e68fac[m Modification environnement.prod.ts
+[33maac278c[m Update environment.ts
+[33m58876b2[m Template for tune it
+[33m3829c83[m drap and drop file ok
+[33m3c95106[m drap and drop file ok
+[33m20e1a94[m drap and drop file ok
+[33m88100ff[m drap and drop file ok
+[33mb6771cb[m drap and drop file ok
+[33m0e141ab[m all errors resolves
+[33m4c29b76[m all errors resolves
+[33m9ad0ace[m Errors resolves
+[33m700fbd2[m updates okok
+[33m7771977[m Merge branch 'checkout-review' into deploy
+[33m70e7496[m updates okok
+[33md3dc6d5[m Errors resolves
+[33m8470805[m errors
+[33mf7142d3[m errors
+[33m84e93c4[m Errors resolves
+[33mc856432[m Errors resolves
+[33m5bd1df8[m Merge branch 'projects' of https://github.com/AlfredNico/SEMWEE into checkout-review
+[33mcd21ab6[m pull projects
+[33mfe38036[m updates projects
+[33m75c2dbd[m Update environment.prod.ts
+[33m306ca47[m Update environment.ts
+[33m0e6921e[m Merge branch 'projects' of https://github.com/AlfredNico/SEMWEE into deploy
+[33m8d0634f[m Merge pull request #6 from AlfredNico/projects
+[33mfc2382a[m Merge pull request #5 from Fahtialalaina/deploy
+[33m3282e79[m Merge pull request #3 from AlfredNico/deploy
+[33m70dcf1c[m projects + redirect ok
+[33mb155b78[m Merge pull request #4 from Fahtialalaina/deploy
+[33m56cbf53[m Merge branch 'master' into deploy
+[33m6f5bf23[m Merge branch 'deploy' into deploy
+[33m0934785[m projects + redirect ok
+[33mdc81307[m Upload files
+[33mfce9aa6[m display stepper
+[33ma42ba40[m display stepper
+[33mf69d597[m bugs upload files ok
+[33m4720e31[m Update node.js.yml
+[33m9b90446[m bugs upload files ok
+[33mfadf194[m Merge branch 'master-origin'
+[33mc77375c[m bugs upload files ok
+[33me27d768[m Merge branch 'deploy'
+[33m25d9e57[m Merge pull request #2 from AlfredNico/deploy
+[33m43f3466[m Update node.js.yml
+[33mbc7b100[m Update package.json
+[33m104affc[m Update package.json
+[33m940ad28[m Update node.js.yml
+[33m2822e63[m Update node.js.yml
+[33meb31787[m Update package.json
+[33m283929a[m Update package.json
+[33m0088b94[m Update node.js.yml
+[33ma47ce73[m Update node.js.yml
+[33m33d67fc[m Update node.js.yml
+[33mf06de14[m Update package.json
+[33m7e600e3[m Update node.js.yml
+[33me8f8179[m Update node.js.yml
+[33mdea3cda[m Update node.js.yml
+[33m9e4807c[m aside-nav && header ok
+[33mcbf7664[m Update node.js.yml
+[33m93c21b6[m Update node.js.yml
+[33m13ccd85[m Update node.js.yml
+[33m441e705[m Update node.js.yml
+[33m42c52fe[m Update node.js.yml
+[33mc561a23[m Update node.js.yml
+[33mefa3013[m Update node.js.yml
+[33mf61b569[m Update node.js.yml
+[33m0777ab7[m Update node.js.yml
+[33m759da08[m merge
+[33m150d50f[m updates codes
+[33m17c48d4[m Update node.js.yml
+[33m8cd2da7[m Update node.js.yml
+[33md33502f[m Update node.js.yml
+[33m3db6ca0[m Update node.js.yml
+[33me3b3cba[m Update node.js.yml
+[33m71ef48b[m Update node.js.yml
+[33m48feff3[m Update node.js.yml
+[33maae7a00[m Update node.js.yml
+[33me1dd6d4[m Merge pull request #1 from Fahtialalaina/deploy
+[33me7fc67d[m Merge branch 'master' into deploy
+[33m792363e[m Create node.js.yml
+[33md34405a[m Merge branch 'google-matching' into deploy
+[33m536989a[m dynamic fix
+[33mb47aa1d[m Loading querirs
+[33m3578edf[m Loading querirs
+[33m995929f[m loading queries
+[33m8b15f99[m loading query
+[33m2850b8e[m Loading querirs
+[33m3ecca09[m Update environment.ts
+[33md0002a7[m updates env
+[33meec5715[m merge ok Updates
+[33m337064a[m config url heroku
+[33m4f44750[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into deploy
+[33ma5a3059[m Updates okok
+[33m3c3d029[m Merge branch 'newmans' into deploy
+[33m8734f14[m detect changes
+[33mff12bb8[m random data
+[33m4df683b[m merge Mika + Nico
+[33m5f683c1[m Updates mika + nico
+[33m67f2d5c[m matchin ok
+[33m5b973f1[m not ok
+[33m21c0e5a[m conflit
+[33mde2e0b6[m add projects
+[33mebcdca6[m Table Desgin
+[33m9a18772[m change strategy googles
+[33mad248e2[m switch to branch deploy
+[33mbc22364[m Opdates files OKOK
+[33m5ebbb54[m design_2103241704
+[33m477ffbc[m settings
+[33m694a413[m environment
+[33m47cefd2[m Update environment.prod.ts
+[33mf089d8f[m Update environment.ts
+[33m8bd6426[m config mika
+[33me4cb4ad[m table change okok
+[33m07152cd[m switch ovoer branch
+[33m2995d22[m updates gitignore
+[33m43c569c[m updates end point backed
+[33m8724a3a[m updates end point backed
+[33m0c87184[m Updates auth and project aok
+[33md07d743[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into table-dynamics
+[33mb315237[m Updates projects
+[33m5f51fb2[m Update sign-in.component.html
+[33mea0008b[m Update sign-in.component.ts
+[33ma5d111f[m Update environment.prod.ts
+[33m5ac2198[m Update environment.ts
+[33m611b98d[m Updates add usres
+[33mfde81b6[m OKOKOK
+[33mf97de5a[m Updates login ok
+[33m7231d7b[m Updating add product
+[33m068f21c[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into deploy
+[33m6f8e741[m Updating add product
+[33ma8994fd[m Update README.md
+[33m82c6952[m Changing table okok
+[33md4fa2a3[m updates styles tables
+[33m2c61abd[m Selected Index stepper okok
+[33me7d88d0[m Updates drag and drop
+[33m9945b36[m Modifs okok
+[33m9d1e180[m Updates url
+[33m0ea1b7f[m add new projects
+[33m5feb24c[m fix all bugs
+[33m2f2b707[m Updates server HEROKU
+[33m24e91ab[m Updates columns rows
+[33m1df64a1[m Updates columns rows
+[33m1f8b51e[m updates routin angular 2
+[33mb580e17[m updates routin angular
+[33m7652d13[m updates reset password
+[33m248d82b[m updates foget passwords
+[33me46029d[m updates user value
+[33mf803cd8[m fix transloator serveices
+[33mbad8299[m fix transloator serveices
+[33md5f1204[m Merge branch 'view' of https://github.com/AlfredNico/SEMWEE into deploy
+[33mf928d11[m updates users
+[33m590a6e7[m .
+[33m642e2ba[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into view
+[33mbf2818d[m Updata infertList
+[33m44c7702[m Update faces
+[33m766f57f[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into view
+[33m64dcdf4[m Fix Authentification
+[33m988fb36[m updates deploy CI
+[33m41a451a[m updates deploy CI
+[33mfdf6e4c[m updates deploy CI
+[33mc0e5301[m updates deploy CI
+[33mf03eaba[m updates deploy CI
+[33m54eb7ed[m updates deploy CI
+[33m5bdf54c[m updates deploy CI
+[33mf59a7d9[m updates deploy CI
+[33m8bb25d0[m updates deploy CI
+[33maaf44bd[m updates deploy CI
+[33mead2014[m updates deploy CI
+[33ma2550c5[m updates deploy CI
+[33m627cdc3[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into view
+[33m1d8f0a3[m Change Setting
+[33m22326a2[m Upload not ok
+[33md7ed63e[m Tool types
+[33m299a585[m tooltip
+[33m95289da[m Table okok
+[33mcd49645[m Back okok
+[33m34481a1[m workflow okok
+[33me827d99[m Cors ok
+[33m41d3ae9[m OK cors
+[33mea2ec25[m Merge branch 'deploy' of https://github.com/AlfredNico/SEMWEE into deploy
+[33m228c571[m test cors
+[33m1dbd112[m fix favicon + footer deploy 12-03-2021
+[33ma5237b1[m fix favicon + footer deploy 12-03-2021
+[33m84564a0[m fix cors front
+[33mff720b4[m Deploy okok
+[33m0b2968e[m Deploy aok
+[33m7acb1c3[m Deploy aok
+[33m7a13bf4[m Deploy aok
+[33mdce7521[m Deploy aok
+[33m9e705d3[m Deploy aok
+[33mb5ecea5[m Deploy okok
+[33m699a7e9[m sign up ok
+[33m05fe8cb[m Merge branch 'view' of https://github.com/AlfredNico/SEMWEE into checkout-integration
+[33m98f40d2[m OKOK
+[33m316ac07[m Design TopBar
+[33m3d1d646[m Init Merging
+[33mdc76f2e[m TopBar Modif Project
+[33md947ed2[m Modification okok
+[33m3c76f31[m Reset SVG
+[33md682518[m Add Sidebar
+[33m8129eab[m Add Fonts
+[33m38fcfab[m Lastest changes
+[33mc6bfa4b[m add table options
+[33me8f0eee[m Updata tables
+[33mda3fd98[m Delete InlineSVG
+[33m6b9d274[m InlineSVG
+[33m7a17f8e[m Initialize - Error _Layout
+[33m2a3486e[m Upload components
+[33m9d6b925[m Update style
+[33mf8e2a90[m Side nav OK
+[33macd4612[m modification components
+[33mc51125e[m stepper okok
+[33m6f59cdb[m add checkbox in tables
+[33mfd3e3c3[m fix not all code returs value
+[33m11e649a[m Scroll to the top ok
+[33mfb2c129[m upload excel file OKOK
+[33mc722929[m Refresh table okok
+[33mf6ec234[m Drag and drop okok
+[33mee86d7f[m display column table
+[33mf1eacbf[m Registration and sigin ok
+[33m7b76d2d[m Error OK
+[33m73eb120[m Sign up ok
+[33m080ebe9[m Integration ok
+[33m13dab58[m Merge branch 'design' into design-fix-fandrgi
+[33ma9aa1da[m changing router redirectios
+[33m552d6c5[m Rename redirection url
+[33m72c4dfb[m Integration template
+[33m7c4f510[m rediection and registratio semi-ok
+[33md52fdcb[m registration not ok at all
+[33ma58c098[m forgot-template-ok
+[33mc967b3c[m sign-up-fix-design
+[33m11590f5[m app-root height fix
+[33m9211bb2[m Merge branch 'design' of https://github.com/AlfredNico/SEMWEE into design-fix-fandresena
+[33m18c2eda[m design_2103041414
+[33mf264ce7[m INTERFATION TEMPLATE
+[33m68ac6fa[m INTERFATION TEMPLATE
+[33m70922c0[m design_2103041408
+[33m88f1251[m design_2103041406
+[33m3b824ed[m app-root height fix
+[33m5179ea3[m drap and drop
+[33md865879[m sign in ok avec style direct
+[33m8951256[m Dialog open
+[33m5e14a99[m design_2103041146
+[33mb1ab6da[m design_2103041041
+[33me47666c[m Change color
+[33m8777acd[m Session login ok
+[33m665b552[m Filtering rows OK
+[33m2b0d418[m Updates
+[33md0d8a46[m Drag and drop ok
+[33m6a99c02[m sidenave OKOK
+[33mffb8aed[m drag and drop datadata
+[33mc96fad2[m Merge branch 'master' of https://github.com/AlfredNico/SEMWEE
+[33m8dcbb77[m ngx-spinners
+[33m39e31c2[m Merge branch 'sidenav'
+[33m0359300[m changed login
+[33mde2ff11[m remove moduels
+[33md2b8e59[m Merge pull request #3 from AlfredNico/sidenav
+[33m2fd2e99[m datatable dynamics
+[33m2c1b4e6[m Merge pull request #2 from AlfredNico/sidenav
+[33m68fc22e[m authentification dessign home page
+[33mc5e2e0d[m authentification
+[33m22234a5[m Dessign authentification
+[33m259337c[m integration page
+[33m8db60c1[m authentification
+[33m5d602af[m capchat and remember me angular
+[33m054583e[m install recaptcha
+[33m19738a2[m home page
+[33mb1f0c2e[m Merge branch 'master' of https://github.com/AlfredNico/SEMWEE
+[33m8ae252d[m match password
+[33mfe4c93a[m Update README.md
+[33m1ab9d42[m login and logout
+[33me6690aa[m authentification
+[33m42785c8[m test unitaires angular
+[33m232987e[m authentification
+[33m34f12ac[m pulling README
+[33m14a0480[m debut dev
+[33m6efc8b4[m Update README.md
+[33m02f55f7[m Initial commit
+[33mdb7b8a5[m initial commit

@@ -12,11 +12,14 @@ import { LPAllProjects } from '../interfaces/lp-viewer-projects';
 export class LpViwersService {
   public dataSources$ = new BehaviorSubject<any>([]);
 
+  public idFilter$: String = "";
+  public idHistory$: String = "";
+  public idProject$: String = "";
   public itemsObservables$ = new BehaviorSubject<any>(undefined);
   public data$ = new BehaviorSubject<any>(undefined);
   public isLoading$ = new BehaviorSubject<boolean>(true);
   public checkInfoSubject$ = new Subject();
-  public isloadingHistory = new Subject<boolean>();
+  public isloadingHistory = new Subject<boolean>()
 
   //Numriéque facet components
   public numeriqueFaceteBehavior$ = new BehaviorSubject<any>(undefined);
@@ -79,7 +82,8 @@ export class LpViwersService {
       idHeader: number;
       header: string[];
     },
-    idname: any
+    idname: any,
+    idfilter2?: any
   ) {
     const data = {
       data: value.fileData,
@@ -87,6 +91,7 @@ export class LpViwersService {
       idHeader: value.idHeader,
       idName: idname,
       header: value.header,
+      idfilter: idfilter2
     };
     return this.http.post(
       `${environment.baseUrl}/lpviewer/to-history/${value.idProject}`,
@@ -133,7 +138,7 @@ export class LpViwersService {
     );
   }
 
-  public getTestApi(value : File){
+  public getTestApi(value: File) {
     const data = new FormData();
     data.append('files', value);
     return this.http.post<any>(`${environment.baseUrl}/lpviewer/get-test-lpviewer`, data);

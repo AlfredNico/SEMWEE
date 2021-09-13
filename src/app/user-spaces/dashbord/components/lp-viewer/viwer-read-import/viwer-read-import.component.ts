@@ -1,11 +1,14 @@
+import { LpEditorService } from "@app/user-spaces/dashbord/services/lp-editor.service";
 import { UpdatesHeaderComponent } from "./updates-header.component";
 import { HeaderOptionsComponent } from "./header-options.component";
 import { LpViwersService } from "./../../../services/lp-viwers.service";
+import { LPViewerProjectsService } from "@app/user-spaces/dashbord/services/lp-viewer.service";
 import {
     AfterViewInit,
     Component,
     ElementRef,
     Input,
+    OnInit,
     OnChanges,
     ViewChild,
     ViewChildren,
@@ -15,6 +18,7 @@ import {
 import { MatDialog } from "@angular/material/dialog";
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatTabChangeEvent } from "@angular/material/tabs";
+import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { map } from "rxjs/operators";
 import { DomSanitizer } from "@angular/platform-browser";
 import { AngularCsv } from "angular7-csv/dist/Angular-csv";
@@ -29,6 +33,9 @@ import {
 import { ResizeEvent } from "angular-resizable-element";
 import { of } from "rxjs";
 import { NotificationService } from "@app/services/notification.service";
+import { ClipboardModule } from "@angular/cdk/clipboard";
+import { ValidTableHeaderLpViewer } from "@app/classes/valid-table-header-lp-viewer";
+import { toInteger } from "@app/_metronic/core";
 
 //filter data
 function compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -41,11 +48,47 @@ function compare(a: number | string, b: number | string, isAsc: boolean) {
     styleUrls: ["./viwer-read-import.component.scss"],
 })
 export class ViwerReadImportComponent
-    implements AfterViewInit, OnChanges, OnDestroy
-{
+    implements AfterViewInit, OnChanges, OnInit, OnDestroy {
+
+    paginationInfo;
+    pageSizeOptions: number[] = [5, 10, 25, 100];
+
+    // Test states
+    EmitResult = {
+      pageNumber: '',
+      pageSize: ''
+    };
+
+    testPaginator = {
+      length: 1000,
+      pageSize: 10,
+      pageIndex: 1
+    };
+
+
+    // states
+    tableData;
+    setPageSizeOptions = (setPageSizeOptionsInput: string) => {
+      if (setPageSizeOptionsInput) {
+        this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+      }
+    }
+    
     displayedColumns: string[] = [];
     edidtableColumns: string[] = [];
     dataSource: any = [];
+    dataSourceTotal: any = [];
+
+    /* VARIABLES */
+    private queries = {};
+    /* ALL QUERY FILTERS VALUES */
+    private inputQueries: boolean[] = [];
+    private searchQueries: boolean[] = [];
+    private numericQeury: boolean[] = [];
+    private timeLineQeury: boolean[] = [];
+    private queriesNumerisFilters = {};
+    private queriesTimeLineFilters = {};
+
     @ViewChild(MatSort) sort: MatSort;
     @ViewChildren("updateHeader") nameHeader: QueryList<ElementRef>;
     @ViewChild("btnbutton") MyDOMElement: ElementRef;
@@ -82,6 +125,7 @@ export class ViwerReadImportComponent
     private isFiltered = false;
     public formGroup = this.fb.group({});
     public items: any[] = [];
+    public test: boolean = undefined;
 
     public vueEdit: boolean = false;
     public nameCells;
@@ -98,34 +142,74 @@ export class ViwerReadImportComponent
     top = 0;
     left = null;
     public domTab: any;
+    public tab: any[];
     public ws: any;
     public isloadingHistory = false;
 
-    // ------------------
+    public link: string = "";
+    public linkId: string;
+    public testLink: boolean = false;
+    public testLinkcopied: boolean = false;
+    public copyString = "This text needs to copied.";
+    public value: any;
+
     pageEvent: PageEvent;
+    pageIndex:number;
+    pageSize:number;
+    length:number;
     Columns_replace: String;
 
     constructor(
         public dialog: MatDialog,
         private fb: FormBuilder,
         private lpViewer: LpViwersService,
+        private LPViewerProjestService: LPViewerProjectsService,
         public senitizer: DomSanitizer,
         private readonly lpviLped: LpdLpdService,
+        private readonly lpEditor: LpEditorService,
         private notifs: NotificationService
-    ) {}
+    ) {
+        this.getPageDetails(); }
 
+    ngOnInit(): void {
+        if (Object.keys(this.lpviLped.permaLink).length !== 0) {
+            this.inputQueries = this.lpviLped.permaLink["input"];
+            this.searchQueries = this.lpviLped.permaLink["search"];
+            this.numericQeury = this.lpviLped.permaLink["numeric"];
+            this.items = this.lpviLped.permaLink["items"];
+            this.queries = this.lpviLped.permaLink["queries"];
+            this.queriesNumerisFilters =
+                this.lpviLped.permaLink["queriesNumerisFilters"];
+            this.queriesTimeLineFilters =
+                this.lpviLped.permaLink["queriesTimeLineFilters"];
+        }
+        this.selectedIndex = 1;
+        this.getPageDetails();
+    }
     ngOnChanges(): void {
         if (this.dataAfterUploaded != undefined) {
             this.lpviLped.itemsObservables$.next(undefined);
+            this.lpviLped.isLoading$.next(false);
 
-            if (Object.keys(this.dataAfterUploaded).length === 6) {
+            if (Object.keys(this.dataAfterUploaded).length === 7) {
+                console.log("In Viewer : ", this.dataAfterUploaded);
                 this.displayedColumns = this.dataAfterUploaded["headerOrigin"];
                 this.dataViews = this.dataAfterUploaded["data"];
-                this.listNameHistory = this.dataAfterUploaded["name"];
                 this.projectName = this.dataAfterUploaded["projectName"];
-
+                this.lpViewer.idFilter$ = this.dataAfterUploaded["name"].pop();
+                this.lpViewer.idProject$ = this.dataAfterUploaded["name"].pop();
+                if (this.dataAfterUploaded["idname"])
+                    this.indexRowdata =
+                        this.dataAfterUploaded["idname"]["idname"];
+                console.log(
+                    "IndexRows : ",
+                    this.indexRowdata,
+                    "data idname : ",
+                    this.dataAfterUploaded["idname"]
+                );
+                this.listNameHistory = this.dataAfterUploaded["name"];
+                console.log("id filter actuell : ", this.lpViewer.idFilter$);
                 this.items = this.lpviLped.permaLink.items;
-
                 Object.values(this.lpviLped.permaLink).map((x) => {
                     if (Array.isArray(x) === true)
                         if ((x as any[]).length != 0) this.isFiltered = true;
@@ -143,12 +227,14 @@ export class ViwerReadImportComponent
                 this.isLooading = false;
                 this.projectName = this.dataAfterUploaded["projectName"];
             } else {
-                this.items = []; //set items filters
+                this.items = [];
                 setTimeout(() => {
+                    console.log("avant readCsvFile");
                     this.readCsvFile(
                         this.dataAfterUploaded["file"],
                         this.dataAfterUploaded["idProject"]
                     );
+                    console.log("après readCsvFile");
 
                     this.projectName = this.dataAfterUploaded["projectName"];
                 }, 500);
@@ -185,59 +271,174 @@ export class ViwerReadImportComponent
         });
     }
 
+    private customSplit(chaine: string, delimiter: string): any[] {
+        let test = false;
+        let souschaine = "";
+        let tab = [];
+        let i = 0;
+
+        for (let index = 0; index < chaine.length; index++) {
+            if (chaine[index] == '"') {
+                test = true;
+                i++;
+            } else if (i == 2) {
+                i = 0;
+                test = false;
+            }
+            if (chaine[index] == "," && !test) {
+                tab.push(souschaine);
+                souschaine = "";
+            } else
+                souschaine =
+                    chaine[index] === '"'
+                        ? souschaine + ""
+                        : souschaine + chaine[index];
+        }
+        tab.push("vide\r");
+        return tab;
+    }
     private readCsvFile(file: File, idProject: any) {
         this.readFileContent(file)
             .then((csvContent) => {
                 try {
-                    const csv = [];
+                    // const csv = [];
+                    const csv1 = [];
                     const lines = this.processCsv(csvContent);
                     const sep1 = lines[0].split(";").length;
                     const sep2 = lines[0].split(",").length;
                     const csvSeparator = sep1 > sep2 ? ";" : ",";
+
                     lines.forEach((element) => {
-                        const cols: string[] = element.split(csvSeparator);
-                        csv.push(cols);
+                        if (csvSeparator === ",") {
+                            const cols1: string[] = this.customSplit(
+                                element,
+                                csvSeparator
+                            );
+                            console.log("cols1 :", cols1);
+                            csv1.push(cols1);
+                        } else {
+                            const cols: string[] = element.split(csvSeparator);
+                            console.log("cols :", cols);
+                            csv1.push(cols);
+                        }
                     });
-                    const parsedCsv = csv;
+
+                    console.log("csv1 :", csv1);
+                    const parsedCsv = csv1;
                     parsedCsv.pop();
                     setTimeout(() => {
                         const header = parsedCsv.shift().toString().split(",");
+                        console.log("header : ", header);
                         this.displayedColumns = [
                             ...new Set([...header]),
-                        ].filter((item) => item != undefined && item != "");
-                        setTimeout(() => {
-                            const content = parsedCsv.map((value, indexMap) =>
-                                value.reduce(
-                                    (tdObj, td, index) => {
-                                        tdObj[header[index]] = td;
-                                        return tdObj;
-                                    },
-                                    {
-                                        star: false,
-                                        flag: false,
-                                        index: indexMap + 1,
-                                    }
-                                )
-                            );
-                            this.displayedColumns.unshift("all");
-                            this.dataViews = this.dataSourceFilter = content;
-                            this.dataSource = this.dataSourceFilter.slice(
-                                0,
-                                10
-                            );
-                            this.isLooading = false;
-                            this.lpViewer
-                                .sendFiles(
-                                    {
-                                        namehistory: "Create project",
-                                        idProject: idProject,
-                                        fileData: this.dataViews,
-                                        idHeader: 0,
-                                        header: this.displayedColumns,
-                                    },
-                                    0
-                                )
-                                .subscribe();
+                        ].filter(
+                            (item) =>
+                                item != undefined &&
+                                item != "" &&
+                                item != "vide\r"
+                        );
+                        setTimeout(async () => {
+                            try {
+                                console.log(
+                                    "displayedColumns : ",
+                                    this.displayedColumns
+                                );
+                                const resultHeader =
+                                    await new ValidTableHeaderLpViewer(
+                                        header
+                                    ).generateValidHeader();
+
+                                console.log("resultHeader : ", resultHeader);
+                                if (resultHeader == false) {
+                                    window.location.href =
+                                        "/user-space/all-lp-viewer-projects";
+
+                                    this.LPViewerProjestService.deleteProjects(
+                                        this.idProject
+                                    ).subscribe((result) => {
+                                        if (result && result.message) {
+                                            this.lpviLped.isLoading$.next(
+                                                false
+                                            );
+                                            // alert(result.message);
+                                            // this.LPViewerProjestService.refresh$.next(true);
+                                            // this.LPViewerProjestService.trigrer$.next(true);
+                                        }
+                                        this.lpviLped.isLoading$.next(false);
+                                    });
+
+                                    // window.location.reload;
+                                    // alert( 'The project is not created' );
+                                } else {
+                                    // window.location.href =
+                                    //     "/user-space/all-lp-viewer-projects";
+                                    const content = parsedCsv.map(
+                                        (value, indexMap) =>
+                                            value.reduce(
+                                                (tdObj, td, index) => {
+                                                    tdObj[header[index]] = td;
+                                                    return tdObj;
+                                                },
+                                                {
+                                                    star: false,
+                                                    flag: false,
+                                                    index: indexMap + 1,
+                                                }
+                                            )
+                                    );
+                                    this.displayedColumns.unshift("all");
+                                    this.dataSourceTotal = this.dataViews = this.dataSourceFilter =
+                                        content;
+                                    this.dataSource =
+                                        this.dataSourceFilter.slice(0, 10);
+                                    this.isLooading = false;
+                                    const permalink = {
+                                        idProject: this.idProject,
+                                        value: JSON.stringify({
+                                            input: [],
+                                            search: [],
+                                            numeric: [],
+                                            items: [],
+                                            queries: {},
+                                            queriesNumerisFilters: {},
+                                        }),
+                                    };
+                                    this.lpEditor
+                                        .addFilter(
+                                            permalink,
+                                            undefined,
+                                            "ajout",
+                                            this.idProject
+                                        )
+                                        .subscribe((idFilter) => {
+                                            console.log(idFilter);
+                                            this.lpViewer
+                                                .sendFiles(
+                                                    {
+                                                        namehistory:
+                                                            "Create project",
+                                                        idProject: idProject,
+                                                        fileData:
+                                                            this.dataViews,
+                                                        idHeader: 0,
+                                                        header: this
+                                                            .displayedColumns,
+                                                    },
+                                                    0,
+                                                    idFilter["message"]
+                                                )
+                                                .subscribe((data) => {
+                                                    // console.log(data)
+                                                    this.lpViewer.idProject$ =
+                                                        data["idProject"];
+                                                    this.lpViewer.idFilter$ =
+                                                        data["idfilter"];
+                                                });
+                                        });
+                                }
+                            } catch (error) {
+                                console.log(error);
+                            }
                         }, 500);
                     }, 500);
                 } catch (e) {
@@ -247,7 +448,7 @@ export class ViwerReadImportComponent
             .catch((error) => console.log(error));
     }
 
-    public getServerData(event?: PageEvent): void {
+    public getServerData(event?: PageEvent){
         let page = event.pageIndex * event.pageSize;
         const lenghtPage = event.pageSize * (event.pageIndex + 1);
         this.paginator.nextPage = this.paginator.nextPage + event.pageSize;
@@ -260,6 +461,17 @@ export class ViwerReadImportComponent
             ...this.paginator,
             ...event,
         };
+        // this.datasource = response.data;
+        this.pageIndex = event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.length = lenghtPage;
+
+        // this.EmitResult =  {
+        //     pageNumber: event.pageIndex,
+        //     pageSize: event.pageSize
+        // };
+
+        return event;
     }
 
     ngOnDestroy(): void {
@@ -298,14 +510,9 @@ export class ViwerReadImportComponent
         });
 
         setTimeout(() => {
-            let containt =
-                (this.container.nativeElement as HTMLElement).offsetWidth / 4;
-            this.ws = containt > 450 ? containt : 450;
+            this.ws = 423;
         }, 0);
-    }
 
-    onResizeEnd(e: ResizeEvent) {
-        this.ws = e.rectangle.width > 450 ? e.rectangle.width : 450;
     }
 
     onFavorite() {
@@ -337,7 +544,33 @@ export class ViwerReadImportComponent
             .subscribe();
     }
     update_Search_Replace(name_dinamic) {
-        this.savedata(name_dinamic);
+        const permalink = {
+            idProject: this.lpViewer.idProject$,
+            value: JSON.stringify({
+                input: this.lpviLped.permaLink.input,
+                search: this.lpviLped.permaLink.search,
+                numeric: this.lpviLped.permaLink.numeric,
+                items: this.lpviLped.permaLink.items,
+                queries: this.lpviLped.permaLink.queries,
+                queriesNumerisFilters:
+                    this.lpviLped.permaLink.queriesNumerisFilters,
+            }),
+        };
+        this.lpEditor
+            .addFilter(
+                permalink,
+                this.lpViewer.idFilter$,
+                "ajout",
+                this.lpViewer.idProject$
+            )
+            .subscribe((res) => {
+                if (res["message"] != "update successfull") {
+                    this.lpViewer.idFilter$ = res["message"];
+                    console.log("id Filter After : ", this.lpViewer.idFilter$);
+                    this.savedata(name_dinamic);
+                    this.selectedIndex = 1;
+                }
+            });
     }
 
     updateStart(value, indice, nameUpdate) {
@@ -355,9 +588,36 @@ export class ViwerReadImportComponent
                 ? `${nameUpdate} row ${indice}`
                 : `Un${nameUpdate} row ${indice}`;
         }
-        this.savedata(name_dinamic);
+        const permalink = {
+            idProject: this.lpViewer.idProject$,
+            value: JSON.stringify({
+                input: this.lpviLped.permaLink.input,
+                search: this.lpviLped.permaLink.search,
+                numeric: this.lpviLped.permaLink.numeric,
+                items: this.lpviLped.permaLink.items,
+                queries: this.lpviLped.permaLink.queries,
+                queriesNumerisFilters:
+                    this.lpviLped.permaLink.queriesNumerisFilters,
+            }),
+        };
 
-        this.selectedIndex = 1;
+        console.log("permalink before : ", this.lpviLped.permaLink);
+        console.log("id Filter before : ", this.lpViewer.idFilter$);
+        this.lpEditor
+            .addFilter(
+                permalink,
+                this.lpViewer.idFilter$,
+                "ajout",
+                this.lpViewer.idProject$
+            )
+            .subscribe((res) => {
+                if (res["message"] != "update successfull") {
+                    this.lpViewer.idFilter$ = res["message"];
+                    console.log("id Filter After : ", this.lpViewer.idFilter$);
+                    this.savedata(name_dinamic);
+                    this.selectedIndex = 1;
+                }
+            });
     }
 
     savedata(name_dinamic) {
@@ -379,7 +639,8 @@ export class ViwerReadImportComponent
                     idHeader: this.idHeader,
                     header: [],
                 },
-                actualydata
+                actualydata,
+                this.lpViewer.idFilter$
             )
             .subscribe((res) => {
                 this.listNameHistory.push(res);
@@ -409,8 +670,8 @@ export class ViwerReadImportComponent
         $e.direction === "asc"
             ? (this.icon = "asc")
             : $e.direction === "desc"
-            ? (this.icon = "desc")
-            : (this.icon = "");
+                ? (this.icon = "desc")
+                : (this.icon = "");
         this.active = $e.active;
 
         const data = this.dataSource.slice();
@@ -455,10 +716,6 @@ export class ViwerReadImportComponent
             fieldSeparator: ";",
             quoteStrings: '"',
             decimalseparator: ".",
-            showLabels: true,
-            showTitle: false,
-            useBom: false,
-            noDownload: false,
             headers: [],
         };
 
@@ -467,16 +724,20 @@ export class ViwerReadImportComponent
             .getHeaderExport(this.idProject, this.idHeader)
             .subscribe((res) => {
                 if (res) {
-                    header_now = res[0]["nameUpdate"].split(",");
+                    header_now = res[0]["nameUpdate"].replace("\r", "").split(",");
                     const tabnewObject = [];
-                    this.dataViews.forEach((valueObject) => {
+                    console.log("dataSourceFilter : ", this.dataSourceFilter);
+                    this.dataSourceFilter.forEach((valueObject) => {
                         const object = {};
                         header_now.forEach((key) => {
                             object[key] = valueObject[key];
                         });
                         tabnewObject.push(object);
                     });
+                    console.log('tabnewObject : ', tabnewObject);
+                    console.log('header_now : ', header_now);
                     csvOptions.headers = header_now;
+
                     new AngularCsv(
                         tabnewObject,
                         res[1]["nameProject"],
@@ -502,6 +763,7 @@ export class ViwerReadImportComponent
             head: column,
             content: value,
             invert: true,
+            type_filter: "modif",
         });
         this.selectedIndex = 0;
     }
@@ -515,6 +777,7 @@ export class ViwerReadImportComponent
             invert: true,
             sensitive: false,
             complete_string: false,
+            type_filter: "modif",
         });
         this.selectedIndex = 0;
     }
@@ -523,6 +786,7 @@ export class ViwerReadImportComponent
             type: "search_replace",
             isMinimize: false,
             head: column,
+            type_filter: "modif",
         });
         this.selectedIndex = 3;
     }
@@ -533,6 +797,7 @@ export class ViwerReadImportComponent
             isMinimize: false,
             head: column,
             value: "",
+            type_filter: "modif",
         });
     }
 
@@ -540,38 +805,62 @@ export class ViwerReadImportComponent
         let test = true;
         let testType = "";
         let i = 0;
+        let i2 = 0;
+        let index = 0;
         if (type === "number") {
-            while (test && value.length > i) {
-                if (!/^[0-9]+[\.,]?[0-9]*$/.test(value[i][nameCells])) {
+            while (value.length > i && i2 <= 1) {
+                if (!/^[0-9]+[\.,]?[0-9]*$/.test(value[i][nameCells].trim())) {
                     test = false;
+                    i2++;
+                    if (i2 <= 1) {
+                        index = i;
+                    }
                 }
                 if (typeof value[i][nameCells] === "string")
                     testType = "string";
                 i++;
             }
         } else {
+            const regex0 =
+                /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
             const regex1 =
-                /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])$/;
+                /^\d{4}[-\\/](((0)[0-9])|((1)[0-2]))[-\\/]([0-2][0-9]|(3)[0-1])$/;
             const regex3 =
-                /^\d{4}[-](((0)[0-9])|((1)[0-2]))[-]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
-            while (test && value.length > i) {
+                /^\d{4}[-\\/](((0)[0-9])|((1)[0-2]))[-\\/]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
+            while (value.length > i && i2 <= 1) {
                 if (
                     !regex1.test(value[i][nameCells]) &&
-                    !regex3.test(value[i][nameCells])
+                    !regex3.test(value[i][nameCells]) &&
+                    !regex0.test(value[i][nameCells])
                 ) {
                     test = false;
+                    i2++;
+                    if (i2 <= 1) {
+                        index = i;
+                    }
                 }
-                if (regex1.test(value[i][nameCells])) testType = "string";
+                if (
+                    regex1.test(value[i][nameCells]) ||
+                    regex0.test(value[i][nameCells])
+                )
+                    testType = "string";
                 i++;
             }
         }
-        return [test, testType, i];
+        return [test, testType, i, i2, index];
     }
 
     public numericFacter(column: any) {
         let test = this.allDataIsAnumber(this.dataViews, column, "number");
-        if (!test[0]) {
-            alert("there is a invalid number on row " + test[2]);
+        let line = toInteger(test[4]) + 1;
+        console.log("test[0] : ", test[0]);
+        console.log("test[3] : ", test[3]);
+        if (!test[0] && test[3] <= 1) {
+            console.log("choix 1");
+            alert("There is an invalid number on line " + line);
+        } else if (!test[0] && test[3] > 1) {
+            console.log("choix 2");
+            alert("There is an invalid number on line " + line + " and other line");
         } else if (test[0] && test[1] === "string") {
             this.dataViews.forEach((item) => {
                 const replace =
@@ -588,7 +877,21 @@ export class ViwerReadImportComponent
             });
             const names = `Update on ${this
                 .CountCell++} cells in column ${column}: value.toNumber()`;
-            const tab = [false, "", names];
+            this.tab = [false, "", names];
+            console.log("testetestset : ", this.lpviLped.permaLink);
+
+            const permalink = {
+                idProject: this.idProject,
+                value: JSON.stringify({
+                    ...this.lpviLped.permaLink,
+                    input: [],
+                    search: [],
+                    numeric: [],
+                    items: [],
+                    queries: {},
+                    queriesNumerisFilters: {},
+                }),
+            };
         }
         if (test[0]) {
             let minValue = 100000,
@@ -609,7 +912,6 @@ export class ViwerReadImportComponent
                 draggableRange: true,
                 showSelectionBar: true,
             };
-
             this.lpviLped.itemsObservables$.next({
                 type: "numeric",
                 isMinimize: false,
@@ -620,6 +922,7 @@ export class ViwerReadImportComponent
                 max: maxValue,
                 options: options,
                 invert: true,
+                type_filter: "ajout",
             });
             this.selectedIndex = 0;
         }
@@ -627,13 +930,38 @@ export class ViwerReadImportComponent
 
     public timeLineFacter(column: any): void {
         let test = this.allDataIsAnumber(this.dataViews, column, "date");
+        let line = toInteger(test[4]) + 1;
 
-        if (!test[0]) {
-            alert(
-                "There is a date that is not in iso format on row " + test[2]
-            );
+        if (!test[0] && test[3] <= 1) {
+            alert("There is an invalid date in line " + line);
+        } else if (!test[0] && test[3] > 1) {
+            alert("There is an invalid date in line " + line + " and other line");
         } else if (test[0] && test[1] === "string") {
-            const regex2 = new RegExp("[-]");
+            console.log(test);
+            const regex1 =
+                /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+            const regex0 =
+                /^([0-2][0-9]|(3)[0-1])[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]\d{4}$/;
+            const regex2 = new RegExp("[-\\/]");
+            this.dataViews.forEach((item) => {
+                if (regex1.test(item[column])) {
+                    const tab = item[column].split(regex2);
+                    // console.log(tab)
+                    item[column] = moment(
+                        `${tab[2]}-${tab[1]}-${tab[0]}`,
+                        "YYYY-MM-DD",
+                        true
+                    ).format("YYYY-MM-DD");
+                } else if (regex0.test(item[column])) {
+                    const tab = item[column].split(regex2);
+                    // console.log(tab)
+                    item[column] = moment(
+                        `${tab[0]}-${tab[1]}-${tab[2]}`,
+                        "YYYY-MM-DD",
+                        true
+                    ).format("YYYY-MM-DD");
+                }
+            });
             this.dataViews.forEach((item) => {
                 const tab = item[column].split(regex2);
                 if (
@@ -659,8 +987,7 @@ export class ViwerReadImportComponent
             });
             const names = `Update on ${this
                 .CountCell++} cells in column ${column}: value.toDate()`;
-            const tab = [false, "", names];
-            this.toggleedit(tab);
+            this.tab = [false, "", names];
         }
         //--------END CONVERTION-----
 
@@ -689,11 +1016,13 @@ export class ViwerReadImportComponent
                 min: result?.minDate,
                 max: result?.maxDate,
                 invert: true,
+                type_filter: "ajout",
             });
 
             this.selectedIndex = 0;
         }
-
+        // this.toggleedit(tab);
+        // this.CountCell = 0;
         //------------END FILTER---------------
     }
 
@@ -710,7 +1039,8 @@ export class ViwerReadImportComponent
             }
             i++;
         }
-        this.domTab.style.fontWeight = "bold";
+        this.domTab.style.fontWeight = "normal";
+        // this.domTab.style.fontColor = "blue";
         const totaleleft = 41 - $event.offsetX;
         const totaletop = $event.clientY - 6 - ($event.offsetY + 2);
         this.top = totaletop;
@@ -739,8 +1069,10 @@ export class ViwerReadImportComponent
     }
 
     toggleedit(value) {
+        // console.log("In tooggmo")
         let numbercoll = "";
-        if (value[2] === undefined) {
+        console.log(value);
+        if (value.length === 2) {
             this.domTab.style.fontWeight = "initial";
             numbercoll =
                 this.CountCell === 0
@@ -770,12 +1102,13 @@ export class ViwerReadImportComponent
                 .sendFiles(
                     {
                         namehistory: name_dinamic,
-                        idProject: this.idProject,
+                        idProject: this.lpViewer.idProject$,
                         fileData: this.dataViews,
                         idHeader: this.idHeader,
                         header: [],
                     },
-                    actualydata
+                    actualydata,
+                    this.lpViewer.idFilter$
                 )
                 .subscribe((res) => {
                     this.listNameHistory.push(res);
@@ -788,6 +1121,22 @@ export class ViwerReadImportComponent
         this.selectedIndex = 1;
     }
 
+    editOneValue(value) {
+        this.tab = value;
+        if (value[1] === "ok") {
+            this.vueEdit = false;
+            console.log("Cancel");
+        } else {
+            console.log("send data");
+            if (this.test == true || this.test === undefined) this.test = false;
+            else this.test = true;
+        }
+    }
+    send_data(value) {
+        console.log("test value : ", value);
+        this.toggleedit(this.tab);
+        this.CountCell = 0;
+    }
     ConverterToString(newValue) {
         const regex3 =
             /^\d{4}[-\\/ ](((0)[0-9])|((1)[0-2]))[-\\/ ]([0-2][0-9]|(3)[0-1])[T]\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}$/;
@@ -800,7 +1149,7 @@ export class ViwerReadImportComponent
                 if (
                     regex3.exec(item[this.nameCells]) &&
                     item[this.nameCells].split("T")[0] ===
-                        this.lastValue.split("T")[0]
+                    this.lastValue.split("T")[0]
                 ) {
                     item[this.nameCells] = moment(
                         `${tab[0]}-${tab[1]}-${tab1[0]}`,
@@ -815,7 +1164,7 @@ export class ViwerReadImportComponent
                 if (
                     item[this.nameCells] === this.lastValue.toString() ||
                     parseInt(item[this.nameCells]) ===
-                        parseInt(this.lastValue) ||
+                    parseInt(this.lastValue) ||
                     item[this.nameCells] === this.lastValue
                 ) {
                     item[this.nameCells] = newValue.toString();
@@ -848,7 +1197,7 @@ export class ViwerReadImportComponent
                         item[this.nameCells] === this.lastValue.toString() ||
                         (parseInt(item[this.nameCells]) &&
                             parseInt(item[this.nameCells]) ===
-                                this.lastValue) ||
+                            this.lastValue) ||
                         item[this.nameCells] === this.lastValue
                     ) {
                         item[this.nameCells] = parsed;
@@ -947,22 +1296,36 @@ export class ViwerReadImportComponent
     }
 
     getAllDataByListName(value) {
+        console.log("test get One list : ", value);
+        this.test = undefined;
         this.ActualyData = value;
         this.idHeader = value.idHeader;
         this.lpViewer.getOnedateHistory(value).subscribe((response) => {
+            // console.log(JSON.parse(response[2]["value"]));
+            // console.log(response[2]["_id"]);
             const header = JSON.parse(
                 JSON.stringify(response[1]["nameUpdate"].split('"').join(""))
             ).split(",");
-
+            let ob = JSON.parse(response[2]["value"]);
             this.updateDisplaycolumn(header);
             this.idHeader = response[1]["idHeader"];
             // let min = this.paginator.pageIndex * this.paginator.pageSize;
             let max = (this.paginator.pageIndex + 1) * this.paginator.pageSize;
 
+            this.lpviLped.permaLink = {
+                ...this.lpviLped.permaLink,
+                ...ob,
+            };
+            this.items = this.lpviLped.permaLink.items;
+            this.lpViewer.idFilter$ = response[2]["_id"];
             this.dataViews = response[0];
             this.dataSourceFilter = this.dataFilters(this.dataViews);
             this.dataSource = this.dataSourceFilter.slice(0, max);
             this.lpViewer.isloadingHistory.next(false);
+            this.lpviLped.isLoading$.next(false);
+
+            this.link = `http://localhost:4200/user-space/lp-viewer?idProject=${this.lpViewer.idProject$}&id=${value["idName"]}&idFilter=${this.lpViewer.idFilter$}`;
+            this.value = this.link;
         });
     }
 
@@ -996,14 +1359,13 @@ export class ViwerReadImportComponent
                         if (this.ActualyData) {
                             this.listNameHistory.splice(
                                 this.listNameHistory.indexOf(this.ActualyData) +
-                                    1
+                                1
                             );
                         }
                         this.idHeader = idHeader;
                         // Rename column RANK(2013) to RANK(2013)24
-                        const name_dinamic = `Edit header table on column ${
-                            value + 1
-                        }`;
+                        const name_dinamic = `Edit header table on column ${value + 1
+                            }`;
                         this.lpViewer
                             .sendFiles(
                                 {
@@ -1076,5 +1438,59 @@ export class ViwerReadImportComponent
 
     removeAppSearch($item) {
         this.Columns_replace = undefined;
+    }
+
+    testvalue() {
+        console.log(this.lpviLped.permaLink);
+        console.log(this.lpViewer.idFilter$);
+        console.log("idProject : ", this.lpViewer.idProject$);
+    }
+    tooltipcustIn() {
+        this.testLink = true;
+    }
+    tooltipcustOut() {
+        this.testLink = false;
+        this.testLinkcopied = false;
+    }
+    Linkcopied() {
+        this.testLink = false;
+        this.testLinkcopied = true;
+    }
+
+
+
+
+    onPageEvent = ($event) => {
+      this.getData($event.pageIndex, $event.pageSize);
+    }
+
+    showTestEmit = ($event) => {
+      this.EmitResult =  {
+        pageNumber: $event.pageIndex,
+        pageSize: $event.pageSize
+      };
+    }
+
+    getPageDetails = () => {
+    //   this.getPageSize().subscribe( res => {
+    //     this.paginationInfo = res;
+    //     this.getData(0, this.paginationInfo.pageSize);
+    //   });
+    }
+
+    getData = (pg, lmt) => {
+    //   return this.allProjects(pg, lmt).subscribe( res => {
+    //     this.tableData = res;
+    //   });
+    }
+
+    allProjects = (page, limit) => {
+    //   return this.httpClient.get(`${this.BASE_URL}/posts?_page=${page + 1}&_limit=${limit}`);
+        // return 0;
+    }
+
+    getPageSize = () => {
+    //   return this.httpClient.get(`${this.BASE_URL}/pageSize`);
+        // return 0;
     }
 }

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-pulsing-skeleton',
   template: `
     <table class="w-100 table-viewer">
-      <tr [style.background]="'#2C374D'">
+      <tr [style.background]="'#FFFFFF'">
         <th class="border-bottom" *ngFor="let td of [0, 1, 2, 3, 4]">
           <img
             src="assets/images/gif/skeleton.gif"
@@ -38,16 +38,16 @@ import { Component, OnInit } from '@angular/core';
   styles: [
     `
       .odd {
-        background: #f5f6fa;
+        background: #F5F5F9;
       }
       .even {
-        background: #fff;
+        background: #FFFFFF;
       }
     `,
   ],
 })
 export class PulsingSkeletonComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

@@ -19,6 +19,9 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: any | undefined;
   public idProject: any;
+  public idFilter: any = undefined;
+ public id :any = undefined;
+
   selectedStepperIndex: number = 0;
   public inputFilters: any[] = [];
   public filtersData: {
@@ -40,6 +43,8 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
       if (params) {
         if (params['idProject']) {
           this.idProject = params['idProject'];
+          this.idFilter = params['idFilter'];
+           this.id = params['id'];
         }
       }
     });
@@ -55,7 +60,7 @@ export class LpEditorComponent implements OnInit, AfterViewInit {
     if (this.idProject !== undefined) {
       this.lpVilpEdService.isLoading$.next(true);
       this.lpVilpEdService
-        .getSavedProjects(this.idProject)
+        .getSavedProjects(this.idProject,this.idFilter,this.id)
         .subscribe((res: any) => {
           if (res !== undefined) {
             this.stepper.steps.forEach((step, index) => {

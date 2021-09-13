@@ -15,6 +15,9 @@ export class LpViewerComponent implements AfterViewInit {
   @ViewChild(MatHorizontalStepper) stepper!: MatHorizontalStepper;
   public dataAfterUploaded: any | undefined;
   public idProject: any;
+  public idFilter: any = undefined;
+  public id :any = undefined;
+
   selectedStepperIndex: number = 0;
   public inputFilters: any[] = [];
   public filtersData: {
@@ -32,19 +35,23 @@ export class LpViewerComponent implements AfterViewInit {
     this.user = this.auth.currentUserSubject.value;
 
     this.route.queryParams.subscribe((params) => {
+        console.log("Parametre : ",params)
       if (params) {
         if (params['idProject']) {
           this.idProject = params['idProject'];
+          this.idFilter = params['idFilter'];
+          this.id = params['id'];
         }
       }
     });
   }
 
   ngAfterViewInit() {
+      console.log(`Id Project : ${this.idProject}, Id Filter : ${this.idFilter}`)
     if (this.idProject !== undefined) {
       this.lpVilpEdService.isLoading$.next(true); // load spinner
       this.lpVilpEdService
-        .getSavedProjects(this.idProject)
+        .getSavedProjects(this.idProject, this.idFilter,this.id)
         .subscribe((res: any) => {
           if (res !== undefined) {
             this.stepper.steps.forEach((step, index) => {
@@ -56,7 +63,7 @@ export class LpViewerComponent implements AfterViewInit {
                 step.editable = true;
               }
             });
-
+            console.log("In lpviewer simple : ",res);
             this.selectedStepperIndex = 1;
             this.dataAfterUploaded = res;
             this.lpVilpEdService.isLoading$.next(false);
@@ -76,6 +83,6 @@ export class LpViewerComponent implements AfterViewInit {
     });
     this.stepper.selected.completed = true;
     this.stepper.selected.editable = true;
-    this.stepper.next();
+      this.stepper.next();
   }
 }

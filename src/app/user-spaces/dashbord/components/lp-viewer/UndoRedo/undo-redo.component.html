@@ -1,7 +1,11 @@
-<mat-list [disableRipple]="false" style="margin-left: 15px;">
-    <h2 mat-subheader class="ftp">History</h2>
-    <mat-list-item  *ngFor="let nameHistory of dataNameHistory ; let i = index" style="cursor:pointer" (click)="linkHistory(nameHistory,i)" [ngClass]="{active: indexRow <= i }">
+<mat-list [disableRipple]="false" style="margin-left: 15px;max-height: calc(100vh - 440px);">
+    <h2 mat-subheader class="ftp" style="padding: 0px 18px 18px 36px; color: #000000; font-size: 18px; font-weight: 400;">History</h2>
+    <mat-list-item *ngFor="let nameHistory of dataNameHistory ; let i = index" style="cursor:pointer" (click)="linkHistory($event,nameHistory,i)" [ngClass]="{active: indexRow <= i }" (mouseleave)="clearTooltip()">
         {{i}}. {{nameHistory.name}}
+        <!-- <div *ngIf="linkId == i" class="tooltipCustom">Link copied
+            <mat-icon aria-hidden="false" aria-label="Example home icon">check</mat-icon>
+        </div> -->
         <mat-divider style="border-top-color: #f3f3f3;"></mat-divider>
     </mat-list-item>
+
 </mat-list>

@@ -4,13 +4,24 @@ import { NotificationService } from '@app/services/notification.service';
 
 @Component({
   selector: 'app-search-replace',
-  templateUrl: './search-filter-replace.component.html',
+    templateUrl: './search-filter-replace.component.html',
+    styles: [
+        `
+            ::ng-deep .sub-panel {
+                box-shadow: 0px 0px 15px 1px rgb(113 106 202 / 10%);
+                margin-left: 32px !important;
+                margin-right: 18px !important;
+                margin-top: 4px;
+            }
+        `,
+    ],
 })
 export class SearchReplaceComponent implements OnInit {
   @Input() nameColumn: string;
   @Input() datasourceFilter: any[] = [];
   @Output() sendData = new EventEmitter<string>();
   @Output('removeFromItem') removeFromItem: any = new EventEmitter();
+  public isregExpre : boolean = false;
 
   formSearch = new FormGroup({
     char_value: new FormControl(''),
@@ -19,24 +30,54 @@ export class SearchReplaceComponent implements OnInit {
 
   constructor(private readonly nofits: NotificationService) { }
   ngOnInit() { }
+  changeStatus(event){
+        // console.log(event);
+        this.isregExpre = event.checked;
+  }
   searchReplace() {
-    const first_value = this.formSearch.value.char_value;
+  
+    let first_value = this.formSearch.value.char_value;
     let second_value = this.formSearch.value.new_value;
     let found = false;
 
+   first_value  = !this.isregExpre ? this.formSearch.value.char_value :
+    new RegExp(this.formSearch.value.char_value, 'gi');
+    
+    // &&   this.datasourceFilter[i][this.nameColumn].includes(first_value)
     if (first_value !== '') {
-      for (let i = 0; i < this.datasourceFilter.length; i++) {
-        if (
-          typeof this.datasourceFilter[i][this.nameColumn] === 'string' &&
-          this.datasourceFilter[i][this.nameColumn].includes(first_value)
-        ) {
-          const newElement = this.datasourceFilter[i][
-            this.nameColumn
-          ].replaceAll(first_value, second_value);
-          this.datasourceFilter[i][this.nameColumn] = newElement;
-          found = true;
+
+        if(this.isregExpre){
+            for (let i = 0; i < this.datasourceFilter.length; i++) {
+                if (
+                typeof this.datasourceFilter[i][this.nameColumn] === 'string' 
+                ) {
+                    let newElement
+                if(!this.isregExpre){
+                            newElement = this.datasourceFilter[i][this.nameColumn].replaceAll(first_value, second_value);
+                }else{
+                        newElement = this.datasourceFilter[i][this.nameColumn].replace(first_value, second_value);
+                }
+                this.datasourceFilter[i][this.nameColumn] = newElement;
+                found = true;
+                }
+            }
+        }else{
+                    for (let i = 0; i < this.datasourceFilter.length; i++) {
+                if (
+                typeof this.datasourceFilter[i][this.nameColumn] === 'string' && this.datasourceFilter[i][this.nameColumn].includes(first_value)
+                ) {
+                    let newElement
+                if(!this.isregExpre){
+                            newElement = this.datasourceFilter[i][this.nameColumn].replaceAll(first_value, second_value);
+                }else{
+                        newElement = this.datasourceFilter[i][this.nameColumn].replace(first_value, second_value);
+                }
+                this.datasourceFilter[i][this.nameColumn] = newElement;
+                found = true;
+                }
+            }
         }
-      }
+  
       if (found) {
         second_value = second_value === "" ? "empty" : second_value;
         const name_dinamic = `Replace "${first_value}" to "${second_value}" on column "${this.nameColumn}".`;

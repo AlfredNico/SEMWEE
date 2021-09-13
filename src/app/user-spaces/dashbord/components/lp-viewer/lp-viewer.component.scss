@@ -1,60 +1,110 @@
  //to remove the forth step
-//  :host ::ng-deep .mat-horizontal-content-container {
-//   min-height: calc(100vh - 250px);
-// }
-
-
-:host ::ng-deep {
-  .ftp {
-    font-family: Poppins!important;
-  }
-
-  .fs-16 {
-    font-size: 16px;
-  }
-
-  .fs-18 {
-    font-size: 18px;
-  }
-
-  .fw-500 {
-      font-weight: 500 !important;
-  }
-
-  .text-dark {
-    color: #181C32 !important;
-  }
-
-  .mat-horizontal-stepper-header-container {
-    display: none !important;
-  }
-  .mat-horizontal-content-container{
-    padding: 0 !important;
-    background: white !important;
-    margin: 0 15px 0 15px!important;
-  }
-
-  .mat-stepper-horizontal, .mat-stepper-vertical {
-    background-color: #F0F1F6;
-  }
-}
-
-::ng-deep{
-  @media (min-width: 1400px){
-    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-        max-width: 100% !important;
-    }
-  }
-  @media (min-width: 1200px){
-    .container-xl, .container-lg, .container-md, .container-sm, .container {
-        max-width: 100%;
-    }
-  }
-}
-
-.text-label {
-  font-size: 23px;
-  margin: 25px;
-  font-weight: 600;
-  color: #434254;
-}
+ //  :host ::ng-deep .mat-horizontal-content-container {
+ //   min-height: calc(100vh - 250px);
+ // }
+ :host ::ng-deep {
+     * {
+         font-family: Poppins!important;
+     }
+     .ftp {
+         font-family: Poppins!important;
+     }
+     .ftssp {
+         font-family: "Source Sans Pro"!important;
+     }
+     .fs-16 {
+         font-size: 16px;
+     }
+     .fs-18 {
+         font-size: 18px;
+     }
+     .fw-500 {
+         font-weight: 500 !important;
+     }
+     .text-dark {
+         color: #181C32 !important;
+     }
+     .mat-horizontal-stepper-header-container {
+         display: none !important;
+     }
+     .mat-horizontal-content-container {
+         padding: 0 !important;
+         background: white !important;
+         margin: 0 15px 0 15px!important;
+     }
+     .mat-stepper-horizontal,
+     .mat-stepper-vertical {
+         background-color: #F0F1F6;
+     }
+     .viewer-container {
+         height: auto;
+     }
+     .mat-icon-button {
+         padding: 0;
+         min-width: 0;
+         width: 30px;
+         height: 30px;
+         flex-shrink: 0;
+         line-height: 40px;
+         border-radius: 2px !important;
+         background-color: white !important;
+     }
+     .mat-paginator-icon {
+         background-color: rgba(147, 162, 221, 0.12);
+         margin-top: -13px !important;
+         width: 30px !important;
+     }
+     .mat-mini-fab {
+         box-sizing: border-box;
+         position: relative;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+         user-select: none;
+         cursor: pointer;
+         outline: none;
+         border: none;
+         -webkit-tap-highlight-color: transparent;
+         display: inline-block;
+         white-space: nowrap;
+         text-decoration: none;
+         vertical-align: baseline;
+         text-align: center;
+         margin: 0;
+         min-width: 64px;
+         line-height: 36px;
+         padding: 0 16px;
+         border-radius: 4px;
+         overflow: visible;
+         transform: translate3d(0, 0, 0);
+         transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+         min-width: 0;
+         border-radius: 2px !important;
+         width: 30px !important;
+         height: 30px !important;
+         padding: 0;
+         flex-shrink: 0;
+     }
+ }
+ 
+ ::ng-deep {
+     @media (min-width: 1400px) {
+         .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+             max-width: 100% !important;
+         }
+     }
+     @media (min-width: 1200px) {
+         .container-xl,
+         .container-lg,
+         .container-md,
+         .container-sm,
+         .container {
+             max-width: 100%;
+         }
+     }
+ }
+ 
+ .text-label {
+     margin: 25px;
+     margin-left: 70px
+ }

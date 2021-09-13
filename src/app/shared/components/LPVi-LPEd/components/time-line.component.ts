@@ -13,41 +13,41 @@ import { DateAdapter } from "@angular/material/core";
 @Component({
     selector: "app-time-line",
     template: `
-        <div class="ml-5 pb-2">
-            <div class="p-0 w-100 rounded style-border">
-                <div class="py-2 px-2 level1" fxLayout="row">
-                    <mat-icon
-                        aria-label="close icon"
-                        (click)="removeFromItem.emit(item)"
-                    >
-                        highlight_off
-                    </mat-icon>
-                    <mat-icon
-                        *ngIf="item['isMinimize'] === false"
-                        aria-label="close icon"
-                        (click)="minimize.emit(item)"
-                    >
-                        remove_circle_outline
-                    </mat-icon>
-                    <mat-icon
-                        *ngIf="item['isMinimize'] === true"
-                        aria-label="close icon"
-                        (click)="minimize.emit(item)"
-                    >
-                        add_circle_outline
-                    </mat-icon>
-                    <span class="fw-600">{{ item["head"] }}</span>
-                    <span fxFlex></span>
-                    <div
-                        class="pointer px-1 white-color fw-600"
-                        (click)="reset()"
-                    >
-                        reset
-                    </div>
+        <div class="ml-5 mgb-30 sub-panel">
+            <div class="p-0 w-100">
+        <div class="pd-8-18 level1 border-level1" fxLayout="row">
+                     <span class="ftp title-text">{{ item["head"] }}</span>
+            <span fxFlex></span>
+            <div
+                class="pointer px-1 reset-text"
+                (click)="reset()"
+            >
+                Reset
+            </div>
+            <span class="svg-icon svg-icon-custom" style="margin-right: 18px;" *ngIf="item['isMinimize'] === false"
+                aria-label="close icon"
+                (click)="minimize.emit(item)">
+                <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.07252 6.81434L0.177077 1.68092C-0.0590258 1.43335 -0.0590258 1.03196 0.177077 0.784405L0.748052 0.185678C0.983752 -0.0614781 1.36575 -0.0619538 1.60201 0.184621L5.50001 4.25294L9.39799 0.184621C9.63425 -0.0619538 10.0162 -0.0614781 10.2519 0.185678L10.8229 0.784405C11.059 1.03198 11.059 1.43337 10.8229 1.68092L5.92751 6.81434C5.6914 7.06189 5.30862 7.06189 5.07252 6.81434Z" fill="#3B85FE"/>
+                </svg>
+            </span>
+            <span class="svg-icon svg-icon-custom svg-rotate" style="margin-right: 18px;" *ngIf="item['isMinimize'] === true"
+                aria-label="close icon"
+                (click)="minimize.emit(item)">
+                <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.07252 6.81434L0.177077 1.68092C-0.0590258 1.43335 -0.0590258 1.03196 0.177077 0.784405L0.748052 0.185678C0.983752 -0.0614781 1.36575 -0.0619538 1.60201 0.184621L5.50001 4.25294L9.39799 0.184621C9.63425 -0.0619538 10.0162 -0.0614781 10.2519 0.185678L10.8229 0.784405C11.059 1.03198 11.059 1.43337 10.8229 1.68092L5.92751 6.81434C5.6914 7.06189 5.30862 7.06189 5.07252 6.81434Z" fill="#3B85FE"/>
+                </svg>
+            </span>
+            <span class="svg-icon svg-icon-custom" aria-label="close icon"
+                (click)="removeFromItem.emit(item)">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.6669 5.50017L10.1925 1.97456L10.9196 1.24751C11.0268 1.14025 11.0268 0.965968 10.9196 0.858715L10.1416 0.0807838C10.0344 -0.0264695 9.86009 -0.0264695 9.75284 0.0807838L5.50017 4.33345L1.24751 0.08044C1.14025 -0.0268133 0.965968 -0.0268133 0.858714 0.08044L0.08044 0.858371C-0.0268133 0.965624 -0.0268133 1.13991 0.08044 1.24716L4.33345 5.50017L0.08044 9.75284C-0.0268133 9.86009 -0.0268133 10.0344 0.08044 10.1416L0.858371 10.9196C0.965624 11.0268 1.13991 11.0268 1.24716 10.9196L5.50017 6.6669L9.02578 10.1925L9.75284 10.9196C9.86009 11.0268 10.0344 11.0268 10.1416 10.9196L10.9196 10.1416C11.0268 10.0344 11.0268 9.86009 10.9196 9.75284L6.6669 5.50017Z" fill="#3B85FE"/>
+                </svg>
+            </span>
                 </div>
                 <div
                     class="custom-slider w-100 level2"
-                    style.height.px="50"
+                    style.height.px="55"
                     *ngIf="
                         (item?.endDate !== undefined ||
                             item?.startDate !== undefined) &&
@@ -60,7 +60,7 @@ import { DateAdapter } from "@angular/material/core";
                     <mat-form-field
                         appearance="fill"
                         class="w-50"
-                        style="background: #F3F6F9;"
+                        style="background: #FFFFFF;"
                     >
                         <mat-label>start date</mat-label>
                         <input
@@ -103,7 +103,7 @@ import { DateAdapter } from "@angular/material/core";
     styles: [
         `
             ::ng-deep .mat-form-field-wrapper {
-                background: white !important;
+                // background: white !important;
             }
 
             ::ng-deep .mat-label,
@@ -113,12 +113,19 @@ import { DateAdapter } from "@angular/material/core";
             }
 
             ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-                background-color: #f3f6f9;
+                background-color: #FFFFFF;
                 border-radius: 0 !important;
             }
 
             ::ng-deep .mat-form-field-appearance-fill {
             }
+            .sub-panel {
+                box-shadow: 0px 0px 15px 1px rgb(113 106 202 / 10%);
+                margin-left: 32px !important;
+                margin-right: 18px !important;
+            }
+
+            
         `,
     ],
     providers: [DatePipe],

@@ -1,59 +1,70 @@
-<div class="ml-5 pb-2">
-    <div class="p-0 w-100 rounded style-border">
-      <div class="py-2 px-2 level1" fxLayout="row">
-      
-        <mat-icon style="cursor:pointer;" aria-label="close icon" (click)="removeFromItem.emit(nameColumn)">
-          highlight_off
-        </mat-icon>
-        <!-- <mat-icon
-          *ngIf="item['isMinimize'] === false"
-          aria-label="close icon"
-          (click)="minimize.emit(item)"
-        >
-          remove_circle_outline
-        </mat-icon>
-        <mat-icon
-          *ngIf="item['isMinimize'] === true"
-          aria-label="close icon"
-          (click)="minimize.emit(item)"
-        >
-          add_circle_outline
-        </mat-icon> -->
-        <span class="fw-600">{{nameColumn}}</span>
-        <!-- <span fxFlex></span>
-        <div class="pointer px-1 white-color fw-600" (click)="invert()" [ngStyle]="{color: !item['invert'] ? '#74788D' : null}">invert</div>
-        <div class="pointer px-1 white-color fw-600" (click)="reset()">reset</div> -->
-      </div>
+<div class="ml-5 mgb-30 sub-panel">
+    <div class="p-0 w-100">
+        <div class="pd-8-18 level1 border-level1" fxLayout="row">
+            <span class="ftp title-text">{{ nameColumn }}</span>
+            <span fxFlex></span>
+            <span class="svg-icon svg-icon-custom" aria-label="close icon" (click)="removeFromItem.emit(nameColumn)">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.6669 5.50017L10.1925 1.97456L10.9196 1.24751C11.0268 1.14025 11.0268 0.965968 10.9196 0.858715L10.1416 0.0807838C10.0344 -0.0264695 9.86009 -0.0264695 9.75284 0.0807838L5.50017 4.33345L1.24751 0.08044C1.14025 -0.0268133 0.965968 -0.0268133 0.858714 0.08044L0.08044 0.858371C-0.0268133 0.965624 -0.0268133 1.13991 0.08044 1.24716L4.33345 5.50017L0.08044 9.75284C-0.0268133 9.86009 -0.0268133 10.0344 0.08044 10.1416L0.858371 10.9196C0.965624 11.0268 1.13991 11.0268 1.24716 10.9196L5.50017 6.6669L9.02578 10.1925L9.75284 10.9196C9.86009 11.0268 10.0344 11.0268 10.1416 10.9196L10.9196 10.1416C11.0268 10.0344 11.0268 9.86009 10.9196 9.75284L6.6669 5.50017Z" fill="#3B85FE"/>
+                </svg>
+            </span>
+        </div>
 
-      <div
-        class="py-0"
-        [formGroup]="formSearch"
-        fxLayout="column"
-        fxLayoutAlign="space-around center"
-        style="background: #74788D"
-      >
-      <!-- *ngIf="item['isMinimize'] === false" -->
-      <input
-        autocomplete="off"
-        type="search"
-        class="w-100 mt-1 form-control form-custom"
-        placeholder="Value ..."
-        formControlName="char_value"
-        appearance="outline"
-      />
-      <input
-        autocomplete="off"
-        type="search"
-        class="w-100 mt-1 mb-1 form-control form-custom"
-        placeholder="Replace ..."
-        formControlName="new_value"
-        appearance="outline"
-      />
-      </div>
-      <div class="py-3 px-3 level2 rounded-bottom text-center">
-        <button class="rounded btn btn-custom" (click)="searchReplace()">
-          Apply
-        </button>
-      </div>
-  </div>
+        <div class="pdx" [formGroup]="formSearch" fxLayout="column" fxLayoutAlign="space-around start" style="background: #FFFFFF; margin-top: 16px; margin-bottom: 24px;">
+            <label for="char_value" class="custom-label">Search</label>
+            <input autocomplete="off" matInput type="search" class="form-control w-100 form-custom pdl-5" formControlName="char_value" appearance="outline" id="char_value"/>
+            <label for="new_value" style="margin-top: 10px;" class="custom-label">Replace by</label>
+            <input autocomplete="off" matInput type="search" class="form-control w-100 form-custom pdl-5" formControlName="new_value" appearance="outline" 
+            id="new_value"/>
+        </div>
+        <div class="checkbox-group">
+            <mat-checkbox style="width: 160px;" [checked]="isregExpre" (change)="changeStatus($event)">Whole word only</mat-checkbox>
+            <mat-checkbox>Case sensitive</mat-checkbox>
+        </div>
+        <!-- <div class="py-3 px-3"> -->
+            <!-- <label class="search-group-label">Search mode</label>
+            <mat-radio-group
+            class="radio-group"
+            >
+                <mat-radio-button class="radio-button">
+                    Full-text search
+                </mat-radio-button>
+                <mat-radio-button class="radio-button">
+                    Regular expression
+                </mat-radio-button>
+            </mat-radio-group> -->
+            <!-- <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Default radio
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Default checked radio
+                </label>
+            </div> -->
+        <!-- </div> -->
+        <div class="custom-radio-wrap">
+            <div class="title-radio-button">Search mode</div>
+            <form>
+              <div class="form-group">
+                <input id="full-text" type="radio" name="custom-radio-btn" checked>
+                <label class="custom-radio" for="full-text"></label>
+                <span class="label-text">Full-text search</span>
+              </div>
+              <div class="form-group">
+                <input id="regular-exp" type="radio" name="custom-radio-btn">
+                <label class="custom-radio" for="regular-exp"></label>
+                <span class="label-text">Regular expression</span>
+              </div>
+            </form>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-apply" (click)="searchReplace()">
+                Apply
+            </button>
+        </div>
+    </div>
 </div>

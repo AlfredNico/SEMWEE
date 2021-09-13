@@ -28,7 +28,7 @@ export class LpEditorService {
   };
   private idProject = undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public getAllProjects(_idUsers): Observable<LPAllProjects[]> {
     return this.http
@@ -117,7 +117,10 @@ export class LpEditorService {
     );
   }
 
-  public addFilter(value: { idProject: any; value: any }) {
+  public addFilter(value: { idProject: any; value: any }, idfilter?: any, types?: any, idproject?: any) {
+    console.log("In service lpEditor : ");
+
+
     //    public permaLink = {
     //   input: [],
     //   numeric: [],
@@ -127,9 +130,14 @@ export class LpEditorService {
     //   queries: {},
     //   queriesNumerisFilters: {},
     // };
+    const data = {
+      value: value,
+      types: types,
+      idproject: idproject,
+    }
     return this.http.post(
-      `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2`,
-      value
+      `${environment.baseUrl}/lpviewer/post-parametre-lpviewer2/${idfilter}`,
+      data
     );
   }
 

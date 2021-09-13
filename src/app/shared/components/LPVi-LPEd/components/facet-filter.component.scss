@@ -1,126 +1,445 @@
 // We need to use ::ng-deep to overcome view encapsulati
 ::ng-deep {
-  .custom-slider .ngx-slider{
-    top: -35px;
-
-    .ngx-slider-bar {
-      background: #7E849C;
-      height: 50px;
+    .sub-panel {
+        box-shadow: 0px 0px 15px 1px rgb(113 106 202 / 10%);
+        margin-left: 32px !important;
+        margin-right: 18px !important;
+        padding-left: 0 !important;
     }
-    .ngx-slider-selection {
-      background: white;
+    .custom-slider {
+        background: white;
     }
-    .ngx-slider-pointer {
-      width: 5px;
-      height: 60px;
-      top: auto; /* to remove the default positioning */
-      bottom: -50px;
-      background-color: black;
-      cursor: col-resize;
+    .custom-slider .ngx-slider {
+        top: -35px;
+        .ngx-slider-bar {
+            background: whitesmoke;
+            height: 167px;
+        }
+        .ngx-slider-selection {
+            background: white;
+        }
+        .ngx-slider-pointer {
+            width: 10px;
+            height: 167px;
+            top: auto;
+            bottom: -163px;
+            background-color: white;
+            cursor: col-resize;
+            border-radius: 0;
+        }
+        span.ngx-slider-pointer-min::before {
+            content: '||';
+            color: #C4C4C4;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            top: 79px;
+        }
+        span.ngx-slider-pointer-max::before {
+            content: '||';
+            color: #C4C4C4;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            top: 79px;
+        }
+        .ngx-slider-pointer:after {
+            display: none;
+        }
+        .ngx-slider-bubble {
+            bottom: 14px;
+        }
+        .ngx-slider-limit {
+            font-weight: bold;
+            color: #FF4B55;
+        }
+        .ngx-slider-tick {
+            width: 1px;
+            height: 163px;
+            margin-left: 4px;
+            border-radius: 0;
+            background: black;
+            top: -1px;
+        }
+        .ngx-slider-tick.ngx-slider-selected {
+            background: #3B85FE;
+        }
     }
-    .ngx-slider-pointer:after {
-      display: none;
+    .btn-custom {
+        font-size: 13px;
+        font-weight: 400;
+        padding: 5px 18px;
+        line-height: 27px;
+        color: #FFFFFF;
+        background-color: #3B85FE;
     }
-    .ngx-slider-bubble {
-      bottom: 14px;
+    .btn-custom:hover {
+        background-color: #3B73FE !important;
+        color: #FFFFFF !important;
     }
-    .ngx-slider-limit {
-      font-weight: bold;
-      color: #F64E60;
+    .btn-apply {
+        height: 30px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 18px;
+        text-align: center;
+        padding: 7px 8px 8px 8px;
+        background: #3B85FE;
+        color: #FFFFFF;
+        border-radius: 5px;
+        position: relative;
+        right: 18px;
+        margin-top: 8px;
+        margin-bottom: 18px;
+        width: 71px;
     }
-    .ngx-slider-tick {
-      width: 1px;
-      height: 50px;
-      margin-left: 4px;
-      border-radius: 0;
-      background: black;
-      top: -1px;
+    .btn-apply:hover {
+        background-color: #3B73FE !important;
+        color: #FFFFFF !important;
     }
-    .ngx-slider-tick.ngx-slider-selected {
-      background: #4C99FF;
+    .level1 {
+        background: white;
+        color: #3698FE !important;
+        font-size: 16px;
     }
-  }
-
-  .btn-custom {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 7px 10px;
-    color: #2C374D;
-    background-color: transparent;
-    border: 1px solid #7F8FA4;
-  }
-
-  .btn-custom:hover {
-    background-color: #F2F3F5;
-  }
-
-  .style-border {
-    border: 1px solid #2C374D;
-    color: #E4E6EF !important;
-  }
-
-  .level1 {
-    background: #2C374D;
-    color: #D8D8D8 !important;
-  }
-
-  .level2 {
-    background: #F3F6F9;
-    color: #74788D !important;
-  }
-
-  .black-color {
-    color: #3F4254;
-  }
-
-  .white-color {
-    color: #FFFFFF;
-  }
-
-  .fw-600 {
-    font-weight: 600;
-  }
-
-  .bb {
-    border-bottom: 1px solid #E4E6EF;
-  }
-
-  .in-ex {
-    color: #26334B!important;
-  }
-}
-
-::ng-deep .mat-checkbox .mat-checkbox-frame {
-  border: none;
-  background-color: #E2E3EA;
-  border-radius: 4px;
-}
-
-::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-  margin-top: 1px;
-  margin-left: 1px;
-  width: 18px;
-  height: 18px;
+    .level2 {
+        color: #464457;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 11px;
+        line-height: 16px;
+    }
+    .black-color {
+        color: #000000;
+    }
+    .white-color {
+        color: #FFFFFF;
+    }
+    .blue-color {
+        color: #3698FE;
+    }
+    .reset-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3B85FE;
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 16.5px;
+        width: 92px;
+        height: 22px;
+    }
+    .invert-text {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: #3B85FE;
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 16.5px;
+        width: 92px;
+        height: 22px;
+    }
+    .title-text {
+        display: flex;
+        align-items: center;
+        margin-left: 5px;
+        color: #464457;
+        font-size: 13px;
+        font-weight: 500;
+        width: 92px;
+        height: 22px;
+        line-height: 19.5px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .refresh-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3B85FE;
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 16.5px;
+        width: 92px;
+        height: 22px;
+    }
+    .reset-all-text {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: #3B85FE;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+        width: 92px;
+        height: 22px;
+    }
+    .remove-all-text {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: #3B85FE;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+        width: 92px;
+        height: 22px;
+    }
+    .choice-text {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 111px;
+        height: 22px;
+        text-indent: 12px;
+    }
+    .numeric-text {
+        padding-top: 132px;
+        padding-bottom: 8px;
+        color: #959CBD;
+        font-size: 12px;
+        line-height: 18px;
+        font-weight: 400;
+    }
+    .border-level1 {
+        border-bottom: 1px solid #EBEDF3;
+        transform: rotate(-0.07deg);
+    }
+    .sort-active {
+        color: #000000;
+        font-weight: 600;
+    }
+    .sort-inactive {
+        color: #3B85FE;
+        font-weight: 400;
+    }
+    // mwlResizable {
+    //     box-sizing: border-box; // required for the enableGhostResize option to work
+    // }
+    .fw-600 {
+        font-weight: 600;
+    }
+    .bb {
+        border-bottom: 1px solid #E4E6EF;
+    }
+    .mgb-30 {
+        margin-bottom: 30px !important;
+    }
+    .in-ex {
+        color: #3B85FE !important;
+    }
+    .include-hov {
+        color: transparent !important;
+    }
+    .include-exclude:hover .include-hov {
+        color: #3B85FE !important;
+    }
+    .list-content {
+        text-indent: 12px;
+    }
+    .list-content:hover {
+        background: #F5F5F9;
+    }
+    .include-active {
+        font-weight: 400 !important;
+        color: #959CBD !important;
+    }
+    .exclude-active {
+        font-weight: 600 !important;
+        color: #000000 !important;
+    }
+    .pdx {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+    .pdr {
+        padding-right: 18px !important;
+    }
+    .pdl {
+        padding-left: 18px !important;
+    }
+    .pdb {
+        padding-bottom: 18px !important;
+    }
+    .pdt {
+        padding-top: 18px !important;
+    }
+    .pd-8-18 {
+        padding: 8px 18px;
+    }
+    .pdb-8 {
+        padding-bottom: 8px;
+    }
+    .mgr-3 {
+        margin-right: 5px;
+    }
+    .pdt-56 {
+        padding-top: 56px !important;
+    }
+    .mgr {
+        margin-right: 18px !important;
+    }
+    .mgl {
+        margin-left: 18px !important;
+    }
+    .mgt {
+        margin-top: 18px !important;
+    }
+    .mgb {
+        margin-bottom: 18px !important;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-infix {
+        padding: 18px 0 18px 0;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+        padding: 0 18px 0 18px !important;
+    }
 }
 
 ::ng-deep {
-  .form-custom {
-    border: 1px solid #74788D!important;
-  }
+    .mat-checkbox .mat-checkbox-frame {
+        border: none;
+        background: rgba(123, 144, 254, 0.12);
+        border-radius: 2px;
+    }
+    span.mat-checkbox-inner-container {
+        height: 18px;
+        width: 18px;
+    }
+    .mat-checkbox-layout .mat-checkbox-label {
+        font-weight: 400!important;
+        font-size: 11px;
+        line-height: 16px;
+        color: #959CBD;
+    }
+    .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+    .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+        background-color: #3B85FE!important;
+    }
+    .checkbox-group {
+        padding: 8px 18px;
+    }
+    .custom-radio-wrap {
+        padding: 8px 18px;
+    }
+    .custom-radio-wrap form .form-group label {
+        -webkit-appearance: none;
+        background: rgba(123, 144, 254, 0.12);
+        padding: 9px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        vertical-align: middle;
+        cursor: pointer;
+        margin: 0;
+    }
+    .custom-radio-wrap form .form-group .label-text {
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    .custom-radio-wrap form .form-group input {
+        display: none;
+        cursor: pointer;
+    }
+    .custom-radio-wrap form .form-group input:checked+label {
+        background-color: #3B85FE;
+    }
+    .custom-radio-wrap form .form-group input:checked+label:after {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        position: absolute;
+        top: 5.5px;
+        left: 5.5px;
+        background: #EDEDED;
+        font-size: 10px;
+    }
+    .label-text {
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        text-indent: 12px;
+        color: #959CBD;
+    }
+    .form-group {
+        margin-bottom: 10px;
+        display: flex;
+    }
+    .title-radio-button {
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 19px;
+        display: flex;
+        align-items: center;
+        color: #959CBD;
+        margin-bottom: 15px;
+    }
+}
 
-  .form-custom:focus {
-    border-color: #74788D!important;
-  }
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    margin-top: 1px;
+    margin-left: 1px;
+    width: 18px;
+    height: 18px;
+}
 
-  .ftp {
-    font-family: Poppins!important;
-  }
+::ng-deep {
+    .form-custom {
+        background: #F2F4FB!important;
+        border-radius: 5px;
+    }
+    .custom-label {
+        width: 160px;
+        height: 29px;
+        font-size: 11px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        text-indent: 5px;
+        color: #959CBD;
+    }
+    .ftp {
+        font-family: Poppins !important;
+    }
+    .mat-checkbox-label {
+        font-weight: 600 !important;
+    }
+    .fw-600 {
+        font-weight: 600 !important;
+    }
+    .icon-search {
+        color: rgba(0, 0, 0, 0.5);
+    }
+    .icon-search:hover {
+        color: rgba(0, 0, 0, 1);
+    }
+    .pdl-5 {
+        padding-left: 5px !important;
+    }
+    .mgt-5 {
+        margin-top: 5px !important;
+    }
+}
 
-  .mat-checkbox-label {
-    font-weight: 600!important;
-  }
-
-  .fw-600 {
-    font-weight: 600 !important;
-  } 
+::ng-deep {
+    .svg-icon-custom svg {
+        height: 11px;
+        width: 11px;
+        cursor: pointer;
+    }
+    .svg-rotate svg {
+        transform: rotate(180deg);
+    }
+    .svg-icon-point svg {
+        height: 3px;
+        width: 3px;
+    }
 }

@@ -26,6 +26,8 @@ import { ResetPasswordGuard } from './guards/reset-password.guard';
 import { interruptedInterceptor } from './interrupted.interceptor';
 import { InformationSheetButtomComponent } from './shared/components/information-sheet-buttom/information-sheet-buttom.component';
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -40,6 +42,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     InformationSheetButtomComponent,
   ],
   imports: [
+    ClipboardModule,
     BrowserModule,
     BrowserAnimationsModule,
     InlineSVGModule.forRoot(),

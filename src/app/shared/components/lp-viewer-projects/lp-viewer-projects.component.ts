@@ -1,3 +1,4 @@
+import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
 import {
   AfterViewInit,
   Component,
@@ -37,7 +38,8 @@ export class LPViewerProjectsComponent implements OnChanges {
     private notifs: NotificationService,
     public triggerServices: TriggerService,
     private router: Router,
-    private readonly lpviLped: LpdLpdService
+    private readonly lpviLped: LpdLpdService,
+    private LpViwersService:LpViwersService
   ) {}
 
   ngOnChanges(): void {
@@ -96,10 +98,11 @@ export class LPViewerProjectsComponent implements OnChanges {
         })
       )
       .subscribe();
-  }
+      this.LpViwersService.idProject$ = ""
+      }
 
   public navigateURL(_id: any) {
-    this.lpviLped.isLoading$.next(true); // enable loading spinner
+    this.lpviLped.isLoading$.next(false); // enable loading spinner
     this.router.navigate(['user-space/lp-viewer'], {
       queryParams: { idProject: _id },
     });

@@ -19,6 +19,9 @@ import { UndoRedoComponent } from './UndoRedo/undo-redo.component';
 import { DragDroppDirective } from '../../directives/drag-dropp.directive';
 import { SearchReplaceComponent } from './search_filter_replace/search-filter-replace.component';
 import { ResizableModule } from 'angular-resizable-element';
+import { ClipboardModule } from 'ngx-clipboard';
+
+import { PaginatorDirective } from './pagination.directive';
 @NgModule({
   declarations: [
     LpViewerComponent,
@@ -30,14 +33,16 @@ import { ResizableModule } from 'angular-resizable-element';
     UndoRedoComponent,
     DragDroppDirective,
     SearchReplaceComponent,
+    PaginatorDirective,
   ],
   imports: [
     SharedComponentsModule,
     PerfectScrollbarModule,
     ResizableModule,
+    ClipboardModule,
     RouterModule.forChild([{ path: '', component: LpViewerComponent }]),
   ],
-  exports: [RouterModule],
+  exports: [RouterModule,PaginatorDirective],
   entryComponents: [
     ViwerImportComponent,
     ViwerReadImportComponent,

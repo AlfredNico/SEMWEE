@@ -57,6 +57,7 @@
     "rxjs": "~6.6.0",
     "socicon": "^3.0.5",
     "tslib": "^2.0.0",
+    "webpack": "^4.46.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

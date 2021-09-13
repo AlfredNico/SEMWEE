@@ -13,6 +13,8 @@ export const environment = {
   // baseUrlImg: 'https://back-semwee.herokuapp.com', /
   baseUrl: 'http://localhost:3000/api',
   baseUrlImg: 'http://localhost:3000/',
+  // baseUrl: 'http://192.168.43.2:3000/api',
+  // baseUrlImg: 'http://192.168.43.2:3000/',
 };
 
 /*

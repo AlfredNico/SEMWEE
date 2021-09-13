@@ -151,12 +151,12 @@ export class StylePaginatorDirective {
                             this.ren.setStyle(
                                 nodeArray[i],
                                 "background-color",
-                                "rgba(236, 241, 246, 1)"
+                                "rgba(147, 162, 221, .12)"
                             );
                             this.ren.setStyle(
                                 nodeArray[i],
                                 "color",
-                                "rgba(181, 181, 195, 1)"
+                                "rgba(147, 162, 221, 1)"
                             );
                             this.ren?.setStyle(
                                 nodeArray[i],
@@ -176,12 +176,12 @@ export class StylePaginatorDirective {
                             this.ren.setStyle(
                                 nodeArray[i],
                                 "background-color",
-                                "rgba(236, 241, 246, 1)"
+                                "rgba(147, 162, 221, .12)"
                             );
                             this.ren.setStyle(
                                 nodeArray[i],
                                 "color",
-                                "rgba(181, 181, 195, 1)"
+                                "rgba(147, 162, 221, 1)"
                             );
                             this.ren?.setStyle(
                                 nodeArray[i],
@@ -199,8 +199,13 @@ export class StylePaginatorDirective {
                             this.ren.setStyle(
                                 nodeArray[i],
                                 "background-color",
-                                "rgba(54, 153, 255, 1)"
+                                "rgba(102, 172, 255, 1)"
                             );
+                            // this.ren.setStyle(
+                            //     nodeArray[i],
+                            //     "font-weight",
+                            //     "bold"
+                            // );
                             this.ren?.setStyle(nodeArray[i], "color", "white");
                         } else if (!nodeArray[i].disabled) {
                             // } else if (!this._isFetchData) {
@@ -212,7 +217,7 @@ export class StylePaginatorDirective {
                             this.ren?.setStyle(
                                 nodeArray[i],
                                 "color",
-                                "rgba(138, 140, 159, 1)"
+                                "rgba(147, 162, 221, 1)"
                             );
                         }
                     }

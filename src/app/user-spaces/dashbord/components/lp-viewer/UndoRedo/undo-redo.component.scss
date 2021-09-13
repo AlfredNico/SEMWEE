@@ -1,10 +1,36 @@
-mat-list-item:hover{
+mat-list-item:hover {
     background-color: #f7f7f7;
 }
-.active{
+
+.active {
     background-color: #f7f7f7;
 }
 
 ::ng-deep .mat-list-item-content {
     font-family: Poppins!important;
+}
+
+.tooltipCustom {
+    position: absolute;
+    right: 0;
+    margin-right: 44px;
+    width: auto;
+    padding: 7px 16px 8px 19px;
+    box-shadow: rgb(0 0 0 / 15%) 0px 2px 8px;
+    background: #2c374dad;
+    border-radius: 3px;
+    color: white;
+}
+
+::ng-deep {
+    .mat-list-item-content {
+        padding: 5px 36px !important;
+    }
+    .mat-list-base .mat-list-item {
+        font-size: 13px!important;
+        color: #000000!important;
+    }
+    .mat-tab-body-content {
+        padding-top: 0px !important;
+    }
 }

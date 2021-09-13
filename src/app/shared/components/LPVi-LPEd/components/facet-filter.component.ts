@@ -1,9 +1,12 @@
+import { LpViwersService } from '@app/user-spaces/dashbord/services/lp-viwers.service';
 import {
     AfterViewInit,
     Component,
     Input,
     OnDestroy,
     OnInit,
+    Output,
+    EventEmitter,
 } from "@angular/core";
 import { LpEditorService } from "@app/user-spaces/dashbord/services/lp-editor.service";
 import { LpdLpdService } from "../services/lpd-lpd.service";
@@ -12,18 +15,21 @@ import { LpdLpdService } from "../services/lpd-lpd.service";
     selector: "app-facet-filter-target",
     template: `
         <div *ngIf="items.length > 0; else noItems">
-            <div class="w-100 pl-4 pr-2 pb-3" style="margin-top:5px">
-                <button class="rounded btn btn-custom">Refresh</button>
-                <span fxFlex></span>
-                <button
-                    class="rounded btn btn-custom mr-2"
-                    (click)="resetAll()"
-                >
-                    Reset All
-                </button>
-                <button class="rounded btn btn-custom" (click)="removeAll()">
-                    Remove All
-                </button>
+            <div style="
+                margin-left: 31px;
+                margin-top: 24px;
+                margin-bottom: 12px;">
+                    <div class="refresh-text">Refresh</div>
+                    <span fxFlex></span>
+                    <div
+                        class="reset-all-text"
+                        (click)="resetAll()"
+                    >
+                        Reset All
+                    </div>
+                    <div class="remove-all-text mgr" (click)="removeAll()">
+                        Remove All
+                    </div>
             </div>
 
             <div *ngFor="let item of items; let index = index">
@@ -124,9 +130,9 @@ import { LpdLpdService } from "../services/lpd-lpd.service";
         </div>
 
         <ng-template #noItems>
-            <div style="background: #F5F6FA;" class="w-100 ml-4 px-3 py-5">
-                <h1 class="ftp">Using facets and filters</h1>
-                <p class="m-0 ftp">
+            <div style="background: #FFFFFF; padding-right: 26px!important;margin-left: 30px!important;width:90%!important;" class="w-100 ml-4 pdx pdt pdb">
+                <h1 class="ftp black-color" style="font-size: 18px;">Using facets and filters</h1>
+                <p class="m-0 ftp black-color">
                     Use facets and filters to select subsets of your data to act
                     on. Choose facet and filter methods from the menus at the
                     top of each data column.
@@ -155,13 +161,18 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
     @Input("dataSources") public dataSources: any[] = [];
     @Input("idProject") public idProject = undefined;
     @Input("items") public items: any[] = [];
+    @Input("test") public test: any = undefined;
+    @Output('send_data') send_data: any = new EventEmitter();
 
     search_replace: any[] = [];
 
     constructor(
         private readonly lpEditor: LpEditorService,
-        private readonly lpviLped: LpdLpdService
-    ) {}
+        private readonly lpviLped: LpdLpdService,
+        private lpViewer: LpViwersService,
+
+
+    ) { }
 
     ngOnInit(): void {
         if (Object.keys(this.lpviLped.permaLink).length !== 0) {
@@ -177,18 +188,31 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {}
+    ngOnChanges(): void {
+        if (this.test != undefined) {
+            this.savePermalink("ajout");
+        }
+    }
+    ngOnDestroy(): void { }
 
     ngAfterViewInit(): void {
         this.lpviLped.resetfilter.subscribe((res: any) => {
             this.resetAll();
         });
         this.lpviLped.itemsObservables$.subscribe((res: any) => {
-            if (res !== undefined) {
-                this.items.push(res);
-                this.savePermalink(); // SAVE PERMALINK
+            if (res != undefined) {
+                if (res["type"] != "ajoutOneData") {
+                    console.log("Item observble in if")
+                    this.items.push(res);
+                    this.savePermalink(res["type_filter"]); // SAVE PERMALINK
+                } else {
+                    // console.log("Item observble in else")
+                    // this.savePermalink("ajout"); // SAVE PERMALINK
+                }
             }
+
         });
+
     }
 
     public removeAll() {
@@ -204,11 +228,11 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             (v) => (this.lpviLped.permaLink.queries[v] = "")
         );
 
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     public resetAll() {
-        // console.log("reset all")
+
         this.inputQueries = [];
         this.searchQueries = [];
         this.numericQeury = [];
@@ -257,7 +281,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         });
 
         this.items = this.items;
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     /* EMITTER FUNCTION AFTER FILTER FROM COMPONENTS */
@@ -306,7 +330,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         this.queriesNumerisFilters[`${event["head"]}`] = q;
 
         this.lpviLped.dataSources$.next(data);
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     public callAfterTimeLineEmitter(event: any) {
@@ -347,21 +371,24 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
         this.queriesTimeLineFilters[`${event["head"]}`] = this.timeLineQeury;
 
         this.lpviLped.dataSources$.next(data);
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     public formGroupEmitter(event: { query: any; item: any; index: number }) {
+        console.log(" Event in facet for input: ", event)
         this.queries[event.item["head"]] = event.query; //save querie from input filter
         const index = this.items.findIndex(
             (elem) => elem["head"] == event.item["head"]
         );
 
         if (index !== -1) this.items[index] = { ...event.item };
-
+        console.log(this.items)
         this.inputFilterFonciont(); // CALL SEARCH INPUT FILTER
     }
 
     public minimizeEmitter(item: any): void {
+        console.log("minimize")
+        console.log(item)
         const index = this.items.findIndex(
             (elem) => elem["head"] == item["head"]
         );
@@ -375,7 +402,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.items = this.items;
 
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     public removeFromItemEmitter(item: any, removeName?: string): void {
@@ -450,7 +477,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                 this.lpviLped.dataSources$.next(data);
             }
         }
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     public itemsEmitter(event?: any) {
@@ -486,7 +513,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.lpviLped.dataSources$.next(data);
 
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
     public resetTimeLineAndNumber(item: any, resetName: string) {
@@ -613,12 +640,13 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             }
         });
         this.lpviLped.dataSources$.next(data);
-        this.savePermalink(); // SAVE PERMALINK
+        this.savePermalink("modif"); // SAVE PERMALINK
     }
 
-    private savePermalink(): void {
+    private savePermalink(typeFilter: String = ""): void {
+
         const permalink = {
-            idProject: this.idProject,
+            idProject: this.lpViewer.idProject$,
             value: JSON.stringify({
                 input: this.inputQueries,
                 search: this.searchQueries,
@@ -628,6 +656,7 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
                 queriesNumerisFilters: this.queriesNumerisFilters,
             }),
         };
+
 
         this.lpviLped.permaLink = {
             ...this.lpviLped.permaLink,
@@ -640,7 +669,16 @@ export class FacetFilterComponent implements AfterViewInit, OnInit, OnDestroy {
             queriesTimeLineFilters: this.queriesTimeLineFilters,
         };
 
-        this.lpviLped.isLoading$.next(false); // desaable loading spinner
-        this.lpEditor.addFilter(permalink).subscribe();
+        this.lpviLped.isLoading$.next(false);
+
+        this.lpEditor.addFilter(permalink, this.lpViewer.idFilter$, typeFilter, this.lpViewer.idProject$).subscribe((res) => {
+            if (res["message"] != "update successfull") {
+                // console.log(res)
+                this.lpViewer.idFilter$ = res["message"];
+                this.send_data.emit("emit");
+            } else {
+                console.log("Update successfull");
+            }
+        });
     }
 }

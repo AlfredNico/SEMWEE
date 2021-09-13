@@ -17,7 +17,7 @@ import * as moment from 'moment';
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="convertToNumber(column)">To Number</button>
     <button mat-menu-item (click)="convertToDate(column)">To Date</button>
-    <button mat-menu-item (click)="convertToDateToIso(column)">Format ISO (Date)</button>
+    <!-- <button mat-menu-item (click)="convertToDateToIso(column)">Format ISO (Date)</button> -->
     <button mat-menu-item (click)="convertToText(column)">To Text</button>
     <button mat-menu-item (click)="convertToBoolean(column)">To Boolean</button>
     <mat-divider></mat-divider>
@@ -204,10 +204,13 @@ export class EditCellComponent implements OnInit {
     });
 
     // this.dataSource = this.dataViews.slice(0,10);
-
-    const names = `Update on ${this
-      .numberCount++} cells in column ${nameCell}: value.toBoolean()`;
-    this.toggleEdit(names);
+    if(this.numberCount === 0){
+        alert("There is no data to convert into boolean");
+    }else{
+             const names = `Update on ${this
+            .numberCount++} cells in column ${nameCell}: value.toBoolean()`;
+            this.toggleEdit(names);
+    }
   }
 
   /* Convert To Null */

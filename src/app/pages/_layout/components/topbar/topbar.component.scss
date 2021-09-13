@@ -1,7 +1,8 @@
-.navbar-nav > li > a ,.submenu-box ul li a{
+.navbar-nav>li>a,
+.submenu-box ul li a {
     text-transform: capitalize;
     font-size: 15px;
-	//   padding:10px 10px 10px 20px!important;
+    //   padding:10px 10px 10px 20px!important;
     display: block;
     font-weight: 400;
     position: relative;
@@ -9,40 +10,39 @@
     letter-spacing: .2px;
 }
 
-.submenu-box ul li a{
- padding:4px 10px 4px 20px!important;
-  color:#c1c1c1!important;
+.submenu-box ul li a {
+    padding: 4px 10px 4px 20px!important;
+    color: #c1c1c1!important;
 }
 
-
-
-.navbar-nav > li > a.active{
-     color: #e9ecef!important;
-    background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.0875) 50%,transparent);
-    border-left:4px solid #3b7ddd;
+.navbar-nav>li>a.active {
+    color: #e9ecef!important;
+    background: linear-gradient(90deg, rgba(59, 125, 221, .1), rgba(59, 125, 221, .0875) 50%, transparent);
+    border-left: 4px solid #3b7ddd;
 }
 
-.navbar-nav .has-sub > a.collapsed::after {
+.navbar-nav .has-sub>a.collapsed::after {
     transition: 0.4s ease;
 }
 
-.navbar-nav .has-sub > a.collapsed::after {
-    color:gray;
+.navbar-nav .has-sub>a.collapsed::after {
+    color: gray;
     font-size: 10px;
     content: "\f078";
 }
-.navbar-nav .has-sub > a.collapsed::after {
-   color:gray;
+
+.navbar-nav .has-sub>a.collapsed::after {
+    color: gray;
 }
 
-.navbar-nav .has-sub > a::after {
+.navbar-nav .has-sub>a::after {
     position: absolute;
     right: 0px;
     top: 50%;
     height: 30px;
     width: 30px;
     text-align: center;
-    color:gray;
+    color: gray;
     display: block;
     content: "\f077";
     font-family: 'Font Awesome\ 5 Free';
@@ -52,35 +52,31 @@
     margin-top: -15px;
 }
 
-
-
 #wrapper.toggled {
     padding-left: 270px;
 }
 
-
-
 .toggled#sidebar-wrapper {
-    width:270px!important;
+    width: 270px!important;
     height: 100%;
-     left: 0px;
-    overflow-y:auto;
-    overflow-x:hidden;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
     transition: all 0.5s ease;
 }
 
-.nav-item .nav-link{
-    display:block;
-    color:white!important;
-	text-transform:capitalize;
+.nav-item .nav-link {
+    display: block;
+    color: white!important;
+    text-transform: capitalize;
     text-decoration: none;
-    padding:6px 10px; 
-    transition:0.4s ease;	
+    padding: 6px 10px;
+    transition: 0.4s ease;
 }
 
-.navbar-nav > li > a i:before{
-//   margin:0px 5px 0px 0px;
-  font-size:16px;
+.navbar-nav>li>a i:before {
+    //   margin:0px 5px 0px 0px;
+    font-size: 16px;
 }
 
 
@@ -89,179 +85,177 @@ sidebar
 ----------------------*/
 
 
-
-
-
-
 /*---------------------------------
   main-content
 ----------------------*/
 
 #page-content-wrapper {
     width: 100%;
-	transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
     margin-right: -270px;
-
-	transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
- .toggled#page-content-wrapper{
-  margin-left:270px;
-  transition: all 0.5s ease;
- }
- 
- @media only screen and (min-width:992px){
- .toggled#page-content-wrapper{
-    width:calc(100% - 270px); 
-	}
- }
+.toggled#page-content-wrapper {
+    margin-left: 270px;
+    transition: all 0.5s ease;
+}
+
+@media only screen and (min-width:992px) {
+    .toggled#page-content-wrapper {
+        width: calc(100% - 270px);
+    }
+}
+
 
 /*---------------------------------
   main-content
 ----------------------*/
 
 
-
 /*---------------------------------
 cross-bar animation
 ----------------------*/
 
-
-.nav-icon1{
-  z-index: 999;
-  position:relative;
-  display: block;
-  width:23px;
-  margin:0px 30px 0px 25px;
-   cursor:pointer;
-  height: 25px;
+.nav-icon1 {
+    z-index: 999;
+    position: relative;
+    display: block;
+    width: 23px;
+    margin: 0px 30px 0px 25px;
+    cursor: pointer;
+    height: 25px;
 }
 
-
-.nav-icon1 span{
-  position:absolute;
-  top:0;
-  width:100%;
-  height:3px;
-  cursor:pointer;
-  background-color:#5d5d5d;
-  left:0;
-  transform:rotate(0deg);
-  transition:.30s ease-in-out;
+.nav-icon1 span {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 3px;
+    cursor: pointer;
+    background-color: #5d5d5d;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .30s ease-in-out;
 }
 
-.nav-icon1:hover span:nth-of-type(1){
-  top:-3px
+.nav-icon1:hover span:nth-of-type(1) {
+    top: -3px
 }
 
-.nav-icon1:hover span:nth-of-type(3){
-  top:19px;
+.nav-icon1:hover span:nth-of-type(3) {
+    top: 19px;
 }
 
-.nav-icon1 span:nth-of-type(1){
-   top:0;
+.nav-icon1 span:nth-of-type(1) {
+    top: 0;
 }
 
-.nav-icon1 span:nth-of-type(2){
-   top:8px;
+.nav-icon1 span:nth-of-type(2) {
+    top: 8px;
 }
 
-.nav-icon1 span:nth-of-type(3){
-   top:16px;
+.nav-icon1 span:nth-of-type(3) {
+    top: 16px;
 }
 
-.nav-icon1.open span:nth-of-type(1){
-   top:8px;
-   transform:rotate(135deg);
+.nav-icon1.open span:nth-of-type(1) {
+    top: 8px;
+    transform: rotate(135deg);
 }
 
-.nav-icon1.open span:nth-of-type(2){
-   top:8px;
-   opacity:0;
-   left:-30px;
+.nav-icon1.open span:nth-of-type(2) {
+    top: 8px;
+    opacity: 0;
+    left: -30px;
 }
 
-.nav-icon1.open span:nth-of-type(3){
-   top:8px;
-   transform:rotate(-135deg);
+.nav-icon1.open span:nth-of-type(3) {
+    top: 8px;
+    transform: rotate(-135deg);
 }
 
 
 /*---------------------------------
 cross-bar animation
 ----------------------*/
-
 
 
 /*---------------------------------
 header navbar design
 ----------------------*/
-.my-navbar{
-  padding:0px;
-  background-color:white;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
+
+.my-navbar {
+    padding: 0px;
+    background-color: white;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .16);
 }
 
 .text-gray-600 {
     color: #858796!important;
 }
+
 .nav-link .img-profile {
-    height:40px;
-    width:40px;
+    height: 40px;
+    width: 40px;
 }
 
-.navbar-nav > li > a >i{
+.navbar-nav>li>a>i {
     font-size: 18px;
-    color:#BCBBC8;
-	margin: 1px 10px 0px 3.5px;
-	padding:0px;
+    color: #BCBBC8;
+    margin: 1px 10px 0px 3.5px;
+    padding: 0px;
 }
 
-.navbar-nav > li > a >i:hover{
-    color:#B2B1BE;
+.navbar-nav>li>a>i:hover {
+    color: #B2B1BE;
 }
 
 .badge-counter {
     position: absolute;
-    transform:scale(.7);
+    transform: scale(.7);
     transform-origin: top right;
-    right:6px;
-	margin-top:4px;
+    right: 6px;
+    margin-top: 4px;
 }
 
-
-.dropdown, .dropleft, .dropright, .dropup {
+.dropdown,
+.dropleft,
+.dropright,
+.dropup {
     position: relative;
 }
 
-.nav-flag, .nav-icon {
+.nav-flag,
+.nav-icon {
     padding: .1rem .8rem;
     display: block;
     font-size: 1.5rem;
     color: #6c757d;
-    transition: background .1s ease-in-out,color .1s ease-in-out;
+    transition: background .1s ease-in-out, color .1s ease-in-out;
     line-height: 1.4;
 }
-
 
 .navbar-expand .navbar-nav .dropdown-menu {
     position: absolute;
 }
+
 .navbar-nav .dropdown-menu {
-    box-shadow: 0 0.1rem 0.2rem rgba(0,0,0,.05);
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, .05);
 }
+
 .navbar-nav .dropdown-menu {
     position: static;
     float: none;
 }
+
 .dropdown-menu-lg {
     min-width: 20rem;
 }
-
 
 .position-relative {
     position: relative!important;
@@ -269,7 +263,7 @@ header navbar design
 
 .nav-item .indicator {
     background: #3b7ddd;
-    box-shadow: 0 0.1rem 0.2rem rgba(0,0,0,.05);
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, .05);
     border-radius: 50%;
     display: block;
     height: 18px;
@@ -284,10 +278,10 @@ header navbar design
     color: #fff;
 }
 
+
 /*---------------------------------
  header navbar design
 ----------------------*/
-
 
 
 /*---------------------------------
@@ -296,8 +290,8 @@ main-top card
 
 .card {
     margin-bottom: 24px;
-	border:none;
-    box-shadow: 0 0 0.875rem 0 rgba(33,37,41,.05);
+    border: none;
+    box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, .05);
 }
 
 .card-body {
@@ -305,29 +299,29 @@ main-top card
     min-height: 1px;
     padding: 1.25rem;
 }
+
 .card-title {
     font-size: .875rem;
     color: #495057;
 }
 
-.card-body h1{
-font-size: 1.75rem;
-font-weight: 400;
+.card-body h1 {
+    font-size: 1.75rem;
+    font-weight: 400;
     line-height: 1.2;
     color: #000;
 }
 
-
 .text-gray-800 {
     color: #5a5c69!important;
-	font-size: 1.75rem;
-	font-weight: 400;
+    font-size: 1.75rem;
+    font-weight: 400;
     line-height: 1.2;
 }
-.shadow-sm {
-    box-shadow: 0 .125rem .25rem 0 rgba(58,59,69,.2)!important;
-}
 
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem 0 rgba(58, 59, 69, .2)!important;
+}
 
 .btn-sm {
     padding: .25rem .5rem;
@@ -336,11 +330,9 @@ font-weight: 400;
     border-radius: .2rem;
 }
 
-
 .font-16 {
     font-size: 16px;
 }
-
 
 
 /*---------------------------------
@@ -348,16 +340,14 @@ main-top card
 ----------------------*/
 
 
-
-
 /*---------------------------------
 main-table
 ----------------------*/
 
-
- .m-r-10 {
+.m-r-10 {
     margin-right: 10px;
 }
+
 .btn-circle {
     border-radius: 100%;
     width: 40px;
@@ -382,6 +372,7 @@ main-table
     background-color: #36bea6;
     border-color: #36bea6;
 }
+
 .btn-purple {
     color: #fff;
     background-color: #7460ee;
@@ -394,36 +385,32 @@ main-table
     margin-bottom: 10px;
 }
 
-
 .card .card-subtitle {
     font-weight: 300;
     margin-bottom: 10px;
     color: #a1aab2;
-	  margin-top: -0.375rem;
+    margin-top: -0.375rem;
 }
 
-
-.table td, .table th {
+.table td,
+.table th {
     padding: 1rem;
-	font-size:14px;
-	color:#333;
+    font-size: 14px;
+    color: #333;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
 
-.table h5{
-      font-size: 16px;
-	  font-weight:600;
-	  color:#585858;
+.table h5 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #585858;
 }
-
 
 
 /*---------------------------------
 main-table
 ----------------------*/
-
-
 
 
 /*---------------------------------
@@ -437,24 +424,25 @@ footer.footer {
 }
 
 footer.footer ul {
-    margin:0px;
-	list-style:none;
+    margin: 0px;
+    list-style: none;
 }
 
-.footer ul  li{
- display:inline-block;
- margin:0px 7px;
+.footer ul li {
+    display: inline-block;
+    margin: 0px 7px;
 }
 
 .text-muted {
     color: #6c757d!important;
-	font-size:14px;
+    font-size: 14px;
 }
- 
+
 
 /*---------------------------------
 footer
 ----------------------*/
+
 .size-icon::before {
     font-size: 19px!important;
 }
@@ -467,6 +455,7 @@ footer
 .navbar .navbar-nav .nav-item .divider {
     padding: 0 0.5em;
 }
+
 .navbar .navbar-nav .divider {
     border-right: 1px solid #F2F2F2;
     height: 30px;
@@ -478,21 +467,25 @@ footer
 ::ng-deep.mat-menu-panel {
     max-width: none !important;
     margin-top: 11px;
+    min-height: 50px !important;
+    box-shadow: 0px 0px 15px 1px rgb(113 106 202 / 10%) !important;
 }
 
 .menu {
     width: 200px!important;
 }
 
-.menu li{
+.menu li {
     list-style: none;
     padding: 12px 0;
     display: flex;
     align-items: center;
 }
-.menu li:not(:first-child){
-    border-top: 1px solid rgba(0,0,0,0.05);
+
+.menu li:not(:first-child) {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
+
 .menu li img {
     max-width: 20px;
     margin-right: 10px;
@@ -500,6 +493,7 @@ footer
     opacity: 0.5;
     transition: 0.05s;
 }
+
 .menu li a {
     font-size: 14px;
     display: inline-block;
@@ -525,14 +519,12 @@ footer
     display: inline-block;
     padding: 3px 6px;
     border-radius: 4px;
-    background: rgba(0,0,0,.9);
+    background: rgba(0, 0, 0, .9);
     color: #fff;
     font-size: 12px;
     white-space: nowrap;
     transition: all .6ms;
-  }
-
-
+}
 
 .nav-item-topbar {
     display: flex !important;
@@ -545,7 +537,7 @@ footer
 }
 
 .nav-item-topbar:hover {
-    background: rgba(0,0,0,.05);
+    background: rgba(0, 0, 0, .05);
     border-radius: 5px;
 }
 
@@ -556,7 +548,7 @@ footer
     padding: 0 10px 0 10px!important;
 }
 
-.nav-item-topbar .nav-link-topbar i{
+.nav-item-topbar .nav-link-topbar i {
     display: flex!important;
     align-items: center;
     margin: 0!important;
@@ -574,16 +566,16 @@ footer
 }
 
 .nav-item-dropdown-topbar:hover {
-    background: rgba(0,0,0,.05);
+    background: rgba(0, 0, 0, .05);
     border-radius: 5px;
 }
 
-.activate{
-    background: rgba(0,0,0,0.05);
+.activate {
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 5px;
 }
-   
-.inActivate{
+
+.inActivate {
     background: transparent;
 }
 
@@ -618,7 +610,7 @@ footer
 }
 
 .activateNotif .nav-item-topbar {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 5px;
 }
 

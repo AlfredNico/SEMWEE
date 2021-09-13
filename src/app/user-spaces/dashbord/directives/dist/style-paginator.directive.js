@@ -126,29 +126,29 @@ var StylePaginatorDirective = /** @class */ (function () {
                     if (nodeArray_1[i].nodeName === "BUTTON") {
                         if (nodeArray_1[i].innerHTML.length > 100 &&
                             nodeArray_1[i].disabled) {
-                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(236, 241, 246, 1)");
-                            _this.ren.setStyle(nodeArray_1[i], "color", "rgba(181, 181, 195, 1)");
+                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(147, 162, 221, .12)");
+                            _this.ren.setStyle(nodeArray_1[i], "color", "rgba(147, 162, 221, 1)");
                             (_c = _this.ren) === null || _c === void 0 ? void 0 : _c.setStyle(nodeArray_1[i], "box-shadow", "none");
                             (_d = _this.ren) === null || _d === void 0 ? void 0 : _d.setStyle(nodeArray_1[i], "border-radius", "5px");
                             (_e = _this.ren) === null || _e === void 0 ? void 0 : _e.setStyle(nodeArray_1[i], "margin", ".5%");
                         }
                         else if (nodeArray_1[i].innerHTML.length > 100 &&
                             !nodeArray_1[i].disabled) {
-                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(236, 241, 246, 1)");
-                            _this.ren.setStyle(nodeArray_1[i], "color", "rgba(181, 181, 195, 1)");
+                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(147, 162, 221, .12)");
+                            _this.ren.setStyle(nodeArray_1[i], "color", "rgba(147, 162, 221, 1)");
                             (_f = _this.ren) === null || _f === void 0 ? void 0 : _f.setStyle(nodeArray_1[i], "box-shadow", "none");
                             (_g = _this.ren) === null || _g === void 0 ? void 0 : _g.setStyle(nodeArray_1[i], "border-radius", "5px");
                             (_h = _this.ren) === null || _h === void 0 ? void 0 : _h.setStyle(nodeArray_1[i], "margin", ".5%");
                         }
                         else if (nodeArray_1[i].disabled) {
                             // } else if (this._isFetchData) {
-                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(54, 153, 255, 1)");
+                            _this.ren.setStyle(nodeArray_1[i], "background-color", "rgba(102, 172, 255, 1)");
                             (_j = _this.ren) === null || _j === void 0 ? void 0 : _j.setStyle(nodeArray_1[i], "color", "white");
                         }
                         else if (!nodeArray_1[i].disabled) {
                             // } else if (!this._isFetchData) {
                             (_k = _this.ren) === null || _k === void 0 ? void 0 : _k.setStyle(nodeArray_1[i], "background-color", "transparent");
-                            (_l = _this.ren) === null || _l === void 0 ? void 0 : _l.setStyle(nodeArray_1[i], "color", "rgba(138, 140, 159, 1)");
+                            (_l = _this.ren) === null || _l === void 0 ? void 0 : _l.setStyle(nodeArray_1[i], "color", "rgba(147, 162, 221, 1)");
                         }
                     }
                 }
