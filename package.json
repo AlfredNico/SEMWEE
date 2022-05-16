@@ -40,7 +40,7 @@
         "highlightjs-line-numbers.js": "^2.8.0",
         "idb": "^6.0.0",
         "jquery": "^3.5.1",
-        "moment": "^2.27.0",
+        "moment": "^2.29.2",
         "ng-apexcharts": "^1.5.1",
         "ng-inline-svg": "^10.1.0",
         "ngx-captcha": "^9.0.1",
